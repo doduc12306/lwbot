@@ -1,0 +1,18 @@
+const Discord = require(`discord.js`);
+module.exports.run = (client, message, args) => { // eslint-disable-line no-unused-vars
+  message.channel.send(new Discord.RichEmbed().setTitle(`Invite me to another server!`).setDescription(`https://discordapp.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=0&scope=bot`));
+};
+
+exports.conf = {
+  enabled: true,
+  aliases: [],
+  permLevel: `Bot Owner`,
+  guildOnly: false
+};
+
+exports.help = {
+  name: `invite`,
+  description: `Invite the bot to another server`,
+  usage: `invite`,
+  category: `System`
+};

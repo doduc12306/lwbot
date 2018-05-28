@@ -84,7 +84,9 @@ module.exports = async client => {
     [` `, {type: `PLAYING`}],
     [`Netflix`, {type: `WATCHING`}],
     [`you`, {type: `WATCHING`}],
-    [`Spotify`, {type: `LISTENING`}]
+    [`you sleep`, {type: `WATCHING`}],
+    [`Spotify`, {type: `LISTENING`}],
+    [`your conversations-- I mean what`, {type: `LISTENING`}]
   ];
 
   // Both `wait` and `client.log` are in `./modules/functions`.
@@ -104,35 +106,7 @@ module.exports = async client => {
     client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
   }, 60000);
 
-  // Webhooks support
-  var date = new Date();
-  var day = date.toDateString().substring(0, 3);
-  var time = date.toTimeString().substring(0, 8);
-  const hook = new Discord.WebhookClient(`447143362219212820`, client.config.webhookToken);
-  var channel = client.channels.get(`447132033173422090`);
-  
-  var data = {
-    monday: require(`../webhook-data/monday.json`),
-    tuesday: require(`../webhook-data/tuesday.json`),
-    wednesday: require(`../webhook-data/wednesday.json`),
-    thursday: require(`../webhook-data/thursday.json`),
-    friday: require(`../webhook-data/friday.json`),
-    saturday: require(`../webhook-data/saturday.json`),
-    sunday: require(`../webhook-data/sunday.json`)
-  };
-
-  function postIt(){
-    if (time === "00:00:00") {
-      if (day === "Mon") {channel.bulkDelete(1); hook.send(data.monday)}
-      else if (day === "Tue") {channel.bulkDelete(1); hook.send(data.tuesday)}
-      else if (day === "Wed") {channel.bulkDelete(1); hook.send(data.wednesday)}
-      else if (day === "Thu") {channel.bulkDelete(1); hook.send(data.thursday)}
-      else if (day === "Fri") {channel.bulkDelete(1); hook.send(data.friday)}
-      else if (day === "Sat") {channel.bulkDelete(1); hook.send(data.saturday)}
-      else if (day === "Sun") {channel.bulkDelete(1); hook.send(data.sunday)}
-      else {channel.send("@Akii#0008, something has gone wrong.")}
-    } else return;
-  }
-
-  setInterval(postIt, 15000);
+  setInterval(() => {
+    client.channels.get(`447132033173422090`).bulkDelete(1);
+  }, 8.64e+7);
 };

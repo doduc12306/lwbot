@@ -1,10 +1,9 @@
 const Discord = require(`discord.js`);
 exports.run = (client, message) => {
   var giphy = require(`giphy-api`)(client.config.giphy);
-  var sweetheart = message.mentions.users.first();
   
   giphy.random({
-    tag: `kiss sexy kissing hot makeout`,
+    tag: `kiss sexy kissing hot makeout anime`,
     limit: 1,
     rating: `pg`,
     fmt: `json`
