@@ -4,12 +4,16 @@ module.exports.run = async (client, message, args) => { // eslint-disable-line n
   
   var bots = message.guild.members.filter(member => member.user.bot).map(g => g.toString()).length;
   var online = message.guild.members.filter(g => g.user.presence.status === `online`).map(g => g.toString()).length;
+  var idle = message.guild.members.filter(g => g.user.presence.status === `idle`).map(g => g.toString()).length;
+  var dnd = message.guild.members.filter(g => g.user.presence.status === `dnd`).map(g => g.toString()).length;
+  var offline = message.guild.members.filter(g => g.user.presence.status === `offline`).map(g => g.toString()).length;
+  var streaming = message.guild.members.filter(g => g.user.presence.game && g.user.presence.game.streaming).map(g => g.toString()).length;
   
   message.channel.send(new Discord.RichEmbed()
     .addField(`Total Users`, message.guild.memberCount, true)
     .addField(`Bots`, bots, true)
     .addField(`Humans`, message.guild.memberCount-bots, true)
-    .addField(`Status`)
+    .addField(`Status`, `<:online:450674128777904149> **Online:** ${online}\n<:idle:450674222176403456> **Idle:** ${idle}\n<:dnd:450674354163023882> **Do Not Disturb:** ${dnd}\n<:offline:450674445670154240> **Offline:** ${offline}\n<:streaming:450674542717698058> **Streaming:** ${streaming}`)
     .setColor(`0x59D851`)
   );
 };
