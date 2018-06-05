@@ -11,6 +11,8 @@ const config = {
   // Your Bot's Token. Available on https://discordapp.com/developers/applications/me
   "token": `bot's token`,
   "giphy": `giphy token`,
+  "debugtoken": `a debug bot's token`,
+  "dbans_token": `http://bans.discordlist.net/ API token`,
   
   // Default per-server settings. New guilds have these settings. 
   
