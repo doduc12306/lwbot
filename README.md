@@ -1,6 +1,6 @@
 # LINE WEBTOON Bot [Rewrite]
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/jennasisis/lwbot-rewrite.svg)](https://greenkeeper.io/)
-[![Build Status](https://travis-ci.org/jennasisis/lwbot-rewrite.svg?branch=master)](https://travis-ci.org/jennasisis/lwbot-rewrite)
+Travis CI is bull, for me anyway. If it's here, it works. Most likely. If not, open up an issue.
+~~oh and it doesnt even work with gitlab?? and their own ci is garbage anyway lol~~
 
 just, ignore this, i'll eventually push it all into the [main code](http://github.com/jennasisis/lwbot)
