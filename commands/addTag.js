@@ -49,7 +49,7 @@ exports.conf = {
   enabled: true,
   guildOnly: false,
   aliases: [`addtag`, `tagadd`],
-  permLevel: `User`
+  permLevel: `Bot Owner`
 };
 
 exports.help = {

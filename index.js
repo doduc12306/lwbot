@@ -8,6 +8,8 @@ const Enmap = require(`enmap`);
 const EnmapLevel = require(`enmap-level`);
 const client = new Discord.Client();
 
+var debug = false;
+
 const sequelize = new Sequelize(`database`, `user`, `password`, {
   host: `localhost`,
   dialect: `sqlite`,
@@ -68,7 +70,8 @@ const init = async () => {
   }
 
   // Here we login the client.
-  client.login(client.config.token);
+  if (debug) client.login(client.config.debugtoken);
+  else client.login(client.config.token);
 
 // End top-level async/await function.
 };

@@ -1,8 +1,8 @@
-module.exports.run = (client, message, args) => {
-  const ud = require(`urban-dictionary`);
-  const Discord = require(`discord.js`);
+const ud = require(`urban-dictionary`);
+const Discord = require(`discord.js`);
 
-  var definition = args[0];
+module.exports.run = (client, message, args) => {
+  var definition = args.join(` `);
 
   if (!definition) return message.channel.send(`:x: You forgot a word to look up!`);
 
