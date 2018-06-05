@@ -36,5 +36,5 @@ module.exports = (client, member) => {
       await client.wait(2000);
       await member.guild.channels.find(`name`, settings.modLogChannel).send(banEmbed);
     })
-    .catch(err => client.users.get(client.config.ownerID).send(err));
+    .catch(err => client.users.get(client.config.ownerID).send(`DBans error: ${err}`));
 };
