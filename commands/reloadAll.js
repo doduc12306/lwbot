@@ -1,12 +1,11 @@
 const { promisify } = require(`util`);
 const readdir = promisify(require(`fs`).readdir);
 
-module.exports.run = async (client, message, args) => {
-  
-  await message.channel.send(`:gear: **Loading a total of ${cmdFiles.length} commands...**`);
-    
-  require(`./modules/functions.js`)(client);
+module.exports.run = async (client, message, args) => {   
+  require(`../modules/functions.js`)(client);
   const cmdFiles = await readdir(`./commands/`);
+
+  await message.channel.send(`:gear: **Reloading a total of ${cmdFiles.length} commands...**`);
     
   // unloads all the commands
   await cmdFiles.forEach(f => {
@@ -28,14 +27,14 @@ module.exports.run = async (client, message, args) => {
 
 exports.conf = {
   enabled: true,
-  aliases: [`reloadCommands`, `reloadCmds`, `reloadAllCmds`],
+  aliases: [`reloadcommands`, `reloadcmds`, `reloadallcmds`],
   guildOnly: false,
   permLevel: `Bot Admin`
 };
 
 exports.help = {
-  name: `reloadAll`,
+  name: `reloadall`,
   description: `Reloads all the commands in the /commands/ folder.`,
   category: `System`,
-  usage: `reloadAll`
+  usage: `reloadall`
 };

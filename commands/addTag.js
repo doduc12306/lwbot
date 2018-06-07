@@ -48,13 +48,13 @@ module.exports.run = async (client, message, args) => {
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: [`addtag`, `tagadd`],
+  aliases: [`tagadd`],
   permLevel: `Bot Owner`
 };
 
 exports.help = {
-  name: `addTag`,
+  name: `addtag`,
   description: `Adds a tag to the database`,
-  usage: `addTag <tag name> <tag data>\n**Tag name must be one word**`,
+  usage: `addtag <tag name> <tag data>\n**Tag name must be one word**`,
   category: `Tags`
 };
