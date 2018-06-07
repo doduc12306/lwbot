@@ -14,7 +14,6 @@ const sequelize = new Sequelize(`database`, `user`, `password`, {
   host: `localhost`,
   dialect: `sqlite`,
   logging: false,
-  // SQLite only
   storage: `database.sqlite`,
 });
 const Tags = sequelize.define(`tags`, {
@@ -57,7 +56,6 @@ const init = async () => {
   evtFiles.forEach(file => {
     const eventName = file.split(`.`)[0];
     const event = require(`./events/${file}`);
-    // This line is awesome by the way. Just sayin'.
     client.on(eventName, event.bind(null, client));
     delete require.cache[require.resolve(`./events/${file}`)];
   });
