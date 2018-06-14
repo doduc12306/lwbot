@@ -1,3 +1,2 @@
 # WILL NOT RUN UNLESS COMMAND FROM BUILD.SH
 
-pm2 start index.js;
