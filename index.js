@@ -8,7 +8,7 @@ const Enmap = require(`enmap`);
 const EnmapLevel = require(`enmap-level`);
 const client = new Discord.Client();
 
-var debug = false;
+var debug = true;
 
 const sequelize = new Sequelize(`database`, `user`, `password`, {
   host: `localhost`,
