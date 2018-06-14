@@ -6,12 +6,9 @@ echo " ";
 echo "-------------- Starting -------------";
 echo " ";
 echo " ";
-node index.js
+pm2 start index.js;
 
-# Sleeps for 1 minute, then exits
 sleep 60;
-echo " ";
-echo " ";
-echo "-------------- Stopping build -------------";
-echo " ";
-echo " ";
+
+pm2 stop index.js;
+bash ./run.sh;
