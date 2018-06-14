@@ -18,13 +18,13 @@ module.exports.run = (client, message, args) => {
 exports.conf = {
   enabled: true,
   guildOnly: true,
-  aliases: [`ae`],
+  aliases: [`aE`],
   permLevel: `User`
 };
 
 exports.help = {
-  name: `addemote`,
+  name: `addEmote`,
   description: `Adds an emote to the server`,
   category: `Server`,
-  usage: `addemote <name> <image url>`
+  usage: `addEmote <name> <image url>`
 };
