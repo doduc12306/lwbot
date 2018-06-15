@@ -32,13 +32,13 @@ module.exports.run = async (client, message, args) => {
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: [`removeTag`],
+  aliases: [`removetag`],
   permLevel: `Bot Owner`
 };
 
 exports.help = {
-  name: `delTag`,
+  name: `deltag`,
   description: `Deletes a tag from the database`,
-  usage: `delTag <tag name>`,
+  usage: `deltag <tag name>`,
   category: `Tags`
 };

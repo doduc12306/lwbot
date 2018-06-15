@@ -28,14 +28,14 @@ module.exports.run = async (client, message, args) => {
 
 exports.conf = {
   enabled: true,
-  aliases: [`reloadCommands`, `reloadCmds`, `reloadAllCmds`],
+  aliases: [`reloadcommands`, `reloadcmds`, `reloadallcmds`],
   guildOnly: false,
   permLevel: `Bot Admin`
 };
 
 exports.help = {
-  name: `reloadAll`,
+  name: `reloadall`,
   description: `Reloads all the commands in the /commands/ folder.`,
   category: `System`,
-  usage: `reloadAll`
+  usage: `reloadall`
 };
