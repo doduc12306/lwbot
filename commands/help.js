@@ -35,7 +35,6 @@ exports.run = async (client, message, args, level) => {
     });
     await message.react(`✅`);
     await message.author.send(new Discord.RichEmbed().setDescription(`\`\`\`asciidoc\n${output}\n\`\`\``).setColor(`0x59D851`));
-    await message.author.send(`:grimacing: Yes, I know this doesn't look *the best,* but I'm working with the dev team to try and make it a *bit* prettier.`);
   } else {
     // Show individual command's help.
     let command = args[0];
@@ -47,7 +46,9 @@ exports.run = async (client, message, args, level) => {
         .setDescription(`${command.help.category} | ${command.help.description}`)
         .addField(`Usage`, command.help.usage)
         .addField(`Aliases`, command.conf.aliases.join(`, `))
+        .addField(`Perm Level`, command.conf.permLevel)
         .setColor(`0x59D851`)
+        .setFooter(`All <arguments> are required · All [arguments] are optional`)
       );
       /* message.channel.send(`= ${command.help.name} = \n${command.help.description}\nusage:: ${command.help.usage}\naliases:: ${command.conf.aliases.join(`, `)}\n= ${command.help.name} =`, {code:`asciidoc`}); */
     } else {message.channel.send(`:x: I couldn't find the command ${command}!`);}
