@@ -34,22 +34,26 @@ exports.run = async (client, message, args, level) => {
       output += `${settings.prefix}${c.help.name}${` `.repeat(longest - c.help.name.length)} :: ${c.help.description}\n`;
     });
     await message.react(`✅`);
-    await message.author.send(new Discord.RichEmbed().setDescription(`\`\`\`asciidoc\n${output}\n\`\`\``).setColor(`0x59D851`));
+    await message.author.send(output);
   } else {
     // Show individual command's help.
     let command = args[0];
     if (client.commands.has(command)) {
       command = client.commands.get(command);
       if (level < client.levelCache[command.conf.permLevel]) return message.channel.send(`:x: You do not have access to this command!`);
-      message.channel.send(new Discord.RichEmbed()
+
+      var cmdEmbed = new Discord.RichEmbed()
         .setTitle(`\`${command.help.name}\``)
         .setDescription(`${command.help.category} | ${command.help.description}`)
         .addField(`Usage`, command.help.usage)
         .addField(`Aliases`, command.conf.aliases.join(`, `))
         .addField(`Perm Level`, command.conf.permLevel)
         .setColor(`0x59D851`)
-        .setFooter(`All <arguments> are required · All [arguments] are optional`)
-      );
+        .setFooter(`All <arguments> are required · All [arguments] are optional`);
+
+      //if(command.conf.permLevel === `P`) cmdEmbed.addField(`Requires`, command.conf.requires);
+
+      message.channel.send(cmdEmbed);
       /* message.channel.send(`= ${command.help.name} = \n${command.help.description}\nusage:: ${command.help.usage}\naliases:: ${command.conf.aliases.join(`, `)}\n= ${command.help.name} =`, {code:`asciidoc`}); */
     } else {message.channel.send(`:x: I couldn't find the command ${command}!`);}
   }

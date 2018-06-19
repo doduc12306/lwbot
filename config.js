@@ -29,7 +29,9 @@ const config = {
     "welcomeMessage": `Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D`,
     "welcomeEnabled": `false`
   },
-  
+
+  "debugMode": true,
+
   // PERMISSION LEVEL DEFINITIONS.
   
   permLevels: [
@@ -40,7 +42,7 @@ const config = {
       // level allows them to.
       check: () => true
     },
-  
+
     // This is your permission level, the staff levels should always be above the rest of the roles.
     { level: 2,
       // This is the name of the role.
