@@ -1,5 +1,6 @@
+const Discord = require(`discord.js`);
+
 module.exports.run = (client, message) => {
-  const Discord = require(`discord.js`);
     
   if (message.mentions.users.size < 1) {
         

@@ -9,7 +9,7 @@ module.exports = (client, member) => {
   Dbans = new Dbans(client.config.dbans_token);
   Dbans.check(member.user.id)
     .then(async user => {
-      if (!user) return;
+      if (user === false) return;
 
       var banEmbed = new Discord.RichEmbed()
         .setColor(`0xFF0000`)

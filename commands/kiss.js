@@ -14,6 +14,7 @@ exports.run = (client, message) => {
     message.channel.send(new Discord.RichEmbed()
       .setTitle(`${message.author.tag} and ${message.mentions.users.first()} are ${words}, give em a bit of privacy!`)
       .setImage(res.data.image_url)
+      .setColor(`0xef6969`)
     );
   });
 };

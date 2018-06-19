@@ -1,7 +1,7 @@
 const fs = require(`fs`);
 
 exports.run = async (client, message, args, level) => { // eslint-disable-line no-unused-vars
-    const cmdFiles = await fs.readdir(`./commands/`); // eslint-disable-line
+  const cmdFiles = await fs.readdir(`./commands/`);
   if (!args) {
     message.channel.send(`:x: You didn't give me a command to reload!`);
   } else {

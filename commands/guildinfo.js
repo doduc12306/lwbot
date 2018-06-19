@@ -1,6 +1,6 @@
-module.exports.run = (client, message, args) => { // eslint-disable-line no-unused-vars
-  const Discord = require(`discord.js`);
+const Discord = require(`discord.js`);
 
+module.exports.run = (client, message, args) => { // eslint-disable-line no-unused-vars
   if (message.channel.type === `dm`) {
     message.channel.send(`:x: This command will not work in DM's`);
     return;
@@ -50,12 +50,16 @@ module.exports.run = (client, message, args) => { // eslint-disable-line no-unus
     if (message.guild.verificationLevel === 0) {verification = `None`;}
     else if (message.guild.verificationLevel === 1) {verification = `Low`;}
     else if (message.guild.verificationLevel === 2) {verification = `Medium`;}
-    else if (message.guild.verificationLevel === 3) {verification = `(╯°□°）╯︵ ┻━┻ (High)`;}
-    else if (message.guild.verificationLevel === 4) {verification = `┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻ (Extreme)`;}
+    else if (message.guild.verificationLevel === 3) {verification = `(╯°□°）╯︵ ┻━┻ (High: 10 minutes on server)`;}
+    else if (message.guild.verificationLevel === 4) {verification = `┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻ (Extreme: Verified phone)`;}
+
+    // embed color
+    var color = message.guild.me.displayColor;
+    if(message.guild.me.displayColor === 0) color = `0x59D851`;
 
     //The actual message
     message.channel.send(new Discord.RichEmbed()
-      .setColor(message.guild.me.displayColor)
+      .setColor(color)
       .setThumbnail(guildIcon)
       .setAuthor(`Information on ${message.guild.name}:`, guildIcon, null)
       .addField(`Guild Owner:`, message.guild.owner.user.tag, true)

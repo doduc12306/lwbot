@@ -1,6 +1,8 @@
 const Discord = require(`discord.js`);
 module.exports.run = async (client, message, args) => {
   try {
+    const settings = client.settings.get(message.guild.id);
+    
     if (message.member.permissions.has(`MANAGE_MESSAGES`) || message.author.id === `107599228900999168`) {
       var date = new Date();
 
@@ -25,10 +27,10 @@ module.exports.run = async (client, message, args) => {
       } else {color = 54371; announce();}
         
       function announce() { // eslint-disable-line no-inner-declarations
-        client.channels.find(`name`, `announcements`).send(new Discord.RichEmbed()
+        message.guild.channels.find(`name`, settings.announcementsChannel).send(new Discord.RichEmbed()
           .setColor(color)
           .setAuthor(message.author.username, message.author.avatarURL)
-          .setFooter(`${date.toDateString()} ${date.toTimeString()}`)
+          .setFooter(`${date.toDateString()} @ ${date.toTimeString().substring(0,5)}`)
           .addField(title, content)
         );
         if (cmdargs) message.channel.send(`:white_check_mark: **Announcement sent!** | **Args:** \`${cmdargs}\``);
@@ -48,6 +50,6 @@ exports.conf = {
 exports.help = {
   name: `announce`,
   description: `Announces something`,
-  usage: `announce <title> | <content> [| color=(Hex without the #) no-subs]`,
+  usage: `announce <title> | <content> [| arguments]\nARGUMENTS: \`color=<0xhex | base10>\` Sets sidebar color, \`no-subs\` Disables ping of guild's announcements subscribers role`,
   category: `Server`
 };

@@ -1,8 +1,8 @@
 /* eslint-disable */
 module.exports.run = async (client, message, args) => {
-  if(!message.guild.me.permissions.has(`MOVE_MEMBERS`)) return message.channel.send(`\`❌\` I'm missing the Move Members permission!`);
+  if(!message.guild.me.permissions.has(`MOVE_MEMBERS`)) return message.channel.send(`:x: I'm missing the Move Members permission!`);
   if(!message.member.voiceChannel) return message.channel.send(`:x: You are not in a voice channel!`);
-  if(!message.mentions.members.first()) return message.channel.send(`\`❌\` You didn't mention a member to voice kick!`);
+  if(!message.mentions.members.first()) return message.channel.send(`:x: You didn't mention a member to voice kick!`);
   if(!message.mentions.members.first().voiceChannel) return message.channel.send(`:x: The member you are trying to voice kick isn't in a voice channel!`);
     
   message.mentions.members.first().voiceChannel.overwritePermissions(message.mentions.users.first(), {CONNECT: false});
