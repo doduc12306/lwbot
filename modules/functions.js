@@ -66,7 +66,7 @@ module.exports = (client) => {
     text = text
       .replace(/`/g, `\`` + String.fromCharCode(8203))
       .replace(/@/g, `@` + String.fromCharCode(8203))
-      .replace(client.token, `[TOKEN HIDDEN]`);
+      .replace(client.token, `fucking idiot, why are you trying to show my token? go to the dev page, lazy ass`);
 
     return text;
   };
