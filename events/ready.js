@@ -29,10 +29,12 @@ module.exports = async client => {
 
   // Sets the "Current total members" message in #rules_and_info
   var guild = client.guilds.get(`382585019300053013`);
-  var bots = guild.members.filter(member => member.user.bot).map(g => g.toString());
-  guild.channels.get(`382640041358262285`).fetchMessage(`423594731994611723`).then(msg => msg.edit(`:busts_in_silhouette: **Current total members: \`${guild.memberCount-bots.length}\`**`));
+  var bots = guild.members.filter(member => member.user.bot);
+  guild.channels.get(`382640041358262285`).fetchMessage(`423594731994611723`).then(msg => msg.edit(`:busts_in_silhouette: **Current total members: \`${guild.memberCount-bots.size}\`**`));
 
   var playings = [
+    
+    /* Playing */
     [`with Shin-Ae`, {type: `PLAYING`}], 
     [`with James`, {type: `PLAYING`}], 
     [`with Nen`, {type: `PLAYING`}], 
@@ -40,6 +42,7 @@ module.exports = async client => {
     [`on Webtoons instead of working`, {type: `PLAYING`}], 
     [`with your heart`, {type: `PLAYING`}], 
     [`with Shen`, {type: `PLAYING`}], 
+    [`with Shenpai`, {type: `PLAYING`}],
     [`with SAI`, {type: `PLAYING`}], 
     [`some game or something idrk`, {type: `PLAYING`}], 
     [`with the big boys`, {type: `PLAYING`}], 
@@ -82,11 +85,19 @@ module.exports = async client => {
     [`with Quimchee`, {type: `PLAYING`}], 
     [`with Chris McCoy @ Safely Endangered`, {type: `PLAYING`}], 
     [` `, {type: `PLAYING`}],
+    [`nothing. Why do you care?? ugh`, {type: `PLAYING`}],
+
+    /* Watching */
     [`Netflix`, {type: `WATCHING`}],
     [`you`, {type: `WATCHING`}],
     [`you sleep`, {type: `WATCHING`}],
+    [`nothing. Why do you care?? ugh`, {type: `WATCHING`}],
+
+    /* Listening to */
     [`Spotify`, {type: `LISTENING`}],
-    [`your conversations-- I mean what`, {type: `LISTENING`}]
+    [`your conversations-- I mean what`, {type: `LISTENING`}],
+    [`nothing. Why do you care?? ugh`, {type: `LISTENING`}]
+
   ];
 
   // Both `wait` and `client.log` are in `./modules/functions`.

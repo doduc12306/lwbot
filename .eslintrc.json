@@ -28,12 +28,6 @@
         "warn",
         "always"
       ],
-      "keyword-spacing": [
-        "error", {
-          "before": true,
-          "after": true
-        }
-      ],
       "space-before-blocks": [
         "error", {
           "functions":"always",
