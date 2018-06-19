@@ -30,7 +30,7 @@ const config = {
     "welcomeEnabled": `false`
   },
 
-  "debugMode": true,
+  "debugMode": false,
 
   // PERMISSION LEVEL DEFINITIONS.
   
