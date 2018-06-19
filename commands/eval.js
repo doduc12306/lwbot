@@ -19,7 +19,7 @@ exports.run = async (client, message, args, level) => { // eslint-disable-line n
     let output = eval(code);
     if (output instanceof Promise || (Boolean(output) && typeof output.then === `function` && typeof output.catch === `function`)) output = await output;
     output = inspect(output, { depth: 0, maxArrayLength: null });
-    output = output.replace(filter, `[TOKEN]`);
+    output = output.replace(filter, `fucking idiot, why are you trying to show my token? go to the dev page, lazy ass`);
     output = clean(output);
     if (output.length < 1950) {
       message.channel.send(`\`\`\`js\n${output}\n\`\`\``);
