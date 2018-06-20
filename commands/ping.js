@@ -10,14 +10,14 @@ module.exports.run = (client, message) => {
   
   message.channel.send(new Discord.RichEmbed()
     .addField(`:ping_pong: Ping`, `Pinging...`)
-    .addField(`left_right_arrow: Latency:`, `Pinging...`)
-    .addField(`:three:`, `Pinging...`)
+    .addField(`left_right_arrow: Latency`, `Pinging...`)
+    .addField(`:three: Last Three`, `Pinging...`)
     .setColor(54371)
   ).then(thismessage => {
     thismessage.edit(new Discord.RichEmbed()
       .addField(`:ping_pong: Ping`, Math.round(client.ping)+`ms`)
-      .addField(`:left_right_arrow: Latency:`, `${thismessage.createdAt-message.createdAt}ms`)
-      .addField(`:three:`, pings)
+      .addField(`:left_right_arrow: Latency`, `${thismessage.createdAt-message.createdAt}ms`)
+      .addField(`:three: Last Three`, pings)
       .setColor(54371)
     );
   });
