@@ -3,10 +3,10 @@ const readdir = promisify(require(`fs`).readdir);
 
 module.exports.run = async (client, message, args) => {
   
-  await message.channel.send(`:gear: **Loading a total of ${cmdFiles.length} commands...**`);
-    
-  require(`./modules/functions.js`)(client);
+  require(`../modules/functions.js`)(client);
   const cmdFiles = await readdir(`./commands/`);
+  
+  await message.channel.send(`:gear: **Loading a total of ${cmdFiles.length} commands...**`);
     
   // unloads all the commands
   await cmdFiles.forEach(f => {
