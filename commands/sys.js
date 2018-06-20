@@ -5,7 +5,7 @@ module.exports.run = (client, message, args) => {
         if (e) return message.channel.send(`\`\`\`xl\n${e}\n\`\`\``);
         if (err) return message.channel.send(`\`\`\`xl\n${err}\n\`\`\``);
         message.channel.send(`\`\`\`xl\n${out}\n\`\`\``);
-      }).catch(e => message.channel.send(`\`\`\`xl\n${e}\n\`\`\``));
+      });
   } catch (e) {message.channel.send(`\`\`\`xl\n${e}\n\`\`\``);}
 };
 
