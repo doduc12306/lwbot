@@ -1,9 +1,9 @@
-exports.run = async (client, message, args, level) => {// eslint-disable-line no-unused-vars
+exports.run = async (client, message) => {// eslint-disable-line no-unused-vars
   await message.reply(`:gear: **Restarting...**`);
   client.commands.forEach( async cmd => {
     await client.unloadCommand(cmd);
   });
-  process.exit(1);
+  process.exit();
 };
 
 exports.conf = {
