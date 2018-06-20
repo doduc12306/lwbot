@@ -34,7 +34,7 @@ exports.run = async (client, message, args, level) => {
       output += `${settings.prefix}${c.help.name}${` `.repeat(longest - c.help.name.length)} :: ${c.help.description}\n`;
     });
     await message.react(`✅`);
-    await message.author.send(output);
+    await message.author.send(output, {code: `asciidoc`});
   } else {
     // Show individual command's help.
     let command = args[0];
@@ -51,18 +51,16 @@ exports.run = async (client, message, args, level) => {
         .setColor(`0x59D851`)
         .setFooter(`All <arguments> are required · All [arguments] are optional`);
 
-      //if(command.conf.permLevel === `P`) cmdEmbed.addField(`Requires`, command.conf.requires);
-
       message.channel.send(cmdEmbed);
-      /* message.channel.send(`= ${command.help.name} = \n${command.help.description}\nusage:: ${command.help.usage}\naliases:: ${command.conf.aliases.join(`, `)}\n= ${command.help.name} =`, {code:`asciidoc`}); */
-    } else {message.channel.send(`:x: I couldn't find the command ${command}!`);}
+
+    } else {message.channel.send(`:x: I couldn't find the command ${command}! (Try running ${client.settings.get(message.guild.id).prefix}diagnose ${command})`);}
   }
 };
 
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: [`h`, `halp`, `hlp`],
+  aliases: [`h`, `halp`, `hlp`, `commands`, `cmds`],
   permLevel: `User`
 };
 
