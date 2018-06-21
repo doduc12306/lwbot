@@ -3,7 +3,7 @@ const Discord = require(`discord.js`);
 
 module.exports.run = async (client, message, args) => {
   try {
-    var modBase = await new Sequelize(`database`, `user`, `password`, {host: `localhost`,dialect: `sqlite`,storage: `databases/${message.guild.id}.sqlite`});
+    var modBase = await new Sequelize(`database`, `user`, `password`, {host: `localhost`,dialect: `sqlite`,storage: `databases/servers/${message.guild.id}.sqlite`});
     modBase = await modBase.define(`moderation`, {victim: {type: Sequelize.STRING,allowNull: false},moderator: {type: Sequelize.STRING,allowNull: false},type: {type: Sequelize.STRING,allowNull: false},reason: Sequelize.STRING,duration: Sequelize.STRING});
     await modBase.sync();
 
@@ -17,7 +17,6 @@ module.exports.run = async (client, message, args) => {
     await client.fetchUser(args[0]).catch(e => message.channel.send(`:x: \`|\` ${bhEmote} **I could not find that user!**`));
 
     var toBan = await client.fetchUser(args[0]);
-    if(toBan.bot) return message.channel.send(`:x: \`|\` ${bhEmote} **I cannot ban a bot!**`);
 
     const input = await modBase.create({
       victim: toBan.id,

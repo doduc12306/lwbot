@@ -5,7 +5,7 @@ const moment = require(`moment`);
 require(`moment-duration-format`);
 
 module.exports.run = async (client, message, args) => {
-  var modBase = await new Sequelize(`database`, `user`, `password`, {host: `localhost`,dialect: `sqlite`,storage: `databases/${message.guild.id}.sqlite`});
+  var modBase = await new Sequelize(`database`, `user`, `password`, {host: `localhost`,dialect: `sqlite`,storage: `databases/servers/${message.guild.id}.sqlite`});
   modBase = await modBase.define(`moderation`, {victim: {type: Sequelize.STRING,allowNull: false},moderator: {type: Sequelize.STRING,allowNull: false},type: {type: Sequelize.STRING,allowNull: false},reason: Sequelize.STRING,duration: Sequelize.STRING});
   await modBase.sync();
 
@@ -21,7 +21,6 @@ module.exports.run = async (client, message, args) => {
   if(!message.member.permissions.has(`BAN_MEMBERS`)) return message.channel.send(`:x: \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
   if(!toBan) return message.channel.send(`:x: \`|\` ${bhEmote} **You didn't mention someone to ban!**`);
   if(!duration) return message.channel.send(`:x: \`|\` ${bhEmote} **You didn't set a duration!**`);
-  if(toBan.bot) return message.channel.send(`:x: \`|\` ${bhEmote} **I cannot ban a bot!**`);
   if(!toBanM.bannable) return message.channel.send(`:x: \`|\` ${bhEmote} **This member could not be banned!**`);
 
   var durationMs = parse(duration);

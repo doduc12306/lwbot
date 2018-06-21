@@ -2,7 +2,7 @@ const Sequelize = require(`sequelize`);
 const Discord = require(`discord.js`);
 
 module.exports.run = async (client, message, args) => {
-  var modBase = await new Sequelize(`database`, `user`, `password`, {host: `localhost`,dialect: `sqlite`,storage: `databases/${message.guild.id}.sqlite`});
+  var modBase = await new Sequelize(`database`, `user`, `password`, {host: `localhost`,dialect: `sqlite`,storage: `databases/servers/${message.guild.id}.sqlite`});
   modBase = await modBase.define(`moderation`, {victim: {type: Sequelize.STRING,allowNull: false},moderator: {type: Sequelize.STRING,allowNull: false},type: {type: Sequelize.STRING,allowNull: false},reason: Sequelize.STRING,duration: Sequelize.STRING});
   await modBase.sync();
 
@@ -15,7 +15,6 @@ module.exports.run = async (client, message, args) => {
   if(!message.guild.me.permissions.has(`KICK_MEMBERS`)) return message.channel.send(`:x: \`|\` :boot: **I am missing permissions:** \`Kick Members\``);
   if(!message.member.permissions.has(`KICK_MEMBERS`)) return message.channel.send(`:x: \`|\` :boot: **You are missing permissions:** \`Kick Members\``);
   if(!toKick) return message.channel.send(`:x: \`|\` :boot: **You didn't mention someone to kick!**`);
-  if(toKick.bot) return message.channel.send(`:x: \`|\` :boot: **I cannot kick a bot!**`);
   if(!toKickM.kickable) return message.channel.send(`:x: \`|\` :boot: **This member could not be kicked!**`);
 
   const input = await modBase.create({
