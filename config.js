@@ -12,7 +12,6 @@ const config = {
   "token": `Mzc3MjA1MzM5MzIzMzY3NDI1.Dar1YA.0AIexER1daemthd1bG84DJJPHKQ`,
   "giphy": `y118kMRynO3XKfcHrRkpuWQ9CEXrqDfg`,
   "debugtoken": `Mzk0OTEzOTAzNDY2OTA1NjAx.DfXfBA.WbzI-ijiZYKxQJAftJ8S029RjE4`,
-  "dbans_token": `Mc6sRHdpn7`,
   
   // Default per-server settings. New guilds have these settings. 
   
