@@ -11,6 +11,7 @@
     "giphy-api": "^1.2.7",
     "moment": "^2.22.2",
     "moment-duration-format": "^2.2.2",
+    "parse-duration": "^0.1.1",
     "pm2": "^2.10.4",
     "sequelize": "^4.37.10",
     "sqlite3": "^4.0.0",
