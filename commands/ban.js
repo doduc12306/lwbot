@@ -2,9 +2,9 @@ const Sequelize = require(`sequelize`);
 const Discord = require(`discord.js`);
 
 module.exports.run = async (client, message, args) => {
-  var modBase = new Sequelize(`database`, `user`, `password`, {host: `localhost`,dialect: `sqlite`,storage: `databases/${message.guild.id}.sqlite`});
-  var modBase = modBase.define(`moderation`, {victim: {type: Sequelize.STRING,allowNull: false},moderator: {type: Sequelize.STRING,allowNull: false},type: {type: Sequelize.STRING,allowNull: false},reason: Sequelize.STRING,duration: Sequelize.STRING}); // eslint-disable-line no-redeclare
-  modBase.sync();
+  var modBase = await new Sequelize(`database`, `user`, `password`, {host: `localhost`,dialect: `sqlite`,storage: `databases/${message.guild.id}.sqlite`});
+  modBase = await modBase.define(`moderation`, {victim: {type: Sequelize.STRING,allowNull: false},moderator: {type: Sequelize.STRING,allowNull: false},type: {type: Sequelize.STRING,allowNull: false},reason: Sequelize.STRING,duration: Sequelize.STRING});
+  await modBase.sync();
 
   var settings = client.settings.get(message.guild.id);
 
@@ -18,30 +18,32 @@ module.exports.run = async (client, message, args) => {
   if(!toBan) return message.channel.send(`:x: \`|\` ${bhEmote} **You didn't mention someone to ban!**`);
   if(toBan.bot) return message.channel.send(`:x: \`|\` ${bhEmote} **I cannot ban a bot!**`);
   if(!toBanM.bannable) return message.channel.send(`:x: \`|\` ${bhEmote} **This member could not be banned!**`);
-  
-  var dmMsg = `${bhEmote} ***You were banned from*** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
-  var modEmbed = new Discord.RichEmbed()
-    .setThumbnail(toBan.avatarURL)
-    .setColor(`0xFF0000`)
-    .setAuthor(`Banned ${toBan.tag} (${toBan.id})`)
-    .setFooter(`ID: ${toBan.id}`)
-    .addField(`User`, `${toBan.toString()} (${toBan.tag})`)
-    .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`);
-
-  if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason);}
-
-  await toBan.send(dmMsg);
-  if(!client.config.debugMode) await message.guild.ban(toBan);
-  await modBase.create({
-    victim: toBan.toString(),
-    moderator: message.author.toString(),
+  const input = await modBase.create({
+    victim: toBan.id,
+    moderator: message.author.id,
     type: `ban`
-  }).then(info => {
+  }).then(async info => {
     if(reason) modBase.update({ reason: reason }, { where: {id: info.id }});
+
+    var dmMsg = `${bhEmote} ***You were banned from*** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+      
+    var modEmbed = new Discord.RichEmbed()
+      .setThumbnail(toBan.avatarURL)
+      .setColor(`0xFF0000`)
+      .setAuthor(`Banned ${toBan.tag} (${toBan.id})`)
+      .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
+      .addField(`User`, `${toBan.toString()} (${toBan.tag})`)
+      .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`);
+      
+    if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason);}
+      
+    await toBan.send(dmMsg);
+    if(!client.config.debugMode) await message.guild.ban(toBan);
+    await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
+    await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Banned user ${toBan.tag}**`);
+
   });
-  await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
-  await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Banned user ${toBan.tag}**`);
 };
 
 exports.conf = {
