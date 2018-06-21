@@ -32,6 +32,14 @@ const config = {
 
   "debugMode": false,
 
+  // COLORS
+  colors: {
+    "red": `0xFF0000`,
+    "green": `0x59D851`,
+    "yellow": `0xFFFF00`,
+    "blurple": `0x7289DA`
+  },
+
   // PERMISSION LEVEL DEFINITIONS.
   
   permLevels: [
