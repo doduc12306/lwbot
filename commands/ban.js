@@ -25,7 +25,7 @@ module.exports.run = async (client, message, args) => {
   }).then(async info => {
     if(reason) modBase.update({ reason: reason }, { where: {id: info.id }});
 
-    var dmMsg = `${bhEmote} ***You were banned from*** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    var dmMsg = `${bhEmote} **You were banned from** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
       
     var modEmbed = new Discord.RichEmbed()
       .setThumbnail(toBan.avatarURL)
