@@ -37,7 +37,8 @@ const config = {
     "red": `0xFF0000`,
     "green": `0x59D851`,
     "yellow": `0xFFFF00`,
-    "blurple": `0x7289DA`
+    "blurple": `0x7289DA`,
+    "purple": `0x821ABA`
   },
 
   // PERMISSION LEVEL DEFINITIONS.
