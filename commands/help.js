@@ -34,7 +34,7 @@ exports.run = async (client, message, args, level) => {
       output += `${settings.prefix}${c.help.name}${` `.repeat(longest - c.help.name.length)} :: ${c.help.description}\n`;
     });
     await message.react(`✅`);
-    await message.author.send(output, {code: `asciidoc`});
+    await message.author.send(output, {code: `asciidoc`, split: true});
   } else {
     // Show individual command's help.
     let command = args[0];
