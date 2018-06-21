@@ -9,7 +9,6 @@ module.exports.run = async (client, message, args) => {
   var settings = client.settings.get(message.guild.id);
 
   var toWarn = message.mentions.users.first();
-  var toWarnM = message.mentions.members.first();
   var reason = args.slice(1).join(` `);
 
   if(!toWarn) return message.channel.send(`:x: \`|\` :warning: **You didn't mention someone to warn!**`);
