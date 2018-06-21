@@ -41,7 +41,7 @@ module.exports.run = async (client, message, args) => {
 };
 
 exports.conf = {
-  enabled: false,
+  enabled: true,
   guildOnly: true,
   aliases: [],
   permLevel: `Moderator`
