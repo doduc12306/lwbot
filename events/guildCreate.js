@@ -9,12 +9,12 @@ module.exports = (client, guild) => {
   // We need to add this guild to our settings!
   client.settings.set(guild.id, client.config.defaultSettings);
 
-  const newBase = new Sequelize(`database`, `user`, `password`, {
+  var modBase = new Sequelize(`database`, `user`, `password`, {
     host: `localhost`,
     dialect: `sqlite`,
     storage: `databases/${guild.id}.sqlite`
   });
-  const dbInfo = newBase.define(`moderation`, {
+  var modBase = modBase.define(`moderation`, { // eslint-disable-line no-redeclare
     victim: {
       type: Sequelize.STRING,
       allowNull: false
@@ -30,6 +30,6 @@ module.exports = (client, guild) => {
     reason: Sequelize.STRING,
     duration: Sequelize.STRING
   });
-  newBase.sync();
+  modBase.sync();
 
 };
