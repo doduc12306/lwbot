@@ -7,14 +7,14 @@ module.exports = (client, guild) => {
   if(guild.id === `439438441764356097`) return guild.leave();
  
   // We need to add this guild to our settings!
-  client.settings.set(guild.id, client.config.defaultSettings);
+  if(!client.settings.get(guild.id)) client.settings.set(guild.id, client.config.defaultSettings);
 
   var modBase = new Sequelize(`database`, `user`, `password`, {
     host: `localhost`,
     dialect: `sqlite`,
     storage: `databases/${guild.id}.sqlite`
   });
-  var modBase = modBase.define(`moderation`, { // eslint-disable-line no-redeclare
+  modBase = modBase.define(`moderation`, {
     victim: {
       type: Sequelize.STRING,
       allowNull: false
@@ -31,5 +31,16 @@ module.exports = (client, guild) => {
     duration: Sequelize.STRING
   });
   modBase.sync();
+
+  var role;
+  if(!guild.roles.find(`name`, `Muted`)) {
+    role = guild.createRole({name: `Muted`});
+    guild.channels.filter(g => g.type === `text`).forEach(channel => {channel.overwritePermissions(role, {SEND_MESSAGES: false});});
+    guild.channels.filter(g => g.type === `voice`).forEach(channel => {channel.overwritePermissions(role, {CONNECT: false, SPEAK: false});});
+  } else {
+    role = guild.roles.find(`name`, `Muted`) || guild.roles.find(`name`, `muted`);
+    guild.channels.filter(g => g.type === `text`).forEach(channel => {channel.overwritePermissions(role, {SEND_MESSAGES: false});});
+    guild.channels.filter(g => g.type === `voice`).forEach(channel => {channel.overwritePermissions(role, {CONNECT: false, SPEAK: false});});
+  }
 
 };
