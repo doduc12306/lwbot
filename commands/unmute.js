@@ -15,7 +15,7 @@ module.exports.run = async (client, message, args) => {
   if(!message.guild.me.permissions.has(`MANAGE_ROLES`)) return message.channel.send(`:x: \`|\` ${unmutedEmote} **I am missing permissions: \`Manage Roles\`**`);
   if(!toUnmute) return message.channel.send(`:x: \`|\` ${unmutedEmote} **You didn't mention someone to unmute!**`);
   if(message.guild.me.highestRole.position < toUnmute.highestRole.position) return message.channel.send(`:x: \`|\` ${unmutedEmote} **You need to move my role (${message.guild.me.highestRole.name}) above ${toUnmute.toString()}'s (${toUnmute.highestRole.name})!**`);
-  if(toUnmute.roles.has(role.id)) return message.channel.send(`:x: \`|\` ${unmutedEmote} **${toUnmute.toString()} is already unmuted!**`);
+  if(!toUnmute.roles.has(role.id)) return message.channel.send(`:x: \`|\` ${unmutedEmote} **${toUnmute.user.tag} is already unmuted!**`);
 
   const input = modBase.create({
     victim: toUnmute.id,
@@ -51,8 +51,8 @@ exports.conf = {
 };
 
 exports.help = {
-  name: `mute`,
-  description: `Mute a user`,
-  usage: `mute <@user> [reason]`,
+  name: `unmute`,
+  description: `Unmute a user`,
+  usage: `unmute <@user> [reason]`,
   category: `Moderation`
 };
