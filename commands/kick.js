@@ -39,7 +39,7 @@ module.exports.run = async (client, message, args) => {
     await toKick.send(dmMsg);
     if(!client.config.debugMode) await message.guild.kick(toKick);
     await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
-    await message.channel.send(`:white_check_mark: \`|\` :boot: **Kicked user ${toKick.tag}**`);
+    await message.channel.send(`:white_check_mark: \`|\` :boot: **Kicked user \`${toKick.tag}\`**`);
 
   });
 };

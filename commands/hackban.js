@@ -35,9 +35,9 @@ module.exports.run = async (client, message, args) => {
       
       if(reason) modEmbed.addField(`Reason`, reason);
       
-      if(!client.config.debugMode) await message.guild.ban(toBan.id);
+      if(!client.config.debugMode) await message.guild.ban(toBan.id, {days: 30});
       await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
-      await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Banned user ${toBan.tag}**`);
+      await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Banned user \`${toBan.tag}\`**`);
 
     });
   } catch (e) {console.log(e);}

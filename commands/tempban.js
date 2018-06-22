@@ -50,9 +50,9 @@ module.exports.run = async (client, message, args) => {
     if(reason) {dmMsg += `\n\n:gear: **Reason:** \`${reason}\``; modEmbed.addField(`Reason`, reason);}
       
     await toBan.send(dmMsg);
-    /* if(!client.config.debugMode) */ await message.guild.ban(toBan);
+    /* if(!client.config.debugMode) */ await message.guild.ban(toBan, {days: 30});
     await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
-    await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Tempbanned user ${toBan.tag} for ${durationHR}**`);
+    await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Tempbanned user \`${toBan.tag}\` for \`${durationHR}\`**`);
 
     setTimeout(async () => {
       const unbanInput = await modBase.create({
@@ -69,7 +69,7 @@ module.exports.run = async (client, message, args) => {
           .addField(`Moderator`, client.user.toString());
 
         if(!reason) {modBase.update({ reason: `Tempban auto unban` }, { where: {id: info.id}}); await modEmbed.addField(`Reason`, `Tempban unban`);}
-        else {modBase.update({ reason: `${reason} | Tempban auto unban`}, { where: {id: info.id}}); await modEmbed.addField(`Reason`, `${reason} | Tempban unban`);}
+        else {modBase.update({ reason: `${reason} | Tempban auto unban`}, { where: {id: info.id}}); await modEmbed.addField(`Reason`, `${reason} | Tempban auto unban`);}
 
         await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
 
