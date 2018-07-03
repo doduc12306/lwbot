@@ -54,7 +54,7 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
       message.reply(`${key} was successfully deleted.`);
     } else
     // If they respond with n or no, we inform them that the action has been cancelled.
-    if ([`n`,`no`,`cancel`].includes(response)) {
+    if ([`n`,`no`,`cancel`].includes(response.toLowerCase())) {
       message.reply(`Action cancelled.`);
     }
   } else
@@ -70,7 +70,7 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
     if(['y', 'yes'].includes(response.toLowerCase())) {
       client.settings.set(client.config.defaultSettings);
       message.channel.send(`All guild settings have been reset.`);
-    }
+    } else return message.channel.send(`Action cancelled`);
   }
   
   else {
