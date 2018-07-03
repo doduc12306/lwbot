@@ -69,7 +69,17 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
     if (!key) return message.reply(`Please specify a key to view`);
     if (!settings[key]) return message.reply(`This key does not exist in the settings`);
     message.reply(`The value of ${key} is currently ${settings[key]}`);
-  } else {
+  } else 
+  
+  if (action === `reset`) {
+    const response = client.awaitReply(message, 'Are you sure you want to reset the guild\'s settings? This CANNOT be undone!');
+    if(['y', 'yes'].includes(response.toLowerCase())) {
+      client.settings.set(client.config.defaultSettings);
+      message.channel.send(`All guild settings have been reset.`);
+    }
+  }
+  
+  else {
     message.channel.send(inspect(settings), {code: `json`});
   }
 };
@@ -85,5 +95,5 @@ exports.help = {
   name: `set`,
   category: `System`,
   description: `View or change settings for your server.`,
-  usage: `set <view/get/edit> <key> <value>`
+  usage: `set <view/get/edit/reset> <key> <value>`
 };
