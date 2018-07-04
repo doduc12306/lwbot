@@ -50,7 +50,7 @@ module.exports.run = async (client, message, args) => {
     if(reason) {dmMsg += `\n\n:gear: **Reason:** \`${reason}\``; modEmbed.addField(`Reason`, reason);}
       
     await toBan.send(dmMsg);
-    /* if(!client.config.debugMode) */ await message.guild.ban(toBan, {days: 30});
+    /* if(!client.config.debugMode) */ await message.guild.ban(toBan, {days: 1});
     await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
     await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Tempbanned user \`${toBan.tag}\` for \`${durationHR}\`**`);
 
