@@ -66,8 +66,8 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
   } else 
   
   if (action === `reset`) {
-    const response = client.awaitReply(message, 'Are you sure you want to reset the guild\'s settings? This CANNOT be undone!');
-    if(['y', 'yes'].includes(response.toLowerCase())) {
+    const response = client.awaitReply(message, `Are you sure you want to reset the guild's settings? This CANNOT be undone!`);
+    if([`y`, `yes`].includes(response.toLowerCase())) {
       client.settings.set(client.config.defaultSettings);
       message.channel.send(`All guild settings have been reset.`);
     } else return message.channel.send(`Action cancelled`);
