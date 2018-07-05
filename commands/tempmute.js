@@ -71,7 +71,7 @@ module.exports.run = async (client, message, args) => {
 
         toMute.removeRole(role);
       });
-    });
+    }, durationMs);
   });
 };
 
