@@ -25,7 +25,7 @@ module.exports.run = async (client, message, args) => {
   }).then(info => {
     if(reason) modBase.update({reason: reason}, {where: {id: info.id}});
 
-    var dmMsg = `${mutedEmote} ***You were muted in*** \`${message.guild.name}\` \`|\` :busts_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    var dmMsg = `${mutedEmote} **You were muted in** \`${message.guild.name}\` \`|\` :busts_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     var modEmbed = new Discord.RichEmbed()
       .setThumbnail(toMute.user.avatarURL)
