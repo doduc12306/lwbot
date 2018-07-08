@@ -12,7 +12,7 @@ module.exports = (client, guild) => {
   var modBase = new Sequelize(`database`, `user`, `password`, {
     host: `localhost`,
     dialect: `sqlite`,
-    storage: `databases/${guild.id}.sqlite`
+    storage: `databases/servers/${guild.id}.sqlite`
   });
   modBase = modBase.define(`moderation`, {
     victim: {
@@ -35,7 +35,7 @@ module.exports = (client, guild) => {
   var role;
   if(!guild.roles.find(`name`, `Muted`)) {
     role = guild.createRole({name: `Muted`});
-    guild.channels.filter(g => g.type === `text`).forEach(channel => {channel.overwritePermissions(role, {SEND_MESSAGES: false});});
+    guild.channels.filter(g => g.type === `text`).forEach(channel => {channel.overwritePermissions(role, {SEND_MESSAGES: false, ADD_REACTIONS: false});});
     guild.channels.filter(g => g.type === `voice`).forEach(channel => {channel.overwritePermissions(role, {CONNECT: false, SPEAK: false});});
   } else {
     role = guild.roles.find(`name`, `Muted`) || guild.roles.find(`name`, `muted`);
