@@ -1,4 +1,6 @@
 module.exports = (client, channel) => {
+    if(channel.type === 'dm') return;
+    
     if(!channel.guild.me.permissions.has('MANAGE_ROLES')) return channel.guild.owner.send(`:x: **Error editing \`${channel.name}\`'s perms:**\nMissing Permission: \`Manage Roles\`.`);
 
     var role = channel.guild.roles.find('name', 'Muted') || channel.guild.roles.find('name', 'muted');
