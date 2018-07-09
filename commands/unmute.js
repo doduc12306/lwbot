@@ -17,24 +17,21 @@ module.exports.run = async (client, message, args) => {
   if(message.guild.me.highestRole.position < toUnmute.highestRole.position) return message.channel.send(`:x: \`|\` ${unmutedEmote} **You need to move my role (${message.guild.me.highestRole.name}) above ${toUnmute.toString()}'s (${toUnmute.highestRole.name})!**`);
   if(!toUnmute.roles.has(role.id)) return message.channel.send(`:x: \`|\` ${unmutedEmote} **${toUnmute.user.tag} is already unmuted!**`);
 
-  modBase.create({
+  await modBase.create({
     victim: toUnmute.id,
     moderator: message.author.id,
     type: `unmute`
   }).then(info => {
-    if(reason) modBase.update({reason: reason}, {where: {id: info.id}});
-
     var dmMsg = `${unmutedEmote} **You were unmuted in** \`${message.guild.name}\` \`|\` :busts_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     var modEmbed = new Discord.RichEmbed()
       .setThumbnail(toUnmute.user.avatarURL)
       .setColor(client.config.colors.green)
-      .setAuthor(`Unmuted ${toUnmute.user.tag} (${toUnmute.user.id})`)
       .setFooter(`ID: ${toUnmute.user.id} | Case: ${info.id}`)
-      .addField(`User`, `${toUnmute.user.toString()} (${toUnmute.user.tag})`)
+      .addField(`Unmuted User`, `${toUnmute.user.toString()} (${toUnmute.user.tag})`)
       .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`);
 
-    if(reason) {dmMsg += `\n\n:gear: **Reason \`${reason}\`**`; modEmbed.addField(`Reason`, reason);}
+    if(reason) {dmMsg += `\n\n:gear: **Reason \`${reason}\`**`; modEmbed.addField(`Reason`, reason); modBase.update({reason: reason}, {where: {id: info.id}});}
 
     toUnmute.user.send(dmMsg);
     toUnmute.removeRole(role);

@@ -17,24 +17,21 @@ module.exports.run = async (client, message, args) => {
   if(!toKick) return message.channel.send(`:x: \`|\` :boot: **You didn't mention someone to kick!**`);
   if(!toKickM.kickable) return message.channel.send(`:x: \`|\` :boot: **This member could not be kicked!**`);
 
-  const input = await modBase.create({
+  await modBase.create({
     victim: toKick.id,
     moderator: message.author.id,
     type: `kick`
   }).then(async info => {
-    if(reason) modBase.update({ reason: reason }, { where: {id: info.id }});
-
     var dmMsg = `:boot: **You were kicked from** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
       
     var modEmbed = new Discord.RichEmbed()
       .setThumbnail(toKick.avatarURL)
       .setColor(`0xff8e2b`)
-      .setAuthor(`Kicked ${toKick.tag} (${toKick.id})`)
       .setFooter(`ID: ${toKick.id} | Case: ${info.id}`)
-      .addField(`User`, `${toKick.toString()} (${toKick.tag})`)
+      .addField(`Kicked User`, `${toKick.toString()} (${toKick.tag})`)
       .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`);
       
-    if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason);}
+    if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason); modBase.update({ reason: reason }, { where: {id: info.id }});}
       
     await toKick.send(dmMsg);
     if(!client.config.debugMode) await toKickM.kick(toKick);

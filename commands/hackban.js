@@ -28,9 +28,8 @@ module.exports.run = async (client, message, args) => {
       var modEmbed = new Discord.RichEmbed()
         .setThumbnail(toBan.avatarURL)
         .setColor(`0x000000`)
-        .setAuthor(`Hackbanned ${toBan.tag} (${toBan.id})`)
         .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
-        .addField(`User`, `${toBan.toString()} (${toBan.tag})`)
+        .addField(`Hackbanned User`, `${toBan.toString()} (${toBan.tag})`)
         .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`);
       
       if(reason) modEmbed.addField(`Reason`, reason);

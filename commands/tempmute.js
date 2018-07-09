@@ -25,26 +25,23 @@ module.exports.run = async (client, message, args) => {
   if(message.guild.me.highestRole.position < toMute.highestRole.position) return message.channel.send(`:x: \`|\` ${mutedEmote} **You need to move my role (${message.guild.me.highestRole.name}) above ${toMute.toString()}'s (${toMute.highestRole.name})!**`);
   if(toMute.roles.has(role.id)) return message.channel.send(`:x: \`|\` ${mutedEmote} **${toMute.toString()} is already muted!**`);
 
-  const input = modBase.create({
+  await modBase.create({
     victim: toMute.id,
     moderator: message.author.id,
     type: `mute`,
     duration: durationMs
   }).then(info => {
-    if(reason) modBase.update({reason: reason}, {where: {id: info.id}});
-
     var dmMsg = `${mutedEmote} **You were tempmuted in** \`${message.guild.name}\` **for** \`${durationHR}\` \`|\` :busts_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     var modEmbed = new Discord.RichEmbed()
       .setThumbnail(toMute.user.avatarURL)
       .setColor(client.config.colors.purple)
-      .setAuthor(`Muted ${toMute.user.tag} (${toMute.user.id})`)
       .setFooter(`ID: ${toMute.user.id} | Case: ${info.id}`)
-      .addField(`User`, `${toMute.user.toString()} (${toMute.user.tag})`)
+      .addField(`Muted User`, `${toMute.user.toString()} (${toMute.user.tag})`)
       .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`)
       .addField(`Duration`, durationHR);
 
-    if(reason) {dmMsg += `\n\n:gear: **Reason \`${reason}\`**`; modEmbed.addField(`Reason`, reason);}
+    if(reason) {dmMsg += `\n\n:gear: **Reason \`${reason}\`**`; modEmbed.addField(`Reason`, reason); modBase.update({reason: reason}, {where: {id: info.id}});}
 
     toMute.user.send(dmMsg);
     toMute.addRole(role);
@@ -52,7 +49,7 @@ module.exports.run = async (client, message, args) => {
     message.channel.send(`:white_check_mark: \`|\` ${mutedEmote} **Tempmuted user \`${toMute.user.tag}\` for \`${durationHR}\`**`);
 
     setTimeout(async () => {
-      const unmuteInput = await modBase.create({
+      await modBase.create({
         victim: toMute.id,
         moderator: client.user.id,
         type: `unban`,
@@ -60,9 +57,9 @@ module.exports.run = async (client, message, args) => {
         modEmbed = new Discord.RichEmbed()
           .setThumbnail(toMute.avatarURL)
           .setColor(client.config.colors.green)
-          .setAuthor(`Unmuted ${toMute.tag} (${toMute.id})`)
+          .setAuthor(`Unmuted ${toMute.user.tag} (${toMute.id})`)
           .setFooter(`ID: ${toMute.id} | Case: ${info.id}`)
-          .addField(`User`, `${toMute.toString()} (${toMute.tag})`)
+          .addField(`User`, `${toMute.toString()} (${toMute.user.tag})`)
           .addField(`Moderator`, client.user.toString());
 
         if(!reason) {modBase.update({ reason: `Tempmute auto unmute` }, { where: {id: info.id}}); await modEmbed.addField(`Reason`, `Tempmute auto unmute`);}

@@ -28,26 +28,23 @@ module.exports.run = async (client, message, args) => {
 
   if(durationMs === 0) return message.channel.send(`:x: \`|\` ${bhEmote} **${duration} is not a valid duration!**`);
 
-  const input = await modBase.create({
+  await modBase.create({
     victim: toBan.id,
     moderator: message.author.id,
     type: `tempban`,
     duration: durationMs
   }).then(async info => {
-    if(reason) modBase.update({ reason: reason }, { where: {id: info.id }});
-
     var dmMsg = `${bhEmote} **You were tempbanned from** \`${message.guild.name}\` ***for*** \`${durationHR}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
       
     var modEmbed = new Discord.RichEmbed()
       .setThumbnail(toBan.avatarURL)
       .setColor(`0xFF0000`)
-      .setAuthor(`Banned ${toBan.tag} (${toBan.id})`)
       .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
-      .addField(`User`, `${toBan.toString()} (${toBan.tag})`)
+      .addField(`Tempbanned User`, `${toBan.toString()} (${toBan.tag})`)
       .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`)
       .addField(`Duration`, durationHR);
       
-    if(reason) {dmMsg += `\n\n:gear: **Reason:** \`${reason}\``; modEmbed.addField(`Reason`, reason);}
+    if(reason) {dmMsg += `\n\n:gear: **Reason:** \`${reason}\``; modEmbed.addField(`Reason`, reason); modBase.update({ reason: reason }, { where: {id: info.id }});}
       
     await toBan.send(dmMsg);
     /* if(!client.config.debugMode) */ await message.guild.ban(toBan, {days: 1});

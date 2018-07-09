@@ -18,13 +18,11 @@ module.exports.run = async (client, message, args) => {
   if(message.guild.me.highestRole.position < toMute.highestRole.position) return message.channel.send(`:x: \`|\` ${mutedEmote} **You need to move my role (${message.guild.me.highestRole.name}) above ${toMute.toString()}'s (${toMute.highestRole.name})!**`);
   if(toMute.roles.has(role.id)) return message.channel.send(`:x: \`|\` ${mutedEmote} **${toMute.toString()} is already muted!**`);
 
-  const input = modBase.create({
+  await modBase.create({
     victim: toMute.id,
     moderator: message.author.id,
     type: `mute`
   }).then(info => {
-    if(reason) modBase.update({reason: reason}, {where: {id: info.id}});
-
     var dmMsg = `${mutedEmote} **You were muted in** \`${message.guild.name}\` \`|\` :busts_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     var modEmbed = new Discord.RichEmbed()
@@ -35,7 +33,7 @@ module.exports.run = async (client, message, args) => {
       .addField(`User`, `${toMute.user.toString()} (${toMute.user.tag})`)
       .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`);
 
-    if(reason) {dmMsg += `\n\n:gear: **Reason \`${reason}\`**`; modEmbed.addField(`Reason`, reason);}
+    if(reason) {dmMsg += `\n\n:gear: **Reason \`${reason}\`**`; modEmbed.addField(`Reason`, reason); modBase.update({reason: reason}, {where: {id: info.id}});}
 
     toMute.user.send(dmMsg);
     toMute.addRole(role);
