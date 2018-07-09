@@ -17,7 +17,7 @@ module.exports.run = async (client, message, args) => {
   if(message.guild.me.highestRole.position < toUnmute.highestRole.position) return message.channel.send(`:x: \`|\` ${unmutedEmote} **You need to move my role (${message.guild.me.highestRole.name}) above ${toUnmute.toString()}'s (${toUnmute.highestRole.name})!**`);
   if(!toUnmute.roles.has(role.id)) return message.channel.send(`:x: \`|\` ${unmutedEmote} **${toUnmute.user.tag} is already unmuted!**`);
 
-  const input = modBase.create({
+  modBase.create({
     victim: toUnmute.id,
     moderator: message.author.id,
     type: `unmute`

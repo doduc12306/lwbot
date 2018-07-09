@@ -18,7 +18,7 @@ module.exports.run = async (client, message, args) => {
 
     var toBan = await client.fetchUser(args[0]);
 
-    const input = await modBase.create({
+    await modBase.create({
       victim: toBan.id,
       moderator: message.author.id,
       type: `hackban`
@@ -27,15 +27,15 @@ module.exports.run = async (client, message, args) => {
       
       var modEmbed = new Discord.RichEmbed()
         .setThumbnail(toBan.avatarURL)
-        .setColor(`0xFF0000`)
-        .setAuthor(`Banned ${toBan.tag} (${toBan.id})`)
+        .setColor(`0x000000`)
+        .setAuthor(`Hackbanned ${toBan.tag} (${toBan.id})`)
         .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
         .addField(`User`, `${toBan.toString()} (${toBan.tag})`)
         .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`);
       
       if(reason) modEmbed.addField(`Reason`, reason);
       
-      if(!client.config.debugMode) await message.guild.ban(toBan.id, {days: 30});
+      if(!client.config.debugMode) await message.guild.ban(toBan.id, {days: 2});
       await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
       await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Banned user \`${toBan.tag}\`**`);
 
@@ -52,8 +52,8 @@ exports.conf = {
 };
 
 exports.help = {
-  name: `idban`,
+  name: `hackban`,
   description: `Ban someone who isn't in the server`,
-  usage: `ban <id> [reason]`,
+  usage: `hackban <id> [reason]`,
   category: `Moderation`
 };
