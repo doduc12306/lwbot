@@ -13,24 +13,21 @@ module.exports.run = async (client, message, args) => {
 
   if(!toWarn) return message.channel.send(`:x: \`|\` :warning: **You didn't mention someone to warn!**`);
 
-  const input = await modBase.create({
+  await modBase.create({
     victim: toWarn.id,
     moderator: message.author.id,
     type: `warn`
   }).then(async info => {
-    if(reason) modBase.update({ reason: reason }, { where: {id: info.id }});
-
     var dmMsg = `:warning: **You were warned in** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
       
     var modEmbed = new Discord.RichEmbed()
       .setThumbnail(toWarn.avatarURL)
       .setColor(`0xFFFF00`)
-      .setAuthor(`Warned ${toWarn.tag} (${toWarn.id})`)
       .setFooter(`ID: ${toWarn.id} | Case: ${info.id}`)
-      .addField(`User`, `${toWarn.toString()} (${toWarn.tag})`)
+      .addField(`Warned User`, `${toWarn.toString()} (${toWarn.tag})`)
       .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`);
       
-    if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason);}
+    if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason); modBase.update({ reason: reason }, { where: {id: info.id }});}
       
     await toWarn.send(dmMsg);
     await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
