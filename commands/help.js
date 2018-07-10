@@ -46,10 +46,11 @@ exports.run = async (client, message, args, level) => {
         .setTitle(`\`${command.help.name}\``)
         .setDescription(`${command.help.category} | ${command.help.description}`)
         .addField(`Usage`, command.help.usage)
-        .addField(`Aliases`, command.conf.aliases.join(`, `))
         .addField(`Perm Level`, command.conf.permLevel)
         .setColor(`0x59D851`)
         .setFooter(`All <arguments> are required · All [arguments] are optional`);
+
+      if(command.conf.aliases.join(', ')) cmdEmbed.addField(`Aliases`, command.conf.aliases.join(`, `));
 
       message.channel.send(cmdEmbed);
 
