@@ -32,6 +32,8 @@ module.exports = (client, guild) => {
   });
   modBase.sync();
 
+  if(!guild.me.permissions.has('SEND_MESSAGES')) guild.owner.send(':x: **CRITICAL PERMISSION MISSING:** \`Send Messages\` **WHICH EVERYTHING REQUIRES!**');
+
   var role;
   if(!guild.roles.find(`name`, `Muted`)) {
     role = guild.createRole({name: `Muted`});
