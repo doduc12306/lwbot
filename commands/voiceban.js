@@ -18,7 +18,8 @@ module.exports.run = async (client, message, args) => {
   if(!message.member.permissions.has(`BAN_MEMBERS`)) return message.channel.send(`:x: \`|\` ${vbEmote} **You are missing permissions:** \`Ban Members\``);
   if(!toBan) return message.channel.send(`:x: \`|\` ${vbEmote} **You didn't mention someone to voiceban!**`);
   if(!message.member.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} **You are not in the voice channel!**`);
-  if(!message.member.voiceChannel === toBanM.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} **You must be in the same voice channel as ${toBan.toString()}**`);
+  if(!toBanM.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} ${toBan.toString()} **isn't in a voice channel!**`);
+  if(!toBanM.voiceChannel === message.member.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} **You must be in the same voice channel as** ${toBan.toString()}`);
   
   await modBase.create({
     victim: toBan.id,

@@ -8,40 +8,41 @@ module.exports.run = async (client, message, args) => {
 
   var settings = client.settings.get(message.guild.id);
 
-  var toBan = message.mentions.users.first();
-  var toBanM = message.mentions.members.first();
+  var toKick = message.mentions.users.first();
+  var toKickM = message.mentions.members.first();
   var reason = args.slice(1).join(` `);
 
   if(!message.guild.me.permissions.has(`MOVE_MEMBERS`)) return message.channel.send(`:x: \`|\` :boot: **I am missing permissions:** \`Move Members\``);
   if(!message.guild.me.permissions.has(`MANAGE_CHANNELS`)) return message.channel.send(`:x: \`|\` :boot: **I am missing permissions:** \`Manage Channels\` `);
   if(!message.member.permissions.has(`KICK_MEMBERS`)) return message.channel.send(`:x: \`|\` :boot: **You are missing permissions:** \`Kick Members\``);
-  if(!toBan) return message.channel.send(`:x: \`|\` :boot: **You didn't mention someone to voicekick!**`);
-  if(!message.member.voiceChannel) return message.channel.send(`:x: \`|\` :boot: **You are not in the voice channel!**`);
-  if(!message.member.voiceChannel === toBanM.voiceChannel) return message.channel.send(`:x: \`|\` :boot: **You must be in the same voice channel as ${toBan.toString()}**`);
+  if(!toKick) return message.channel.send(`:x: \`|\` :boot: **You didn't mention someone to voicekick!**`);
+  if(!message.member.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} **You are not in the voice channel!**`);
+  if(!toKickM.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} ${toKick.toString()} **isn't in a voice channel!**`);
+  if(!toKickM.voiceChannel === message.member.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} **You must be in the same voice channel as** ${toKick.toString()}`);
   
   await modBase.create({
-    victim: toBan.id,
+    victim: toKick.id,
     moderator: message.author.id,
     type: `voicekick`
   }).then(async info => {
     var dmMsg = `:boot: **You were voicekicked from** \`${message.member.voiceChannel.name}\`, **in** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
       
     var modEmbed = new Discord.RichEmbed()
-      .setThumbnail(toBan.avatarURL)
+      .setThumbnail(toKick.avatarURL)
       .setColor(`0xA80000`)
-      .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
-      .addField(`Voicekicked User`, `${toBan.toString()} (${toBan.tag})`)
+      .setFooter(`ID: ${toKick.id} | Case: ${info.id}`)
+      .addField(`Voicekicked User`, `${toKick.toString()} (${toKick.tag})`)
       .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`)
       .addField(`Channel:`, message.member.voiceChannel.name);
       
     if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason); modBase.update({ reason: reason }, { where: {id: info.id }});}
       
     var vc = message.guild.createChannel('Voice Kick', 'voice');
-    toBanM.setVoiceChannel(vc);
+    toKickM.setVoiceChannel(vc);
     vc.delete();
-    toBan.send(dmMsg);
+    toKick.send(dmMsg);
     message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
-    await message.channel.send(`:white_check_mark: \`|\` :boot: **Voicekicked user \`${toBan.tag}\`**`);
+    await message.channel.send(`:white_check_mark: \`|\` :boot: **Voicekicked user \`${toKick.tag}\`**`);
 
   });
 };
