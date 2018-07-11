@@ -1,27 +1,63 @@
-/* eslint-disable */
+const Sequelize = require(`sequelize`);
+const Discord = require(`discord.js`);
+
 module.exports.run = async (client, message, args) => {
-  if(!message.guild.me.permissions.has(`MOVE_MEMBERS`)) return message.channel.send(`:x: I'm missing the Move Members permission!`);
-  if(!message.member.voiceChannel) return message.channel.send(`:x: You are not in a voice channel!`);
-  if(!message.mentions.members.first()) return message.channel.send(`:x: You didn't mention a member to voice ban!`);
-  if(!message.mentions.members.first().voiceChannel) return message.channel.send(`:x: The member you are trying to voice ban isn't in a voice channel!`);
-    
-  message.mentions.members.first().voiceChannel.overwritePermissions(message.mentions.users.first(), {CONNECT: false});
+  var modBase = await new Sequelize(`database`, `user`, `password`, {host: `localhost`,dialect: `sqlite`,storage: `databases/servers/${message.guild.id}.sqlite`});
+  modBase = await modBase.define(`moderation`, {victim: {type: Sequelize.STRING,allowNull: false},moderator: {type: Sequelize.STRING,allowNull: false},type: {type: Sequelize.STRING,allowNull: false},reason: Sequelize.STRING,duration: Sequelize.STRING});
+  await modBase.sync();
+
+  var settings = client.settings.get(message.guild.id);
+
+  var toBan = message.mentions.users.first();
+  var toBanM = message.mentions.members.first();
+  var reason = args.slice(1).join(` `);
+  var vbEmote = `<:banhammer:459184964110385153>`;
+
+  if(!message.guild.me.permissions.has(`MOVE_MEMBERS`)) return message.channel.send(`:x: \`|\` ${vbEmote} **I am missing permissions:** \`Move Members\``);
+  if(!message.guild.me.permissions.has(`MANAGE_CHANNELS`)) return message.channel.send(`:x: \`|\` ${vbEmote} **I am missing permissions:** \`Manage Channels\` `);
+  if(!message.member.permissions.has(`BAN_MEMBERS`)) return message.channel.send(`:x: \`|\` ${vbEmote} **You are missing permissions:** \`Ban Members\``);
+  if(!toBan) return message.channel.send(`:x: \`|\` ${vbEmote} **You didn't mention someone to voiceban!**`);
+  if(!message.member.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} **You are not in the voice channel!**`);
+  if(!message.member.voiceChannel === toBanM.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} **You must be in the same voice channel as ${toBan.toString()}**`);
   
-  var kickBan = await message.guild.createChannel(`Voice Ban`, `voice`);
-  await message.mentions.members.first().setVoiceChannel(kickBan);
-  await kickBan.delete(); 
+  await modBase.create({
+    victim: toBan.id,
+    moderator: message.author.id,
+    type: `voiceban`
+  }).then(async info => {
+    var dmMsg = `${vbEmote} **You were voicebanned from** \`${message.member.voiceChannel.name}\`, **in** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+      
+    var modEmbed = new Discord.RichEmbed()
+      .setThumbnail(toBan.avatarURL)
+      .setColor(`0xA80000`)
+      .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
+      .addField(`Voicebanned User`, `${toBan.toString()} (${toBan.tag})`)
+      .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`)
+      .addField(`Channel:`, message.member.voiceChannel.name);
+      
+    if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason); modBase.update({ reason: reason }, { where: {id: info.id }});}
+      
+    var vc = message.guild.createChannel('Voice Ban', 'voice');
+    toBanM.setVoiceChannel(vc);
+    message.member.voiceChannel.overwritePermissions(toBan, {CONNECT: false});
+    vc.delete();
+    toBan.send(dmMsg);
+    message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
+    await message.channel.send(`:white_check_mark: \`|\` ${vbEmote} **Voicebanned user \`${toBan.tag}\`**`);
+
+  });
 };
 
 exports.conf = {
   enabled: true,
-  permLevel: `Moderator`,
-  aliases: [`vb`, `banvoice`],
-  guildOnly: true
+  guildOnly: true,
+  aliases: [],
+  permLevel: `Moderator`
 };
 
 exports.help = {
   name: `voiceban`,
-  description: `Bans a mentioned user from a voice channel`,
-  usage: `voiceban <@user>`,
-  category: `Server`
+  description: `Ban someone from the current voice channel`,
+  usage: `voiceban <@user> [reason]`,
+  category: `Moderation`
 };
