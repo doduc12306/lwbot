@@ -27,7 +27,8 @@ const config = {
     "welcomeChannel": `welcome`,
     "welcomeMessage": `Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D`,
     "welcomeEnabled": `false`,
-    "announcementsChannel": `announcements`
+    "announcementsChannel": `announcements`,
+    "botCommanderRole": `Bot Commander`
   },
 
   "debugMode": false,
@@ -81,8 +82,19 @@ const config = {
         }
       }
     },
+
+    {
+      level: 4,
+      name: 'Bot Commander',
+      check: (message) => {
+        try{
+          const bcRole = message.guild.roles.find(r => r.name.toLowerCase() === message.settings.botCommanderRole.toLowerCase());
+          return (bcRole && message.member.roles.has(bcRole.id));
+        } catch (e) {return false;}
+      }
+    },
     // This is the server owner.
-    { level: 4,
+    { level: 5,
       name: `Server Owner`, 
       // Simple check, if the guild owner id matches the message author's ID, then it will return true.
       // Otherwise it will return false.
