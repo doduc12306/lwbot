@@ -2,8 +2,11 @@
 // Note that due to the binding of client to every event, every event
 // goes `client, other, args` when this function is run.
 
+const Sequelize = require('sequelize');
+
 module.exports = (client, message) => {
   if (message.author.bot) return;
+  require('../modules/msgfunctions.js')(message)
 
   // Grab the settings for this server from the PersistentCollection
   // If there is no guild, get default conf (DMs)
@@ -14,6 +17,19 @@ module.exports = (client, message) => {
     // For ease of use in commands and functions, we'll attach the settings
     // to the message object, so `message.settings` is accessible.
   message.settings = settings;
+
+  // Thanks, MDN
+  function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  message.xp.findOne({where: {user: message.author.id}}).then(user => {
+    if(user === null) {message.xp.create({user: message.author.id, xp: 0}); message.xp.sync();}
+    message.xp.add(message.author.id, getRandomIntInclusive(0, 2));
+    message.xp.sync();
+  });
 
   if (message.content.indexOf(settings.prefix) !== 0) return;
   const args = message.content.slice(settings.prefix.length).trim().split(/ +/g);
