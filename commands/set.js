@@ -54,7 +54,7 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
       message.reply(`${key} was successfully deleted.`);
     } else
     // If they respond with n or no, we inform them that the action has been cancelled.
-    if ([`n`,`no`,`cancel`].includes(response.toLowerCase())) {
+    if ([`n`,`no`,`cancel`].includes(response)) {
       message.reply(`Action cancelled.`);
     }
   } else
@@ -66,11 +66,8 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
   } else 
   
   if (action === `reset`) {
-    const response = client.awaitReply(message, `Are you sure you want to reset the guild's settings? This CANNOT be undone!`);
-    if([`y`, `yes`].includes(response.toLowerCase())) {
-      client.settings.set(client.config.defaultSettings);
-      message.channel.send(`All guild settings have been reset.`);
-    } else return message.channel.send(`Action cancelled`);
+    client.settings.set(message.guild.id, client.config.defaultSettings);
+    message.channel.send(`All guild settings have been reset.`);
   }
   
   else {
