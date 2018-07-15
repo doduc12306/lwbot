@@ -31,6 +31,8 @@ module.exports = (client, message) => {
     message.xp.sync();
   });
 
+  if(!message.channel.id === "436641517214629888") message.demo.add();
+
   if (message.content.indexOf(settings.prefix) !== 0) return;
   const args = message.content.slice(settings.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
