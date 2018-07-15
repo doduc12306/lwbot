@@ -4,6 +4,7 @@ const Discord = require(`discord.js`);
 module.exports = (client, member) => {
   // Load the guild's settings
   const settings = client.settings.get(member.guild.id);
+  if(member.user.bot) return;
 
   // If welcome is off, don't proceed (don't welcome the user)
   if (settings.welcomeEnabled !== `true`) return;
