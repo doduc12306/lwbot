@@ -216,7 +216,7 @@ module.exports = async client => {
 });
 
 var misc = client.channels.get('444375656139063296');
-misc.fetchMessage('466281176420843524')
+misc.fetchMessage('467164172153782283')
 .then(async msg => {
   const collector = msg.createReactionCollector((reaction, user) => 
   reaction.emoji.name === "📩" ||
