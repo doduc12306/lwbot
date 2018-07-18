@@ -3,7 +3,7 @@ module.exports.run = async (client, message, args) => {
   try {
     const settings = client.settings.get(message.guild.id);
     
-    if (message.member.permissions.has(`MANAGE_MESSAGES`) || message.author.id === `107599228900999168`) {
+    //if ( message.member.permissions.has(`MANAGE_MESSAGES`) || message.author.id === `107599228900999168`) {
       var date = new Date();
 
       String.prototype.replaceAll = function(search, replacement) {
@@ -36,20 +36,20 @@ module.exports.run = async (client, message, args) => {
         if (cmdargs) message.channel.send(`:white_check_mark: **Announcement sent!** | **Args:** \`${cmdargs}\``);
         else message.channel.send(`:white_check_mark: **Announcement sent!**`);
       }
-    } else message.channel.send(`:x: You do not have access to this command!`);
+    // } else message.channel.send(`:x: You do not have access to this command!`);
   } catch (err) {message.channel.send(`:x: ${err}`);}
 };
 
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  permLevel: `User`,
+  permLevel: `Moderator`,
   aliases: [`anno`]
 };
 
 exports.help = {
   name: `announce`,
   description: `Announces something`,
-  usage: `announce <title> | <content> [| arguments]\nARGUMENTS: \`color=<0xhex | base10>\` Sets sidebar color, \`no-subs\` Disables ping of guild's announcements subscribers role`,
+  usage: `announce <title> | <content> [| arguments]\nARGUMENTS: \`color=<#hex | base10>\` Sets sidebar color, \`no-subs\` Disables ping of guild's announcements subscribers role`,
   category: `Server`
 };
