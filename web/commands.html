@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Commands List</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" src="styles.css">
+  <link href="./assets/sticky-footer.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+  <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Future Webpanel™</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li><a href="/">Home</a></li>
+          <li class="active"><a href="#">Commands</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+      </div>
+    </nav>
+
+  <div class="container">
+    <h1>Commands List</h1>
+    <p>Here you can find all the commands the bot has to offer, listed alphabetically<br>All &lt;arguments&gt; are requried. All [arguments] are optional.<br><small class="text-muted">Commands listed in red are disabled</small></p>
+  </div>
+  <div class="contaner">
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Command</th>
+                <th>Usage</th>
+                <th>Description</th>
+                <th>Aliases</th>
+                <th>Category</th>
+                <th>Requires</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>addemote</td>
+                <td>addemote &lt;emoji name&gt; &lt;image url&gt;</td>
+                <td>Adds an emote to the server</td>
+                <td>ae, addemoji, createemote, createemoji</td>
+                <td>Server</td>
+                <td>Moderator - Manage Emojis</td>
+              </tr>
+              <tr class="danger">
+                <td>announce</td>
+                <td>announce &lt;title&gt; | &lt;content&gt; [| color=#hex no-subs]</td>
+                <td>Sends an announcement to the server</td>
+                <td>anno</td>
+                <td>Server</td>
+                <td>Moderator</td>
+              </tr>
+              <tr>
+                <td>ban</td>
+                <td>ban &lt;@user&gt; [reason]</td>
+                <td>Bans someone from the server</td>
+                <td></td>
+                <td>Moderation</td>
+                <td>Moderator - Ban Members</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+  </div>
+  <footer class="footer">
+    <div class="container-fluid">
+        <span class="text-muted">Welcome to the LINE WEBTOON Control Panel | Created with ❤️ by <b>Akii#0008</b></span>
+    </div>
+  </footer>
+</body>
+</html>
