@@ -1,0 +1,1 @@
+console.log('Wrong web.js, dude.');
