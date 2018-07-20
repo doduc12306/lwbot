@@ -48,7 +48,7 @@ module.exports.run = async (client, message, args) => {
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: [`addtag`, `tagadd`],
+  aliases: [`createtag`, `tagadd`],
   permLevel: `Bot Owner`
 };
 
