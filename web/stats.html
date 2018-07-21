@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Stats</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="discord.11.3.2.min.js"></script>
+  <script src="//twemoji.maxcdn.com/2/twemoji.min.js?11.0"></script>
+  <script src="stats-check.js"></script>
+</head>
+<body id="parent">
+
+  <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/" style="padding-top:5px"><span><img src="webtoon-logo-smaller.png" style="width:40px;height:40px;border-radius:4px"></span></a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li><a href="/">Home</a></li>
+          <li><a href="/commands">Commands</a></li>
+          <!-- li class="active"><a href="#">Stats</a></li -->
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        </ul>
+      </div>
+    </nav>
+
+  <div class="container-fluid">
+    <div class="jumbotron">
+      <h1>Bot Statistics</h1>
+      <p>Guild count, user count, things like that. Also includes process information.</p>
+    </div>
+  </div>
+  
+  <div class="container" id="cont1">
+    <div class="row" style="text-align:center">
+      <div class="col-sm-1"></div>
+      <div class="col-sm-4" style="background-color:var(--blurple1);border-top-left-radius:5px;border-top-right-radius:5px;padding-top:20px;padding-bottom:5px">
+        <img src="webtoon-logo.png" style="height:120px;width:120px;border-radius:60px;">
+        <span><h4 style="padding-top:2px;"><b>LINE WEBTOON</b></h4></span>
+      </div>
+      <div class="col-sm-2"></div>
+      <div class="col-sm-4" style="text-align:center;background-color:var(--black3);border-radius:10px;padding-bottom:11px;" id="online-indicator">
+        <h3 id="online-text">LOADING...</h3>
+      </div>
+      <div class="col-sm-1"></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-1"></div>
+      <div class="col-sm-4" style="background-color:var(--blurple2);border-bottom-left-radius:5px;border-bottom-right-radius:5px;">
+        <div class="container-fluid">
+          <div class="row" style="padding-top:7px">
+            <div class="col-sm-12"><h5 style="font-weight:700;text-align:left;" id="playing-type">Loading...</h5></div>
+            <div class="col-sm-12"><h6 style="padding-bottom:2px;color:hsla(0,0%,100%,.8);">Loading...</h6></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-2"></div>
+      <div class="col-sm-4"></div>
+      <div class="col-sm-1"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container-fluid">
+        <span class="text-muted">LINE WEBTOON Control Panel | Created with <img src="https://twemoji.maxcdn.com/36x36/2764.png" style="width:20px;height:20px;"/> by <b>Akii#0008</b></span>
+    </div>
+  </footer>
+</body>
+</html>

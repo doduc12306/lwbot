@@ -38,6 +38,7 @@ app.get('/login', (req, res) => {
 
 express.addPage('commands');
 express.addPage('authorizing');
+express.addPage('stats');
 
 app.use(function (req, res, next) {
   res.status(404).sendFile(path.join(__dirname, './error-pages/404.html'));
