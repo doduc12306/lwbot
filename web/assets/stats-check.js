@@ -17,7 +17,7 @@ checkClient.on('ready', async () => {
   var online_text = document.getElementById('online-text');
   var status_type = document.getElementById('playing-type');
   
-  setInterval(() => {
+  setInterval(async () => {
   var lwbot = checkClient.users.get('377205339323367425');
   if(lwbot.presence.status === "online" || lwbot.presence.status === "idle" || lwbot.presence.status === "dnd") {
       online_text.innerText = "ONLINE"
@@ -26,8 +26,36 @@ checkClient.on('ready', async () => {
       
   }
   else {
-      online_text.innerText = "OFFLINE"
-      online_indicator.style = "text-align:center;background-color:var(--attention);border-radius:10px;padding-bottom:11px;transition: all 400ms cubic-bezier(0.075, 0.82, 0.165, 1);"
+      var parent = document.getElementById('parent');
+      var etr = document.getElementById('cont1');
+      var footer = document.getElementById('footer');
+      await parent.removeChild(etr);
+
+      var container = document.createElement('div');
+      container.className = "container";
+      await parent.insertBefore(container, footer);
+      
+      var row = document.createElement('div');
+      row.className = "row";
+      row.style = "text-align:center;";
+      await container.appendChild(row);
+
+      var colSm4_1 = document.createElement('div');
+      colSm4_1.className = "col-sm-4";
+      await row.appendChild(colSm4_1);
+      
+      var colSm4_2 = document.createElement('div');
+      colSm4_2.className = "col-sm-4";
+      colSm4_2.style = "text-align:center;background-color:var(--attention);border-radius:10px;padding-bottom:11px;transition: all 700ms cubic-bezier(0.075, 0.82, 0.165, 1);";
+      var colSm4_2_h1 = document.createElement('h1');
+      colSm4_2_h1.style = "color=var(--white1);";
+      colSm4_2_h1.innerText = "OFFLINE";
+      await colSm4_2.appendChild(colSm4_2_h1);
+      await row.appendChild(colSm4_2);
+
+      var colSm4_3 = document.createElement('div');
+      colSm4_3.className = "col-sm-4";
+      await row.appendChild(colSm4_3);
     }
   }, 15000);
 });
