@@ -13,7 +13,7 @@ module.exports.run = async (client, message, args) => {
 
     client.bank.add(user.id, amount);
     await client.bank.sync();
-    client.bank.get(user.id).then(balance => message.channel.send(`:white_check_mark: \`|\` **Successfully added** \`${amount}\` **to** \`${user.tag}\`**.** New balance: \`${balance}\`.`));
+    client.bank.get(user.id).then(balance => message.channel.send(`:white_check_mark: \`|\` :bank: **Successfully added** \`${amount}\` **to** \`${user.tag}\`**.** New balance: \`${balance}\`.`));
   }
 
   if(type === 'subtract'){
@@ -35,7 +35,7 @@ module.exports.run = async (client, message, args) => {
   }
 
   if(type === 'get'){
-    client.bank.get(user.id).then(balance => message.channel.send(`:information_source: \`|\` **Balance of** \`${user.tag}\`**:** \`${balance}\`.`));
+    client.bank.get(user.id).then(balance => message.channel.send(`:information_source: \`|\` :bank: **Balance of** \`${user.tag}\`**:** \`${balance}\`.`));
   }
 };
 
