@@ -1,6 +1,17 @@
 const Sequelize = require('sequelize');
 
 module.exports = async (message) => {
+  // These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
+  process.on(`uncaughtException`, (err) => {
+    const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, `g`), `./`);
+    client.logger.error(`Uncaught Exception: ${errorMsg}`);
+    process.exit(1);
+  });
+
+  process.on(`unhandledRejection`, err => {
+    client.logger.error(`Unhandled rejection: ${err.stack}`);
+  });
+  
   var xpTable = new Sequelize('database', 'user', 'password', {
     host: 'localhost',
     dialect: 'sqlite',
