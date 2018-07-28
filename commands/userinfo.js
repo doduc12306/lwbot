@@ -1,90 +1,51 @@
 const Discord = require(`discord.js`);
+var moment = require('moment');
 
-module.exports.run = (client, message) => {
-    
-  if (message.mentions.users.size < 1) {
-        
-    //Finds the author nickname
-    if (message.member.nickname) {var authorNick = message.member.nickname;} else {authorNick = `None`;}
-        
-    //Finds the author game and/or game URL
-    if (message.author.presence.game) {var authorGame = message.author.presence.game.name;} else {authorGame = `None`;}
-        
-    //Finds the author presence status
-    if (message.author.presence.status === `online`) {var authorStatus = `Online`;}
-    else if (message.author.presence.status === `idle`) {authorStatus = `Idle`;}
-    else if (message.author.presence.status === `dnd`) {authorStatus = `Do Not Disturb`;}
-    else if (message.author.presence.status === `offline`) {authorStatus = `Offline`;}
+module.exports.run = (client, message, args) => {
+  try {
+    var user = message.mentions.users.first() ? message.mentions.users.first() : message.author;
+    var userM = message.mentions.members.first() ? message.mentions.members.first() : message.member;
 
-    //Finds the author join date
-    var authorJoined = new Date(message.member.joinedTimestamp);
+  var embed = new Discord.RichEmbed()
+    .setAuthor(user.tag, user.avatarURL)
+    .addField('ID', user.id, true)
+    .setThumbnail(user.avatarURL)
+    .setDescription(user.toString());
 
-    //Finds the author registered date
-    var authorRegistered = new Date(message.author.createdTimestamp);
+  var status;
+  if(user.presence.status === "online") status = '<:online:450674128777904149> Online'
+  else if(user.presence.status === "offline") status = '<:offline:450674445670154240> Offline'
+  else if(user.presence.status === "dnd") status = '<:dnd:450674354163023882> Do Not Disturb'
+  else if(user.presence.status === "idle") status = '<:idle:450674222176403456> Idle'
+  else if(user.presence.game.streaming) status = `<:streaming:450674542717698058> Streaming [${user.presence.game.name}](${user.presence.game.url})`
+  embed.addField('Status', status, true);
 
-    //Finds the author's avatar
-    if (message.author.avatarURL) {var authorAvatar = message.author.avatarURL;}
-    else {authorAvatar = `https://cdn.discordapp.com/embed/avatars/1.png?width=80&height=80`;}
+  if(user.presence.game){
+    if(!user.presence.game.streaming) embed.addField('Game', user.presence.game.name, true)
+  }
 
-    //Finds the author's color
-    if (message.member.displayColor) {var authorColor = message.member.displayColor;} else {authorColor = `0x59D851`;}
+  if(userM.nickname) embed.addField('Nickname', userM.nickname, true);
 
-    //The actual message
-    message.channel.send(new Discord.RichEmbed()
-      .setColor(authorColor)
-      .setThumbnail(authorAvatar)
-      .setAuthor(message.author.tag, message.author.avatarURL)
-      .addField(`ID:`, message.author.id, true)
-      .addField(`Nickname:`, authorNick, true)
-      .addField(`Status:`, authorStatus, true)
-      .addField(`Game:`, authorGame, true)
-      .addField(`Joined:`, authorJoined.toLocaleString(), true)
-      .addField(`Registered:`, authorRegistered.toLocaleString(), true)
-      .addField(`Roles:`, message.member.roles.map(g => g.name).join(`, `), true)
-    );
-  } else if (message.mentions.users.size > 1) {
-    message.channel.send(`:x: You are mentioning too many users.`);
-  } else {
-    //Finds the user's nickname
-    if (message.mentions.members.first().nickname) {var mentionedNick = message.mentions.members.first().nickname;}
-    else {mentionedNick = `None`;}
+  if(userM.displayColor === 0) embed.setColor(client.config.colors.green);
+  else embed.setColor(userM.displayColor);
 
-    //Finds the user's presence status
-    if (message.mentions.users.first().presence.status === `online`) {var mentionedStatus = `Online`;}
-    else if (message.mentions.users.first().presence.status === `idle`) { mentionedStatus = `Idle`;}
-    else if (message.mentions.users.first().presence.status === `dnd`) { mentionedStatus = `Do Not Disturb`;}
-    else if (message.mentions.users.first().presence.status === `offline`) { mentionedStatus = `Offline`;}
+  embed.addField('Joined', moment(userM.joinedAt).format('MMM Do YYYY, h:mm a'), true);
+  embed.addField('Registered', moment(user.createdAt).format('MMM Do YYYY, h:mm a'), true);
 
-    //Finds the user's game
-    if (message.mentions.users.first().presence.game) {var mentionedGame = message.mentions.users.first().presence.game.name;}
-    else {mentionedGame = `None`;}
+  if(userM.roles.map(g => g.toString()).join(' ').trim() !== '@everyone') {
+    var roles = userM.roles.map(g => g.toString())
+      .join(' ')
+      .split('@everyone')
+      .join(' ')
+      .trim();
 
-    //Finds the user's join date/time
-    var mentionedJoined = new Date(message.mentions.members.first().joinedTimestamp);
+    if(roles.length > 1024) embed.addField('Roles', `Too long. ${user.toString()} has ${userM.roles.map(g => g.toString()).size} roles.`, true);
+    else embed.addField('Roles', roles, true);
+  }
 
-    //Finds the user's register date/time
-    var mentionedRegistered = new Date(message.mentions.users.first().createdTimestamp);
-
-    //Finds the user's avatar
-    if (message.mentions.users.first().avatarURL) {var mentionedAvatar = message.mentions.users.first().avatarURL;}
-    else {mentionedAvatar = `https://cdn.discordapp.com/embed/avatars/1.png?width=80&height=80`;}
-
-    //Finds the user's color
-    if (message.mentions.users.first().displayColor) {var mentionedColor = message.mentions.users.first().displayColor;} else {mentionedColor = `0x59D851`;}
-        
-    //The actual message
-    message.channel.send(new Discord.RichEmbed()
-      .setColor(mentionedColor)
-      .setThumbnail(mentionedAvatar)
-      .setAuthor(message.mentions.users.first().tag, mentionedAvatar)
-      .addField(`ID:`, message.mentions.users.first().id, true)
-      .addField(`Nickname:`, mentionedNick, true)
-      .addField(`Status:`, mentionedStatus, true)
-      .addField(`Game:`, mentionedGame, true)
-      .addField(`Joined:`, mentionedJoined.toLocaleString(), true)
-      .addField(`Registered:`, mentionedRegistered.toLocaleString(), true)
-      .addField(`Roles`, message.mentions.members.first().roles.map(g => g.name).join(`, `), true)
-    );
+  message.channel.send(embed).catch(e => message.channel.send(e));
+  } catch (e) {
+    message.channel.send(e.stack);
   }
 };
 
