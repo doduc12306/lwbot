@@ -5,11 +5,13 @@ module.exports = async (message) => {
   process.on(`uncaughtException`, (err) => {
     const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, `g`), `./`);
     client.logger.error(`Uncaught Exception: ${errorMsg}`);
+    message.channel.send(`:x: **Uncaught Exception:**\n\`\`\`\n${errorMsg}\n\`\`\``);
     process.exit(1);
   });
 
   process.on(`unhandledRejection`, err => {
     client.logger.error(`Unhandled rejection: ${err.stack}`);
+    message.channel.send(`:x: **Unhandled Rejection:**\n\`\`\`\n${err.stack}\n\`\`\``);
   });
   
   var xpTable = new Sequelize('database', 'user', 'password', {
