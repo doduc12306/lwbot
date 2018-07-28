@@ -200,4 +200,15 @@ module.exports = (client) => {
 
   // `await client.wait(1000);` to "pause" for 1 second.
   client.wait = require(`util`).promisify(setTimeout);
+
+  // These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
+  process.on(`uncaughtException`, (err) => {
+    const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, `g`), `./`);
+    client.logger.error(`Uncaught Exception: ${errorMsg}`);
+    process.exit(1);
+  });
+
+  process.on(`unhandledRejection`, err => {
+    client.logger.error(`Unhandled rejection: ${err.stack}`);
+  });
 };
