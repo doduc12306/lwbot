@@ -1,11 +1,12 @@
 const Discord = require(`discord.js`);
+var moment = require('moment');
 
 module.exports.run = (client, message, args) => { // eslint-disable-line no-unused-vars
   if (message.channel.type === `dm`) {
     message.channel.send(`:x: This command will not work in DM's`);
     return;
   } else {
-        
+
     var guildIcon;
     //If the guild icon is empty, sets guildIcon to owner's avatar
     if (message.guild.iconURL) {guildIcon = message.guild.iconURL;}
@@ -26,7 +27,7 @@ module.exports.run = (client, message, args) => { // eslint-disable-line no-unus
     }
 
     //You can probably tell what this is by looking at the var name
-    var guildCreatedAt = new Date(message.guild.createdTimestamp);
+    var guildCreatedAt = moment(message.guild.createdAt).format('MMM Do YYYY, h:mm a');
 
     //Pretty-ifies the region
     var region;
@@ -68,7 +69,7 @@ module.exports.run = (client, message, args) => { // eslint-disable-line no-unus
       .addField(`Channels:`, `${message.guild.channels.size} channels`, true)
       .addField(`Region:`, region, true)
       .addField(`Verification:`, verification, true)
-      .addField(`Server Created:`, guildCreatedAt.toLocaleString(), true)
+      .addField(`Server Created:`, guildCreatedAt, true)
       .addField(`Emotes:`, emotes, true)
     );
   }
