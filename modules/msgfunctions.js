@@ -21,52 +21,53 @@ module.exports = async (message) => {
   message.guild.xp.sync();
 
   message.guild.xp.add = (userID, amount) => {
-    message.xp.findOne({where: {user: userID}}).then(async user => {
+    message.guild.xp.findOne({where: {user: userID}}).then(async user => {
       if(user === null) {
-        await message.xp.create({user: userID, xp: 0});
-        await message.xp.sync();
-        message.xp.update({xp: user.xp + amount}, {where: {user: userID}});
+        await message.guild.xp.create({user: userID, xp: 0});
+        await message.guild.xp.sync();
+        await message.guild.xp.update({xp: user.xp + amount}, {where: {user: userID}});
+        await message.guild.xp.sync();
       }
       else {
-        await message.xp.update({xp: user.xp + amount}, {where: {user: userID}});
-        message.xp.sync();
+        await message.guild.xp.update({xp: user.xp + amount}, {where: {user: userID}});
+        await message.guild.xp.sync();
       }
     });
   }
 
   message.guild.xp.subtract = (userID, amount) => {
-    message.xp.findOne({where: {user: userID}}).then(async user => {
+    message.guild.xp.findOne({where: {user: userID}}).then(async user => {
       if(user === null) {
-        await message.xp.create({user: userID, xp: 0});
-        await message.xp.update({xp: user.xp - amount}, {where: {user: userID}});
-        message.xp.sync();
+        await message.guild.xp.create({user: userID, xp: 0});
+        await message.guild.xp.update({xp: user.xp - amount}, {where: {user: userID}});
+        message.guild.xp.sync();
       }
       else {
-        await message.xp.update({xp: user.xp - amount}, {where: {user: userID}});
-        message.xp.sync();
+        await message.guild.xp.update({xp: user.xp - amount}, {where: {user: userID}});
+        message.guild.xp.sync();
       }
     });
   }
 
   message.guild.xp.set = (userID, amount) => {
-    message.xp.findOne({where: {user: userID}}).then(async user => {
+    message.guild.xp.findOne({where: {user: userID}}).then(async user => {
       if(user === null) {
-        await message.xp.create({user: userID, xp: 0});
-        await message.xp.update({xp: amount}, {where: {user: userID}});
-        message.xp.sync();
+        await message.guild.xp.create({user: userID, xp: 0});
+        await message.guild.xp.update({xp: amount}, {where: {user: userID}});
+        message.guild.xp.sync();
       }
       else {
-        await message.xp.update({xp: amount}, {where: {user: userID}});
-        message.xp.sync();
+        await message.guild.xp.update({xp: amount}, {where: {user: userID}});
+        message.guild.xp.sync();
       }
     });
   }
 
   message.guild.xp.get = async userID => {
     return new Promise((resolve, reject) => {
-      message.xp.findOne({where: {user: userID}}).then(async user => {
+      message.guild.xp.findOne({where: {user: userID}}).then(async user => {
         if(user === null) {
-          await message.xp.create({user: userID, xp: 0});
+          await message.guild.xp.create({user: userID, xp: 0});
         }
         resolve(user.xp);
       });
