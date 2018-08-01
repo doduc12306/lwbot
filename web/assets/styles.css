@@ -11,10 +11,12 @@
   --black2: #2f3136;
   --black3: #202225;
   --black4: #292c3073; /* THIS COLOR IS NOT IN DISCORD! USE IT SPARINGLY */
+  --grey1: #a3aab4;
   --grey: #747f8d;
   --small: rgb(197, 207, 240);
 
   /* Blurples */
+  --blurple: #7289da;
   --blurple1: #7289da;
   --blurple2: #6d83d0;
 
@@ -22,10 +24,11 @@
   --attention: #f04747;
   --red2: #b83f3f;
   --red3: #973434;
-  
-  /* Misc. accent colors*/
-  --attention: #f04747;
+
+  --green1: rgb(135, 241, 127);
   --green: #59D851;
+  --green2: var(--green);
+  --green3: rgb(66, 179, 58);
 }
 
 /* Sticky footer styles */
@@ -50,6 +53,10 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   color: var(--white1);
+}
+
+h1.center, h2.center, h3.center, h4.center, h5.center, h6.center {
+  text-align: center;
 }
 
 small {
@@ -120,11 +127,18 @@ table>tbody>tr>td {
 .table-hover>tbody>tr>th.danger{
   background-color:var(--red2)
 }
-
 .table-hover>tbody>tr.danger:hover>td,
 .table-hover>tbody>tr.danger:hover>th,
 .table-hover>tbody>tr:hover>.danger,
 .table-hover>tbody>tr>td.danger:hover,
 .table-hover>tbody>tr>th.danger:hover{
   background-color: var(--red3);
+}
+
+a.terms, a.terms:hover {
+  color: var(--white1);
+  font-weight: 700;
+}
+p.terms {
+  font-size: 17px;
 }
