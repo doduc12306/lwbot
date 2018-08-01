@@ -8,7 +8,7 @@ module.exports = async (message) => {
     storage: `databases/servers/${message.guild.id}.sqlite`
   });
 
-  message.xp = xpTable.define('userXP', {
+  message.guild.xp = xpTable.define('userXP', {
     user: {
       type: Sequelize.STRING,
       allowNull: false
@@ -18,9 +18,9 @@ module.exports = async (message) => {
       allowNull: false
     }
   });
-  message.xp.sync();
+  message.guild.xp.sync();
 
-  message.xp.add = (userID, amount) => {
+  message.guild.xp.add = (userID, amount) => {
     message.xp.findOne({where: {user: userID}}).then(async user => {
       if(user === null) {
         await message.xp.create({user: userID, xp: 0});
@@ -34,7 +34,7 @@ module.exports = async (message) => {
     });
   }
 
-  message.xp.subtract = (userID, amount) => {
+  message.guild.xp.subtract = (userID, amount) => {
     message.xp.findOne({where: {user: userID}}).then(async user => {
       if(user === null) {
         await message.xp.create({user: userID, xp: 0});
@@ -48,7 +48,7 @@ module.exports = async (message) => {
     });
   }
 
-  message.xp.set = (userID, amount) => {
+  message.guild.xp.set = (userID, amount) => {
     message.xp.findOne({where: {user: userID}}).then(async user => {
       if(user === null) {
         await message.xp.create({user: userID, xp: 0});
@@ -62,7 +62,7 @@ module.exports = async (message) => {
     });
   }
 
-  message.xp.get = async userID => {
+  message.guild.xp.get = async userID => {
     return new Promise((resolve, reject) => {
       message.xp.findOne({where: {user: userID}}).then(async user => {
         if(user === null) {
