@@ -20,7 +20,7 @@ app.get('/authorizing', async (req, res) => {
     'client_secret': config.client_secret,
     'grant_type': 'authorization_code',
     'code': req.query.code,
-    'redirect_uri': 'http://localhost:8080/authorizing/'
+    'redirect_uri': 'http://ovh-ubuntu.ddns.net/authorizing/'
   }
 
   try {
@@ -31,9 +31,9 @@ app.get('/authorizing', async (req, res) => {
   }
 });
 
-app.get('/login', (req, res) => {
-  res.redirect('https://discordapp.com/api/oauth2/authorize?client_id=377205339323367425&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fauthorizing%2F&response_type=code&scope=identify%20guilds');
-});
+app.get('/login', (req, res) => res.redirect('https://discordapp.com/api/oauth2/authorize?client_id=377205339323367425&redirect_uri=http%3A%2F%2Fovh-ubuntu.ddns.net%2Fauthorizing%2F&response_type=code&scope=identify%20guilds'));
+
+app.get('/invite', (req, res) => res.redirect('https://discordapp.com/api/oauth2/authorize?client_id=377205339323367425&permissions=2080894199&scope=bot'));
 
 express.addPage('commands');
 express.addPage('authorizing');
