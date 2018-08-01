@@ -25,13 +25,15 @@ module.exports = (client, message) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  message.xp.findOne({where: {user: message.author.id}}).then(user => {
-    if(user === null) {message.xp.create({user: message.author.id, xp: 0}); message.xp.sync();}
-    message.xp.add(message.author.id, getRandomIntInclusive(0, 2));
-    message.xp.sync();
-  });
+  message.guild.xp.add(message.author.id, getRandomIntInclusive(0, 2));
 
-  if(!message.channel.id === "436641517214629888") message.demo.add();
+  if(message.content.includes('kidnaps <@377205339323367425>')) {
+    message.channel.startTyping();
+    setTimeout(() =>{
+      message.channel.send('uwu yes kidnap me senpai \\*nuzzles*');
+      message.channel.stopTyping(true);
+    }, 4500);
+  }
 
   if (message.content.indexOf(settings.prefix) !== 0) return;
   const args = message.content.slice(settings.prefix.length).trim().split(/ +/g);
@@ -63,7 +65,7 @@ module.exports = (client, message) => {
   // To simplify message arguments, the author's level is now put on level (not member so it is supported in DMs)
   // The "level" command module argument will be deprecated in the future.
   message.author.permLevel = level;
-  
+
   message.flags = [];
   while (args[0] && args[0][0] === `-`) {
     message.flags.push(args.shift().slice(1));
