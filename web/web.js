@@ -6,7 +6,7 @@ var snek = require('snekfetch');
 
 app.use(express.static('assets'));
 
-app.listen(8080, () => console.log('Website listening on port 8080!'));
+app.listen(8080, () => console.log('Website listening on port 8080!')); // Actually supposed to be port 80 but for testing purposes it's on 8080 (since my fucking ISP blocked 80)
 
 express.addPage = (page) => app.get(`/${page}`, (req, res) => res.sendFile(path.join(__dirname, `./${page}.html`)));
 
