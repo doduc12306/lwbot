@@ -10,7 +10,7 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
 
   // Retrieve current guild settings
   const settings = client.settings.get(message.guild.id);
-  
+
   // First, if a user does `-set add <key> <new value>`, let's add it
   if (action === `add`) {
     if (!key) return message.reply(`Please specify a key to add`);
@@ -19,29 +19,29 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
 
     // `value` being an array, we need to join it first.
     settings[key] = value.join(` `);
-  
+
     // One the settings is modified, we write it back to the collection
     client.settings.set(message.guild.id, settings);
     message.reply(`${key} successfully added with the value of ${value.join(` `)}`);
   } else
-  
+
   // Secondly, if a user does `-set edit <key> <new value>`, let's change it
   if (action === `edit`) {
     if (!key) return message.reply(`Please specify a key to edit`);
     if (!settings[key]) return message.reply(`This key does not exist in the settings`);
     if (value.length < 1) return message.reply(`Please specify a new value`);
-  
+
     settings[key] = value.join(` `);
 
     client.settings.set(message.guild.id, settings);
     message.reply(`${key} successfully edited to ${value.join(` `)}`);
   } else
-  
+
   // Thirdly, if a user does `-set del <key>`, let's ask the user if they're sure...
   if (action === `del`) {
     if (!key) return message.reply(`Please specify a key to delete.`);
     if (!settings[key]) return message.reply(`This key does not exist in the settings`);
-    
+
     // Throw the 'are you sure?' text at them.
     const response = await client.awaitReply(message, `Are you sure you want to permanently delete ${key}? This **CANNOT** be undone.`);
 
@@ -58,20 +58,20 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
       message.reply(`Action cancelled.`);
     }
   } else
-  
+
   if (action === `get`) {
     if (!key) return message.reply(`Please specify a key to view`);
     if (!settings[key]) return message.reply(`This key does not exist in the settings`);
     message.reply(`The value of ${key} is currently ${settings[key]}`);
-  } else 
-  
+  } else
+
   if (action === `reset`) {
     client.settings.set(message.guild.id, client.config.defaultSettings);
     message.channel.send(`All guild settings have been reset.`);
   }
-  
+
   else {
-    message.channel.send(inspect(settings), {code: `json`});
+    message.channel.send(inspect(settings), {code: `js`});
   }
 };
 
