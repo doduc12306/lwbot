@@ -1,4 +1,9 @@
-exports.run = async (client, message) => {// eslint-disable-line no-unused-vars
+exports.run = async (client, message, args) => {// eslint-disable-line no-unused-vars
+  if(args[0] === "web") {
+    require('child_process').exec('pm2 restart web');
+    return message.channel.send(`:gear: **Restarting. Should be available soon.**`);
+  }
+
   await message.reply(`:gear: **Restarting...**`);
   client.commands.forEach( async cmd => {
     await client.unloadCommand(cmd);
@@ -16,6 +21,6 @@ exports.conf = {
 exports.help = {
   name: `reboot`,
   category: `System`,
-  description: `Shuts down the bot. If running under PM2, bot will restart automatically.`,
+  description: `Restarts the bot/website.`,
   usage: `reboot`
 };
