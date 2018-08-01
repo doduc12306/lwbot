@@ -30,10 +30,7 @@ const config = {
     "welcomeChannel": 'welcome',
     "welcomeMessage": "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
     "announcementsChannel": `announcements`,
-    "botCommanderRole": `Bot Commander`,
-    "liveMemberCountEnabled": false,
-    "liveMemberCountChannel": "rules",
-    "liveMemberCountMessage": ""
+    "botCommanderRole": `Bot Commander`
   },
 
   "debugMode": false,
