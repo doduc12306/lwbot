@@ -1,6 +1,8 @@
 .DS_Store
 databases/
 modules/modmail-bot
+.vscode/
+.vs/
 
 # Logs
 logs
