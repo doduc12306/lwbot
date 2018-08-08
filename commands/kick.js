@@ -2,10 +2,6 @@ const Sequelize = require(`sequelize`);
 const Discord = require(`discord.js`);
 
 module.exports.run = async (client, message, args) => {
-  var modBase = await new Sequelize(`database`, `user`, `password`, {host: `localhost`,dialect: `sqlite`,storage: `databases/servers/${message.guild.id}.sqlite`});
-  modBase = await modBase.define(`moderation`, {victim: {type: Sequelize.STRING,allowNull: false},moderator: {type: Sequelize.STRING,allowNull: false},type: {type: Sequelize.STRING,allowNull: false},reason: Sequelize.STRING,duration: Sequelize.STRING});
-  await modBase.sync();
-
   var settings = client.settings.get(message.guild.id);
 
   var toKick = message.mentions.users.first();
@@ -17,22 +13,22 @@ module.exports.run = async (client, message, args) => {
   if(!toKick) return message.channel.send(`:x: \`|\` :boot: **You didn't mention someone to kick!**`);
   if(!toKickM.kickable) return message.channel.send(`:x: \`|\` :boot: **This member could not be kicked!**`);
 
-  await modBase.create({
+  await message.guild.modbase.create({
     victim: toKick.id,
     moderator: message.author.id,
     type: `kick`
   }).then(async info => {
     var dmMsg = `:boot: **You were kicked from** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
-      
+
     var modEmbed = new Discord.RichEmbed()
       .setThumbnail(toKick.avatarURL)
       .setColor(`0xff8e2b`)
       .setFooter(`ID: ${toKick.id} | Case: ${info.id}`)
       .addField(`Kicked User`, `${toKick.toString()} (${toKick.tag})`)
       .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`);
-      
-    if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason); modBase.update({ reason: reason }, { where: {id: info.id }});}
-      
+
+    if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
+
     await toKick.send(dmMsg);
     if(!client.config.debugMode) await toKickM.kick(toKick);
     await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);

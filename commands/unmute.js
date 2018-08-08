@@ -2,10 +2,6 @@ const Discord = require(`discord.js`);
 const Sequelize = require(`sequelize`);
 
 module.exports.run = async (client, message, args) => {
-  var modBase = await new Sequelize(`database`, `user`, `password`, {host: `localhost`,dialect: `sqlite`,storage: `databases/servers/${message.guild.id}.sqlite`});
-  modBase = await modBase.define(`moderation`, {victim: {type: Sequelize.STRING,allowNull: false},moderator: {type: Sequelize.STRING,allowNull: false},type: {type: Sequelize.STRING,allowNull: false},reason: Sequelize.STRING,duration: Sequelize.STRING});
-  await modBase.sync();
-
   var settings = client.settings.get(message.guild.id);
   var role = message.guild.roles.find(`name`, `Muted`) || message.guild.roles.find(`name`, `muted`);
   var toUnmute = message.mentions.members.first();
@@ -17,7 +13,7 @@ module.exports.run = async (client, message, args) => {
   if(message.guild.me.highestRole.position < toUnmute.highestRole.position) return message.channel.send(`:x: \`|\` ${unmutedEmote} **You need to move my role (${message.guild.me.highestRole.name}) above ${toUnmute.toString()}'s (${toUnmute.highestRole.name})!**`);
   if(!toUnmute.roles.has(role.id)) return message.channel.send(`:x: \`|\` ${unmutedEmote} **${toUnmute.user.tag} is already unmuted!**`);
 
-  await modBase.create({
+  await message.guild.modbase.create({
     victim: toUnmute.id,
     moderator: message.author.id,
     type: `unmute`
@@ -31,7 +27,7 @@ module.exports.run = async (client, message, args) => {
       .addField(`Unmuted User`, `${toUnmute.user.toString()} (${toUnmute.user.tag})`)
       .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`);
 
-    if(reason) {dmMsg += `\n\n:gear: **Reason \`${reason}\`**`; modEmbed.addField(`Reason`, reason); modBase.update({reason: reason}, {where: {id: info.id}});}
+    if(reason) {dmMsg += `\n\n:gear: **Reason \`${reason}\`**`; modEmbed.addField(`Reason`, reason); message.guild.modbase.update({reason: reason}, {where: {id: info.id}});}
 
     toUnmute.user.send(dmMsg);
     toUnmute.removeRole(role);

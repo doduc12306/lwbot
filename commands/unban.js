@@ -3,10 +3,6 @@ const Discord = require(`discord.js`);
 
 module.exports.run = async (client, message, args) => {
   try {
-    var modBase = await new Sequelize(`database`, `user`, `password`, {host: `localhost`,dialect: `sqlite`,storage: `databases/servers/${message.guild.id}.sqlite`});
-    modBase = await modBase.define(`moderation`, {victim: {type: Sequelize.STRING,allowNull: false},moderator: {type: Sequelize.STRING,allowNull: false},type: {type: Sequelize.STRING,allowNull: false},reason: Sequelize.STRING,duration: Sequelize.STRING});
-    await modBase.sync();
-
     var settings = client.settings.get(message.guild.id);
     var reason = args.slice(1).join(` `);
     var unBanHammer = `<:unbanhammer:459404085301346304>`;
@@ -18,7 +14,7 @@ module.exports.run = async (client, message, args) => {
 
     var toUnban = await client.fetchUser(args[0]);
 
-    await modBase.create({
+    await message.guild.modbase.create({
       victim: toUnban.id,
       moderator: message.author.id,
       type: `unban`
@@ -29,16 +25,16 @@ module.exports.run = async (client, message, args) => {
         .setFooter(`ID: ${toUnban.id} | Case: ${info.id}`)
         .addField(`Unbanned User`, `${toUnban.toString()} (${toUnban.tag})`)
         .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`);
-      
-      if(reason) {modEmbed.addField(`Reason`, reason); modBase.update({ reason: reason }, { where: {id: info.id }});}
-      
+
+      if(reason) {modEmbed.addField(`Reason`, reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
+
       if(!client.config.debugMode) await message.guild.unban(toUnban.id);
       await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
       await message.channel.send(`:white_check_mark: \`|\` ${unBanHammer} **Unbanned user \`${toUnban.tag}\`**`);
 
     });
   } catch (e) {console.log(e);}
-  
+
 };
 
 exports.conf = {

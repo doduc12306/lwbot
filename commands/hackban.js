@@ -3,10 +3,6 @@ const Discord = require(`discord.js`);
 
 module.exports.run = async (client, message, args) => {
   try {
-    var modBase = await new Sequelize(`database`, `user`, `password`, {host: `localhost`,dialect: `sqlite`,storage: `databases/servers/${message.guild.id}.sqlite`});
-    modBase = await modBase.define(`moderation`, {victim: {type: Sequelize.STRING,allowNull: false},moderator: {type: Sequelize.STRING,allowNull: false},type: {type: Sequelize.STRING,allowNull: false},reason: Sequelize.STRING,duration: Sequelize.STRING});
-    await modBase.sync();
-
     var settings = client.settings.get(message.guild.id);
     var reason = args.slice(1).join(` `);
     var bhEmote = `<a:hammerglitched:459396837741297671>`;
@@ -18,29 +14,29 @@ module.exports.run = async (client, message, args) => {
 
     var toBan = await client.fetchUser(args[0]);
 
-    await modBase.create({
+    await message.guild.modbase.create({
       victim: toBan.id,
       moderator: message.author.id,
       type: `hackban`
     }).then(async info => {
-      if(reason) modBase.update({ reason: reason }, { where: {id: info.id }});
-      
+      if(reason) message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});
+
       var modEmbed = new Discord.RichEmbed()
         .setThumbnail(toBan.avatarURL)
         .setColor(`0x000000`)
         .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
         .addField(`Hackbanned User`, `${toBan.toString()} (${toBan.tag})`)
         .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`);
-      
+
       if(reason) modEmbed.addField(`Reason`, reason);
-      
+
       if(!client.config.debugMode) await message.guild.ban(toBan.id, {days: 2});
       await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
       await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Banned user \`${toBan.tag}\`**`);
 
     });
   } catch (e) {console.log(e);}
-  
+
 };
 
 exports.conf = {

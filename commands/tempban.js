@@ -5,10 +5,6 @@ const moment = require(`moment`);
 require(`moment-duration-format`);
 
 module.exports.run = async (client, message, args) => {
-  var modBase = await new Sequelize(`database`, `user`, `password`, {host: `localhost`,dialect: `sqlite`,storage: `databases/servers/${message.guild.id}.sqlite`});
-  modBase = await modBase.define(`moderation`, {victim: {type: Sequelize.STRING,allowNull: false},moderator: {type: Sequelize.STRING,allowNull: false},type: {type: Sequelize.STRING,allowNull: false},reason: Sequelize.STRING,duration: Sequelize.STRING});
-  await modBase.sync();
-
   var settings = client.settings.get(message.guild.id);
 
   var toBan = message.mentions.users.first();
@@ -28,14 +24,14 @@ module.exports.run = async (client, message, args) => {
 
   if(durationMs === 0) return message.channel.send(`:x: \`|\` ${bhEmote} **${duration} is not a valid duration!**`);
 
-  await modBase.create({
+  await message.guild.modbase.create({
     victim: toBan.id,
     moderator: message.author.id,
     type: `tempban`,
     duration: durationMs
   }).then(async info => {
     var dmMsg = `${bhEmote} **You were tempbanned from** \`${message.guild.name}\` ***for*** \`${durationHR}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
-      
+
     var modEmbed = new Discord.RichEmbed()
       .setThumbnail(toBan.avatarURL)
       .setColor(`0xFF0000`)
@@ -43,16 +39,16 @@ module.exports.run = async (client, message, args) => {
       .addField(`Tempbanned User`, `${toBan.toString()} (${toBan.tag})`)
       .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`)
       .addField(`Duration`, durationHR);
-      
-    if(reason) {dmMsg += `\n\n:gear: **Reason:** \`${reason}\``; modEmbed.addField(`Reason`, reason); modBase.update({ reason: reason }, { where: {id: info.id }});}
-      
+
+    if(reason) {dmMsg += `\n\n:gear: **Reason:** \`${reason}\``; modEmbed.addField(`Reason`, reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
+
     await toBan.send(dmMsg);
-    /* if(!client.config.debugMode) */ await message.guild.ban(toBan, {days: 1});
+    await message.guild.ban(toBan, {days: 1});
     await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
     await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Tempbanned user \`${toBan.tag}\` for \`${durationHR}\`**`);
 
     setTimeout(async () => {
-      const unbanInput = await modBase.create({
+      await message.guild.modbase.create({
         victim: toBan.id,
         moderator: client.user.id,
         type: `unban`,
@@ -65,8 +61,8 @@ module.exports.run = async (client, message, args) => {
           .addField(`User`, `${toBan.toString()} (${toBan.tag})`)
           .addField(`Moderator`, client.user.toString());
 
-        if(!reason) {modBase.update({ reason: `Tempban auto unban` }, { where: {id: info.id}}); await modEmbed.addField(`Reason`, `Tempban unban`);}
-        else {modBase.update({ reason: `${reason} | Tempban auto unban`}, { where: {id: info.id}}); await modEmbed.addField(`Reason`, `${reason} | Tempban auto unban`);}
+        if(!reason) {message.guild.modbase.update({ reason: `Tempban auto unban` }, { where: {id: info.id}}); await modEmbed.addField(`Reason`, `Tempban unban`);}
+        else {message.guild.modbase.update({ reason: `${reason} | Tempban auto unban`}, { where: {id: info.id}}); await modEmbed.addField(`Reason`, `${reason} | Tempban auto unban`);}
 
         await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
 

@@ -5,10 +5,6 @@ const moment = require(`moment`);
 require(`moment-duration-format`);
 
 module.exports.run = async (client, message, args) => {
-  var modBase = await new Sequelize(`database`, `user`, `password`, {host: `localhost`,dialect: `sqlite`,storage: `databases/servers/${message.guild.id}.sqlite`});
-  modBase = await modBase.define(`moderation`, {victim: {type: Sequelize.STRING,allowNull: false},moderator: {type: Sequelize.STRING,allowNull: false},type: {type: Sequelize.STRING,allowNull: false},reason: Sequelize.STRING,duration: Sequelize.STRING});
-  await modBase.sync();
-
   var settings = client.settings.get(message.guild.id);
   var role = message.guild.roles.find(`name`, `Muted`) || message.guild.roles.find(`name`, `muted`);
   var toMute = message.mentions.members.first();
@@ -25,7 +21,7 @@ module.exports.run = async (client, message, args) => {
   if(message.guild.me.highestRole.position < toMute.highestRole.position) return message.channel.send(`:x: \`|\` ${mutedEmote} **You need to move my role (${message.guild.me.highestRole.name}) above ${toMute.toString()}'s (${toMute.highestRole.name})!**`);
   if(toMute.roles.has(role.id)) return message.channel.send(`:x: \`|\` ${mutedEmote} **${toMute.toString()} is already muted!**`);
 
-  await modBase.create({
+  await message.guild.modbase.create({
     victim: toMute.id,
     moderator: message.author.id,
     type: `mute`,
@@ -41,7 +37,7 @@ module.exports.run = async (client, message, args) => {
       .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`)
       .addField(`Duration`, durationHR);
 
-    if(reason) {dmMsg += `\n\n:gear: **Reason \`${reason}\`**`; modEmbed.addField(`Reason`, reason); modBase.update({reason: reason}, {where: {id: info.id}});}
+    if(reason) {dmMsg += `\n\n:gear: **Reason \`${reason}\`**`; modEmbed.addField(`Reason`, reason); message.guild.modbase.update({reason: reason}, {where: {id: info.id}});}
 
     toMute.user.send(dmMsg);
     toMute.addRole(role);
@@ -49,10 +45,10 @@ module.exports.run = async (client, message, args) => {
     message.channel.send(`:white_check_mark: \`|\` ${mutedEmote} **Tempmuted user \`${toMute.user.tag}\` for \`${durationHR}\`**`);
 
     setTimeout(async () => {
-      await modBase.create({
+      await message.guild.modbase.create({
         victim: toMute.id,
         moderator: client.user.id,
-        type: `unban`,
+        type: `unmute`,
       }).then(async info => {
         modEmbed = new Discord.RichEmbed()
           .setThumbnail(toMute.avatarURL)
@@ -62,8 +58,8 @@ module.exports.run = async (client, message, args) => {
           .addField(`User`, `${toMute.toString()} (${toMute.user.tag})`)
           .addField(`Moderator`, client.user.toString());
 
-        if(!reason) {modBase.update({ reason: `Tempmute auto unmute` }, { where: {id: info.id}}); await modEmbed.addField(`Reason`, `Tempmute auto unmute`);}
-        else {modBase.update({ reason: `${reason} | Tempmute auto unmute`}, { where: {id: info.id}}); await modEmbed.addField(`Reason`, `${reason} | Tempmute auto unmute`);}
+        if(!reason) {message.guild.modbase.update({ reason: `Tempmute auto unmute` }, { where: {id: info.id}}); await modEmbed.addField(`Reason`, `Tempmute auto unmute`);}
+        else {message.guild.modbase.update({ reason: `${reason} | Tempmute auto unmute`}, { where: {id: info.id}}); await modEmbed.addField(`Reason`, `${reason} | Tempmute auto unmute`);}
 
         await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
 

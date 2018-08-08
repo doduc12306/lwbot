@@ -2,10 +2,6 @@ const Sequelize = require(`sequelize`);
 const Discord = require(`discord.js`);
 
 module.exports.run = async (client, message, args) => {
-  var modBase = await new Sequelize(`database`, `user`, `password`, {host: `localhost`,dialect: `sqlite`,storage: `databases/servers/${message.guild.id}.sqlite`});
-  modBase = await modBase.define(`moderation`, {victim: {type: Sequelize.STRING,allowNull: false},moderator: {type: Sequelize.STRING,allowNull: false},type: {type: Sequelize.STRING,allowNull: false},reason: Sequelize.STRING,duration: Sequelize.STRING});
-  await modBase.sync();
-
   var settings = client.settings.get(message.guild.id);
 
   var toBan = message.mentions.users.first();
@@ -20,14 +16,14 @@ module.exports.run = async (client, message, args) => {
   if(!message.member.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} **You are not in the voice channel!**`);
   if(!toBanM.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} ${toBan.toString()} **isn't in a voice channel!**`);
   if(!toBanM.voiceChannel === message.member.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} **You must be in the same voice channel as** ${toBan.toString()}`);
-  
-  await modBase.create({
+
+  await message.guild.modbase.create({
     victim: toBan.id,
     moderator: message.author.id,
     type: `voiceban`
   }).then(async info => {
     var dmMsg = `${vbEmote} **You were voicebanned from** \`${message.member.voiceChannel.name}\`, **in** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
-      
+
     var modEmbed = new Discord.RichEmbed()
       .setThumbnail(toBan.avatarURL)
       .setColor(`0xA80000`)
@@ -35,9 +31,9 @@ module.exports.run = async (client, message, args) => {
       .addField(`Voicebanned User`, `${toBan.toString()} (${toBan.tag})`)
       .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`)
       .addField(`Channel:`, message.member.voiceChannel.name);
-      
-    if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason); modBase.update({ reason: reason }, { where: {id: info.id }});}
-      
+
+    if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
+
     var vc = message.guild.createChannel('Voice Ban', 'voice');
     toBanM.setVoiceChannel(vc);
     message.member.voiceChannel.overwritePermissions(toBan, {CONNECT: false});
