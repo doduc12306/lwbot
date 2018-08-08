@@ -28,7 +28,9 @@ exports.run = async (client, message, args, level) => { // eslint-disable-line n
       }
     }
   } catch (error) {
-    message.channel.send(`The following error occured \`\`\`js\n${error.stack}\`\`\``);
+    error = `${error.stack}`;
+    error = error.split('\n');
+    message.channel.send(`:x: **An error occurred:** \`${error[0]}\`\n\`\`\`\n${error[1].trim()}\n\`\`\``);
   }
 
   function clean(text)  {
