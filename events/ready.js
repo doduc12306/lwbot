@@ -5,7 +5,7 @@ const sequelize = new Sequelize(`database`, `user`, `password`, {
   dialect: `sqlite`,
   logging: false,
   // SQLite only
-  storage: `database.sqlite`,
+  storage: `tags.sqlite`,
 });
 const Tags = sequelize.define(`tags`, {
   name: {
