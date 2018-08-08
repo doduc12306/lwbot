@@ -61,9 +61,8 @@ module.exports.run = async (client, message, args) => {
         if(!reason) {message.guild.modbase.update({ reason: `Tempmute auto unmute` }, { where: {id: info.id}}); await modEmbed.addField(`Reason`, `Tempmute auto unmute`);}
         else {message.guild.modbase.update({ reason: `${reason} | Tempmute auto unmute`}, { where: {id: info.id}}); await modEmbed.addField(`Reason`, `${reason} | Tempmute auto unmute`);}
 
-        await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
-
         toMute.removeRole(role);
+        message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
       });
     }, durationMs);
   });
