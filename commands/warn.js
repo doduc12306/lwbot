@@ -24,9 +24,9 @@ module.exports.run = async (client, message, args) => {
 
     if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
-    await toWarn.send(dmMsg);
-    await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
-    await message.channel.send(`:white_check_mark: \`|\` :warning: **Warned user ${toWarn.tag}**`);
+    toWarn.send(dmMsg);
+    message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
+    message.channel.send(`:white_check_mark: \`|\` :warning: **Warned user ${toWarn.tag}**`);
 
   });
 };
