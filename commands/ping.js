@@ -7,10 +7,10 @@ module.exports.run = (client, message) => {
   var ping2 = `${pings2[1]}ms`;
   var ping3 = `${pings2[2]}ms`;
   var pings = `${ping1}, ${ping2}, ${ping3}`;
-  
+
   message.channel.send(new Discord.RichEmbed()
     .addField(`:ping_pong: Ping`, `Pinging...`)
-    .addField(`left_right_arrow: Latency`, `Pinging...`)
+    .addField(`:left_right_arrow: Latency`, `Pinging...`)
     .addField(`:three: Last Three`, `Pinging...`)
     .setColor(54371)
   ).then(thismessage => {
@@ -29,7 +29,7 @@ exports.conf = {
   aliases: [],
   permLevel: `User`
 };
-  
+
 exports.help = {
   name: `ping`,
   category: `System`,
