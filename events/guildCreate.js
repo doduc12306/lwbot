@@ -53,6 +53,7 @@ module.exports = async (client, guild) => {
   guild.settings.create({key: 'welcomeChannel', value: 'welcome'});
   guild.settings.create({key: 'welcomeMessage', value: 'Welcome to the server, {{user}}!'});
   guild.settings.create({key: 'announcementChannel', value: 'announcements'});
+  guild.settings.create({key: 'botCommanderRole', value: 'Bot Commander'});
   guildTable.sync();
 
   if(!guild.me.permissions.has('SEND_MESSAGES')) guild.owner.send(':x: **CRITICAL PERMISSION MISSING:** \`Send Messages\` **WHICH EVERYTHING REQUIRES!**');
