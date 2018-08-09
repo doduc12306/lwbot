@@ -6,7 +6,7 @@ const config = {
   "admins": [],
 
   // Bot Support, level 8 by default. Array of user ID strings
-  "support": [],
+  "support": ['158272711146209281'],
 
   // Your Bot's Token. Available on https://discordapp.com/developers/applications/me
   "token": `Mzc3MjA1MzM5MzIzMzY3NDI1.Dar1YA.0AIexER1daemthd1bG84DJJPHKQ`,
