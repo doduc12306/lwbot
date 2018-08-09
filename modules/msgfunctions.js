@@ -124,6 +124,11 @@ module.exports = async (message) => {
   }, {timestamps: false});
   guildTable.sync();
 
+  /**
+   *
+   * @param {String} key The name of the setting to add
+   * @param {String} value The value of the setting
+   */
   message.guild.settings.add = (key, value) => {
     return new Promise((resolve, reject) => {
       if(!key) return reject(new Error('Missing key to add'));
@@ -142,6 +147,10 @@ module.exports = async (message) => {
     });
   }
 
+  /**
+   *
+   * @param {String} key The name of the setting to delete
+   */
   message.guild.settings.delete = key => {
     return new Promise((resolve, reject) => {
       if(!key) return reject(new Error('Missing key to delete'));
@@ -155,6 +164,11 @@ module.exports = async (message) => {
   }
   message.guild.settings.remove = key => message.guild.settings.delete(key);
 
+  /**
+   *
+   * @param {String} key The name of the setting to edit
+   * @param {String} newValue The new value of the setting
+   */
   message.guild.settings.edit = (key, newValue) => {
     return new Promise((resolve, reject) => {
       if(!key) return reject(new Error('Missing key to edit'));
@@ -171,6 +185,10 @@ module.exports = async (message) => {
   }
   message.guild.settings.set = (key, newValue) => message.guild.settings.edit(key, newValue);
 
+  /**
+   *
+   * @param {String} key The name of the key to get
+   */
   message.guild.settings.get = key => {
     return new Promise((resolve, reject) => {
       if(!key) return reject(new Error('Missing key to get'));
