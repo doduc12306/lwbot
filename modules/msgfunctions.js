@@ -28,17 +28,19 @@ module.exports = async (message) => {
    * @param {Integer} amount The amount of XP to add
    */
   message.guild.xp.add = (userID, amount) => {
-    message.guild.xp.findOne({where: {user: userID}}).then(async user => {
-      if(user === null) {
-        await message.guild.xp.create({user: userID, xp: 0});
-        await message.guild.xp.sync();
+    return new Promise((resolve, reject) => {
+      if(!userID) return reject(new Error('Missing userID to add xp'));
+      if(!amount) return reject(new Error('Missing amount to add xp'));
+      if(typeof userID !== 'string') return reject(new Error(`"${userID}" is not a string (must be an ID)`));
+      if(message.guild.members.get(userID) === undefined) return reject(new Error(`Could not find user "${userID}" to add xp to`));
+      if(typeof amount !== 'number') return reject(new Error(`"${amount}" is not a number`));
+
+      message.guild.xp.findOne({where: {user: userID}}).then(async user => {
+        if(user === null) {await message.guild.xp.create({user: userID, xp: 0}); message.guild.xp.sync();}
         await message.guild.xp.update({xp: user.xp + amount}, {where: {user: userID}});
         await message.guild.xp.sync();
-      }
-      else {
-        await message.guild.xp.update({xp: user.xp + amount}, {where: {user: userID}});
-        await message.guild.xp.sync();
-      }
+        return resolve(true);
+      });
     });
   }
 
@@ -48,16 +50,19 @@ module.exports = async (message) => {
    * @param {Integer} amount The amount of XP to subtract
    */
   message.guild.xp.subtract = (userID, amount) => {
-    message.guild.xp.findOne({where: {user: userID}}).then(async user => {
-      if(user === null) {
-        await message.guild.xp.create({user: userID, xp: 0});
-        await message.guild.xp.update({xp: user.xp - amount}, {where: {user: userID}});
-        message.guild.xp.sync();
-      }
-      else {
-        await message.guild.xp.update({xp: user.xp - amount}, {where: {user: userID}});
-        message.guild.xp.sync();
-      }
+    return new Promise((resolve, reject) => {
+      if (!userID) return reject(new Error('Missing userID to subtract xp'));
+      if (!amount) return reject(new Error('Missing amount to subtract xp'));
+      if (typeof userID !== 'string') return reject(new Error(`"${userID}" is not a string (must be an ID)`));
+      if (message.guild.members.get(userID) === undefined) return reject(new Error(`Could not find user "${userID}" to subtract xp from`));
+      if (typeof amount !== 'number') return reject(new Error(`"${amount}" is not a number`));
+
+      message.guild.xp.findOne({ where: { user: userID } }).then(async user => {
+        if (user === null) { await message.guild.xp.create({ user: userID, xp: 0 }); message.guild.xp.sync(); }
+        await message.guild.xp.update({ xp: user.xp - amount }, { where: { user: userID } });
+        await message.guild.xp.sync();
+        return resolve(true);
+      });
     });
   }
 
@@ -67,16 +72,19 @@ module.exports = async (message) => {
    * @param {Integer} amount The amount of XP to set
    */
   message.guild.xp.set = (userID, amount) => {
-    message.guild.xp.findOne({where: {user: userID}}).then(async user => {
-      if(user === null) {
-        await message.guild.xp.create({user: userID, xp: 0});
-        await message.guild.xp.update({xp: amount}, {where: {user: userID}});
-        message.guild.xp.sync();
-      }
-      else {
-        await message.guild.xp.update({xp: amount}, {where: {user: userID}});
-        message.guild.xp.sync();
-      }
+    return new Promise((resolve, reject) => {
+      if (!userID) return reject(new Error('Missing userID to set xp'));
+      if (!amount) return reject(new Error('Missing amount to set xp'));
+      if (typeof userID !== 'string') return reject(new Error(`"${userID}" is not a string (must be an ID)`));
+      if (message.guild.members.get(userID) === undefined) return reject(new Error(`Could not find user "${userID}" to set xp to`));
+      if (typeof amount !== 'number') return reject(new Error(`"${amount}" is not a number`));
+
+      message.guild.xp.findOne({ where: { user: userID } }).then(async user => {
+        if (user === null) { await message.guild.xp.create({ user: userID, xp: 0 }); message.guild.xp.sync(); }
+        await message.guild.xp.update({ xp: amount }, { where: { user: userID } });
+        await message.guild.xp.sync();
+        return resolve(true);
+      });
     });
   }
 
