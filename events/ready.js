@@ -167,7 +167,6 @@ module.exports = async client => {
         reaction.emoji.name === "🕹" ||
         reaction.emoji.name === "🎤" ||
         reaction.emoji.name === "😍" ||
-        reaction.emoji.name === "🤝" ||
         reaction.emoji.name === "✍" ||
         reaction.emoji.name === "🎨" ||
         reaction.emoji.name === "💜" ||
@@ -193,8 +192,6 @@ module.exports = async client => {
           toggleRole('455182908551069697');
         } else if (chosen === "😍") {
           toggleRole('458434931899498518');
-        } else if (chosen === "🤝") {
-          toggleRole('440974803940278293');
         } else if (chosen === "✍") {
           toggleRole('458436541694607361');
         } else if (chosen === "🎨") {
