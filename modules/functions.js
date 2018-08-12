@@ -8,7 +8,7 @@ module.exports = (client) => {
     logging: false,
     storage: `databases/bank.sqlite`
   });
-  
+
   client.bank = bank.define(`bank`, {
       user: {
         type: Sequelize.STRING,
@@ -73,8 +73,8 @@ module.exports = (client) => {
       });
     });
   };
-  
-  
+
+
   /*
   PERMISSION LEVEL FUNCTION
 
@@ -171,7 +171,7 @@ module.exports = (client) => {
       command = client.commands.get(client.aliases.get(commandName));
     }
     if (!command) return `The command \`${commandName}\` doesn't seem to exist, nor is it an alias. Try again!`;
-  
+
     if (command.shutdown) {
       await command.shutdown(client);
     }
@@ -180,18 +180,18 @@ module.exports = (client) => {
   };
 
   /* MISCELANEOUS NON-CRITICAL FUNCTIONS */
-  
+
   // EXTENDING NATIVE TYPES IS BAD PRACTICE. Why? Because if JavaScript adds this
   // later, this conflicts with native code. Also, if some other lib you use does
   // this, a conflict also occurs. KNOWING THIS however, the following 2 methods
-  // are, we feel, very useful in code. 
-  
-  // <String>.toPropercase() returns a proper-cased string such as: 
+  // are, we feel, very useful in code.
+
+  // <String>.toPropercase() returns a proper-cased string such as:
   // "Mary had a little lamb".toProperCase() returns "Mary Had A Little Lamb"
   String.prototype.toProperCase = function() {
     return this.replace(/([^\W_]+[^\s-]*) */g, function(txt) {return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
   };
-  
+
   // <Array>.random() returns a single random element from an array
   // [1, 2, 3, 4, 5].random() can return 1, 2, 3, 4 or 5.
   Array.prototype.random = function() {
@@ -211,4 +211,9 @@ module.exports = (client) => {
   process.on(`unhandledRejection`, err => {
     client.logger.error(`Unhandled rejection: ${err.stack}`);
   });
+
+  client.on('disconnect', () => client.logger.log('Client disconnected!', 'disconnect'));
+  client.on('reconnecting', () => client.logger.log('Reconnecting...', 'reconnecting'));
+  client.on('resume', replayed => client.logger.log(`Client resumed! Replayed ${replayed} events`, 'resume'));
+  client.on('warn', info => client.logger.warn(`Warning: "${info}"`));
 };
