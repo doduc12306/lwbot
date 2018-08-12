@@ -31,9 +31,9 @@ module.exports = async (message) => {
     return new Promise((resolve, reject) => {
       if(!userID) return reject(new Error('Missing userID to add xp'));
       if(!amount) return reject(new Error('Missing amount to add xp'));
-      if(typeof userID !== 'string') return reject(new Error(`"${userID}" is not a string (must be an ID)`));
+      if(typeof userID !== 'string') return reject(new TypeError(`"${userID}" is not a string (must be an ID)`));
       if(message.guild.members.get(userID) === undefined) return reject(new Error(`Could not find user "${userID}" to add xp to`));
-      if(typeof amount !== 'number') return reject(new Error(`"${amount}" is not a number`));
+      if(typeof amount !== 'number') return reject(new TypeError(`"${amount}" is not a number`));
 
       message.guild.xp.findOne({where: {user: userID}}).then(async user => {
         if(user === null) {await message.guild.xp.create({user: userID, xp: 0}); message.guild.xp.sync();}
@@ -53,9 +53,9 @@ module.exports = async (message) => {
     return new Promise((resolve, reject) => {
       if (!userID) return reject(new Error('Missing userID to subtract xp'));
       if (!amount) return reject(new Error('Missing amount to subtract xp'));
-      if (typeof userID !== 'string') return reject(new Error(`"${userID}" is not a string (must be an ID)`));
+      if (typeof userID !== 'string') return reject(new TypeError(`"${userID}" is not a string (must be an ID)`));
       if (message.guild.members.get(userID) === undefined) return reject(new Error(`Could not find user "${userID}" to subtract xp from`));
-      if (typeof amount !== 'number') return reject(new Error(`"${amount}" is not a number`));
+      if (typeof amount !== 'number') return reject(new TypeError(`"${amount}" is not a number`));
 
       message.guild.xp.findOne({ where: { user: userID } }).then(async user => {
         if (user === null) { await message.guild.xp.create({ user: userID, xp: 0 }); message.guild.xp.sync(); }
@@ -75,9 +75,9 @@ module.exports = async (message) => {
     return new Promise((resolve, reject) => {
       if (!userID) return reject(new Error('Missing userID to set xp'));
       if (!amount) return reject(new Error('Missing amount to set xp'));
-      if (typeof userID !== 'string') return reject(new Error(`"${userID}" is not a string (must be an ID)`));
+      if (typeof userID !== 'string') return reject(new TypeError(`"${userID}" is not a string (must be an ID)`));
       if (message.guild.members.get(userID) === undefined) return reject(new Error(`Could not find user "${userID}" to set xp to`));
-      if (typeof amount !== 'number') return reject(new Error(`"${amount}" is not a number`));
+      if (typeof amount !== 'number') return reject(new TypeError(`"${amount}" is not a number`));
 
       message.guild.xp.findOne({ where: { user: userID } }).then(async user => {
         if (user === null) { await message.guild.xp.create({ user: userID, xp: 0 }); message.guild.xp.sync(); }
@@ -141,8 +141,8 @@ module.exports = async (message) => {
     return new Promise((resolve, reject) => {
       if(!key) return reject(new Error('Missing key to add'));
       if(!value) return reject(new Error('Missing value to add'));
-      if(typeof key !== 'string') return reject(new Error(`"${key}" is not a string`));
-      if(typeof value !== 'string') return reject(new Error(`"${value}" is not a string`));
+      if(typeof key !== 'string') return reject(new TypeError(`"${key}" is not a string`));
+      if(typeof value !== 'string') return reject(new TypeError(`"${value}" is not a string`));
       if(key.includes(' ')) return reject(new Error(`"${key}" must be one word`));
 
       message.guild.settings.create({key: key, value: value})
@@ -162,7 +162,7 @@ module.exports = async (message) => {
   message.guild.settings.delete = key => {
     return new Promise((resolve, reject) => {
       if(!key) return reject(new Error('Missing key to delete'));
-      if(typeof key !== 'string') return reject(new Error(`"${key}" is not a string`));
+      if(typeof key !== 'string') return reject(new TypeError(`"${key}" is not a string`));
       message.guild.settings.findOne({where: {key: key}}).then(data => {
         if(data === null) return reject(new Error(`The key "${key}" does not exist to delete`));
         message.guild.settings.destroy({where: {key: key}});
@@ -181,8 +181,8 @@ module.exports = async (message) => {
     return new Promise((resolve, reject) => {
       if(!key) return reject(new Error('Missing key to edit'));
       if(!newValue) return reject(new Error('Missing value to edit'));
-      if(typeof key !== 'string') return reject(new Error(`"${key}" is not a string`));
-      if(typeof newValue !== 'string') return reject(new Error(`"${newValue}" is not a string`));
+      if(typeof key !== 'string') return reject(new TypeError(`"${key}" is not a string`));
+      if(typeof newValue !== 'string') return reject(new TypeError(`"${newValue}" is not a string`));
 
       message.guild.settings.findOne({where: {key: key}}).then(data => {
         if(data === null) return reject(new Error(`The key "${key}" does not exist to edit`));
@@ -200,7 +200,7 @@ module.exports = async (message) => {
   message.guild.settings.get = key => {
     return new Promise((resolve, reject) => {
       if(!key) return reject(new Error('Missing key to get'));
-      if(typeof key !== 'string') return reject(new Error(`"${key}" is not a string`));
+      if(typeof key !== 'string') return reject(new TypeError(`"${key}" is not a string`));
 
       message.guild.settings.findOne({where: {key: key}}).then(data => {
         if(data === null) return reject(new Error(`"${key}" does not exist to get`));
