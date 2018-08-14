@@ -24,8 +24,8 @@ module.exports = (client, message) => {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-
-  message.guild.xp.add(message.author.id, getRandomIntInclusive(0, 2));
+  console.log(getRandomIntInclusive(0, 2));
+  //message.guild.xp.add(message.author.id, getRandomIntInclusive(0, 2));
 
   if(message.content.includes('kidnaps <@377205339323367425>')) {
     message.channel.startTyping();

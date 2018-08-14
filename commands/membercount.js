@@ -9,13 +9,14 @@ module.exports.run = async (client, message, args) => { // eslint-disable-line n
   var offline = message.guild.members.filter(member => !member.user.bot).filter(g => g.user.presence.status === `offline`).size;
   var streaming = message.guild.members.filter(member => !member.user.bot).filter(g => g.user.presence.streaming).size;
 
-  message.channel.send(new Discord.RichEmbed()
+  var embed = new Discord.RichEmbed()
     .addField(`Total Users`, message.guild.memberCount, true)
     .addField(`Bots`, bots, true)
     .addField(`Humans`, message.guild.memberCount-bots, true)
     .addField(`Status`, `<:online:450674128777904149> **Online:** ${online}\n<:idle:450674222176403456> **Idle:** ${idle}\n<:dnd:450674354163023882> **Do Not Disturb:** ${dnd}\n<:offline:450674445670154240> **Offline:** ${offline}\n<:streaming:450674542717698058> **Streaming:** ${streaming}`)
-    .setColor(`0x59D851`)
-  );
+    .setColor(`0x59D851`);
+
+  message.channel.send(embed);
 };
 
 exports.conf = {
