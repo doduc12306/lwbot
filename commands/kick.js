@@ -30,7 +30,7 @@ module.exports.run = async (client, message, args) => {
     if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
     await toKick.send(dmMsg);
-    if(!client.config.debugMode) await toKickM.kick(toKick);
+    await toKickM.kick(toKick);
     await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
     await message.channel.send(`:white_check_mark: \`|\` :boot: **Kicked user \`${toKick.tag}\`**`);
 
