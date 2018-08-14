@@ -8,7 +8,7 @@ module.exports.run = (client, message, args) => { // eslint-disable-line no-unus
   var fighters = [];
 
   fighters.push(`<@${message.author.id}>`);
-  fighters.push(`<@${message.mentions.users.first().id}`);
+  fighters.push(`<@${message.mentions.users.first().id}>`);
 
   const member = message.mentions.members.first();
   if (!member) return message.channel.send(`${message.author.username} is fighting no one${randomElement(Fstrings)}`);
@@ -18,7 +18,7 @@ module.exports.run = (client, message, args) => { // eslint-disable-line no-unus
     var winner = fighters.randomElement(fighters);
     message.channel.send(`:trophy: **${winner} WON** :trophy:`);
   }, 2000);
-    
+
 };
 
 exports.conf = {
