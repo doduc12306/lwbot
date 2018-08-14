@@ -39,7 +39,7 @@ module.exports.run = (client, message, args) => {
       .join(' ')
       .trim();
 
-    if(roles.length > 1024) embed.addField('Roles', `Too long. ${user.toString()} has ${userM.roles.map(g => g.toString()).size} roles.`, true);
+    if(roles.length > 1024) embed.addField('Roles', `${userM.roles.map(g => g.toString()).size} roles.`, true);
     else embed.addField('Roles', roles, true);
   }
 
