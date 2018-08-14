@@ -24,16 +24,7 @@ module.exports = (client, message) => {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-  console.log(getRandomIntInclusive(0, 2));
-  //message.guild.xp.add(message.author.id, getRandomIntInclusive(0, 2));
-
-  if(message.content.includes('kidnaps <@377205339323367425>')) {
-    message.channel.startTyping();
-    setTimeout(() =>{
-      message.channel.send('uwu yes kidnap me senpai \\*nuzzles*');
-      message.channel.stopTyping(true);
-    }, 4500);
-  }
+  message.guild.xp.add(message.author.id, getRandomIntInclusive(1, 3));
 
   if (message.content.indexOf(settings.prefix) !== 0) return;
   const args = message.content.slice(settings.prefix.length).trim().split(/ +/g);
