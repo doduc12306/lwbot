@@ -33,7 +33,7 @@ const config = {
     "botCommanderRole": `Bot Commander`
   },
 
-  "debugMode": true,
+  "debugMode": false,
 
   // COLORS
   colors: {
