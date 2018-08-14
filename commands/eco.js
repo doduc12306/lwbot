@@ -4,7 +4,7 @@ module.exports.run = async (client, message, args) => {
   var type = args[0];
   if(!['add', 'subtract', 'set', 'get'].includes(type)) return message.channel.send(':x: \`|\` :bank: **Please say what you would like to do:** \`add\` \`subtract\` \`set\` \`get\` ');
 
-  var user = message.author || message.mentions.users.first();
+  var user = message.mentions.users.first() ? message.mentions.users.first() : message.author;
   var amount = args[1];
 
   if(type === 'add'){
