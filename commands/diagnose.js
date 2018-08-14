@@ -2,7 +2,7 @@ const Discord = require(`discord.js`);
 
 module.exports.run = (client, message, args) => {
   var command = client.commands.get(args[0]);
-  
+
   var embed = new Discord.RichEmbed()
     .addField(command.help.name, `Enabled: ${command.conf.enabled}`);
 

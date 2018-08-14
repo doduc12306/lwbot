@@ -6,7 +6,7 @@ const sequelize = new Sequelize(`database`, `user`, `password`, {
   // SQLite only
   storage: `tags.sqlite`,
 });
-    
+
 const Tags = sequelize.define(`tags`, {
   name: {
     type: Sequelize.STRING,
@@ -25,7 +25,7 @@ module.exports.run = async (client, message, args) => {
   const tagName = args;
   const rowCount = await Tags.destroy({ where: { name: tagName } });
   if (!rowCount) return message.reply(`That tag did not exist.`);
-    
+
   return message.reply(`Tag deleted.`);
 };
 
