@@ -31,8 +31,8 @@ module.exports.run = async (client, message, args) => {
     if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
     await toBan.send(dmMsg);
-    if(!client.config.debugMode) await message.guild.ban(toBan, {days: 2});
-    if(!client.config.debugMode) await message.guild.unban(toBan);
+    await message.guild.ban(toBan, {days: 2});
+    await message.guild.unban(toBan);
     await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
     await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Softbanned user \`${toBan.tag}\`**`);
 
