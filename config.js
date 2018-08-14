@@ -26,14 +26,14 @@ const config = {
     "modRole": `Mods`,
     "adminRole": `Admins`,
     "systemNotice": `true`, // This gives a notice when a user tries to run a command that they do not have permission to use.
-    "welcomeEnabled": false,
+    "welcomeEnabled": `false`,
     "welcomeChannel": 'welcome',
-    "welcomeMessage": "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
+    "welcomeMessage": "Welcome to the server, {{user}}!",
     "announcementsChannel": `announcements`,
     "botCommanderRole": `Bot Commander`
   },
 
-  "debugMode": false,
+  "debugMode": true,
 
   // COLORS
   colors: {

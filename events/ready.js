@@ -71,7 +71,7 @@ module.exports = async client => {
     [`at the mall`, {type: `PLAYING`}],
     [`at home`, {type: `PLAYING`}],
     [`on the couch`, {type: `PLAYING`}],
-    [`?¿`, {type: `PLAYING`}],
+    [`?Âż`, {type: `PLAYING`}],
     [`devil's advocate`, {type: `PLAYING`}],
     [`Poker`, {type: `PLAYING`}],
     [`MS Paint`, {type: `PLAYING`}],
@@ -96,7 +96,7 @@ module.exports = async client => {
   ];
 
   // Both `wait` and `client.log` are in `./modules/functions`.
-  client.logger.log(`[READY] ${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, `ready`);
+  client.logger.log(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, `ready`);
 
   // We check for any guilds added while the bot was offline, if any were, they get a default configuration.
   client.guilds.filter(g => !client.settings.has(g.id)).forEach(g => client.settings.set(g.id, client.config.defaultSettings));
@@ -122,13 +122,13 @@ module.exports = async client => {
   genre.fetchMessage('466280999760953355')
   .then(async msg => {
       const collector = msg.createReactionCollector((reaction, user) =>
-        reaction.emoji.name === "⚔" ||
-        reaction.emoji.name === "💪" ||
-        reaction.emoji.name === "❤" ||
-        reaction.emoji.name === "👻" ||
-        reaction.emoji.name === "🏀" ||
-        reaction.emoji.name === "📔" ||
-        reaction.emoji.name === "🤣"
+        reaction.emoji.name === "â" ||
+        reaction.emoji.name === "đŞ" ||
+        reaction.emoji.name === "â¤" ||
+        reaction.emoji.name === "đť" ||
+        reaction.emoji.name === "đ" ||
+        reaction.emoji.name === "đ" ||
+        reaction.emoji.name === "đ¤Ł"
       )
       collector.on("collect", reaction => {
         const chosen = reaction.emoji.name;
@@ -140,19 +140,19 @@ module.exports = async client => {
           else member.removeRole(role);
         }
 
-        if(chosen === "⚔") {
+        if(chosen === "â") {
           toggleRole('444346550760636417');
-        } else if(chosen === "💪") {
+        } else if(chosen === "đŞ") {
           toggleRole('444396478446829568');
-        } else if(chosen === "❤") {
+        } else if(chosen === "â¤") {
           toggleRole('444346546142838784');
-        } else if(chosen === "👻") {
+        } else if(chosen === "đť") {
           toggleRole('444346749390159872');
-        } else if(chosen === "🏀"){
+        } else if(chosen === "đ"){
           toggleRole('444346752976551936');
-        } else if(chosen === "📔") {
+        } else if(chosen === "đ") {
           toggleRole('444346756159766536');
-        } else if(chosen === "🤣") {
+        } else if(chosen === "đ¤Ł") {
           toggleRole('444347123769802754');
         }
       });
@@ -162,15 +162,15 @@ module.exports = async client => {
   ping.fetchMessage('466281139418693633')
     .then(async msg => {
       const collector = msg.createReactionCollector((reaction, user) =>
-        reaction.emoji.name === "📌" ||
-        reaction.emoji.name === "🍿" ||
-        reaction.emoji.name === "🕹" ||
-        reaction.emoji.name === "🎤" ||
-        reaction.emoji.name === "😍" ||
-        reaction.emoji.name === "✍" ||
-        reaction.emoji.name === "🎨" ||
-        reaction.emoji.name === "💜" ||
-        reaction.emoji.name === "📝"
+        reaction.emoji.name === "đ" ||
+        reaction.emoji.name === "đż" ||
+        reaction.emoji.name === "đš" ||
+        reaction.emoji.name === "đ¤" ||
+        reaction.emoji.name === "đ" ||
+        reaction.emoji.name === "â" ||
+        reaction.emoji.name === "đ¨" ||
+        reaction.emoji.name === "đ" ||
+        reaction.emoji.name === "đ"
       )
       collector.on("collect", reaction => {
         const chosen = reaction.emoji.name;
@@ -182,23 +182,23 @@ module.exports = async client => {
           else member.removeRole(role);
         }
 
-        if (chosen === "📌") {
+        if (chosen === "đ") {
           toggleRole('432633011515949067');
-        } else if (chosen === "🍿") {
+        } else if (chosen === "đż") {
           toggleRole('440974703062941696');
-        } else if (chosen === "🕹") {
+        } else if (chosen === "đš") {
           toggleRole('440974647975215125');
-        } else if (chosen === "🎤") {
+        } else if (chosen === "đ¤") {
           toggleRole('455182908551069697');
-        } else if (chosen === "😍") {
+        } else if (chosen === "đ") {
           toggleRole('458434931899498518');
-        } else if (chosen === "✍") {
+        } else if (chosen === "â") {
           toggleRole('458436541694607361');
-        } else if (chosen === "🎨") {
+        } else if (chosen === "đ¨") {
           toggleRole('458436569662226442');
-        } else if (chosen === "💜") {
+        } else if (chosen === "đ") {
           toggleRole('442896867307683842');
-        } else if (chosen === "📝") {
+        } else if (chosen === "đ") {
           toggleRole('453294003002015744');
         }
       });
@@ -208,20 +208,20 @@ var misc = client.channels.get('444375656139063296');
 misc.fetchMessage('467164172153782283')
 .then(async msg => {
         const collector = msg.createReactionCollector((reaction, user) =>
-        reaction.emoji.name === "📩" ||
-        reaction.emoji.name === "⛔️" ||
-        reaction.emoji.name === "❓" ||
-        reaction.emoji.name === "💻" ||
-        reaction.emoji.name === "🎮" ||
-        reaction.emoji.name === "💚" ||
-        reaction.emoji.name === "✌️" ||
-        reaction.emoji.name === "🎥" ||
-        reaction.emoji.name === "👁" ||
-        reaction.emoji.name === "📓" ||
-        reaction.emoji.name === "📘" ||
-        reaction.emoji.name === "📕" ||
-        reaction.emoji.name === "📗" ||
-        reaction.emoji.name === "📙"
+        reaction.emoji.name === "đŠ" ||
+        reaction.emoji.name === "âď¸" ||
+        reaction.emoji.name === "â" ||
+        reaction.emoji.name === "đť" ||
+        reaction.emoji.name === "đŽ" ||
+        reaction.emoji.name === "đ" ||
+        reaction.emoji.name === "âď¸" ||
+        reaction.emoji.name === "đĽ" ||
+        reaction.emoji.name === "đ" ||
+        reaction.emoji.name === "đ" ||
+        reaction.emoji.name === "đ" ||
+        reaction.emoji.name === "đ" ||
+        reaction.emoji.name === "đ" ||
+        reaction.emoji.name === "đ"
       )
       collector.on("collect", reaction => {
         const chosen = reaction.emoji.name;
@@ -233,33 +233,33 @@ misc.fetchMessage('467164172153782283')
           else member.removeRole(role);
         }
 
-        if(chosen === "📩") {
+        if(chosen === "đŠ") {
           toggleRole('444347837560520704');
-        } else if(chosen === "⛔️") {
+        } else if(chosen === "âď¸") {
           toggleRole('444347835060846612');
-        } else if(chosen === "❓") {
+        } else if(chosen === "â") {
           toggleRole('444347831864524800');
-        } else if(chosen === "💻") {
+        } else if(chosen === "đť") {
           toggleRole('444347838235672596');
-        } else if(chosen === "🎮"){
+        } else if(chosen === "đŽ"){
           toggleRole('444347839091572736');
-        } else if(chosen === "💚") {
+        } else if(chosen === "đ") {
           toggleRole('444348193568718849');
-        } else if(chosen === "✌️") {
+        } else if(chosen === "âď¸") {
           toggleRole('444348188975955969');
-        } else if(chosen === "🎥"){
+        } else if(chosen === "đĽ"){
           toggleRole('444348190771380226');
-        } else if(chosen === "👁"){
+        } else if(chosen === "đ"){
           toggleRole('444390328158650388');
-        } else if(chosen === "📓"){
+        } else if(chosen === "đ"){
           toggleRole('444340936286273538');
-        } else if(chosen === "📘"){
+        } else if(chosen === "đ"){
           toggleRole('444291891899662346');
-        } else if(chosen === "📕"){
+        } else if(chosen === "đ"){
           toggleRole('444291781031493633');
-        } else if(chosen === "📗"){
+        } else if(chosen === "đ"){
           toggleRole('444346408670330890');
-        } else if(chosen === "📙"){
+        } else if(chosen === "đ"){
           toggleRole('444340936286273538');
         }
       });
