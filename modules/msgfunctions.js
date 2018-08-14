@@ -2,6 +2,9 @@ const Sequelize = require('sequelize');
 
 module.exports = async (message) => {
 
+  if(message.channel.type === 'dm') return;
+  // FROM HERE IS GUILD SUPPORT. PUT ALL THINGS THAT DONT REQUIRE A GUILD ABOVE THIS
+
   // XP support
   var guildTable = new Sequelize('database', 'user', 'password', {
     host: 'localhost',
