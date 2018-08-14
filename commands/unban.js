@@ -28,7 +28,7 @@ module.exports.run = async (client, message, args) => {
 
       if(reason) {modEmbed.addField(`Reason`, reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
-      if(!client.config.debugMode) await message.guild.unban(toUnban.id);
+      await message.guild.unban(toUnban.id);
       await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
       await message.channel.send(`:white_check_mark: \`|\` ${unBanHammer} **Unbanned user \`${toUnban.tag}\`**`);
 
