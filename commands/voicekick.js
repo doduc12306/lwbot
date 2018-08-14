@@ -12,9 +12,9 @@ module.exports.run = async (client, message, args) => {
   if(!message.guild.me.permissions.has(`MANAGE_CHANNELS`)) return message.channel.send(`:x: \`|\` :boot: **I am missing permissions:** \`Manage Channels\` `);
   if(!message.member.permissions.has(`KICK_MEMBERS`)) return message.channel.send(`:x: \`|\` :boot: **You are missing permissions:** \`Kick Members\``);
   if(!toKick) return message.channel.send(`:x: \`|\` :boot: **You didn't mention someone to voicekick!**`);
-  if(!message.member.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} **You are not in the voice channel!**`);
-  if(!toKickM.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} ${toKick.toString()} **isn't in a voice channel!**`);
-  if(!toKickM.voiceChannel === message.member.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} **You must be in the same voice channel as** ${toKick.toString()}`);
+  if(!message.member.voiceChannel) return message.channel.send(`:x: \`|\` :boot: **You are not in the voice channel!**`);
+  if(!toKickM.voiceChannel) return message.channel.send(`:x: \`|\` :boot: ${toKick.toString()} **isn't in a voice channel!**`);
+  if(!toKickM.voiceChannel === message.member.voiceChannel) return message.channel.send(`:x: \`|\` :boot: **You must be in the same voice channel as** ${toKick.toString()}`);
 
   await message.guild.modbase.create({
     victim: toKick.id,
@@ -33,9 +33,9 @@ module.exports.run = async (client, message, args) => {
 
     if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
-    var vc = message.guild.createChannel('Voice Kick', 'voice');
-    toKickM.setVoiceChannel(vc);
-    vc.delete();
+    var vc = await message.guild.createChannel('Voice Kick', 'voice');
+    await toKickM.setVoiceChannel(vc);
+    await vc.delete();
     toKick.send(dmMsg);
     message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
     await message.channel.send(`:white_check_mark: \`|\` :boot: **Voicekicked user \`${toKick.tag}\`**`);

@@ -34,10 +34,10 @@ module.exports.run = async (client, message, args) => {
 
     if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField(`Reason`, reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
-    var vc = message.guild.createChannel('Voice Ban', 'voice');
-    toBanM.setVoiceChannel(vc);
-    message.member.voiceChannel.overwritePermissions(toBan, {CONNECT: false});
-    vc.delete();
+    var vc = await message.guild.createChannel('Voice Ban', 'voice');
+    await toBanM.setVoiceChannel(vc);
+    await message.member.voiceChannel.overwritePermissions(toBan, {CONNECT: false});
+    await vc.delete();
     toBan.send(dmMsg);
     message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
     await message.channel.send(`:white_check_mark: \`|\` ${vbEmote} **Voicebanned user \`${toBan.tag}\`**`);
