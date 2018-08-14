@@ -1,6 +1,6 @@
-{ 
+{
   "embeds":[
-    { 
+    {
       "author": {
         "name": "New Updates!",
         "url": "http://www.webtoons.com/",
@@ -11,24 +11,24 @@
       "footer": {
         "icon_url": "https://cdn.discordapp.com/avatars/107599228900999168/a_e34bb445fb6935d9806736c584f4cf91.gif",
         "text": "Monday | Created by Akii"
-      },  
+      },
       "fields":[
-        { 
+        {
           "name":":herb: Slice of Life:",
           "value":"[Lorna](https://www.webtoons.com/en/slice-of-life/lorna/list?title_no=1284)\n[Lunarbaboon](https://www.webtoons.com/en/slice-of-life/lunarbaboon/list?title_no=523)\n[A Budgie's Life](https://www.webtoons.com/en/slice-of-life/its-a-budgies-life/list?title_no=985)\n[Cat Loaf Adventures](https://www.webtoons.com/en/slice-of-life/cat-loaf-adventures/list?title_no=1381)\n[My Giant Nerd Boyfriend](https://www.webtoons.com/en/slice-of-life/my-giant-nerd-boyfriend/list?title_no=958)",
           "inline":true
         },
-        { 
+        {
           "name":":performing_arts: Drama:",
-          "value":"None for today!",
+          "value":"[Odd Girl Out](https://www.webtoons.com/en/drama/odd-girl-out/list?title_no=1420)",
           "inline":true
         },
-        { 
+        {
           "name":":clapper: Action:",
           "value":"None for today!",
           "inline":true
         },
-        { 
+        {
          "name":":joy: Comedy:",
          "value":"[As Per Usual](http://www.webtoons.com/en/comedy/as-per-usual/list?title_no=599)\n[dustinteractive](https://www.webtoons.com/en/comedy/dustinteractive/list?title_no=907)\n[Safely Endangered](https://www.webtoons.com/en/comedy/safely-endangered/list?title_no=352)\n[CARL](https://www.webtoons.com/en/comedy/carl/list?title_no=1216)",
          "inline": true
@@ -39,15 +39,15 @@
          "inline": true
         },
         { "name": ":sparkles: Fantasy:",
-          "value": "[Trump](https://www.webtoons.com/en/fantasy/trump/list?title_no=84)\n[Kubera](https://www.webtoons.com/en/fantasy/kubera/list?title_no=83)\n[Messenger](https://www.webtoons.com/en/fantasy/messenger/list?title_no=1382)\n[Room of Swords](https://www.webtoons.com/en/fantasy/room-of-swords/list?title_no=1261)\n[Tower of God](https://www.webtoons.com/en/fantasy/tower-of-god/list?title_no=95)",
+          "value": "[Trump](https://www.webtoons.com/en/fantasy/trump/list?title_no=84)\n[Kubera](https://www.webtoons.com/en/fantasy/kubera/list?title_no=83)\n[Messenger](https://www.webtoons.com/en/fantasy/messenger/list?title_no=1382)\n[Room of Swords](https://www.webtoons.com/en/fantasy/room-of-swords/list?title_no=1261)\n[Tower of God](https://www.webtoons.com/en/fantasy/tower-of-god/list?title_no=95)\n[EMPYREA](https://www.webtoons.com/en/fantasy/empyrea/list?title_no=1407)",
           "inline": true
         },
-        { 
+        {
           "name": ":question: Other:",
           "value": "[HIVE](http://www.webtoons.com/en/thriller/hive/list?title_no=65)\n[Wind Breaker](https://www.webtoons.com/en/sports/wind-breaker/list?title_no=372)\n[Aerial Magic](https://www.webtoons.com/en/heartwarming/aerial-magic/list?title_no=1358)\n[Big Jo](https://www.webtoons.com/en/heartwarming/big-jo/list?title_no=854)\n[Sweet Home](https://www.webtoons.com/en/thriller/sweethome/list?title_no=1285)",
           "inline": true
-        } 
-      ] 
-    } 
-  ] 
+        }
+      ]
+    }
+  ]
 }

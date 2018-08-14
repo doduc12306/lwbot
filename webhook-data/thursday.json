@@ -1,6 +1,6 @@
-{ 
+{
   "embeds":[
-    { 
+    {
       "author": {
         "name": "New Updates!",
         "url": "http://www.webtoons.com/",
@@ -11,24 +11,24 @@
       "footer": {
         "icon_url": "https://cdn.discordapp.com/avatars/107599228900999168/a_e34bb445fb6935d9806736c584f4cf91.gif",
         "text": "Thursday | Created by Akii"
-      },  
+      },
       "fields":[
-        { 
+        {
           "name":":herb: Slice of Life:",
-          "value":"[Doodle for Food](https://www.webtoons.com/en/slice-of-life/doodle-for-food/list?title_no=487)\n[Just for Kicks](https://www.webtoons.com/en/slice-of-life/just-for-kicks/list?title_no=1152)\n[Waffles & Pancakes](https://www.webtoons.com/en/slice-of-life/waffles-and-pancakes/list?title_no=1310)\n[My Name is Benny](https://www.webtoons.com/en/slice-of-life/my-name-is-benny/list?title_no=1279)\n[Murrz](https://www.webtoons.com/en/slice-of-life/murrz/list?title_no=1281)",
+          "value":"[Doodle for Food](https://www.webtoons.com/en/slice-of-life/doodle-for-food/list?title_no=487)\n[Just for Kicks](https://www.webtoons.com/en/slice-of-life/just-for-kicks/list?title_no=1152)\n[Waffles & Pancakes](https://www.webtoons.com/en/slice-of-life/waffles-and-pancakes/list?title_no=1310)\n[My Name is Benny](https://www.webtoons.com/en/slice-of-life/my-name-is-benny/list?title_no=1279)\n[Murrz](https://www.webtoons.com/en/slice-of-life/murrz/list?title_no=1281)\n[BOO! It's Sex](https://www.webtoons.com/en/slice-of-life/boo-its-sex/list?title_no=1413)",
           "inline":true
         },
-        { 
+        {
           "name":":performing_arts: Drama:",
-          "value":"[Live Forever](https://www.webtoons.com/en/drama/live-forever/list?title_no=1312)\n[Space Boy](https://www.webtoons.com/en/drama/space-boy/list?title_no=400)",
+          "value":"[Live Forever](https://www.webtoons.com/en/drama/live-forever/list?title_no=1312)\n[Space Boy](https://www.webtoons.com/en/drama/space-boy/list?title_no=400)\n[Odd Girl Out](https://www.webtoons.com/en/drama/odd-girl-out/list?title_no=1420)",
           "inline":true
         },
-        { 
+        {
           "name":":clapper: Action:",
           "value":"[1000](https://www.webtoons.com/en/action/one-thousand/list?title_no=1217)",
           "inline":true
         },
-        { 
+        {
          "name":":joy: Comedy:",
          "value":"[Bluechair](https://www.webtoons.com/en/comedy/bluechair/list?title_no=199)\n[Behind the GIFs](https://www.webtoons.com/en/comedy/behind-the-gifs/list?title_no=658)\n[As Per Usual](https://www.webtoons.com/en/comedy/as-per-usual/list?title_no=599)\n[My Dictator Boyfriend](https://www.webtoons.com/en/comedy/my-dictator-boyfriend/list?title_no=1391)\n[Safely Endangered](https://www.webtoons.com/en/comedy/safely-endangered/list?title_no=352)",
          "inline": true
@@ -42,12 +42,12 @@
           "value": "[Firebrand](https://www.webtoons.com/en/fantasy/firebrand/list?title_no=877)\n[Mirror](https://www.webtoons.com/en/fantasy/mirror/list?title_no=868)\n[UnderPrin](https://www.webtoons.com/en/fantasy/underprin/list?title_no=78)\n[Catharsis](https://www.webtoons.com/en/fantasy/catharsis/list?title_no=396)\n[Winter Moon](https://www.webtoons.com/en/fantasy/winter-moon/list?title_no=1093)\n[Refind High School](https://www.webtoons.com/en/fantasy/refundhighschool/list?title_no=1360)\n[unOrdinary](https://www.webtoons.com/en/fantasy/unordinary/list?title_no=679)",
           "inline": true
         },
-        { 
+        {
           "name": ":question: Other:",
           "value": "[Dents](https://www.webtoons.com/en/sf/dents/list?title_no=671)\n[Denma](https://www.webtoons.com/en/sf/denma/list?title_no=9210)\n[Melvina's Therapy](https://www.webtoons.com/en/horror/melvinas-therapy/list?title_no=1021)",
           "inline": true
-        } 
-      ] 
-    } 
-  ] 
+        }
+      ]
+    }
+  ]
 }

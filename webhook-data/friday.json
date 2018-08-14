@@ -1,6 +1,6 @@
-{ 
+{
   "embeds":[
-    { 
+    {
       "author": {
         "name": "New Updates!",
         "url": "http://www.webtoons.com/",
@@ -11,24 +11,24 @@
       "footer": {
         "icon_url": "https://cdn.discordapp.com/avatars/107599228900999168/a_e34bb445fb6935d9806736c584f4cf91.gif",
         "text": "Friday | Created by Akii"
-      },  
+      },
       "fields":[
-        { 
+        {
           "name":":herb: Slice of Life:",
           "value":"[Lunarbaboon](https://www.webtoons.com/en/slice-of-life/lunarbaboon/list?title_no=523)\n[Doodle for Food](https://www.webtoons.com/en/slice-of-life/doodle-for-food/list?title_no=487)\n[Small World](https://www.webtoons.com/en/slice-of-life/small-world/list?title_no=1159)\n[My Giant Nerd Boyfriend](https://www.webtoons.com/en/slice-of-life/my-giant-nerd-boyfriend/list?title_no=958)",
           "inline":true
         },
-        { 
+        {
           "name":":performing_arts: Drama:",
-          "value":"[#Blessed](https://www.webtoons.com/en/drama/blessed/list?title_no=1193)\n[Shard](https://www.webtoons.com/en/drama/shard/list?title_no=960)",
+          "value":"[#Blessed](https://www.webtoons.com/en/drama/blessed/list?title_no=1193)\n[Shard](https://www.webtoons.com/en/drama/shard/list?title_no=960)\n[Odd Girl Out](https://www.webtoons.com/en/drama/odd-girl-out/list?title_no=1420)",
           "inline":true
         },
-        { 
+        {
           "name":":clapper: Action:",
           "value":"[Hardcore Leveling Warrior](https://www.webtoons.com/en/action/hardcore-leveling-warrior/list?title_no=1221)\n[God of High School](https://www.webtoons.com/en/action/the-god-of-high-school/list?title_no=66)",
           "inline":true
         },
-        { 
+        {
          "name":":joy: Comedy:",
          "value":"[The Sound of Your Heart](https://www.webtoons.com/en/comedy/the-sound-of-your-heart/list?title_no=269)\n[Behind the GIFs](https://www.webtoons.com/en/comedy/behind-the-gifs/list?title_no=658)\n[dustinteractive](https://www.webtoons.com/en/comedy/dustinteractive/list?title_no=907)\n[Boyfriend of the Dead](https://www.webtoons.com/en/comedy/boyfriend-of-the-dead/list?title_no=1102)",
          "inline": true
@@ -42,12 +42,12 @@
           "value": "[The Strange Tales of Oscar Zahn](https://www.webtoons.com/en/fantasy/the-strange-tales-of-oscar-zahn/list?title_no=685)\n[Spirits](https://www.webtoons.com/en/fantasy/spirits-re/list?title_no=1348)\n[I Don't Want This Kind of Hero](https://www.webtoons.com/en/fantasy/i-dont-want-this-kind-of-hero/list?title_no=98)\n[Newman](https://www.webtoons.com/en/fantasy/newman/list?title_no=405)\n[Hooky](https://www.webtoons.com/en/fantasy/hooky/list?title_no=425)\n[Athena Complex](https://www.webtoons.com/en/fantasy/athena-complex/list?title_no=867)\n[The Gamer](https://www.webtoons.com/en/fantasy/the-gamer/list?title_no=88)\n[Phantom Paradise](https://www.webtoons.com/en/fantasy/phantom-paradise/list?title_no=1250)\n[April Flowers](https://www.webtoons.com/en/fantasy/april-flowers/list?title_no=1363)",
           "inline": true
         },
-        { 
+        {
           "name": ":question: Other:",
           "value": "[Denma](https://www.webtoons.com/en/sf/denma/list?title_no=921)\n[Nano List](https://www.webtoons.com/en/sf/nano-list/list?title_no=700)",
           "inline": true
-        } 
-      ] 
-    } 
-  ] 
+        }
+      ]
+    }
+  ]
 }

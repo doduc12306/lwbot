@@ -1,6 +1,6 @@
-{ 
+{
   "embeds":[
-    { 
+    {
       "author": {
         "name": "New Updates!",
         "url": "http://www.webtoons.com/",
@@ -11,24 +11,24 @@
       "footer": {
         "icon_url": "https://cdn.discordapp.com/avatars/107599228900999168/a_e34bb445fb6935d9806736c584f4cf91.gif",
         "text": "Wednesday | Created by Akii"
-      },  
+      },
       "fields":[
-        { 
+        {
           "name":":herb: Slice of Life:",
           "value":"[My Name is Benny](https://www.webtoons.com/en/slice-of-life/my-name-is-benny/list?title_no=1279)\n[My Giant Nerd Boyfriend](https://www.webtoons.com/en/slice-of-life/my-giant-nerd-boyfriend/list?title_no=958)",
           "inline":true
         },
-        { 
+        {
           "name":":performing_arts: Drama:",
-          "value":"[The World Where I Belong](https://www.webtoons.com/en/drama/the-world-where-i-belong/list?title_no=1318)\n[A Good Day to be a Dog](https://www.webtoons.com/en/drama/a-good-day-tobe-a-dog/list?title_no=1390)\n[Gourmet Hound](https://www.webtoons.com/en/drama/gourmet-hound/list?title_no=1245)",
+          "value":"[The World Where I Belong](https://www.webtoons.com/en/drama/the-world-where-i-belong/list?title_no=1318)\n[A Good Day to be a Dog](https://www.webtoons.com/en/drama/a-good-day-tobe-a-dog/list?title_no=1390)\n[Gourmet Hound](https://www.webtoons.com/en/drama/gourmet-hound/list?title_no=1245)\n[True Beauty](https://www.webtoons.com/en/drama/truebeauty/list?title_no=1436)\n[Odd Girl Out](https://www.webtoons.com/en/drama/odd-girl-out/list?title_no=1420)",
           "inline":true
         },
-        { 
+        {
           "name":":clapper: Action:",
           "value":"[Darbi](https://www.webtoons.com/en/action/darbi/list?title_no=1098)",
           "inline":true
         },
-        { 
+        {
          "name":":joy: Comedy:",
          "value":"[Behind the GIFs](https://www.webtoons.com/en/comedy/behind-the-gifs/list?title_no=658)\n[dustineractive](https://www.webtoons.com/en/comedy/dustinteractive/list?title_no=907)\n[Safely Endangered](https://www.webtoons.com/en/comedy/safely-endangered/list?title_no=352)",
          "inline": true
@@ -39,15 +39,15 @@
          "inline": true
         },
         { "name": ":sparkles: Fantasy:",
-          "value": "[Sword Interval](https://www.webtoons.com/en/fantasy/sword-interval/list?title_no=486)\n[Elf & Warrior](https://www.webtoons.com/en/fantasy/elf-and-warrior/list?title_no=908)\n[The Steam Dragon Express](https://www.webtoons.com/en/fantasy/steam-dragon-express/list?title_no=1270)\n[Rise from Ashes](https://www.webtoons.com/en/fantasy/rise-from-ashes/list?title_no=959)\n[DICE](https://www.webtoons.com/en/fantasy/dice/list?title_no=64)",
+          "value": "[Sword Interval](https://www.webtoons.com/en/fantasy/sword-interval/list?title_no=486)\n[Elf & Warrior](https://www.webtoons.com/en/fantasy/elf-and-warrior/list?title_no=908)\n[The Steam Dragon Express](https://www.webtoons.com/en/fantasy/steam-dragon-express/list?title_no=1270)\n[Rise from Ashes](https://www.webtoons.com/en/fantasy/rise-from-ashes/list?title_no=959)\n[DICE](https://www.webtoons.com/en/fantasy/dice/list?title_no=64)\n[Rebirth](https://www.webtoons.com/en/fantasy/rebirth/list?title_no=1412)",
           "inline": true
         },
-        { 
+        {
           "name": ":question: Other:",
           "value": "[Tales of the Unusual](https://www.webtoons.com/en/thriller/tales-of-the-unusual/list?title_no=68)\n[Cyberbunk](https://www.webtoons.com/en/sf/cyberbunk/list?title_no=466)\n[War Cry](https://www.webtoons.com/en/super-hero/war-cry/list?title_no=1247)\n[Denma](https://www.webtoons.com/en/sf/denma/list?title_no=921)\n[XINK3R](https://www.webtoons.com/en/super-hero/xinker/list?title_no=541)\n[Moon You](https://www.webtoons.com/en/sf/moonyou/list?title_no=1340)",
           "inline": true
-        } 
-      ] 
-    } 
-  ] 
+        }
+      ]
+    }
+  ]
 }

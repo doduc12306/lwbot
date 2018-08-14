@@ -1,6 +1,6 @@
-{ 
+{
   "embeds":[
-    { 
+    {
       "author": {
         "name": "New Updates!",
         "url": "http://www.webtoons.com/",
@@ -11,24 +11,24 @@
       "footer": {
         "icon_url": "https://cdn.discordapp.com/avatars/107599228900999168/a_e34bb445fb6935d9806736c584f4cf91.gif",
         "text": "Sunday | Created by Akii"
-      },  
+      },
       "fields":[
-        { 
+        {
           "name":":herb: Slice of Life:",
           "value":"[Average Adventures of an Average Girl](https://www.webtoons.com/en/slice-of-life/average-adventures-of-an-average-girl/list?title_no=401)\n[Lorna](https://www.webtoons.com/en/slice-of-life/lorna/list?title_no=1284)\n[A Budgie's Life](https://www.webtoons.com/en/slice-of-life/its-a-budgies-life/list?title_no=985)\n[Saphie: The One-Eyed Cat](https://www.webtoons.com/en/slice-of-life/saphie-one-eyed-cat/list?title_no=670)\n[Cat Loaf Adventures](https://www.webtoons.com/en/slice-of-life/cat-loaf-adventures/list?title_no=1381)\n[Small World](https://www.webtoons.com/en/slice-of-life/small-world/list?title_no=1159)",
           "inline":true
         },
-        { 
+        {
           "name":":performing_arts: Drama:",
-          "value":"[Gourmet Hound](https://www.webtoons.com/en/drama/gourmet-hound/list?title_no=1245)\n[Lookism](https://www.webtoons.com/en/drama/lookism/list?title_no=1049)\n[LUMINE](https://www.webtoons.com/en/drama/lumine/list?title_no=1022)",
+          "value":"[Gourmet Hound](https://www.webtoons.com/en/drama/gourmet-hound/list?title_no=1245)\n[Lookism](https://www.webtoons.com/en/drama/lookism/list?title_no=1049)\n[LUMINE](https://www.webtoons.com/en/drama/lumine/list?title_no=1022)\n[Odd Girl Out](https://www.webtoons.com/en/drama/odd-girl-out/list?title_no=1420)",
           "inline":true
         },
-        { 
+        {
           "name":":clapper: Action:",
           "value":"[GOSU](https://www.webtoons.com/en/action/gosu/list?title_no=1099)",
           "inline":true
         },
-        { 
+        {
          "name":":joy: Comedy:",
          "value":"[Live with Yourself!](https://www.webtoons.com/en/comedy/live-with-yourself/list?title_no=919)\n[New Normal: Class 8](https://www.webtoons.com/en/comedy/new-normal-class-8/list?title_no=100)\n[HAPI BUNI](https://www.webtoons.com/en/comedy/hapi-buni/list?title_no=362)\n[My Dictator Boyfriend](https://www.webtoons.com/en/comedy/my-dictator-boyfriend/list?title_no=1391)",
          "inline": true
@@ -42,12 +42,12 @@
           "value": "[Magician](https://www.webtoons.com/en/fantasy/magician/list?title_no=70)\n[Refund High School](https://www.webtoons.com/en/fantasy/refundhighschool/list?title_no=1360)",
           "inline": true
         },
-        { 
+        {
           "name": ":question: Other:",
           "value": "[Demna](https://www.webtoons.com/en/sf/denma/list?title_no=921)\n[Ghost Teller](https://www.webtoons.com/en/horror/ghost-teller/list?title_no=1307)",
           "inline": true
-        } 
-      ] 
-    } 
-  ] 
+        }
+      ]
+    }
+  ]
 }

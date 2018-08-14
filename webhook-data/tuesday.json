@@ -1,6 +1,6 @@
-{ 
+{
   "embeds":[
-    { 
+    {
       "author": {
         "name": "New Updates!",
         "url": "http://www.webtoons.com/",
@@ -11,24 +11,24 @@
       "footer": {
         "icon_url": "https://cdn.discordapp.com/avatars/107599228900999168/a_e34bb445fb6935d9806736c584f4cf91.gif",
         "text": "Tuesday | Created by Akii"
-      },  
+      },
       "fields":[
-        { 
+        {
           "name":":herb: Slice of Life:",
-          "value":"[Bluechair](https://www.webtoons.com/en/comedy/bluechair/list?title_no=199)\n[Lunarbaboon](https://www.webtoons.com/en/slice-of-life/lunarbaboon/list?title_no=523)\n[Girls Have a Blog](https://www.webtoons.com/en/slice-of-life/girls-have-a-blog/list?title_no=1052)\n[A Budgie's Life](https://www.webtoons.com/en/slice-of-life/its-a-budgies-life/list?title_no=985)\n[Waffles & Pancakes](https://www.webtoons.com/en/slice-of-life/waffles-and-pancakes/list?title_no=1310)\n[Small World](https://www.webtoons.com/en/slice-of-life/small-world/list?title_no=1159)\n[Murrz](https://www.webtoons.com/en/slice-of-life/murrz/list?title_no=1281)",
+          "value":"[Bluechair](https://www.webtoons.com/en/comedy/bluechair/list?title_no=199)\n[Lunarbaboon](https://www.webtoons.com/en/slice-of-life/lunarbaboon/list?title_no=523)\n[Girls Have a Blog](https://www.webtoons.com/en/slice-of-life/girls-have-a-blog/list?title_no=1052)\n[A Budgie's Life](https://www.webtoons.com/en/slice-of-life/its-a-budgies-life/list?title_no=985)\n[Waffles & Pancakes](https://www.webtoons.com/en/slice-of-life/waffles-and-pancakes/list?title_no=1310)\n[Small World](https://www.webtoons.com/en/slice-of-life/small-world/list?title_no=1159)\n[Murrz](https://www.webtoons.com/en/slice-of-life/murrz/list?title_no=1281)\n[BOO! It's Sex](https://www.webtoons.com/en/slice-of-life/boo-its-sex/list?title_no=1413)",
           "inline":true
         },
-        { 
+        {
           "name":":performing_arts: Drama:",
-          "value":"[Haxor](https://www.webtoons.com/en/drama/haxor/list?title_no=1325)\n[Bite Me](https://www.webtoons.com/en/drama/bite-me/list?title_no=1019)",
+          "value":"[Haxor](https://www.webtoons.com/en/drama/haxor/list?title_no=1325)\n[Bite Me](https://www.webtoons.com/en/drama/bite-me/list?title_no=1019)\n[Watermelon](https://www.webtoons.com/en/drama/watermelon/list?title_no=1435)\n[Odd Girl Out](https://www.webtoons.com/en/drama/odd-girl-out/list?title_no=1420)",
           "inline":true
         },
-        { 
+        {
           "name":":clapper: Action:",
           "value":"[Harcore Leveling Warrior](https://www.webtoons.com/en/action/hardcore-leveling-warrior/list?title_no=1221)",
           "inline":true
         },
-        { 
+        {
          "name":":joy: Comedy:",
          "value":"[The Sound of Your Heart](https://www.webtoons.com/en/comedy/the-sound-of-your-heart/list?title_no=269)\n[Trash Bird](https://www.webtoons.com/en/comedy/trash-bird/list?title_no=473)\n[Behind the GIFs](https://www.webtoons.com/en/comedy/behind-the-gifs/list?title_no=658)\n[CARL](https://www.webtoons.com/en/comedy/carl/list?title_no=1216)\n[Adventures of God](https://www.webtoons.com/en/comedy/adventures-of-god/list?title_no=853)\n[Boyfriend of the Dead](https://www.webtoons.com/en/comedy/boyfriend-of-the-dead/list?title_no=1102)",
          "inline": true
@@ -42,12 +42,12 @@
           "value": "[Nothing Special](https://www.webtoons.com/en/fantasy/nothing-special/list?title_no=1188)\n[Noblesse](https://www.webtoons.com/en/fantasy/noblesse/list?title_no=87)\n[Winter Moon](https://www.webtoons.com/en/fantasy/winter-moon/list?title_no=1093)",
           "inline": true
         },
-        { 
+        {
           "name": ":question: Other:",
-          "value": "[Supersonic Girl](https://www.webtoons.com/en/super-hero/supersonic-girl/list?title_no=633)",
+          "value": "[Supersonic Girl](https://www.webtoons.com/en/super-hero/supersonic-girl/list?title_no=633)\n[Lavender Jack](https://www.webtoons.com/en/thriller/lavender-jack/list?title_no=1410)",
           "inline": true
-        } 
-      ] 
-    } 
-  ] 
+        }
+      ]
+    }
+  ]
 }
