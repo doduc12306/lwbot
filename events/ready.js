@@ -133,7 +133,7 @@ module.exports = async client => {
       collector.on("collect", reaction => {
         const chosen = reaction.emoji.name;
         var member = reaction.users.last().id
-        member = message.guild.members.get(member);
+        member = member.guild.members.get(member);
 
         function toggleRole(role) {
           if (!member.roles.has(role)) member.addRole(role);
@@ -175,7 +175,7 @@ module.exports = async client => {
       collector.on("collect", reaction => {
         const chosen = reaction.emoji.name;
         var member = reaction.users.last().id
-        member = message.guild.members.get(member);
+        member = member.guild.members.get(member);
 
         function toggleRole(role) {
           if (!member.roles.has(role)) member.addRole(role);
@@ -226,7 +226,7 @@ var misc = client.channels.get('444375656139063296');
     collector.on("collect", reaction => {
       const chosen = reaction.emoji.name;
       var member = reaction.users.last().id
-      member = message.guild.members.get(member);
+      member = member.guild.members.get(member);
 
       function toggleRole(role) {
         if (!member.roles.has(role)) member.addRole(role);
