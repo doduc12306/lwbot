@@ -24,7 +24,7 @@ module.exports = (client, message) => {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-  if(message.channel.type !== 'dm') message.guild.xp.add(message.author.id, getRandomIntInclusive(1, 3));
+  if(message.channel.type !== 'dm') message.guild.xp.add(message.author.id, getRandomIntInclusive(1, 2));
 
   if (message.content.indexOf(settings.prefix) !== 0) return;
   const args = message.content.slice(settings.prefix.length).trim().split(/ +/g);
