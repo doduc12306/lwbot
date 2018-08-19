@@ -39,7 +39,7 @@ module.exports = async (message) => {
       if(typeof amount !== 'number') return reject(new TypeError(`"${amount}" is not a number`));
 
       message.guild.xp.findOne({where: {user: userID}}).then(async user => {
-        if(user === null) {await message.guild.xp.create({user: userID, xp: 0}); message.guild.xp.sync();}
+        if(user === null) {await message.guild.xp.create({user: userID, xp: 0}); await message.guild.xp.sync();}
         await message.guild.xp.update({xp: user.xp + amount}, {where: {user: userID}});
         await message.guild.xp.sync();
         return resolve(true);
