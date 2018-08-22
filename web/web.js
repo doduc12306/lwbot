@@ -5,6 +5,7 @@ const config = require('../config.js');
 var snek = require('snekfetch');
 
 app.use(express.static('assets'));
+app.use('/favicons', express.static('favicons'));
 
 app.listen(8080, () => console.log('Website listening on port 8080!')); // Actually supposed to be port 80 but for testing purposes it's on 8080 (since my fucking ISP blocked 80)
 
