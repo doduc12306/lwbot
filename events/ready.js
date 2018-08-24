@@ -119,7 +119,7 @@ module.exports = async client => {
   // Support for the role menus for Webtoon Central
 
   var genre = client.channels.get('444375693728546816');
-  genre.fetchMessage('466280999760953355')
+  genre.fetchMessage('482382597259788288')
     .then(async msg => {
       const collector = msg.createReactionCollector((reaction, user) =>
         reaction.emoji.name === "⚔" ||
@@ -159,7 +159,7 @@ module.exports = async client => {
     });
 
   var ping = client.channels.get('440974386544115713')
-  ping.fetchMessage('477523198179672075')
+  ping.fetchMessage('482382755574054955')
     .then(async msg => {
       const collector = msg.createReactionCollector((reaction, user) =>
         reaction.emoji.name === "📌" ||
@@ -205,7 +205,7 @@ module.exports = async client => {
     });
 
 var misc = client.channels.get('444375656139063296');
-  misc.fetchMessage('477524238111080458')
+  misc.fetchMessage('482382767351660545')
   .then(async msg => {
     const collector = msg.createReactionCollector((reaction, user) =>
       reaction.emoji.name === "📩" ||
