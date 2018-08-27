@@ -12,12 +12,14 @@ module.exports.run = (client, message, args) => { // eslint-disable-line no-unus
 
   const member = message.mentions.members.first();
   if (!member) return message.channel.send(`${message.author.username} is fighting no one${randomElement(Fstrings)}`);
+  if(message.author === message.mentions.users.first()) return message.channel.send(`${message.author.username} is fighting themselves${randomElement(Fstrings)}`);
+  if(message.mentions.users.first().bot) return message.channel.send(`${message.author.username} is fighting ${member}${randomElement(Fstrings)}`);
   message.channel.send(`${message.author.username} is fighting ${member}${randomElement(Fstrings)}`);
 
   setTimeout(() => {
     var winner = fighters.randomElement(fighters);
     message.channel.send(`:trophy: **${winner} WON** :trophy:`);
-  }, 2000);
+  }, 1500);
 
 };
 
