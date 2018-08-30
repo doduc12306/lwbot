@@ -80,18 +80,18 @@ module.exports = async client => {
     [`with Quimchee`, {type: `PLAYING`}],
     [`with Chris McCoy @ Safely Endangered`, {type: `PLAYING`}],
     [` `, {type: `PLAYING`}],
-    [`nothing. Why do you care?? ugh`, {type: `PLAYING`}],
+    [`nothing.. b-baka!! (???* ) Why do you care?? Hmph! (/??*)??`, {type: `PLAYING`}],
 
     /* Watching */
     [`Netflix`, {type: `WATCHING`}],
     [`you`, {type: `WATCHING`}],
     [`you sleep`, {type: `WATCHING`}],
-    [`nothing. Why do you care?? ugh`, {type: `WATCHING`}],
+    [`nothing.. b-baka!! (???* ) Why do you care?? Hmph! (/??*)??`, {type: `WATCHING`}],
 
     /* Listening to */
     [`Spotify`, {type: `LISTENING`}],
     [`your conversations-- I mean what`, {type: `LISTENING`}],
-    [`nothing. Why do you care?? ugh`, {type: `LISTENING`}]
+    [`nothing.. b-baka!! (???* ) Why do you care?? Hmph! (/??*)??`, {type: `LISTENING`}]
 
   ];
 
