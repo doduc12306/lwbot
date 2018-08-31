@@ -186,11 +186,18 @@ module.exports = (client) => {
   // this, a conflict also occurs. KNOWING THIS however, the following 2 methods
   // are, we feel, very useful in code.
 
-  // <String>.toPropercase() returns a proper-cased string such as:
+  // <String>.toProperCase() returns a proper-cased string such as:
   // "Mary had a little lamb".toProperCase() returns "Mary Had A Little Lamb"
   String.prototype.toProperCase = function() {
     return this.replace(/([^\W_]+[^\s-]*) */g, function(txt) {return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
   };
+
+  // <String>.replaceAll() returns a string that replaces all of a specific text, for example:
+  // "Welcome to the server, {{user}}! Please have a fun time here, {{user}}!" returns "server, @User! ... here, @User!"
+  String.prototype.replaceAll = function (search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, `g`), replacement);
+  }
 
   // <Array>.random() returns a single random element from an array
   // [1, 2, 3, 4, 5].random() can return 1, 2, 3, 4 or 5.
