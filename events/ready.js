@@ -58,7 +58,14 @@ module.exports = async client => {
     [`[status]`, {type: `PLAYING`}],
     [`[object Object]`, {type: `PLAYING`}],
     [`against the clock`, {type: `PLAYING`}],
+    ['Error 301: Moved Permanently', {type: 'PLAYING'}],
+    ['Error 400: Bad Request', {type: 'PLAYING'}],
     [`Error 403: Forbidden`, {type: `PLAYING`}],
+    ['Error 404: Not Found', {type: 'PLAYING'}],
+    ['Error 418: I\'m a teapot', {type: 'PLAYING'}],
+    ['Error 500: Internal Server Error', {type: 'PLAYING'}],
+    ['Error 502: Bad Gateway', {type: 'PLAYING'}],
+    ['Error 503: Service Unavailble', {type: 'PLAYING'}],
     [`with your ships`, {type: `PLAYING`}],
     [`Monopoly`, {type: `PLAYING`}],
     [`with life in a box`, {type: `PLAYING`}],
@@ -95,7 +102,6 @@ module.exports = async client => {
 
   ];
 
-  // Both `wait` and `client.log` are in `./modules/functions`.
   client.logger.log(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, `ready`);
 
   // We check for any guilds added while the bot was offline, if any were, they get a default configuration.
