@@ -22,7 +22,7 @@
       ],
       "quotes": [
         "warn",
-        "backtick"
+        "single"
       ],
       "semi": [
         "warn",
@@ -43,12 +43,10 @@
         }
       ],
       "prefer-const": [
-        "error", {
+        "warn", {
           "destructuring": "any",
           "ignoreReadBeforeAssign": false
         }
-      ], 
-      "no-unused-vars": "off",
-      "no-fallthrough": "off"
+      ]
     }
   }
