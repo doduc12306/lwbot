@@ -10,7 +10,7 @@ exports.run = (client, message, args, level) => { // eslint-disable-line no-unus
     .addField(`Uptime`, moment.duration(client.uptime).format(`M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]`))
     .addField(`Discord.js`, `v${version}`)
     .addField(`Node`, process.version)
-    .setColor(`0x59D851`)
+    .setColor(client.config.colors.green)
   );
 };
 
