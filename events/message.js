@@ -27,7 +27,7 @@ module.exports = async (client, message) => {
   const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
   // using this const varName = thing OR otherthing; is a pretty efficient
   // and clean way to grab one of 2 values!
-  if (!cmd) return;
+  if (!cmd) return message.channel.send(`:x: That isn't one of my commands! Try ${prefix}help`)
 
   // Some commands may not be useable in DMs. This check prevents those commands from running
   // and return a friendly error message.
