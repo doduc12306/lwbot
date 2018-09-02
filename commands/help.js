@@ -10,28 +10,27 @@ const Discord = require(`discord.js`);
 exports.run = async (client, message, args, level) => {
   // If no specific command is called, show all filtered commands.
   if (!args[0]) {
-    // Load guild settings (for prefixes and eventually per-guild tweaks)
-    const settings = message.guild ? client.settings.get(message.guild.id) : client.config.defaultSettings;
+    const prefix = message.guild ? await message.guild.settings.get('prefix') : client.config.defaultSettings.prefix;
 
     // Filter all commands by which are available for the user's level, using the <Collection>.filter() method.
     const myCommands = message.guild ? client.commands.filter(cmd => client.levelCache[cmd.conf.permLevel] <= level) : client.commands.filter(cmd => client.levelCache[cmd.conf.permLevel] <= level &&  cmd.conf.guildOnly !== true);
-    
+
     // Here we have to get the command names only, and we use that array to get the longest name.
     // This make the help commands "aligned" in the output.
     const commandNames = myCommands.keyArray();
     const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
-    
+
     let currentCategory = ``;
-    let output = `[Use ${settings.prefix}help <commandname> for details]\n`;
-    const sorted = myCommands.array().sort((p, c) => 
+    let output = `[Use ${prefix}help <commandname> for details]\n`;
+    const sorted = myCommands.array().sort((p, c) =>
       p.help.category > c.help.category ? 1 : p.help.name > c.help.name && p.help.category === c.help.category ? 1 : -1 );
-    sorted.forEach( c => {
+    sorted.forEach(c => {
       const cat = c.help.category;
       if (currentCategory !== cat) {
         output += `\u200b\n== ${cat} ==\n`;
         currentCategory = cat;
       }
-      output += `${settings.prefix}${c.help.name}${` `.repeat(longest - c.help.name.length)} :: ${c.help.description}\n`;
+      output += `${prefix}${c.help.name}${` `.repeat(longest - c.help.name.length)} :: ${c.help.description}\n`;
     });
     await message.react(`✅`);
     await message.author.send(output, {code: `asciidoc`, split: true});
@@ -47,14 +46,14 @@ exports.run = async (client, message, args, level) => {
         .setDescription(`${command.help.category} | ${command.help.description}`)
         .addField(`Usage`, command.help.usage)
         .addField(`Perm Level`, command.conf.permLevel)
-        .setColor(`0x59D851`)
+        .setColor(client.config.colors.green)
         .setFooter(`All <arguments> are required · All [arguments] are optional`);
 
       if(command.conf.aliases.join(', ')) cmdEmbed.addField(`Aliases`, command.conf.aliases.join(`, `));
 
       message.channel.send(cmdEmbed);
 
-    } else {message.channel.send(`:x: I couldn't find the command ${command}! (Try running ${client.settings.get(message.guild.id).prefix}diagnose ${command})`);}
+    } else {message.channel.send(`:x: I couldn't find the command ${command}!`);}
   }
 };
 
