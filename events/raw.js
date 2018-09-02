@@ -1,5 +1,6 @@
 module.exports = async (client, packet) => {
   if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
+  if(client.config.debugMode) return;
   packet = packet.d;
 
   var genreChannel = client.channels.get('444375693728546816');
