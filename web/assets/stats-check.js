@@ -35,7 +35,7 @@ checkClient.on('ready', async () => {
         playing_parent_ele.removeChild(playing_game_ele);
       }
   }
-  else {
+  else { // see i love this cuz im fucking creating elements out of ☆ ･*。thin air ☆ ･*。
       var parent = document.getElementById('parent');
       var etr = document.getElementById('cont1');
       var footer = document.getElementById('footer');
