@@ -12,7 +12,13 @@ module.exports = async (client, message) => {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-  if(message.channel.type !== 'dm') message.guild.xp.add(message.author.id, getRandomIntInclusive(1, 2));
+  if(message.channel.type !== 'dm') {
+    if(!client.xpLockSet.has(message.author.id)) {
+      message.guild.xp.add(message.author.id, getRandomIntInclusive(1, 2));
+      client.xpLockSet.add(message.author.id);
+      setTimeout(() => client.xpLockSet.delete(message.author.id), 60000);
+    }
+  }
 
   var prefix = message.guild ? await message.guild.settings.get('prefix') : client.config.defaultSettings.prefix;
   if (message.content.indexOf(prefix) !== 0) return;
