@@ -208,6 +208,8 @@ module.exports = (client) => {
   // `await client.wait(1000);` to "pause" for 1 second.
   client.wait = require(`util`).promisify(setTimeout);
 
+  client.xpLockSet = new Set();
+
   // These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
   process.on(`uncaughtException`, (err) => {
     const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, `g`), `./`);
