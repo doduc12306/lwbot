@@ -25,7 +25,6 @@ module.exports = async client => {
   // Why await here? Because the ready event isn't actually ready, sometimes
   // guild information will come in *after* ready. 1s is plenty, generally,
   // for all of them to be loaded.
-  await client.wait(1000);
 
   var playings = [
 
@@ -99,13 +98,7 @@ module.exports = async client => {
     [`Spotify`, {type: `LISTENING`}],
     [`your conversations-- I mean what`, {type: `LISTENING`}],
     [`nothing.. b-baka!! (つω⊂* ) Why do you care?? Hmph! (/□＼*)・゜`, {type: `LISTENING`}]
-
   ];
-
-  client.logger.log(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, `ready`);
-
-  // We check for any guilds added while the bot was offline, if any were, they get a default configuration.
-  client.guilds.filter(g => !client.settings.has(g.id)).forEach(g => client.settings.set(g.id, client.config.defaultSettings));
 
   Tags.sync();
 
@@ -117,8 +110,7 @@ module.exports = async client => {
     var randomPl = playings.randomElement(playings);
     client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
   }, 60000);
-
-  setInterval(() => {
-    client.channels.get(`447132033173422090`).bulkDelete(1);
-  }, 8.64e+7);
+  
+  await client.wait(1000);
+  client.logger.log(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, `ready`);
 };
