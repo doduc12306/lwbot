@@ -20,9 +20,15 @@ module.exports = async (message) => {
     },
     xp: {
       type: Sequelize.INTEGER,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 0
+    },
+    level: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      defaultValue: 0
     }
-  });
+  }, {timestamps: false});
   message.guild.xp.sync();
 
   /**
@@ -212,5 +218,9 @@ module.exports = async (message) => {
       });
     });
   }
+
+  // XP Leveling sequence
+
+
 
 };
