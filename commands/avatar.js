@@ -1,4 +1,8 @@
-module.exports.run = (client, message, args) => message.channel.send(`Avatar for **${message.mentions.users.first() ? message.mentions.users.first().tag : message.author.tag}**`, {files: [message.mentions.users.first() ? message.mentions.users.first().avatarURL.split('?size')[0] : message.author.avatarURL.split('?size')[0]]});
+module.exports.run = (client, message) => {
+  var user = message.mentions.users.first() ? message.mentions.users.first() : message.author;
+  var userAvatar = user.avatarURL.split('?size=')[0];
+  message.channel.send(`Avatar for **${user.tag}**`, {files: [userAvatar]});
+};
 
 exports.conf = {
   enabled: true,
