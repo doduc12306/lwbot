@@ -15,25 +15,6 @@ module.exports = async (client, guild) => {
     storage: `databases/servers/${guild.id}.sqlite`
   });
 
-  // Modbase initialization
-  modBase = guildTable.define(`moderation`, {
-    victim: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    moderator: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    type: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    reason: Sequelize.STRING,
-    duration: Sequelize.STRING
-  });
-  guildTable.sync();
-
   // Guild settings intialization
   guild.settings = await guildTable.define('settings', {
     key: {
