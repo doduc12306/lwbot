@@ -4,6 +4,7 @@ exports.run = async (client, message, args) => {// eslint-disable-line no-unused
   if(args[0] === 'shutdown') {
     message.channel.send(':white_check_mark: | :stop_sign: **Shutting down...**');
     require('child_process').exec('pm2 stop LWBot');
+    process.exit();
   }
 
   if(args[0] === 'restart' || args[0] === 'reboot') {
