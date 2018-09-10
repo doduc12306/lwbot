@@ -1,13 +1,13 @@
-const Sequelize = require(`sequelize`);
-const sequelize = new Sequelize(`database`, `user`, `password`, {
-  host: `localhost`,
-  dialect: `sqlite`,
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize('database', 'user', 'password', {
+  host: 'localhost',
+  dialect: 'sqlite',
   logging: false,
   // SQLite only
-  storage: `tags.sqlite`,
+  storage: 'tags.sqlite',
 });
-  
-const Tags = sequelize.define(`tags`, {
+
+const Tags = sequelize.define('tags', {
   name: {
     type: Sequelize.STRING,
     unique: true,
@@ -23,10 +23,10 @@ const Tags = sequelize.define(`tags`, {
 
 module.exports.run = async (client, message, args) => {
   await Tags.sync();
-    
+
   const tagName = args.shift();
-  const tagDescription = args.join(` `);
-    
+  const tagDescription = args.join(' ');
+
   try {
     // equivalent to: INSERT INTO tags (name, descrption, username) values (?, ?, ?);
     const tag = await Tags.create({
@@ -37,8 +37,8 @@ module.exports.run = async (client, message, args) => {
     return message.reply(`Tag ${tag.name} added.`);
   }
   catch (e) {
-    if (e.name === `SequelizeUniqueConstraintError`) {
-      return message.reply(`That tag already exists.`);
+    if (e.name === 'SequelizeUniqueConstraintError') {
+      return message.reply('That tag already exists.');
     }
     return message.reply(`Something went wrong with adding a tag.
         ${e}`);
@@ -48,13 +48,13 @@ module.exports.run = async (client, message, args) => {
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: [`createtag`, `tagadd`],
-  permLevel: `Bot Owner`
+  aliases: ['createtag', 'tagadd'],
+  permLevel: 'Bot Owner'
 };
 
 exports.help = {
-  name: `addtag`,
-  description: `Adds a tag to the database`,
-  usage: `addtag <tag name> <tag data>\n**Tag name must be one word**`,
-  category: `Tags`
+  name: 'addtag',
+  description: 'Adds a tag to the database',
+  usage: 'addtag <tag name> <tag data>\n**Tag name must be one word**',
+  category: 'Tags'
 };
