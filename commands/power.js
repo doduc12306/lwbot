@@ -1,8 +1,8 @@
 exports.run = async (client, message, args) => {// eslint-disable-line no-unused-vars
-  if(!['shutdown', 'restart', 'reboot'].includes(args[0])) return message.channel.send(':x: \`|\` :arrows_counterclockwise: **Options:** \`shutdown\` \`restart\` / reboot');
+  if(!['shutdown', 'restart', 'reboot'].includes(args[0])) return message.channel.send(':x: | :arrows_counterclockwise: **Options:** shutdown restart / reboot');
 
   if(args[0] === 'shutdown') {
-    message.channel.send(':white_check_mark: \`|\` :stop_sign: **Shutting down...**');
+    message.channel.send(':white_check_mark: | :stop_sign: **Shutting down...**');
     require('child_process').exec('pm2 stop LWBot');
   }
 
