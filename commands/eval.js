@@ -12,7 +12,7 @@ exports.run = async (client, message, args, level) => { // eslint-disable-line n
   const rev = client.token.split(``).reverse().join(`[^]{0,2}`);
   const filter = new RegExp(`${token}|${rev}`, `g`);
   try {
-    let output = eval(`(async function(){${code}})();`);
+    let output = eval(`(async function(){return ${code}})();`);
     if (output instanceof Promise || (Boolean(output) && typeof output.then === `function` && typeof output.catch === `function`)) output = await output;
     output = inspect(output, { depth: 0, maxArrayLength: null });
     output = output.replace(filter, `fucking idiot, why are you trying to show my token? go to the dev page, lazy ass`);
