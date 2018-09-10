@@ -1,37 +1,37 @@
-const Sequelize = require(`sequelize`);
-const Discord = require(`discord.js`);
+const Discord = require('discord.js');
 
 module.exports.run = async (client, message, args) => {
   try {
-    var settings = client.settings.get(message.guild.id);
-    var reason = args.slice(1).join(` `);
-    var bhEmote = `<a:hammerglitched:459396837741297671>`;
+    var reason = args.slice(1).join(' ');
+    var bhEmote = '<a:hammerglitched:459396837741297671>';
 
-    if(!message.guild.me.permissions.has(`BAN_MEMBERS`)) return message.channel.send(`:x: \`|\` ${bhEmote} **I am missing permissions:** \`Ban Members\``);
-    if(!message.member.permissions.has(`BAN_MEMBERS`)) return message.channel.send(`:x: \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
+    if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${bhEmote} **I am missing permissions:** \`Ban Members\``);
+    if(!message.member.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
     if(!args[0]) return message.channel.send(`:x: \`|\` ${bhEmote} **You didn't give the ID of someone to ban!**`);
-    await client.fetchUser(args[0]).catch(e => message.channel.send(`:x: \`|\` ${bhEmote} **I could not find that user!**`));
+    await client.fetchUser(args[0]).catch(() => message.channel.send(`:x: \`|\` ${bhEmote} **I could not find that user!**`));
 
     var toBan = await client.fetchUser(args[0]);
 
     await message.guild.modbase.create({
       victim: toBan.id,
       moderator: message.author.id,
-      type: `hackban`
+      type: 'hackban'
     }).then(async info => {
       if(reason) message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});
 
       var modEmbed = new Discord.RichEmbed()
         .setThumbnail(toBan.avatarURL)
-        .setColor(`0x000000`)
+        .setColor(client.config.colors.black)
         .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
-        .addField(`Hackbanned User`, `${toBan.toString()} (${toBan.tag})`)
-        .addField(`Moderator`, `${message.author.toString()} (${message.author.tag})`);
+        .addField('Hackbanned User', `${toBan.toString()} (${toBan.tag})`)
+        .addField('Moderator', `${message.author.toString()} (${message.author.tag})`);
 
-      if(reason) modEmbed.addField(`Reason`, reason);
+      if(reason) modEmbed.addField('Reason', reason);
 
-      if(!client.config.debugMode) await message.guild.ban(toBan.id, {days: 2});
-      await message.guild.channels.find(`name`, settings.modLogChannel).send(modEmbed);
+      var modLogChannel = await message.guild.settings.get('modLogChannel');
+      await message.guild.settings.get('modLogChannel');
+      await message.guild.ban(toBan.id, {days: 2});
+      message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false;
       await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Banned user \`${toBan.tag}\`**`);
 
     });
@@ -42,13 +42,13 @@ module.exports.run = async (client, message, args) => {
 exports.conf = {
   enabled: true,
   guildOnly: true,
-  aliases: [`idban`],
-  permLevel: `Moderator`
+  aliases: ['idban'],
+  permLevel: 'Moderator'
 };
 
 exports.help = {
-  name: `hackban`,
-  description: `Ban someone who isn't in the server`,
-  usage: `hackban <id> [reason]`,
-  category: `Moderation`
+  name: 'hackban',
+  description: 'Ban someone who isn\'t in the server',
+  usage: 'hackban <id> [reason]',
+  category: 'Moderation'
 };
