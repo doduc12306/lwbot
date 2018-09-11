@@ -1,6 +1,6 @@
 {
     "parserOptions": {
-      "ecmaVersion": 2017
+      "ecmaVersion": 2018
     },
     "env": {
       "es6": true,
@@ -29,14 +29,14 @@
         "always"
       ],
       "space-before-blocks": [
-        "error", {
+        "warn", {
           "functions":"always",
           "keywords": "always",
           "classes": "always"
         }
       ],
       "space-before-function-paren": [
-        "error", {
+        "warn", {
           "anonymous": "never",
           "named": "never",
           "asyncArrow": "always"
