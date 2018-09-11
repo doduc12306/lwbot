@@ -5,9 +5,6 @@ module.exports = async (client, guild) => {
   // Thanks for this PSA, York. This guild is full of userbots spamming commands. If this bot enters it, you'll see extreme performance issues.
   if(guild.id === '439438441764356097') return guild.leave();
 
-  // We need to add this guild to our settings!
-  if(!client.settings.get(guild.id)) client.settings.set(guild.id, client.config.defaultSettings);
-
   var guildTable = new Sequelize('database', 'user', 'password', {
     host: 'localhost',
     dialect: 'sqlite',
@@ -36,7 +33,8 @@ module.exports = async (client, guild) => {
   guild.settings.create({key: 'botCommanderRole', value: 'Bot Commander'});
   guildTable.sync();
 
-  if(!guild.me.permissions.has('SEND_MESSAGES')) guild.owner.send(':x: **CRITICAL PERMISSION MISSING:** Send Messages **WHICH EVERYTHING REQUIRES!**');
+  if (!guild.me.permissions.has('SEND_MESSAGES')) guild.owner.send(':x: **CRITICAL PERMISSION MISSING:** Send Messages **WHICH EVERYTHING REQUIRES!**');
+  if (!guild.me.permissions.has('EMBED_LINKS')) guild.owner.send(':x: **CRITICAL PERMISSION MISSING:** Embed Links **WHICH EVERYTHING REQUIRES!**');
 
   var role;
   if(!guild.roles.find('name', 'Muted')) {
