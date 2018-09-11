@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-module.exports.run = async (client, message, args) => {
+module.exports.run = async (client, message) => {
   message.guild.xp.findAll({
     order: [
       ['xp', 'DESC'],
@@ -8,15 +8,15 @@ module.exports.run = async (client, message, args) => {
   }).then(data => {
     var embed = new Discord.RichEmbed()
       .setColor(client.config.colors.green);
-    for (values of data) {
-      if(data.indexOf(values) === 0){
-        if (message.guild.members.get(values.dataValues.user) === undefined) embed.addField(`:crown: \`[User Left]\``, `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
+    for (var values of data) {
+      if(data.indexOf(values) === 0) {
+        if (message.guild.members.get(values.dataValues.user) === undefined) embed.addField(':crown: `[User Left]`', `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
         else embed.addField(`:crown: ${message.guild.members.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
-      } else if(data.indexOf(values) === 1){
-        if (message.guild.members.get(values.dataValues.user) === undefined) embed.addField(`:second_place: \`[User Left]\``, `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
+      } else if(data.indexOf(values) === 1) {
+        if (message.guild.members.get(values.dataValues.user) === undefined) embed.addField(':second_place: `[User Left]`', `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
         else embed.addField(`:second_place: ${message.guild.members.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
-      } else if(data.indexOf(values) === 2){
-        if (message.guild.members.get(values.dataValues.user) === undefined) embed.addField(`:third_place: \`[User Left]\``, `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
+      } else if(data.indexOf(values) === 2) {
+        if (message.guild.members.get(values.dataValues.user) === undefined) embed.addField(':third_place: `[User Left]`', `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
         else embed.addField(`:third_place: ${message.guild.members.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
       }
       if(data.indexOf(values) <= 9 && data.indexOf(values) >= 3) {
@@ -24,7 +24,7 @@ module.exports.run = async (client, message, args) => {
         else embed.addField(`#${data.indexOf(values) + 1} ${message.guild.members.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
       }
     }
-  message.channel.send(embed);
+    message.channel.send(embed);
   });
 };
 
