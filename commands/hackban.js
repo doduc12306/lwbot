@@ -28,7 +28,7 @@ module.exports.run = async (client, message, args) => {
 
       if(reason) modEmbed.addField('Reason', reason);
 
-      var modLogChannel = await message.guild.settings.get('modLogChannel');
+      var modLogChannel = await message.guild.settings.get('modLogChannel').catch(() => {});
       await message.guild.settings.get('modLogChannel');
       await message.guild.ban(toBan.id, {days: 2});
       message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false;

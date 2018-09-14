@@ -27,7 +27,7 @@ module.exports.run = async (client, message, args) => {
 
     if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
-    var modLogChannel = await message.guild.settings.get('modLogChannel');
+    var modLogChannel = await message.guild.settings.get('modLogChannel').catch(() => {});
     await toBan.send(dmMsg);
     await message.guild.ban(toBan, {days: 2});
     await message.guild.unban(toBan);

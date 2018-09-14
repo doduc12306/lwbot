@@ -31,7 +31,7 @@ module.exports.run = async (client, message, args) => {
 
     if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
-    var modLogChannel = await message.guild.settings.get('modLogChannel');
+    var modLogChannel = await message.guild.settings.get('modLogChannel').catch(() => {});
     var vc = await message.guild.createChannel('Voice Ban', 'voice');
     await toBanM.setVoiceChannel(vc);
     await message.member.voiceChannel.overwritePermissions(toBan, {CONNECT: false});
