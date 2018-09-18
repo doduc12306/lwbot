@@ -2,24 +2,24 @@ const Sequelize = require('sequelize');
 
 module.exports = (client) => {
 
-  var bank = new Sequelize(`database`, `user`, `password`, {
-    host: `localhost`,
-    dialect: `sqlite`,
+  var bank = new Sequelize('database', 'user', 'password', {
+    host: 'localhost',
+    dialect: 'sqlite',
     logging: false,
-    storage: `databases/bank.sqlite`
+    storage: 'databases/bank.sqlite'
   });
 
-  client.bank = bank.define(`bank`, {
-      user: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      balance: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-      }
-    });
-    client.bank.sync();
+  client.bank = bank.define('bank', {
+    user: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    balance: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    }
+  });
+  client.bank.sync();
 
   client.bank.add = (userID, amount) => {
     client.bank.findOne({where: {user: userID}}).then(async user => {
@@ -33,21 +33,21 @@ module.exports = (client) => {
         client.bank.sync();
       }
     });
-  }
+  };
 
   client.bank.subtract = (userID, amount) => {
     client.bank.findOne({where: {user: userID}}).then(async user => {
       if(user === null) {
         await client.bank.create({user: userID, balance: 1000});
-        await client.bank.update({balance: balance - amount}, {where: {user: userID}});
+        await client.bank.update({balance: user.balance - amount}, {where: {user: userID}});
         client.bank.sync();
       }
       else {
-        await client.bank.update({balance: balance - amount}, {where: {user: userID}});
+        await client.bank.update({balance: user.balance - amount}, {where: {user: userID}});
         client.bank.sync();
       }
     });
-  }
+  };
 
   client.bank.set = (userID, amount) => {
     client.bank.findOne({where: {user: userID}}).then(async user => {
@@ -61,10 +61,10 @@ module.exports = (client) => {
         client.bank.sync();
       }
     });
-  }
+  };
 
   client.bank.get = async userID => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       client.bank.findOne({where: {user: userID}}).then(async user => {
         if(user === null) {
           await client.bank.create({user: userID, balance: 1000});
@@ -116,7 +116,7 @@ module.exports = (client) => {
     const filter = m => m.author.id === msg.author.id;
     await msg.channel.send(question);
     try {
-      const collected = await msg.channel.awaitMessages(filter, { max: 1, time: limit, errors: [`time`] });
+      const collected = await msg.channel.awaitMessages(filter, { max: 1, time: limit, errors: ['time'] });
       return collected.first().content;
     } catch (e) {
       return false;
@@ -133,15 +133,15 @@ module.exports = (client) => {
   This is mostly only used by the Eval and Exec commands.
   */
   client.clean = async (client, text) => {
-    if (text && text.constructor.name == `Promise`)
+    if (text && text.constructor.name == 'Promise')
       text = await text;
-    if (typeof evaled !== `string`)
-      text = require(`util`).inspect(text, {depth: 0});
+    if (typeof evaled !== 'string')
+      text = require('util').inspect(text, {depth: 0});
 
     text = text
-      .replace(/`/g, `\`` + String.fromCharCode(8203))
-      .replace(/@/g, `@` + String.fromCharCode(8203))
-      .replace(client.token, `fucking idiot, why are you trying to show my token? go to the dev page, lazy ass`);
+      .replace(/`/g, '`' + String.fromCharCode(8203))
+      .replace(/@/g, '@' + String.fromCharCode(8203))
+      .replace(client.token, 'fucking idiot, why are you trying to show my token? go to the dev page, lazy ass');
 
     return text;
   };
@@ -194,30 +194,30 @@ module.exports = (client) => {
 
   // <String>.replaceAll() returns a string that replaces all of a specific text, for example:
   // "Welcome to the server, {{user}}! Please have a fun time here, {{user}}!" returns "server, @User! ... here, @User!"
-  String.prototype.replaceAll = function (search, replacement) {
+  String.prototype.replaceAll = function(search, replacement) {
     var target = this;
-    return target.replace(new RegExp(search, `g`), replacement);
-  }
+    return target.replace(new RegExp(search, 'g'), replacement);
+  };
 
   // <Array>.random() returns a single random element from an array
   // [1, 2, 3, 4, 5].random() can return 1, 2, 3, 4 or 5.
   Array.prototype.random = function() {
     return this[Math.floor(Math.random() * this.length)];
   };
-
+  
   // `await client.wait(1000);` to "pause" for 1 second.
-  client.wait = require(`util`).promisify(setTimeout);
+  client.wait = require('util').promisify(setTimeout);
 
   client.xpLockSet = new Set();
 
   // These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
-  process.on(`uncaughtException`, (err) => {
-    const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, `g`), `./`);
+  process.on('uncaughtException', (err) => {
+    const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, 'g'), './');
     client.logger.error(`Uncaught Exception: ${errorMsg}`);
     process.exit(1);
   });
 
-  process.on(`unhandledRejection`, err => {
+  process.on('unhandledRejection', err => {
     client.logger.error(`Unhandled rejection: ${err.stack}`);
   });
 
