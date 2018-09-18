@@ -1,13 +1,12 @@
-const Sequelize = require(`sequelize`);
-const Discord = require(`discord.js`);
-const sequelize = new Sequelize(`database`, `user`, `password`, {
-  host: `localhost`,
-  dialect: `sqlite`,
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize('database', 'user', 'password', {
+  host: 'localhost',
+  dialect: 'sqlite',
   logging: false,
   // SQLite only
-  storage: `tags.sqlite`,
+  storage: 'tags.sqlite',
 });
-const Tags = sequelize.define(`tags`, {
+const Tags = sequelize.define('tags', {
   name: {
     type: Sequelize.STRING,
     unique: true,
@@ -22,82 +21,77 @@ const Tags = sequelize.define(`tags`, {
 });
 
 module.exports = async client => {
-  // Why await here? Because the ready event isn't actually ready, sometimes
-  // guild information will come in *after* ready. 1s is plenty, generally,
-  // for all of them to be loaded.
-
   var playings = [
-
     /* Playing */
-    [`with Shin-Ae`, {type: `PLAYING`}],
-    [`with James`, {type: `PLAYING`}],
-    [`with Nen`, {type: `PLAYING`}],
-    [`with fire`, {type: `PLAYING`}],
-    [`on Webtoons instead of working`, {type: `PLAYING`}],
-    [`with your heart`, {type: `PLAYING`}],
-    [`with Shen`, {type: `PLAYING`}],
-    [`with Shenpai`, {type: `PLAYING`}],
-    [`with SAI`, {type: `PLAYING`}],
-    [`some game or something idrk`, {type: `PLAYING`}],
-    [`with the big boys`, {type: `PLAYING`}],
-    [`with Madi`, {type: `PLAYING`}],
-    [`in Webtoonland`, {type: `PLAYING`}],
-    [`in Wonderland`, {type: `PLAYING`}],
-    [`Adobe Illustrator`, {type: `PLAYING`}],
-    [`Fire Alpaca`, {type: `PLAYING`}],
-    [`for the money`, {type: `PLAYING`}],
-    [`YAAAASSSSS`, {type: `PLAYING`}],
-    [`with my code`, {type: `PLAYING`}],
-    [`with time`, {type: `PLAYING`}],
-    [`in space`, {type: `PLAYING`}],
-    [`for the good guys`, {type: `PLAYING`}],
-    [`with other bots`, {type: `PLAYING`}],
-    [`with the ratelimit ;)`, {type: `PLAYING`}],
-    [`with the Podcast crew`, {type: `PLAYING`}],
-    [`[status]`, {type: `PLAYING`}],
-    [`[object Object]`, {type: `PLAYING`}],
-    [`against the clock`, {type: `PLAYING`}],
+    ['with Shin-Ae', {type: 'PLAYING'}],
+    ['with James', {type: 'PLAYING'}],
+    ['with Nen', {type: 'PLAYING'}],
+    ['with fire', {type: 'PLAYING'}],
+    ['on Webtoons instead of working', {type: 'PLAYING'}],
+    ['with your heart', {type: 'PLAYING'}],
+    ['with Shen', {type: 'PLAYING'}],
+    ['with Shenpai', {type: 'PLAYING'}],
+    ['with SAI', {type: 'PLAYING'}],
+    ['some game or something idrk', {type: 'PLAYING'}],
+    ['with the big boys', {type: 'PLAYING'}],
+    ['with Madi', {type: 'PLAYING'}],
+    ['in Webtoonland', {type: 'PLAYING'}],
+    ['in Wonderland', {type: 'PLAYING'}],
+    ['Adobe Illustrator', {type: 'PLAYING'}],
+    ['Fire Alpaca', {type: 'PLAYING'}],
+    ['for the money', {type: 'PLAYING'}],
+    ['YAAAASSSSS', {type: 'PLAYING'}],
+    ['with my code', {type: 'PLAYING'}],
+    ['with time', {type: 'PLAYING'}],
+    ['in space', {type: 'PLAYING'}],
+    ['for the good guys', {type: 'PLAYING'}],
+    ['with other bots', {type: 'PLAYING'}],
+    ['with the ratelimit ;)', {type: 'PLAYING'}],
+    ['with the Podcast crew', {type: 'PLAYING'}],
+    ['[status]', {type: 'PLAYING'}],
+    ['[object Object]', {type: 'PLAYING'}],
+    ['against the clock', {type: 'PLAYING'}],
     ['Error 301: Moved Permanently', {type: 'PLAYING'}],
     ['Error 400: Bad Request', {type: 'PLAYING'}],
-    [`Error 403: Forbidden`, {type: `PLAYING`}],
+    ['Error 403: Forbidden', {type: 'PLAYING'}],
     ['Error 404: Not Found', {type: 'PLAYING'}],
     ['Error 418: I\'m a teapot', {type: 'PLAYING'}],
     ['Error 500: Internal Server Error', {type: 'PLAYING'}],
     ['Error 502: Bad Gateway', {type: 'PLAYING'}],
     ['Error 503: Service Unavailble', {type: 'PLAYING'}],
-    [`with your ships`, {type: `PLAYING`}],
-    [`Monopoly`, {type: `PLAYING`}],
-    [`with life in a box`, {type: `PLAYING`}],
-    [`with life`, {type: `PLAYING`}],
-    [`with the other lurkers`, {type: `PLAYING`}],
-    [`with the skin of my enemies`, {type: `PLAYING`}],
-    [`for the glory`, {type: `PLAYING`}],
-    [`with friends`, {type: `PLAYING`}],
-    [`on the beach`, {type: `PLAYING`}],
-    [`at the mall`, {type: `PLAYING`}],
-    [`at home`, {type: `PLAYING`}],
-    [`on the couch`, {type: `PLAYING`}],
-    [`?¿`, {type: `PLAYING`}],
-    [`devil's advocate`, {type: `PLAYING`}],
-    [`Poker`, {type: `PLAYING`}],
-    [`MS Paint`, {type: `PLAYING`}],
-    [`with Kowoks`, {type: `PLAYING`}],
-    [`with Uru-chan`, {type: `PLAYING`}],
-    [`with Quimchee`, {type: `PLAYING`}],
-    [`with Chris McCoy @ Safely Endangered`, {type: `PLAYING`}],
-    [` `, {type: `PLAYING`}],
-    [`nothing.. b-baka!! (つω⊂* ) Why do you care?? Hmph! (/□＼*)・゜`, {type: `PLAYING`}],
+    ['with your ships', {type: 'PLAYING'}],
+    ['Monopoly', {type: 'PLAYING'}],
+    ['with life in a box', {type: 'PLAYING'}],
+    ['with life', {type: 'PLAYING'}],
+    ['with the other lurkers', {type: 'PLAYING'}],
+    ['with the skin of my enemies', {type: 'PLAYING'}],
+    ['for the glory', {type: 'PLAYING'}],
+    ['with friends', {type: 'PLAYING'}],
+    ['on the beach', {type: 'PLAYING'}],
+    ['at the mall', {type: 'PLAYING'}],
+    ['at home', {type: 'PLAYING'}],
+    ['on the couch', {type: 'PLAYING'}],
+    ['?¿', {type: 'PLAYING'}],
+    ['devil\'s advocate', {type: 'PLAYING'}],
+    ['Poker', {type: 'PLAYING'}],
+    ['MS Paint', {type: 'PLAYING'}],
+    ['with Kowoks', {type: 'PLAYING'}],
+    ['with Uru-chan', {type: 'PLAYING'}],
+    ['with Quimchee', {type: 'PLAYING'}],
+    ['with Chris McCoy @ Safely Endangered', {type: 'PLAYING'}],
+    [' ', {type: 'PLAYING'}],
+    ['nothing.. b-baka!! (つω⊂* ) Why do you care?? Hmph! (/□＼*)・゜', {type: 'PLAYING'}],
 
     /* Watching */
-    [`Netflix`, {type: `WATCHING`}],
-    [`you`, {type: `WATCHING`}],
-    [`you sleep`, {type: `WATCHING`}],
-    [`nothing.. b-baka!! (つω⊂* ) Why do you care?? Hmph! (/□＼*)・゜`, {type: `WATCHING`}],
+    ['Netflix', {type: 'WATCHING'}],
+    ['you', {type: 'WATCHING'}],
+    ['you sleep', {type: 'WATCHING'}],
+    ['nothing.. b-baka!! (つω⊂* ) Why do you care?? Hmph! (/□＼*)・゜', {type: 'WATCHING'}],
 
     /* Listening to */
-    [`Spotify`, {type: `LISTENING`}],
-    [`your conversations-- I mean what`, {type: `LISTENING`}],
-    [`nothing.. b-baka!! (つω⊂* ) Why do you care?? Hmph! (/□＼*)・゜`, {type: `LISTENING`}]
+    ['Spotify', {type: 'LISTENING'}],
+    ['your conversations-- I mean what', {type: 'LISTENING'}],
+    ['nothing.. b-baka!! (つω⊂* ) Why do you care?? Hmph! (/□＼*)・゜', {type: 'LISTENING'}]
   ];
 
   Tags.sync();
@@ -110,7 +104,7 @@ module.exports = async client => {
     var randomPl = playings.randomElement(playings);
     client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
   }, 60000);
-  
+
   await client.wait(1000);
-  client.logger.log(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, `ready`);
+  client.logger.log(`${client.user.tag}, ready to serve ${client.users.size} users in ${client.guilds.size} servers.`, 'ready');
 };
