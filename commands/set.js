@@ -1,4 +1,3 @@
-const { inspect } = require(`util`);
 const Discord = require('discord.js');
 
 // Note the **destructuring** here. instead of `args` we have :
@@ -18,12 +17,12 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
           })
           .catch(() => message.channel.send(`:x: \`|\` :gear: \`${key}\` **does not exist!** `));
       } else {
-        var embed = new Discord.RichEmbed()
+        const embed = new Discord.RichEmbed()
           .setColor(client.config.colors.green)
           .setTitle('Settings')
           .setFooter('Guild Settings');
 
-        for (settings of data) {
+        for (var settings of data) {
           settings = settings.dataValues;
           embed.addField(settings.key, settings.value, true);
         }
@@ -33,49 +32,49 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
     } else
 
     if(action === 'edit') {
-      if(!key) return message.channel.send(':x: \`|\` :gear: **You didn\'t provide a key to edit!**');
+      if(!key) return message.channel.send(':x: `|` :gear: **You didn\'t provide a key to edit!**');
       message.guild.settings.get(key)
         .then(() => {
-          if(value < 1) return message.channel.send(':x: \`|\` :gear: **Please provide a new value.**');
+          if(value < 1) return message.channel.send(':x: `|` :gear: **Please provide a new value.**');
           message.guild.settings.edit(key, value.join(' '));
           message.channel.send(`:white_check_mark: \`|\` :gear: \`${key}\` **was successfully edited to** \`${value.join(' ')}\`**.**`);
         })
         .catch(() => message.channel.send(`:x: \`|\` :gear: \`${key}\` **does not exist!** `));
     } else
 
-    if(action === 'add') {
-      if (!key) return message.channel.send(':x: \`|\` :gear: **You didn\'t provide a key to add!**');
-      if (value < 1) return message.channel.send(':x: \`|\` :gear: **Please provide a value.**');
+    if (action === 'add' || action === 'create') {
+      if (!key) return message.channel.send(':x: `|` :gear: **You didn\'t provide a key to add!**');
+      if (value < 1) return message.channel.send(':x: `|` :gear: **Please provide a value.**');
       message.guild.settings.add(key, value.join(' '));
       message.channel.send(`:white_check_mark: \`|\` :gear: \`${key}\` **was successfully added with value** \`${value.join(' ')}\`**.**`);
     } else
 
-    if(action === 'del') {
-      if(!key) return message.channel.send(':x: \`|\` :gear: **You didn\'t provide a key to delete!**');
+    if (action === 'del' || action === 'delete') {
+      if(!key) return message.channel.send(':x: `|` :gear: **You didn\'t provide a key to delete!**');
       message.guild.settings.get(key)
         .then(async () => {
           const response = await client.awaitReply(message, `:warning: \`|\` :gear: **Are you** __***SURE***__ **you want to delete** \`${key}\`**? This CANNOT be undone!** (yes/no)`);
           if (['yes', 'y'].includes(response)) {
             message.guild.settings.delete(key);
             message.channel.send(`:white_check_mark: \`|\` :gear: **Successfully deleted** \`${key}\`**.**`);
-          } else if (['no', 'n']) return message.channel.send(`:white_check_mark: \`|\` :gear: **Action cancelled.**`);
+          } else if (['no', 'n'].includes(response)) return message.channel.send(':white_check_mark: `|` :gear: **Action cancelled.**');
         })
         .catch(() => message.channel.send(`:x: \`|\` :gear: \`${key}\` **does not exist!**`));
     } else
 
     if(action === 'reset') {
-      if (!key) return message.channel.send(':x: \`|\` :gear: **You didn\'t provide a key to reset!**');
+      if (!key) return message.channel.send(':x: `|` :gear: **You didn\'t provide a key to reset!**');
       message.guild.settings.get(key)
         .then(async () => {
           const response = await client.awaitReply(message, `:warning: \`|\` :gear: **Are you** __***SURE***__ **you want to reset** \`${key}\`**? This CANNOT be undone!** (yes/no)`);
           if (['yes', 'y'].includes(response)) {
             message.guild.settings.edit(key, client.config.defaultSettings[key]);
             message.channel.send(`:white_check_mark: \`|\` :gear: **Successfully reset** \`${key}\` **to** \`${client.config.defaultSettings[key]}\`**.**`);
-          } else if (['no', 'n']) return message.channel.send(`:white_check_mark: \`|\` :gear: **Action cancelled.**`);
+          } else if (['no', 'n'].includes(response)) return message.channel.send(':white_check_mark: `|` :gear: **Action cancelled.**');
         })
         .catch(() => message.channel.send(`:x: \`|\` :gear: \`${key}\` **does not exist!**`));
     } else {
-      var embed = new Discord.RichEmbed()
+      const embed = new Discord.RichEmbed()
         .setColor(client.config.colors.green)
         .setTitle('Settings')
         .setFooter('Guild Settings');
@@ -93,13 +92,13 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
 exports.conf = {
   enabled: true,
   guildOnly: true,
-  aliases: [`setting`, `settings`, `conf`],
-  permLevel: `Administrator`
+  aliases: ['setting', 'settings', 'conf'],
+  permLevel: 'Administrator'
 };
 
 exports.help = {
-  name: `set`,
-  category: `System`,
-  description: `View or change settings for your server.`,
-  usage: `set [view/edit/add/del/reset] [key] [value]`
+  name: 'set',
+  category: 'System',
+  description: 'View or change settings for your server.',
+  usage: 'set [view/edit/add/del/reset] [key] [value]'
 };
