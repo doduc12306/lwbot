@@ -50,9 +50,9 @@ module.exports = async (message) => {
         message.guild.xp.update({xp: user.xp + amount}, {where: {user: userID}});
         message.guild.xp.sync();
         return resolve(user.xp);
-      }).catch(e => {return reject(new Error(e))});
+      }).catch(e => {return reject(new Error(e));});
     });
-  }
+  };
 
   /**
    *
@@ -74,9 +74,9 @@ module.exports = async (message) => {
         message.guild.xp.update({ xp: user.xp - amount }, {where: {user: userID}});
         message.guild.xp.sync();
         return resolve(user.xp);
-      }).catch(e => {return reject(new Error(e))})
+      }).catch(e => {return reject(new Error(e));});
     });
-  }
+  };
 
   /**
    *
@@ -93,9 +93,9 @@ module.exports = async (message) => {
 
       message.guild.xp.findOrCreate({ where: { user: userID }, defaults: { xp: amount } }).then(user => {
         return resolve(user[0].dataValues.xp);
-      }).catch(e => {return reject(new Error(e))});
+      }).catch(e => {return reject(new Error(e));});
     });
-  }
+  };
 
   /**
    *
@@ -109,12 +109,12 @@ module.exports = async (message) => {
 
       message.guild.xp.findOrCreate({ where: { user: userID }, defaults: { xp: 0 } }).then(async user => {
         return resolve(user[0].dataValues.xp);
-      }).catch(e => {return reject(new Error(e))});
+      }).catch(e => {return reject(new Error(e));});
     });
   };
 
   // Guild modbase support
-  message.guild.modbase = guildTable.define(`moderation`, {
+  message.guild.modbase = guildTable.define('moderation', {
     victim: {
       type: Sequelize.STRING,
       allowNull: false
@@ -134,11 +134,11 @@ module.exports = async (message) => {
 
   // Guild settings support
   message.guild.settings = guildTable.define('settings', {
-   key: {
-     type: Sequelize.STRING,
-     allowNull: false
-   },
-   value: Sequelize.STRING
+    key: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    value: Sequelize.STRING
   }, {timestamps: false});
   guildTable.sync();
 
@@ -163,7 +163,7 @@ module.exports = async (message) => {
           return reject(new Error(e));
         });
     });
-  }
+  };
 
   /**
    *
@@ -179,7 +179,7 @@ module.exports = async (message) => {
         return resolve(true);
       });
     });
-  }
+  };
   message.guild.settings.remove = key => message.guild.settings.delete(key);
 
   /**
@@ -200,7 +200,7 @@ module.exports = async (message) => {
         return resolve(true);
       });
     });
-  }
+  };
   message.guild.settings.set = (key, newValue) => message.guild.settings.edit(key, newValue);
 
   /**
@@ -217,10 +217,41 @@ module.exports = async (message) => {
         return resolve(data.value);
       });
     });
-  }
+  };
 
   // XP Leveling sequence
 
+  // Other various functions
+  /* eslint-disable */
+  message.functions = {
+    parseChannel: (data, outputType) => {
+      var channelObj;
+      var parsedChannel;
+      return new Promise((resolve, reject) => {
+        if(!message.guild) return reject(new Error('Not in a guild!'));
+        if(!data || data === null) return reject(new TypeError('No data given to parse channel information'));
 
+        if(typeof data === 'string') {
+          parsedChannel = message.guild.channels.get(data);
+          if (parsedChannel === undefined || parsedChannel === null) {
+            parsedChannel = message.guild.channels.find(channel => channel.name === data);
+            if (parsedChannel === undefined || parsedChannel === null) return reject(new Error('[String Parse] Channel not found'));
+            else channelObj = parsedChannel;
+          } else channelObj = parsedChannel;
+        }
 
+        else if (typeof data === 'object') {
+          parsedChannel = message.guild.channels.get(data.id);
+          if (parsedChannel === undefined || parsedChannel === null) return reject(new Error('[Object Parse] Channel not found'));
+          else channelObj = parsedChannel;
+        }
+        else {return reject(new Error(`Data ("${data}") could not be parsed into a channel. Must be either string or object.`));}
+
+        if (!outputType || outputType === null) return resolve(channelObj);
+        else if(outputType.toLowerCase() === 'id') return resolve(channelObj.id);
+        else if(outputType.toLowerCase() === 'name') return resolve(channelObj.name);
+        else return reject(new TypeError('Unknown output type; must be "id" or "name"'));
+      });
+    }
+  };
 };
