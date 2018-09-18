@@ -142,3 +142,11 @@ a.terms, a.terms:hover {
 p.terms {
   font-size: 17px;
 }
+
+footer.footer>div.container-fluid>span.text-muted>b.akii:hover {
+  color: var(--white3);
+  transition: all 200ms ease;
+}
+footer.footer>div.container-fluid>span.text-muted>b.akii {
+  transition: all 200ms ease;
+}
