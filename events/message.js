@@ -20,10 +20,13 @@ module.exports = async (client, message) => {
     }
   }
 
-  var prefix = '!w ';
-  if(!message.guild) prefix = client.config.defaultSettings.prefix;
-  else message.guild.settings.findOrCreate({where: {key: 'prefix'}, defaults: {value: '!w '}})
-    .then(e => prefix = e[0].dataValues.value);
+  var prefix = client.config.defaultSettings.prefix;
+  if (!message.guild) prefix = client.config.defaultSettings.prefix;
+  else {
+    await message.guild.settings.findOrCreate({where: {key: 'prefix'}, defaults: {value: '!w '}});
+    prefix = await message.guild.settings.get('prefix');
+  }
+
   if (message.content.indexOf(prefix) !== 0) return;
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
@@ -34,19 +37,24 @@ module.exports = async (client, message) => {
   // Check whether the command, or alias, exist in the collections defined
   // in app.js.
   const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
+
+  var systemNotice = client.config.defaultSettings.systemNotice;
+  if (!message.guild) prefix = client.config.defaultSettings.systemNotice;
+  else {
+    await message.guild.settings.findOrCreate({ where: { key: 'systemNotice' }, defaults: { value: 'true' } });
+    systemNotice = await message.guild.settings.get('systemNotice');
+  }
   // using this const varName = thing OR otherthing; is a pretty efficient
   // and clean way to grab one of 2 values!
   if (!cmd) return message.channel.send(`:x: That isn't one of my commands! Try ${prefix}help`);
+
+  if (!cmd.conf.enabled) if (systemNotice === 'true') return message.channel.send(`:x: \`${cmd}\` **is currently disabled.**`);
 
   // Some commands may not be useable in DMs. This check prevents those commands from running
   // and return a friendly error message.
   if (cmd && !message.guild && cmd.conf.guildOnly)
     return message.channel.send(':x: **This command cannot be run in DM\'s.**');
 
-  var systemNotice;
-  if(!message.guild) systemNotice = client.config.defaultSettings.systemNotice;
-  else message.guild.settings.findOrCreate({where: {key: 'systemNotice'}, defaults: {value: 'true'}})
-    .then(e => systemNotice = e[0].dataValues.value);
   if (level < client.levelCache[cmd.conf.permLevel]) {
     if (systemNotice === 'true') {
       return message.channel.send(`:x: You do not have permission to use this command.\nYour permission level is ${level} (${client.config.permLevels.find(l => l.level === level).name})\nThis command requires level ${client.levelCache[cmd.conf.permLevel]} (${cmd.conf.permLevel})`);
@@ -60,12 +68,14 @@ module.exports = async (client, message) => {
   client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name}`);
 
   // Other server database checks
-  await message.guild.settings.findOrCreate({ where: { key: 'modLogChannel'}, defaults: { value: 'mod_logs'}});
-  await message.guild.settings.findOrCreate({ where: { key: 'modRole'}, defaults: { value: 'Mods'}});
-  await message.guild.settings.findOrCreate({ where: { key: 'adminRole'}, defaults: { value: 'Admins'}});
-  await message.guild.settings.findOrCreate({ where: { key: 'welcomeEnabled'}, defaults: { value: 'true'}});
-  await message.guild.settings.findOrCreate({ where: { key: 'welcomeChannel' }, defaults: { value: 'welcome' } });
-  await message.guild.settings.findOrCreate({ where: { key: 'welcomeMessage' }, defaults: { value: 'Welcome to the server, {{user}}!' } });
-  await message.guild.settings.findOrCreate({ where: { key: 'announcementChannel' }, defaults: { value: 'announcements' } });
-  await message.guild.settings.findOrCreate({ where: { key: 'botCommanderRole' }, defaults: { value: 'Bot Commander' } });
+  if(message.guild) {
+    await message.guild.settings.findOrCreate({ where: { key: 'modLogChannel' }, defaults: { value: 'mod_logs' } });
+    await message.guild.settings.findOrCreate({ where: { key: 'modRole' }, defaults: { value: 'Mods' } });
+    await message.guild.settings.findOrCreate({ where: { key: 'adminRole' }, defaults: { value: 'Admins' } });
+    await message.guild.settings.findOrCreate({ where: { key: 'welcomeEnabled' }, defaults: { value: 'true' } });
+    await message.guild.settings.findOrCreate({ where: { key: 'welcomeChannel' }, defaults: { value: 'welcome' } });
+    await message.guild.settings.findOrCreate({ where: { key: 'welcomeMessage' }, defaults: { value: 'Welcome to the server, {{user}}!' } });
+    await message.guild.settings.findOrCreate({ where: { key: 'announcementChannel' }, defaults: { value: 'announcements' } });
+    await message.guild.settings.findOrCreate({ where: { key: 'botCommanderRole' }, defaults: { value: 'Bot Commander' } });
+  }
 };
