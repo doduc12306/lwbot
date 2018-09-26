@@ -170,7 +170,7 @@ module.exports = (client) => {
     } else if (client.aliases.has(commandName)) {
       command = client.commands.get(client.aliases.get(commandName));
     }
-    if (!command) return `The command \`${commandName}\` doesn't seem to exist, nor is it an alias. Try again!`;
+    if (!command) return `The command \`${commandName}\` doesn't seem to exist, nor is it an alias.`;
 
     if (command.shutdown) {
       await command.shutdown(client);
@@ -204,7 +204,7 @@ module.exports = (client) => {
   Array.prototype.random = function() {
     return this[Math.floor(Math.random() * this.length)];
   };
-  
+
   // `await client.wait(1000);` to "pause" for 1 second.
   client.wait = require('util').promisify(setTimeout);
 
@@ -213,7 +213,8 @@ module.exports = (client) => {
   // These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
   process.on('uncaughtException', (err) => {
     const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, 'g'), './');
-    client.logger.error(`Uncaught Exception: ${errorMsg}`);
+    if (errorMsg.trim().includes('at WebSocketConnection.onError')) client.logger.log('Disconnected! Lost connection to websocket', 'disconnect');
+    else client.logger.error(`Uncaught Exception: ${errorMsg}`);
     process.exit(1);
   });
 

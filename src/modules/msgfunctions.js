@@ -252,6 +252,35 @@ module.exports = async (message) => {
         else if(outputType.toLowerCase() === 'name') return resolve(channelObj.name);
         else return reject(new TypeError('Unknown output type; must be "id" or "name"'));
       });
+    },
+    parseUser: (data, outputType) => {
+      var userObj;
+      var parsedUser;
+      return new Promise((resolve, reject) => {
+        if (!message.guild) return reject(new Error('Not in a guild!'));
+        if (!data || data === null) return reject(new TypeError('No data given to parse user information'));
+
+        if (typeof data === 'string') {
+          parsedUser = client.users.get(data);
+          if (parsedUser === undefined || parsedUser === null) {
+            parsedUser = client.users.find(user => user.username === data);
+            if (parsedUser === undefined || parsedUser === null) return reject(new Error('[String Parse] User not found'));
+            else userObj = parsedUser;
+          } else userObj = parsedUser;
+        }
+
+        else if (typeof data === 'object') {
+          parsedUser = client.users.get(data.id);
+          if (parsedUser === undefined || parsedUser === null) return reject(new Error('[Object Parse] User not found'));
+          else userObj = parsedUser;
+        }
+        else { return reject(new Error(`Data ("${data}") could not be parsed into a user. Must be either string or object.`)); }
+
+        if (!outputType || outputType === null) return resolve(userObj);
+        else if (outputType.toLowerCase() === 'id') return resolve(userObj.id);
+        else if (outputType.toLowerCase() === 'name') return resolve(uerObj.name);
+        else return reject(new TypeError('Unknown output type; must be "id" or "name"'));
+      });
     }
   };
 };

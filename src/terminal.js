@@ -9,6 +9,7 @@ const timestamp = `^K[${moment().format('YYYY-MM-DD HH:mm:ss')}]^ `;
 
 var curServer;
 var curChannel;
+var dmUser;
 
 term.info = text => term(`${timestamp}^#^B[INFO]^ ^B${text}\n`);
 term.log = text => term(`${timestamp}${text}\n`);
@@ -26,14 +27,23 @@ client.on('ready', () => {
   term.info(`Set current channel to ^W#${curChannel.name} ^:^K^/(${curChannel.id})`);
   s();
 });
+
 client.on('message', async message => {
+  if (message.channel.type === 'dm') {
+    dmUser = message.author.id;
+    if (message.author.id === client.user.id && dmUser) term(`^#^g^k[DM]^ ^+Me^ -> ^+${client.users.get(dmUser).tag}^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}\n^:${message.cleanContent}\n`);
+    else term(`^#^g^k[DM]^ ^+${message.author.tag}^ -> ^+Me^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}\n^:${message.cleanContent}\n`);
+  }
+
   if(curServer !== message.guild) return;
   if(curChannel !== message.channel) return;
   if (message.content === 'terminal.exit' && message.author.id === '107599228900999168') {console.clear(); process.exit();}
   if (message.content === 'terminal.input' && message.author.id === '107599228900999168') s();
 
-  if (message.author.bot) return term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^#^B[BOT]^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}\n^:${message.cleanContent}\n`);
-  term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}\n^:${message.cleanContent}\n`);
+  var mentionedColor = message.isMemberMentioned(client.user) || message.isMemberMentioned(client.users.get('107599228900999168')) ? '^#^y^k' : '^:';
+
+  if (message.author.bot) term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^#^B[BOT]^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
+  else term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
 });
 
 function s() {
@@ -73,6 +83,12 @@ function s() {
             } else curChannel = guild.channels.find(g => g.name === curChannel.name);
           })
           .catch(e => term.err(e.stack));
+        s();
+      }
+
+      else if(input.startsWith(':dm')) {
+        if(input.substring(4) === '') return term.err('No text/name/id to dm!');
+        if(dmUser) client.users.get(dmUser).send(input.substring(4));
         s();
       }
 
