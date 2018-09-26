@@ -1,6 +1,6 @@
-# LINE WEBTOON Bot [Rewrite]
+# LINE WEBTOON Bot
+Soon to be public Discord bot.
 
-Travis CI is bull, for me anyway. If it's here, it works. Most likely. If not, open up an issue.
-~~oh and it doesnt even work with gitlab?? and their own ci is garbage anyway lol~~
-
-just, ignore this, i'll eventually push it all into the [main code](http://github.com/jennasisis/lwbot)
+Migrated from [GitHub](http://github.com/jennasisis/lwbot-rewrite) a *long* time ago.<br>
+Was originally [just lwbot on github](http://github.com/jennasisis/lwbot).
+> Both of these repositories have been archived. My GitHub is no longer in use due to Microsoft aquiring them.
