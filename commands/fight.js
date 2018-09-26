@@ -1,4 +1,4 @@
-var Fstrings = [` with a transformer.`, ` with poutine.`, `, and what a fight it is! Whoa mama!`, `, with two thousand blades!`, `. SHORYUKEN!`, `. HADOUKEN!`, `. KA-POW!`, ` with a pillow.`, ` with a large fish.`, ` with a burnt piece of toast.`];
+var Fstrings = [' with a transformer.', ' with poutine.', ', and what a fight it is! Whoa mama!', ', with two thousand blades!', '. SHORYUKEN!', '. HADOUKEN!', '. KA-POW!', ' with a pillow.', ' with a large fish.', ' with a burnt piece of toast.'];
 
 module.exports.run = (client, message, args) => { // eslint-disable-line no-unused-vars
   function randomElement(array) {
@@ -25,14 +25,14 @@ module.exports.run = (client, message, args) => { // eslint-disable-line no-unus
 
 exports.conf = {
   enabled: true,
-  aliases: [`fite`],
-  permLevel: `User`,
+  aliases: ['fite'],
+  permLevel: 'User',
   guildOnly: true
 };
 
 exports.help = {
-  name: `fight`,
-  description: `Fight a user!`,
-  usage: `fight <mention>`,
-  category: `Fun`
+  name: 'fight',
+  description: 'Fight a user!',
+  usage: 'fight <mention>',
+  category: 'Fun'
 };

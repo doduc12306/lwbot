@@ -16,25 +16,25 @@ module.exports = async (client, packet) => {
 
   if(packet.channel_id === genreChannel.id) {
     switch(packet.emoji.name) {
-      case "⚔":
+      case '⚔':
         toggleRole('444346550760636417');
         break;
-      case "💪":
+      case '💪':
         toggleRole('444396478446829568');
         break;
-      case "❤":
+      case '❤':
         toggleRole('444346546142838784');
         break;
-      case "👻":
+      case '👻':
         toggleRole('444346749390159872');
         break;
-      case "🏀":
+      case '🏀':
         toggleRole('444346752976551936');
         break;
-      case "📔":
+      case '📔':
         toggleRole('444346756159766536');
         break;
-      case "🤣":
+      case '🤣':
         toggleRole('444347123769802754');
         break;
     }
@@ -42,31 +42,31 @@ module.exports = async (client, packet) => {
 
   if(packet.channel_id === pingChannel.id) {
     switch (packet.emoji.name) {
-      case "📌":
+      case '📌':
         toggleRole('432633011515949067');
         break;
-      case "🍿":
+      case '🍿':
         toggleRole('440974703062941696');
         break;
-      case "🕹":
+      case '🕹':
         toggleRole('440974647975215125');
         break;
-      case "🎤":
+      case '🎤':
         toggleRole('455182908551069697');
         break;
-      case "😍":
+      case '😍':
         toggleRole('458434931899498518');
         break;
-      case "✍":
+      case '✍':
         toggleRole('458436541694607361');
         break;
-      case "🎨":
+      case '🎨':
         toggleRole('458436569662226442');
         break;
-      case "💜":
+      case '💜':
         toggleRole('442896867307683842');
         break;
-      case "📝":
+      case '📝':
         toggleRole('453294003002015744');
         break;
     }
@@ -74,46 +74,46 @@ module.exports = async (client, packet) => {
 
   if(packet.channel_id === miscChannel.id) {
     switch (packet.emoji.name) {
-      case "📩":
+      case '📩':
         toggleRole('444347837560520704');
         break;
-      case "⛔️":
+      case '⛔️':
         toggleRole('444347835060846612');
         break;
-      case "❓":
+      case '❓':
         toggleRole('444347831864524800');
         break;
-      case "💻":
+      case '💻':
         toggleRole('444347838235672596');
         break;
-      case "🎮":
+      case '🎮':
         toggleRole('444347839091572736');
         break;
-      case "💚":
+      case '💚':
         toggleRole('444348193568718849');
         break;
-      case "✌️":
+      case '✌️':
         toggleRole('444348188975955969');
         break;
-      case "🎥":
+      case '🎥':
         toggleRole('444348190771380226');
         break;
-      case "👁":
+      case '👁':
         toggleRole('444390328158650388');
         break;
-      case "📓":
+      case '📓':
         toggleRole('444340936286273538');
         break;
-      case "📘":
+      case '📘':
         toggleRole('444291891899662346');
         break;
-      case "📕":
+      case '📕':
         toggleRole('444291781031493633');
         break;
-      case "📗":
+      case '📗':
         toggleRole('444346408670330890');
         break;
-      case "📙":
+      case '📙':
         toggleRole('444340936286273538');
         break;
     }

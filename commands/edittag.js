@@ -1,13 +1,13 @@
-const Sequelize = require(`sequelize`);
-const sequelize = new Sequelize(`database`, `user`, `password`, {
-  host: `localhost`,
-  dialect: `sqlite`,
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize('database', 'user', 'password', {
+  host: 'localhost',
+  dialect: 'sqlite',
   logging: false,
   // SQLite only
-  storage: `tags.sqlite`,
+  storage: 'tags.sqlite',
 });
-    
-const Tags = sequelize.define(`tags`, {
+
+const Tags = sequelize.define('tags', {
   name: {
     type: Sequelize.STRING,
     unique: true,
@@ -22,9 +22,9 @@ const Tags = sequelize.define(`tags`, {
 });
 
 module.exports.run = async (client, message, args) => {
-    
+
   const tagName = args.shift();
-  const tagDescription = args.join(` `);
+  const tagDescription = args.join(' ');
 
   // equivalent to: UPDATE tags (descrption) values (?) WHERE name='?';
   const affectedRows = await Tags.update({ description: tagDescription }, { where: { name: tagName } });
@@ -37,13 +37,13 @@ module.exports.run = async (client, message, args) => {
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: [`etag`],
-  permLevel: `Bot Owner`
+  aliases: ['etag'],
+  permLevel: 'Bot Owner'
 };
 
 exports.help = {
-  name: `edittag`,
-  description: `Edits a particular tag`,
-  usage: `edittag <tag name> <new tag data>`,
-  category: `Tags`
+  name: 'edittag',
+  description: 'Edits a particular tag',
+  usage: 'edittag <tag name> <new tag data>',
+  category: 'Tags'
 };

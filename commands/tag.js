@@ -1,13 +1,13 @@
-const Sequelize = require(`sequelize`);
-const sequelize = new Sequelize(`database`, `user`, `password`, {
-  host: `localhost`,
-  dialect: `sqlite`,
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize('database', 'user', 'password', {
+  host: 'localhost',
+  dialect: 'sqlite',
   logging: false,
   // SQLite only
-  storage: `tags.sqlite`,
+  storage: 'tags.sqlite',
 });
   
-const Tags = sequelize.define(`tags`, {
+const Tags = sequelize.define('tags', {
   name: {
     type: Sequelize.STRING,
     unique: true,
@@ -29,8 +29,8 @@ module.exports.run = async (client, message, args) => {
   const tag = await Tags.findOne({ where: { name: tagName } });
   if (tag) {
     // equivalent to: UPDATE tags SET usage_count = usage_count + 1 WHERE name = 'tagName';
-    tag.increment(`usage_count`);
-    return message.channel.send(tag.get(`description`));
+    tag.increment('usage_count');
+    return message.channel.send(tag.get('description'));
   }
   return message.reply(`Could not find tag: ${tagName}`);
 };
@@ -38,13 +38,13 @@ module.exports.run = async (client, message, args) => {
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: [`findtag`],
-  permLevel: `User`
+  aliases: ['findtag'],
+  permLevel: 'User'
 };
 
 exports.help = {
-  name: `tag`,
-  description: `Find a tag particular tag`,
-  usage: `tag <tag name>`,
-  category: `Tags`
+  name: 'tag',
+  description: 'Find a tag particular tag',
+  usage: 'tag <tag name>',
+  category: 'Tags'
 };

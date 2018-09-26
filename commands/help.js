@@ -5,7 +5,7 @@ command is also filtered by level, so if a user does not have access to
 a command, it is not shown to them. If a command name is given with the
 help command, its extended help is shown.
 */
-const Discord = require(`discord.js`);
+const Discord = require('discord.js');
 
 exports.run = async (client, message, args, level) => {
   // If no specific command is called, show all filtered commands.
@@ -20,7 +20,7 @@ exports.run = async (client, message, args, level) => {
     const commandNames = myCommands.keyArray();
     const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
 
-    let currentCategory = ``;
+    let currentCategory = '';
     let output = `[Use ${prefix}help <commandname> for details]\n`;
     const sorted = myCommands.array().sort((p, c) =>
       p.help.category > c.help.category ? 1 : p.help.name > c.help.name && p.help.category === c.help.category ? 1 : -1 );
@@ -30,26 +30,26 @@ exports.run = async (client, message, args, level) => {
         output += `\u200b\n== ${cat} ==\n`;
         currentCategory = cat;
       }
-      output += `${prefix}${c.help.name}${` `.repeat(longest - c.help.name.length)} :: ${c.help.description}\n`;
+      output += `${prefix}${c.help.name}${' '.repeat(longest - c.help.name.length)} :: ${c.help.description}\n`;
     });
-    await message.react(`✅`);
-    await message.author.send(output, {code: `asciidoc`, split: true});
+    await message.react('✅');
+    await message.author.send(output, {code: 'asciidoc', split: true});
   } else {
     // Show individual command's help.
     let command = args[0];
     if (client.commands.has(command)) {
       command = client.commands.get(command);
-      if (level < client.levelCache[command.conf.permLevel]) return message.channel.send(`:x: You do not have access to this command!`);
+      if (level < client.levelCache[command.conf.permLevel]) return message.channel.send(':x: You do not have access to this command!');
 
       var cmdEmbed = new Discord.RichEmbed()
         .setTitle(`\`${command.help.name}\``)
         .setDescription(`${command.help.category} | ${command.help.description}`)
-        .addField(`Usage`, command.help.usage)
-        .addField(`Perm Level`, command.conf.permLevel)
+        .addField('Usage', command.help.usage)
+        .addField('Perm Level', command.conf.permLevel)
         .setColor(client.config.colors.green)
-        .setFooter(`All <arguments> are required · All [arguments] are optional`);
+        .setFooter('All <arguments> are required · All [arguments] are optional');
 
-      if(command.conf.aliases.join(', ')) cmdEmbed.addField(`Aliases`, command.conf.aliases.join(`, `));
+      if(command.conf.aliases.join(', ')) cmdEmbed.addField('Aliases', command.conf.aliases.join(', '));
 
       message.channel.send(cmdEmbed);
 
@@ -60,13 +60,13 @@ exports.run = async (client, message, args, level) => {
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: [`h`, `halp`, `hlp`, `commands`, `cmds`],
-  permLevel: `User`
+  aliases: ['h', 'halp', 'hlp', 'commands', 'cmds'],
+  permLevel: 'User'
 };
 
 exports.help = {
-  name: `help`,
-  category: `System`,
-  description: `Displays all the available commands for your permission level.`,
-  usage: `help [command]`
+  name: 'help',
+  category: 'System',
+  description: 'Displays all the available commands for your permission level.',
+  usage: 'help [command]'
 };

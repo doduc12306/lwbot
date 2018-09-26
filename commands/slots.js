@@ -1,8 +1,8 @@
 module.exports.run = async (client, message, args) => {
-  var slot = [`:monkey:`, `:frog:`, `:elephant:`, `:snail:`, `:bee:`,`:star:`, `:fox:`, `:crown:`, `:four_leaf_clover:`, `:lemon:`, `:cherries:`, `:melon:`, `:grapes:`, `:bomb:`, `:unicorn:`, `:zap:`, `<a:parrotHD:397047432640331777>`, `:pear:`, `:banana:`, `:tangerine:`, `:watermelon:`, `:gem:`];
+  var slot = [':monkey:', ':frog:', ':elephant:', ':snail:', ':bee:',':star:', ':fox:', ':crown:', ':four_leaf_clover:', ':lemon:', ':cherries:', ':melon:', ':grapes:', ':bomb:', ':unicorn:', ':zap:', '<a:parrotHD:397047432640331777>', ':pear:', ':banana:', ':tangerine:', ':watermelon:', ':gem:'];
 
-  var specialGood = [`:four_leaf_clover:`, `:star:`, `<a:parrotHD:397047432640331777>`, `:gem:`];
-  var specialBad = [`:bomb:`];
+  var specialGood = [':four_leaf_clover:', ':star:', '<a:parrotHD:397047432640331777>', ':gem:'];
+  var specialBad = [':bomb:'];
 
   Array.prototype.randomElement = function(array) {
     return array[Math.floor(Math.random() * array.length)];
@@ -26,9 +26,9 @@ module.exports.run = async (client, message, args) => {
       } else {
         message.channel.send(`${fslot1}  **|**  ${fslot2} **|**  ${fslot3}\n\n${fslot4}  **|**  ${fslot5}  **|**  ${fslot6}   **<**\n\n${fslot7}  **|**  ${fslot8}  **|**  ${fslot9}\n\n         **[ Nope ]**`);
       }
-    } else if (args[0] === `%`) {
+    } else if (args[0] === '%') {
       message.channel.send(`:slot_machine: The current win percentage is **${Math.round(((1/slot.length)*3)*100)}%**\n:gear: **\`Rounded: ((1 ÷ Length of slot array) x 3) x 100\`**`);
-    } else if (args[0] === `list`) {
+    } else if (args[0] === 'list') {
       message.channel.send(`Current emotes: ${slot}`);
     }
   } catch (err) {
@@ -39,13 +39,13 @@ module.exports.run = async (client, message, args) => {
 exports.conf = {
   enabled: false,
   guildOnly: false,
-  aliases: [`slotmachine`, `slot`],
-  permLevel: `User`
+  aliases: ['slotmachine', 'slot'],
+  permLevel: 'User'
 };
 
 exports.help = {
-  name: `slots`,
-  description: `Slot machine`,
-  usage: `slots [% | list]`,
-  category: `Fun`
+  name: 'slots',
+  description: 'Slot machine',
+  usage: 'slots [% | list]',
+  category: 'Fun'
 };

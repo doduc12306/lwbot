@@ -1,13 +1,13 @@
-const Sequelize = require(`sequelize`);
-const sequelize = new Sequelize(`database`, `user`, `password`, {
-  host: `localhost`,
-  dialect: `sqlite`,
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize('database', 'user', 'password', {
+  host: 'localhost',
+  dialect: 'sqlite',
   logging: false,
   // SQLite only
-  storage: `tags.sqlite`,
+  storage: 'tags.sqlite',
 });
     
-const Tags = sequelize.define(`tags`, {
+const Tags = sequelize.define('tags', {
   name: {
     type: Sequelize.STRING,
     unique: true,
@@ -36,12 +36,12 @@ exports.conf = {
   enabled: true,
   guildOnly: false,
   aliases: [],
-  permLevel: `User`
+  permLevel: 'User'
 };
 
 exports.help = {
-  name: `taginfo`,
-  description: `Shows the information of particular tag`,
-  usage: `taginfo <tag name>`,
-  category: `Tags`
+  name: 'taginfo',
+  description: 'Shows the information of particular tag',
+  usage: 'taginfo <tag name>',
+  category: 'Tags'
 };
