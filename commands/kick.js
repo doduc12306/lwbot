@@ -26,11 +26,13 @@ module.exports.run = async (client, message, args) => {
 
     if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
-    var modLogChannel = await message.guild.settings.get('modLogChannel').catch(() => {});
     await toKick.send(dmMsg);
     await toKickM.kick(toKick);
-    message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false;
-    await message.channel.send(`:white_check_mark: \`|\` :boot: **Kicked user \`${toKick.tag}\`**`);
+    await message.guild.settings.get('modLogChannel')
+      .then(async modLogChannel => {
+        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` :boot: **Kicked user \`${toKick.tag}\`**`);
+      })
+      .catch(async () => message.channel.send(`:warning: **Kick completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``));
 
   });
 };

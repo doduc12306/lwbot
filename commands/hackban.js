@@ -28,11 +28,12 @@ module.exports.run = async (client, message, args) => {
 
       if(reason) modEmbed.addField('Reason', reason);
 
-      var modLogChannel = await message.guild.settings.get('modLogChannel').catch(() => {});
-      await message.guild.settings.get('modLogChannel');
       await message.guild.ban(toBan.id, {days: 2});
-      message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false;
-      await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Banned user \`${toBan.tag}\`**`);
+      await message.guild.settings.get('modLogChannel')
+        .then(async modLogChannel => {
+          message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Banned user \`${toBan.tag}\`**`);
+        })
+        .catch(async () => message.channel.send(`:warning: **Ban completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``));
 
     });
   } catch (e) {console.log(e);}

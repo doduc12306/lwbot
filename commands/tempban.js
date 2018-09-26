@@ -39,17 +39,19 @@ module.exports.run = async (client, message, args) => {
 
     if(reason) {dmMsg += `\n\n:gear: **Reason:** \`${reason}\``; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
-    var modLogChannel = await message.guild.settings.get('modLogChannel').catch(() => {});
     await toBan.send(dmMsg);
     await message.guild.ban(toBan, {days: 1});
-    message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false;
-    await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Tempbanned user \`${toBan.tag}\` for \`${durationHR}\`**`);
+    await message.guild.settings.get('modLogChannel')
+      .then(async modLogChannel => {
+        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Tempbanned user \`${toBan.tag}\`**`);
+      })
+      .catch(async () => message.channel.send(`:warning: **Tempban issued, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``));
 
     setTimeout(async () => {
       await message.guild.modbase.create({
         victim: toBan.id,
         moderator: client.user.id,
-        type: 'unban',
+        type: 'tempban unban',
       }).then(async info => {
         modEmbed = new Discord.RichEmbed()
           .setThumbnail(toBan.avatarURL)
@@ -62,7 +64,9 @@ module.exports.run = async (client, message, args) => {
         if(!reason) {message.guild.modbase.update({ reason: 'Tempban auto unban' }, { where: {id: info.id}}); await modEmbed.addField('Reason', 'Tempban unban');}
         else {message.guild.modbase.update({ reason: `${reason} | Tempban auto unban`}, { where: {id: info.id}}); await modEmbed.addField('Reason', `${reason} | Tempban auto unban`);}
 
-        message.guild.channels.find('name', await message.guild.settings.get('modLogChannel')) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false;
+        await message.guild.settings.get('modLogChannel')
+          .then(modLogChannel => message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false)
+          .catch(() => {});
 
         message.guild.unban(toBan);
       });

@@ -37,17 +37,19 @@ module.exports.run = async (client, message, args) => {
 
     if(reason) {dmMsg += `\n\n:gear: **Reason \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({reason: reason}, {where: {id: info.id}});}
 
-    var modLogChannel = await message.guild.settings.get('modLogChannel').catch(() => {});
     toMute.user.send(dmMsg);
     toMute.addRole(role);
-    message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false;
-    message.channel.send(`:white_check_mark: \`|\` ${mutedEmote} **Tempmuted user \`${toMute.user.tag}\` for \`${durationHR}\`**`);
+    await message.guild.settings.get('modLogChannel')
+      .then(async modLogChannel => {
+        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` ${mutedEmote} **Tempmuted user \`${toMute.tag}\`**`);
+      })
+      .catch(async () => message.channel.send(`:warning: **Tempmute issued, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``));
 
     setTimeout(async () => {
       await message.guild.modbase.create({
         victim: toMute.id,
         moderator: client.user.id,
-        type: 'unmute',
+        type: 'tempmute unmute',
       }).then(async info => {
         modEmbed = new Discord.RichEmbed()
           .setThumbnail(toMute.avatarURL)
@@ -60,9 +62,10 @@ module.exports.run = async (client, message, args) => {
         if(!reason) {message.guild.modbase.update({ reason: 'Tempmute auto unmute' }, { where: {id: info.id}}); await modEmbed.addField('Reason', 'Tempmute auto unmute');}
         else {message.guild.modbase.update({ reason: `${reason} | Tempmute auto unmute`}, { where: {id: info.id}}); await modEmbed.addField('Reason', `${reason} | Tempmute auto unmute`);}
 
-        var modLogChannel = await message.guild.settings.get('modLogChannel');
         toMute.removeRole(role);
-        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false;
+        await message.guild.settings.get('modLogChannel')
+          .then(async modLogChannel => message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false)
+          .catch(async () => {});
       });
     }, durationMs);
   });

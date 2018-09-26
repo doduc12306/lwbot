@@ -29,11 +29,13 @@ module.exports.run = async (client, message, args) => {
 
     if(reason) {dmMsg += `\n\n:gear: **Reason \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({reason: reason}, {where: {id: info.id}});}
 
-    var modLogChannel = await message.guild.settings.get('modLogChannel').catch(() => {});
     toMute.user.send(dmMsg);
     toMute.addRole(role);
-    message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false;
-    message.channel.send(`:white_check_mark: \`|\` ${mutedEmote} **Muted user \`${toMute.user.tag}\`**`);
+    await message.guild.settings.get('modLogChannel')
+      .then(async modLogChannel => {
+        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` ${mutedEmote} **Muted user \`${toMute.tag}\`**`);
+      })
+      .catch(async () => message.channel.send(`:warning: **Mute completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``));
   });
 };
 

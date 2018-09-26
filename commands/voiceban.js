@@ -31,15 +31,16 @@ module.exports.run = async (client, message, args) => {
 
     if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
-    var modLogChannel = await message.guild.settings.get('modLogChannel').catch(() => {});
     var vc = await message.guild.createChannel('Voice Ban', 'voice');
     await toBanM.setVoiceChannel(vc);
     await message.member.voiceChannel.overwritePermissions(toBan, {CONNECT: false});
     await vc.delete();
     toBan.send(dmMsg);
-    message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false;
-    await message.channel.send(`:white_check_mark: \`|\` ${vbEmote} **Voicebanned user \`${toBan.tag}\`**`);
-
+    await message.guild.settings.get('modLogChannel')
+      .then(async modLogChannel => {
+        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` ${vbEmote} **Voicebanned user \`${toBan.tag}\`**`);
+      })
+      .catch(async () => message.channel.send(`:warning: **Voiceban completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``));
   });
 };
 

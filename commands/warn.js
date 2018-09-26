@@ -22,10 +22,12 @@ module.exports.run = async (client, message, args) => {
 
     if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
-    var modLogChannel = await message.guild.settings.get('modLogChannel').catch(() => {});
     toWarn.send(dmMsg);
-    message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false;
-    message.channel.send(`:white_check_mark: \`|\` :warning: **Warned user ${toWarn.tag}**`);
+    await message.guild.settings.get('modLogChannel')
+      .then(async modLogChannel => {
+        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` :warning: **Warned user \`${toWarn.tag}\`**`);
+      })
+      .catch(async () => message.channel.send(`:warning: **Warning completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``));
   });
 };
 

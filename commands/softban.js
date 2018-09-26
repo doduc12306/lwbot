@@ -27,12 +27,14 @@ module.exports.run = async (client, message, args) => {
 
     if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
-    var modLogChannel = await message.guild.settings.get('modLogChannel').catch(() => {});
     await toBan.send(dmMsg);
     await message.guild.ban(toBan, {days: 2});
     await message.guild.unban(toBan);
-    message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false;
-    await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Softbanned user \`${toBan.tag}\`**`);
+    await message.guild.settings.get('modLogChannel')
+      .then(async modLogChannel => {
+        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Softbanned user \`${toBan.tag}\`**`);
+      })
+      .catch(async () => message.channel.send(`:warning: **Softban completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``));
 
   });
 };
