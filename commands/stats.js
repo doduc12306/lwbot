@@ -9,7 +9,7 @@ exports.run = (client, message, args, level) => { // eslint-disable-line no-unus
     .addField('Guilds', client.guilds.size, true)
     .addField('Users', client.users.size, true)
     .addField('Memory Usage', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`, true)
-    .addField('Uptime', moment.duration(client.uptime).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]'), true)
+    .addField('Uptime', `:robot: ${moment.duration(client.uptime).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]')}\n :desktop: ${require('child_process').execSync('uptime -p').toString().split('up')[1].trim()}`, true)
     .addField('Discord.js', `v${version}`, true)
     .addField('Node', process.version, true)
     .setColor(client.config.colors.green)
@@ -20,7 +20,7 @@ exports.run = (client, message, args, level) => { // eslint-disable-line no-unus
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: [],
+  aliases: ['uptime'],
   permLevel: 'User'
 };
 
