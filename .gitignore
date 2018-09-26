@@ -2,6 +2,7 @@
 databases/
 .vscode/
 .vs/
+src/node_modules
 
 # Logs
 logs
