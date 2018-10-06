@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.4.3 [10/6/2018]
+* Just some backend stuff. I moved the commands into folders based on their category. I also added the [walk package](http://npm.org/package/walk) to help with this since fs doesn't have the native functionality to read directories inside directories.
+* Also fixed the help command. I accidentally removed the `level` argument from `cmd.run` in the message event, only because I *thought* no command was using it. turns out, help needs it.
+
 ## v1.4.2 [9/26/2018]
 A *lot* has changed.
 ### Per-guild settings
@@ -21,7 +25,7 @@ Scrapped the old currency system from djs.guide, created my own from scratch. Ut
 
 ## v1.3.0
 ### Music
-Created music functionality from [iCrawl's tutorial](https://github.com/Dev-Yukine/Music-Bot) (thanks bud ❤)
+Created music functionality from [iCrawl's tutorial](https://github.com/Dev-Yukine/Music-Bot) (thanks bud ❤)<br>
 `+` !w play<br>
 `+` !w pause<br>
 `+` !w resume<br>
@@ -31,7 +35,7 @@ Created music functionality from [iCrawl's tutorial](https://github.com/Dev-Yuki
 `+` !w volume <#≤10>
 
 ### Currency
-Created currency system from [discordjs.guide](http://discordjs.guide)
+Created currency system from [discordjs.guide](http://discordjs.guide)<br>
 `+` !w balance<br>
 `+` !w buy<br>
 `+` !w shop<br>
@@ -42,11 +46,11 @@ Created currency system from [discordjs.guide](http://discordjs.guide)
 `+` Adds one Kowok to user per message
 
 ### Tags
-Created tags system from [discordjs.guide](http://discordjs.guide)
-`+` !w tag
-`+` !w addtag
-`+` !w removetag
-`+` !w showtags
+Created tags system from [discordjs.guide](http://discordjs.guide)<br>
+`+` !w tag<br>
+`+` !w addtag<br>
+`+` !w removetag<br>
+`+` !w showtags<br>
 `+` !w taginfo
 
 ### Other Commands
