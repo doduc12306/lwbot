@@ -40,7 +40,7 @@ exports.run = async (client, message, args, level) => {
         .setTitle(command.help.name.toProperCase())
         .setDescription(desc)
         .setColor(client.config.colors.green)
-        .setFooter('All <arguments> are required · All [arguments] are optional');
+        .setFooter('All <arguments> are required • All [arguments] are optional');
 
       message.channel.send(cmdEmbed);
 
