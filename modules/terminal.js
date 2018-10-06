@@ -1,15 +1,15 @@
+/* eslint-disable */
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const moment = require('moment');
 require('moment-duration-format');
-const config = require('./config.js');
+const config = require('../src/config.js');
 var term = require('terminal-kit').terminal;
 const { inspect } = require('util');
 const timestamp = `^K[${moment().format('YYYY-MM-DD HH:mm:ss')}]^ `;
 
 var curServer;
 var curChannel;
-var dmUser;
 
 term.info = text => term(`${timestamp}^#^B[INFO]^ ^B${text}\n`);
 term.log = text => term(`${timestamp}${text}\n`);
@@ -29,20 +29,17 @@ client.on('ready', () => {
 });
 
 client.on('message', async message => {
-  if (message.channel.type === 'dm') {
-    dmUser = message.author.id;
-    if (message.author.id === client.user.id && dmUser) term(`^#^g^k[DM]^ ^+Me^ -> ^+${client.users.get(dmUser).tag}^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}\n^:${message.cleanContent}\n`);
-    else term(`^#^g^k[DM]^ ^+${message.author.tag}^ -> ^+Me^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}\n^:${message.cleanContent}\n`);
-  }
+  // Message formatting
+  //message.cleanContent = message.cleanContent.replace(/(\*\*?|_)((?:\\\1|(?:(?!\1).))*)\1/g, match => `^/${match.substring(1, match.length - 1)}^:`)
 
   if(curServer !== message.guild) return;
   if(curChannel !== message.channel) return;
-  if (message.content === 'terminal.exit' && message.author.id === '107599228900999168') {console.clear(); process.exit();}
-  if (message.content === 'terminal.input' && message.author.id === '107599228900999168') s();
+  if (message.cleanContent === 'terminal.exit' && message.author.id === '107599228900999168') {console.clear(); process.exit();}
+  if (message.cleanContent === 'terminal.input' && message.author.id === '107599228900999168') s();
 
   var mentionedColor = message.isMemberMentioned(client.user) || message.isMemberMentioned(client.users.get('107599228900999168')) ? '^#^y^k' : '^:';
 
-  if (message.author.bot) term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^#^B[BOT]^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
+  if (message.author.bot) term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^#^B[BOT]^ ^K^/${moment(message.createdTimestamp).format('h:mma â€¢ M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
   else term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
 });
 
@@ -62,7 +59,17 @@ function s() {
                channel.permissionsFor(curServer.members.get(client.user.id)).serialize().READ_MESSAGES === false) return term.err('Cannot send messages to this channel!');
             curChannel = channel;
             term('\n');
-            term.info(`Current channel switched to ^W#${channel.name}^ ^K^/(${channel.id})`);})
+            term.info(`Current channel switched to ^W#${channel.name}^ ^K^/(${channel.id})`);
+            channel.fetchMessages({limit: 10}).then(messages => {
+              messages = messages.sort((a, b) => a.createdTimestamp > b.createdTimestamp);
+              messages.forEach(message => {
+                  var mentionedColor = message.isMemberMentioned(client.user) || message.isMemberMentioned(client.users.get('107599228900999168')) ? '^#^y^k' : '^:';
+                  if (message.author.bot) term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^#^B[BOT]^ ^K^/${moment(message.createdTimestamp).format('h:mma â€¢ M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
+                  else term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
+              });
+              term.info('Finished fetching messages');
+            });
+          })
           .catch(e => {
             if (e.message === '[String Parse] Channel not found') return term.err('Could not find channel');
             term.err(e);
@@ -112,18 +119,25 @@ function s() {
       }
 
       else {
-        await term('\n');
-        await curChannel.send(input);
+        if(curServer === undefined) term.err('There is no server set yet!');
+        else if(curChannel === undefined) term.err('There is no channel set yet!');
+        else {
+          await term('\n');
+          await curChannel.send(input);
+        }
         s();
       }
     }
 
     else if(input === '') s();
     else {
-      await term('\n');
-      await curChannel.send(input)
-        .catch(e => term.err(e));
-      s();
+        if (curServer === undefined) term.err('There is no server set yet!');
+        else if (curChannel === undefined) term.err('There is no channel set yet!');
+        else {
+            await term('\n');
+            await curChannel.send(input);
+        }
+        s();
     }
   });
 }
