@@ -69,6 +69,9 @@ module.exports = async (client, packet) => {
       case '📝':
         toggleRole('453294003002015744');
         break;
+      case '👻':
+        toggleRole('497871607692263425');
+        break;
     }
   }
 
