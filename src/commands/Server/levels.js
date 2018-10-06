@@ -37,7 +37,7 @@ exports.conf = {
 
 exports.help = {
   name: 'levels',
-  description: 'xp',
-  usage: 'xp',
-  category: 'xp'
+  description: 'Get the server\'s leaderboard',
+  usage: 'levels',
+  category: 'Server'
 };

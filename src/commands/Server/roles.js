@@ -2,15 +2,15 @@ module.exports.run = (client, message, args) => {
   var type = args[0];
   if(!type) {
     message.delete();
-    return message.author.send(':x: Either \`genre\`, \`ping\`, or \`misc\` role menus please.');
+    return message.author.send(':x: Either `genre`, `ping`, or `misc` role menus please.');
   }
   if(!['genre', 'ping', 'misc'].includes(type)) {
     message.delete();
-    return message.author.send(':x: Either \`genre\`, \`ping\`, or \`misc\` role menus please.');
+    return message.author.send(':x: Either `genre`, `ping`, or `misc` role menus please.');
   }
 
   if(type === 'genre') {
-    message.channel.send(':crossed_swords: : `Fantasy / Action`\n\n:muscle: : \`Superhero\`\n\n:heart: : \`Romance / Drama\`\n\n:ghost: : \`Thriller / Horror\`\n\n:basketball: : \`Sports\`\n\n:notebook_with_decorative_cover: : \`Slice of Life\`\n\n:rofl: : \`Comedy\`')
+    message.channel.send(':crossed_swords: : `Fantasy / Action`\n\n:muscle: : `Superhero`\n\n:heart: : `Romance / Drama`\n\n:ghost: : `Thriller / Horror`\n\n:basketball: : `Sports`\n\n:notebook_with_decorative_cover: : `Slice of Life`\n\n:rofl: : `Comedy`')
       .then(async msg => {
 
         await msg.react('⚔');
@@ -21,7 +21,7 @@ module.exports.run = (client, message, args) => {
         await msg.react('📔');
         await msg.react('🤣');
 
-        const collector = msg.createReactionCollector((reaction, user) =>
+        const collector = msg.createReactionCollector((reaction) =>
           reaction.emoji.name === '⚔' ||
         reaction.emoji.name === '💪' ||
         reaction.emoji.name === '❤' ||
@@ -73,7 +73,7 @@ module.exports.run = (client, message, args) => {
         await msg.react('💜');
         await msg.react('📝');
 
-        const collector = msg.createReactionCollector((reaction, user) =>
+        const collector = msg.createReactionCollector((reaction) =>
           reaction.emoji.name === '📌' ||
         reaction.emoji.name === '🍿' ||
         reaction.emoji.name === '🕹' ||
@@ -117,7 +117,7 @@ module.exports.run = (client, message, args) => {
       });
   }
   if(type === 'misc') {
-    message.channel.send(':envelope_with_arrow: : \`Open DM\`\n\n:no_entry_sign: : \`Closed DM\`\n\n:question: : \`Ask to DM\`\n\n:computer: : \`PC Master Race\`\n\n:video_game: : \`Playstation\`\n\n:green_heart: : \`Xbox\`\n\n:v: : \`Nintendo\`\n\n:movie_camera: : \`Youtuber\`\n\n:eye: : \`Streamer\`\n\n**DIVIDERS**\n\n:notebook: : \`OTHER TITLES divider\`\n\n:blue_book: : \`LEVELS divider\`\n\n:closed_book: : \`PINGS divider\`\n\n:green_book: : \`GENRE divider\`\n\n:orange_book: : \`MISC divider\`')
+    message.channel.send(':envelope_with_arrow: : `Open DM`\n\n:no_entry_sign: : `Closed DM`\n\n:question: : `Ask to DM`\n\n:computer: : `PC Master Race`\n\n:video_game: : `Playstation`\n\n:green_heart: : `Xbox`\n\n:v: : `Nintendo`\n\n:movie_camera: : `Youtuber`\n\n:eye: : `Streamer`\n\n**DIVIDERS**\n\n:notebook: : `OTHER TITLES divider`\n\n:blue_book: : `LEVELS divider`\n\n:closed_book: : `PINGS divider`\n\n:green_book: : `GENRE divider`\n\n:orange_book: : `MISC divider`')
       .then(async msg => {
 
         await msg.react('📩');
@@ -135,7 +135,7 @@ module.exports.run = (client, message, args) => {
         await msg.react('📗');
         await msg.react('📙');
 
-        const collector = msg.createReactionCollector((reaction, user) =>
+        const collector = msg.createReactionCollector((reaction) =>
           reaction.emoji.name === '📩' ||
         reaction.emoji.name === '⛔️' ||
         reaction.emoji.name === '❓' ||

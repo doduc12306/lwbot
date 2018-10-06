@@ -22,6 +22,6 @@ exports.conf = {
 exports.help = {
   name: 'info',
   description: 'Shows information of the bot',
-  category: 'Misc',
+  category: 'System',
   usage: 'info'
 };

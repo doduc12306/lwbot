@@ -146,36 +146,40 @@ module.exports = (client) => {
     return text;
   };
 
-  client.loadCommand = (commandName) => {
+  client.loadCommand = (folder, commandName) => {
     try {
-      const props = require(`../commands/${commandName}`);
-      client.logger.log(`Loading Command: ${props.help.name}`);
+      const props = require(`../commands/${folder}/${commandName}`);
+      client.logger.log(`Loading Command: ${folder}/${props.help.name}`);
       if (props.init) {
         props.init(client);
       }
       client.commands.set(props.help.name, props);
+      client.folder.set(props.help.name, folder);
       props.conf.aliases.forEach(alias => {
         client.aliases.set(alias, props.help.name);
       });
       return false;
     } catch (e) {
-      return `Unable to load command ${commandName}: ${e}`;
+      return `Unable to load command ${folder}/${commandName}: ${e}`;
     }
   };
 
   client.unloadCommand = async (commandName) => {
     let command;
+    let folder;
     if (client.commands.has(commandName)) {
       command = client.commands.get(commandName);
+      folder = client.folder.get(commandName);
     } else if (client.aliases.has(commandName)) {
       command = client.commands.get(client.aliases.get(commandName));
+      folder = client.folder.get(commandName);
     }
     if (!command) return `The command \`${commandName}\` doesn't seem to exist, nor is it an alias.`;
 
     if (command.shutdown) {
       await command.shutdown(client);
     }
-    delete require.cache[require.resolve(`../commands/${commandName}.js`)];
+    delete require.cache[require.resolve(`../commands/${folder}/${commandName}.js`)];
     return false;
   };
 

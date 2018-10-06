@@ -1,3 +1,4 @@
+/* eslint-disable */
 module.exports.run = async (client, message, args) => {
   var slot = [':monkey:', ':frog:', ':elephant:', ':snail:', ':bee:',':star:', ':fox:', ':crown:', ':four_leaf_clover:', ':lemon:', ':cherries:', ':melon:', ':grapes:', ':bomb:', ':unicorn:', ':zap:', '<a:parrotHD:397047432640331777>', ':pear:', ':banana:', ':tangerine:', ':watermelon:', ':gem:'];
 
@@ -10,7 +11,7 @@ module.exports.run = async (client, message, args) => {
 
   try {
     if (!args[0]) {
-        
+
       var fslot1 = await slot.randomElement(slot);
       var fslot2 = await slot.randomElement(slot);
       var fslot3 = await slot.randomElement(slot);
@@ -47,5 +48,5 @@ exports.help = {
   name: 'slots',
   description: 'Slot machine',
   usage: 'slots [% | list]',
-  category: 'Fun'
+  category: 'Economy'
 };

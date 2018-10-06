@@ -12,7 +12,7 @@ exports.conf = {
 
 exports.help = {
   name: 'permlevel',
-  category: 'Misc',
+  category: 'System',
   description: 'Tells you your permission level for the current message location.',
   usage: 'permlevel'
 };

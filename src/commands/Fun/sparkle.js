@@ -1,4 +1,4 @@
-module.exports.run = async (client, message, args) => {
+module.exports.run = async (client, message) => {
   try {
     if (!message.guild.me.permissions.has('MANAGE_NICKNAMES')) return message.channel.send(':x: I do not have permission to manage nicknames!');
 
@@ -9,13 +9,13 @@ module.exports.run = async (client, message, args) => {
       var targetUser = message.mentions.users.first();
 
       if (targetMember.nickname && targetMember.nickname.includes('☆ ･*。')) return message.channel.send(':x: That nickname already has a sparkle in it!');
-            
+
       if (targetMember.nickname && targetMember.nickname.length < 28) {
-        await targetMember.setNickname(`☆ ･*。${targetMember.nickname}`); 
+        await targetMember.setNickname(`☆ ･*。${targetMember.nickname}`);
         await message.channel.send(':white_check_mark: Nickname has been set!');
       }
       else if (targetUser.username.length < 28) {
-        await targetMember.setNickname(`☆ ･*。${targetUser.username}`); 
+        await targetMember.setNickname(`☆ ･*。${targetUser.username}`);
         await message.channel.send(':white_check_mark: Nickname has been set!');
       }
       else {message.channel.send(':x: The user\'s nickname/username was too long! Please set it to something less than 28 characters!');}

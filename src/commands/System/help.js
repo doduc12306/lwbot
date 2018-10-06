@@ -1,10 +1,3 @@
-/*
-The HELP command is used to display every command's name and description
-to the user, so that he may see what commands are available. The help
-command is also filtered by level, so if a user does not have access to
-a command, it is not shown to them. If a command name is given with the
-help command, its extended help is shown.
-*/
 const Discord = require('discord.js');
 
 exports.run = async (client, message, args, level) => {
@@ -13,7 +6,7 @@ exports.run = async (client, message, args, level) => {
     const prefix = message.guild ? await message.guild.settings.get('prefix') : client.config.defaultSettings.prefix;
 
     // Filter all commands by which are available for the user's level, using the <Collection>.filter() method.
-    const myCommands = message.guild ? client.commands.filter(cmd => client.levelCache[cmd.conf.permLevel] <= level) : client.commands.filter(cmd => client.levelCache[cmd.conf.permLevel] <= level &&  cmd.conf.guildOnly !== true);
+    const myCommands = message.guild ? client.commands.filter(cmd => client.levelCache[cmd.conf.permLevel] <= level) : client.commands.filter(cmd => client.levelCache[cmd.conf.permLevel] <= level && cmd.conf.guildOnly !== true);
 
     // Here we have to get the command names only, and we use that array to get the longest name.
     // This make the help commands "aligned" in the output.
@@ -22,8 +15,7 @@ exports.run = async (client, message, args, level) => {
 
     let currentCategory = '';
     let output = `[Use ${prefix}help <commandname> for details]\n`;
-    const sorted = myCommands.array().sort((p, c) =>
-      p.help.category > c.help.category ? 1 : p.help.name > c.help.name && p.help.category === c.help.category ? 1 : -1 );
+    const sorted = myCommands.array().sort((p, c) => p.help.category > c.help.category ? 1 : p.help.name > c.help.name && p.help.category === c.help.category ? 1 : -1);
     sorted.forEach(c => {
       const cat = c.help.category;
       if (currentCategory !== cat) {
@@ -33,7 +25,7 @@ exports.run = async (client, message, args, level) => {
       output += `${prefix}${c.help.name}${' '.repeat(longest - c.help.name.length)} :: ${c.help.description}\n`;
     });
     await message.react('✅');
-    await message.author.send(output, {code: 'asciidoc', split: true});
+    await message.author.send(output, { code: 'asciidoc', split: true });
   } else {
     // Show individual command's help.
     let command = args[0];
@@ -49,11 +41,11 @@ exports.run = async (client, message, args, level) => {
         .setColor(client.config.colors.green)
         .setFooter('All <arguments> are required · All [arguments] are optional');
 
-      if(command.conf.aliases.join(', ')) cmdEmbed.addField('Aliases', command.conf.aliases.join(', '));
+      if (command.conf.aliases.join(', ')) cmdEmbed.addField('Aliases', command.conf.aliases.join(', '));
 
       message.channel.send(cmdEmbed);
 
-    } else {message.channel.send(`:x: I couldn't find the command ${command}!`);}
+    } else { message.channel.send(`:x: I couldn't find the command ${command}!`); }
   }
 };
 

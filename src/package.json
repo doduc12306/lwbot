@@ -21,7 +21,8 @@
     "sqlite3": "^4.0.2",
     "terminal-kit": "^1.26.2",
     "urban-dictionary": "^1.0.7",
-    "utf8": "^3.0.0"
+    "utf8": "^3.0.0",
+    "walk": "^2.3.14"
   },
   "devDependencies": {},
   "scripts": {

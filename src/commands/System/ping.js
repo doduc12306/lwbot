@@ -1,24 +1,17 @@
 const Discord = require('discord.js');
 
 module.exports.run = (client, message) => {
-  var pings1 = client.pings.join(' ');
-  var pings2 = pings1.split(' ');
-  var ping1 = `${pings2[0]}ms`;
-  var ping2 = `${pings2[1]}ms`;
-  var ping3 = `${pings2[2]}ms`;
-  var pings = `${ping1}, ${ping2}, ${ping3}`;
+  var pings = client.pings.filter(g => g !== undefined).join(', ');
 
   message.channel.send(new Discord.RichEmbed()
-    .addField(':ping_pong: Ping', 'Pinging...')
+    .addField(':ping_pong: Ping', 'Pinging... (Pinging...)')
     .addField(':left_right_arrow: Latency', 'Pinging...')
-    .addField(':three: Last Three', 'Pinging...')
-    .setColor(54371)
+    .setColor(client.config.colors.yellow)
   ).then(thismessage => {
     thismessage.edit(new Discord.RichEmbed()
-      .addField(':ping_pong: Ping', Math.round(client.ping)+'ms')
+      .addField(':ping_pong: Ping', `${Math.round(client.ping)}ms (${pings})`)
       .addField(':left_right_arrow: Latency', `${thismessage.createdAt-message.createdAt}ms`)
-      .addField(':three: Last Three', pings)
-      .setColor(54371)
+      .setColor(client.config.colors.green)
     );
   });
 };

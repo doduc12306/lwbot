@@ -1,9 +1,12 @@
 if (process.version.slice(1).split('.')[0] < 8) throw new Error('Node 8.0.0 or higher is required. Update Node on your system.');
 
+/* eslint-disable */
 const Discord = require('discord.js');
 const Sequelize = require('sequelize');
 const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
+var walk = require('walk');
+var path = require('path');
 const Enmap = require('enmap');
 const EnmapLevel = require('enmap-level');
 const client = new Discord.Client({fetchAllMembers: true});
@@ -34,42 +37,51 @@ require('./modules/functions.js')(client);
 
 client.commands = new Enmap();
 client.aliases = new Enmap();
+client.folder = new Enmap();
 client.settings = new Enmap({provider: new EnmapLevel({name: 'settings'})});
 
 var debug = client.config.debugMode;
+
+var options = { // walk module options
+  followLinks: false
+  , filters: ['Temp', '_Temp']
+};
 
 const init = async () => {
 
   // Here we load commands into memory, as a collection, so they're accessible
   // here and everywhere else.
-  const cmdFiles = await readdir('./commands/');
-  client.logger.log(`Loading a total of ${cmdFiles.length} commands.`);
-  cmdFiles.forEach(f => {
-    if (!f.endsWith('.js')) return;
-    const response = client.loadCommand(f);
-    if (response) console.log(response);
+  const cmdFiles = walk.walk('./commands/', options);
+  client.logger.log('Loading commands...');
+  cmdFiles.on('file', (root, fileStats, next) => { // eslint-disable-line no-unused-vars
+    var cmdPath = path.join(__dirname, root);
+    cmdPath = cmdPath.substring(cmdPath.indexOf('commands/') + 9)
+    client.loadCommand(cmdPath, fileStats.name);
+    next();
   });
 
-  // Then we load events, which will include our message and ready event.
-  const evtFiles = await readdir('./events/');
-  client.logger.log(`Loading a total of ${evtFiles.length} events.`);
-  evtFiles.forEach(file => {
-    const eventName = file.split('.')[0];
-    const event = require(`./events/${file}`);
-    client.on(eventName, event.bind(null, client));
-    delete require.cache[require.resolve(`./events/${file}`)];
-  });
+  cmdFiles.on('end', async () => {
+    // Then we load events, which will include our message and ready event.
+    const evtFiles = await readdir('./events/');
+    client.logger.log(`Loading a total of ${evtFiles.length} events.`);
+    evtFiles.forEach(file => {
+      const eventName = file.split('.')[0];
+      const event = require(`./events/${file}`);
+      client.on(eventName, event.bind(null, client));
+      delete require.cache[require.resolve(`./events/${file}`)];
+    });
 
-  // Generate a cache of client permissions for pretty perms
-  client.levelCache = {};
-  for (let i = 0; i < client.config.permLevels.length; i++) {
-    const thisLevel = client.config.permLevels[i];
-    client.levelCache[thisLevel.name] = thisLevel.level;
-  }
+    // Generate a cache of client permissions for pretty perms
+    client.levelCache = {};
+    for (let i = 0; i < client.config.permLevels.length; i++) {
+      const thisLevel = client.config.permLevels[i];
+      client.levelCache[thisLevel.name] = thisLevel.level;
+    }
 
-  // Here we login the client.
-  if (debug) client.login(client.config.debugtoken);
-  else client.login(client.config.token);
+    // Here we login the client.
+    if (debug) client.login(client.config.debugtoken);
+    else client.login(client.config.token);
+  })
 
 // End top-level async/await function.
 };
