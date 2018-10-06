@@ -32,20 +32,19 @@ exports.run = async (client, message, args, level) => {
     if (client.commands.has(command)) {
       command = client.commands.get(command);
       if (level < client.levelCache[command.conf.permLevel]) return message.channel.send(':x: You do not have access to this command!');
+      var desc = `**Description:** ${command.help.description}\n**Usage:** ${command.help.usage}\n**Required Perm:** ${command.conf.permLevel}\n**Category:** ${command.help.category}`;
+
+      if (command.conf.aliases.join(', ')) desc += `\n**Aliases:** ${command.conf.aliases.join(', ')}`;
 
       var cmdEmbed = new Discord.RichEmbed()
-        .setTitle(`\`${command.help.name}\``)
-        .setDescription(`${command.help.category} | ${command.help.description}`)
-        .addField('Usage', command.help.usage)
-        .addField('Perm Level', command.conf.permLevel)
+        .setTitle(command.help.name.toProperCase())
+        .setDescription(desc)
         .setColor(client.config.colors.green)
         .setFooter('All <arguments> are required · All [arguments] are optional');
 
-      if (command.conf.aliases.join(', ')) cmdEmbed.addField('Aliases', command.conf.aliases.join(', '));
-
       message.channel.send(cmdEmbed);
 
-    } else { message.channel.send(`:x: I couldn't find the command ${command}!`); }
+    } else message.channel.send(`:x: **I couldn't find the command** \`${command}\`!`);
   }
 };
 
