@@ -3,7 +3,7 @@ databases/
 .vscode/
 .vs/
 src/node_modules
-
+tests/
 # Logs
 logs
 *.log
