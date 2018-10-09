@@ -79,7 +79,7 @@ const config = {
       check: (message) => {
         try {
           const adminRole = message.guild.roles.find(r => r.name.toLowerCase() === message.settings.adminRole.toLowerCase());
-          return (adminRole && message.member.roles.has(adminRole.id));
+          return ((adminRole && message.member.roles.has(adminRole.id)) || message.member.permissions.has('ADMINISTRATOR'));
         } catch (e) {
           return false;
         }
