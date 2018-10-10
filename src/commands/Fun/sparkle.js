@@ -8,6 +8,7 @@ module.exports.run = async (client, message) => {
       var targetMember = message.mentions.members.first();
       var targetUser = message.mentions.users.first();
 
+      if (targetMember.highestRole.position > message.guild.me.highestRole.position) return message.channel.send(':x: The member\'s role is higher than mine!');
       if (targetMember.nickname && targetMember.nickname.includes('☆ ･*。')) return message.channel.send(':x: That nickname already has a sparkle in it!');
 
       if (targetMember.nickname && targetMember.nickname.length < 28) {
@@ -25,6 +26,7 @@ module.exports.run = async (client, message) => {
       var selfMember = message.member;
       var selfUser = message.author;
 
+      if (selfMember.highestRole.position > message.guild.me.highestRole.position) return message.channel.send(':x: Your role is higher than mine!');
       if (selfMember.nickname && selfMember.nickname.includes('☆ ･*。')) return message.channel.send(':x: You already have a sparkle in your nickname!');
 
       if (selfMember.nickname && selfMember.nickname.length < 28) {
