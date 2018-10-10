@@ -1,16 +1,16 @@
 // This event executes when a new member joins a server. Let's welcome them!
-module.exports = (client, member) => {
-  // Load the guild's settings
-  const settings = client.settings.get(member.guild.id);
+/* eslint-disable */
+module.exports = async (client, member) => {
   if(member.user.bot) return;
+  var welcomeEnabled;
+  await member.guild.settings.get('welcomeEnabled').then(value => welcomeEnabled = value).catch(e => client.logger.error(e));
+  var welcomeMessage;
+  await member.guild.settings.get('welcomeMessage').then(value => welcomeMessage = value).catch(e => client.logger.error(e));
+  var welcomeChannel;
+  await member.guild.settings.get('welcomeChannel').then(value => welcomeChannel = value).catch(e => client.logger.error(e));
 
-  // If welcome is off, don't proceed (don't welcome the user)
-  if (settings.welcomeEnabled !== 'true') return;
-
-  // Replace the placeholders in the welcome message with actual data
-  const welcomeMessage = settings.welcomeMessage.replace('{{user}}', member.user.tag);
-
-  // Send the welcome message to the welcome channel
-  // There's a place for more configs here.
-  member.guild.channels.find('name', settings.welcomeChannel).send(welcomeMessage).catch(console.error);
+  if(welcomeEnabled !== 'true') return;
+  welcomeChannel = member.guild.channels.find(channel => channel.name === welcomeChannel);
+  if(welcomeChannel === null) return;
+  welcomeChannel.send(welcomeMessage.replaceAll('{{user}}', member.user.toString));
 };
