@@ -235,7 +235,7 @@ module.exports = async (message) => {
           parsedChannel = message.guild.channels.get(data);
           if (parsedChannel === undefined || parsedChannel === null) {
             parsedChannel = message.guild.channels.find(channel => channel.name === data);
-            if (parsedChannel === undefined || parsedChannel === null) return reject(new Error('[String Parse] Channel not found'));
+            if (parsedChannel === undefined || parsedChannel === null) return reject(new Error('Channel not found'));
             else channelObj = parsedChannel;
           } else channelObj = parsedChannel;
         }
@@ -264,7 +264,7 @@ module.exports = async (message) => {
           parsedUser = client.users.get(data);
           if (parsedUser === undefined || parsedUser === null) {
             parsedUser = client.users.find(user => user.username === data);
-            if (parsedUser === undefined || parsedUser === null) return reject(new Error('[String Parse] User not found'));
+            if (parsedUser === undefined || parsedUser === null) return reject(new Error('User not found'));
             else userObj = parsedUser;
           } else userObj = parsedUser;
         }
@@ -279,6 +279,26 @@ module.exports = async (message) => {
         if (!outputType || outputType === null) return resolve(userObj);
         else if (outputType.toLowerCase() === 'id') return resolve(userObj.id);
         else if (outputType.toLowerCase() === 'name') return resolve(uerObj.name);
+        else return reject(new TypeError('Unknown output type; must be "id" or "name"'));
+      });
+    },
+    parseGuild: (data, outputType) => {
+      var parsedGuild;
+      var guildObj;
+      return new Promise((resolve, reject) => {
+        if (!data || data === null) return reject(new TypeError('No data given to parse guild information'));
+        if (typeof data !== 'string') return reject(new TypeError('Data must be a string'));
+
+        parsedGuild = client.guilds.get(data);
+        if (parsedGuild === undefined) {
+          parsedGuild = client.guilds.find(g => g.name === data);
+          if (parsedGuild === undefined) return reject(new Error('Guild not found'));
+          else guildObj = parsedGuild;
+        } else guildObj = parsedGuild;
+
+        if (!outputType || outputType === null) return resolve(guildObj);
+        else if (outputType.toLowerCase() === 'id') return resolve(guildObj.id);
+        else if (outputType.toLowerCase() === 'name') return resolve(guildObj.name);
         else return reject(new TypeError('Unknown output type; must be "id" or "name"'));
       });
     }
