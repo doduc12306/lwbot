@@ -4,6 +4,7 @@ module.exports = async (client, guild) => {
 
   // Thanks for this PSA, York. This guild is full of userbots spamming commands. If this bot enters it, you'll see extreme performance issues.
   if(guild.id === '439438441764356097') return guild.leave();
+  client.logger.log(`Joined guild ${guild.name} (${guild.id})`);
 
   var guildTable = new Sequelize('database', 'user', 'password', {
     host: 'localhost',
@@ -21,30 +22,27 @@ module.exports = async (client, guild) => {
   }, {timestamps: false});
   await guildTable.sync();
 
-  guild.settings.create({key: 'prefix', value: '!w '});
-  guild.settings.create({key: 'modLogChannel', value: 'mod_logs'});
-  guild.settings.create({key: 'modRole', value: 'Mods'});
-  guild.settings.create({key: 'adminRole', value: 'Admins'});
-  guild.settings.create({key: 'systemNotice', value: 'true'});
-  guild.settings.create({key: 'welcomeEnabled', value: 'false'});
-  guild.settings.create({key: 'welcomeChannel', value: 'welcome'});
-  guild.settings.create({key: 'welcomeMessage', value: 'Welcome to the server, {{user}}!'});
-  guild.settings.create({key: 'announcementChannel', value: 'announcements'});
-  guild.settings.create({key: 'botCommanderRole', value: 'Bot Commander'});
+  await guild.settings.findOrCreate({ where: { key: 'modLogChannel' }, defaults: { value: 'mod_logs' } });
+  await guild.settings.findOrCreate({ where: { key: 'modRole' }, defaults: { value: 'Mods' } });
+  await guild.settings.findOrCreate({ where: { key: 'adminRole' }, defaults: { value: 'Admins' } });
+  await guild.settings.findOrCreate({ where: { key: 'welcomeEnabled' }, defaults: { value: 'true' } });
+  await guild.settings.findOrCreate({ where: { key: 'welcomeChannel' }, defaults: { value: 'welcome' } });
+  await guild.settings.findOrCreate({ where: { key: 'welcomeMessage' }, defaults: { value: 'Welcome to the server, {{user}}!' } });
+  await guild.settings.findOrCreate({ where: { key: 'announcementChannel' }, defaults: { value: 'announcements' } });
+  await guild.settings.findOrCreate({ where: { key: 'botCommanderRole' }, defaults: { value: 'Bot Commander' } });
   guildTable.sync();
 
-  if (!guild.me.permissions.has('SEND_MESSAGES')) guild.owner.send(':x: **CRITICAL PERMISSION MISSING:** Send Messages **WHICH EVERYTHING REQUIRES!**');
-  if (!guild.me.permissions.has('EMBED_LINKS')) guild.owner.send(':x: **CRITICAL PERMISSION MISSING:** Embed Links **WHICH EVERYTHING REQUIRES!**');
+  if (!guild.me.permissions.has('SEND_MESSAGES')) guild.owner.send(':x: **CRITICAL PERMISSION MISSING:** `Send Messages` **WHICH EVERYTHING REQUIRES!**');
+  if (!guild.me.permissions.has('EMBED_LINKS')) guild.owner.send(':x: **CRITICAL PERMISSION MISSING:** `Embed Links` **WHICH EVERYTHING REQUIRES!**');
 
-  var role;
-  if(!guild.roles.find('name', 'Muted')) {
-    role = guild.createRole({name: 'Muted'});
-    guild.channels.filter(g => g.type === 'text').forEach(channel => {channel.overwritePermissions(role, {SEND_MESSAGES: false, ADD_REACTIONS: false});});
-    guild.channels.filter(g => g.type === 'voice').forEach(channel => {channel.overwritePermissions(role, {CONNECT: false, SPEAK: false});});
-  } else {
-    role = guild.roles.find('name', 'Muted') || guild.roles.find('name', 'muted');
-    guild.channels.filter(g => g.type === 'text').forEach(channel => {channel.overwritePermissions(role, {SEND_MESSAGES: false});});
-    guild.channels.filter(g => g.type === 'voice').forEach(channel => {channel.overwritePermissions(role, {CONNECT: false, SPEAK: false});});
+  var role = await guild.roles.find(role => role.name === 'Muted');
+  if(role === null) {
+    role = await guild.roles.find(role => role.name === 'muted');
+    if(role === null) {
+      role = await guild.createRole({name: 'Muted', color: 'ORANGE'});
+    }
   }
+  await guild.channels.filter(g => g.type === 'text').forEach(channel => {channel.overwritePermissions(role, {SEND_MESSAGES: false, ADD_REACTIONS: false});});
+  await guild.channels.filter(g => g.type === 'voice').forEach(channel => {channel.overwritePermissions(role, {CONNECT: false, SPEAK: false});});
 
 };
