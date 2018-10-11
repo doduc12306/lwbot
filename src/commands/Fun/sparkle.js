@@ -38,7 +38,7 @@ module.exports.run = async (client, message) => {
       } else {message.channel.send(':x: Your nickname/username was too long! Please set it to something less than 28 characters!');}
     }
   } catch (err) {
-    message.channel.send(`:x: **If you're seeing this, contact James.**\nFATAL ERROR:\`\`\`xl\n${err.stack}\`\`\``);
+    message.channel.send(`:x: **If you're seeing this, contact James.**\nERROR:\`\`\`xl\n${err.stack}\`\`\``);
   }
 };
 
