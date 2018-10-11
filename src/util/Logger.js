@@ -11,10 +11,10 @@ exports.log = (content, type = 'log') => {
       return console.log(`${timestamp} ${chalk.bgBlue(type.toUpperCase())} ${content} `);
     }
     case 'warn': {
-      return console.log(`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${content} `);
+      return console.log(`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${chalk.yellow(content)} `);
     }
     case 'error': {
-      return console.log(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${content} `);
+      return console.log(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${chalk.red(content)} `);
     }
     case 'debug': {
       return console.log(`${timestamp} ${chalk.green(type.toUpperCase())} ${content} `);
@@ -23,7 +23,7 @@ exports.log = (content, type = 'log') => {
       return console.log(`${timestamp} ${chalk.black.bgWhite(type.toUpperCase())} ${content}`);
     }
     case 'ready': {
-      return console.log(`${timestamp} ${chalk.black.bgGreen(type.toUpperCase())} ${content}`);
+      return console.log(`${timestamp} ${chalk.black.bgGreen(type.toUpperCase())} ${chalk.green(content)}`);
     }
     case 'reconnecting': {
       return console.log(`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${content}`);
