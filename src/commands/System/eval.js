@@ -23,14 +23,15 @@ exports.run = async (client, message, args, level) => {
     } else {
       try {
         const { body } = await snek.post('https://www.hastebin.com/documents').send(output);
-        message.channel.send(`:x: **Output too long, uploaded to hastebin:** \`https://www.hastebin.com/${body.key}.js\` `);
+        message.channel.send(`:x: **Output too long, uploaded to hastebin:** https://www.hastebin.com/${body.key}.js `);
       } catch (error) {
         message.channel.send(`:x: **Hastebin upload error:** \`${error.name}\`\n\`\`\`\n${error.message}\n\`\`\``);
       }
     }
   } catch (error) {
     error = error.stack.split('\n'); // eslint-disable-line no-ex-assign
-    if (error[1].trim() === 'at Object.exports.run (/Users/akii/Documents/bots/lwbot-rewrite/commands/eval.js:16:18)' || error[1].trim() === 'at Object.exports.run (/root/lwbot-rewrite/commands/eval.js:15:23)') return message.channel.send(`:x: **An error occurred:** \`${error[0]}\``);
+    if (error[1].trim() === 'at Object.exports.run (/Users/akii/Documents/bots/lwbot-rewrite/src/commands/System/eval.js:16:23)'
+    || error[1].trim() === 'at Object.exports.run (/root/lwbot-rewrite/src/commands/System/eval.js:16:23)') return message.channel.send(`:x: **An error occurred:** \`${error[0]}\``);
     message.channel.send(`:x: **An error occurred:** \`${error[0]}\`\n\`\`\`\n${error[1].trim()}\n\`\`\``);
   }
 
