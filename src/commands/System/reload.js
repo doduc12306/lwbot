@@ -1,7 +1,4 @@
-const fs = require('fs');
-
-exports.run = async (client, message, args, level) => { // eslint-disable-line no-unused-vars
-  await fs.readdir('./commands/');
+exports.run = async (client, message, args) => {
   if (!args[0]) {
     message.channel.send(':x: You didn\'t give me a command to reload!');
   } else {
@@ -26,5 +23,5 @@ exports.help = {
   name: 'reload',
   category: 'System',
   description: 'Reloads a command that\'s been modified.',
-  usage: 'reload [command]'
+  usage: 'reload <command>'
 };
