@@ -23,6 +23,6 @@ exports.conf = {
 exports.help = {
   name: 'purge',
   description: 'Remove x amount of messages from the channel',
-  usage: 'purge <number>',
+  usage: 'purge <number ≤ 100>',
   category: 'Moderation'
 };
