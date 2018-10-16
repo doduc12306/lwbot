@@ -19,7 +19,7 @@ const Tags = sequelize.define('tags', {
     allowNull: false,
   },
 });
-const { statuses } = require('../statuses');
+const { statuses } = require('../util/statuses');
 
 module.exports = async client => {
   Tags.sync();
