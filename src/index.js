@@ -1,6 +1,5 @@
 if (process.version.slice(1).split('.')[0] < 8) throw new Error('Node 8.0.0 or higher is required. Update Node on your system.');
 
-/* eslint-disable */
 const Discord = require('discord.js');
 const Sequelize = require('sequelize');
 const { promisify } = require('util');
@@ -9,7 +8,10 @@ var walk = require('walk');
 var path = require('path');
 const Enmap = require('enmap');
 const EnmapLevel = require('enmap-level');
-const client = new Discord.Client({fetchAllMembers: true});
+const client = new Discord.Client({
+  fetchAllMembers: true,
+  disabledEvents: ['TYPING_START', 'USER_NOTE_UPDATE', 'RELATIONSHIP_ADD', 'RELATIONSHIP_REMOVE']
+});
 
 const sequelize = new Sequelize('database', 'user', 'password', {
   host: 'localhost',
@@ -40,7 +42,7 @@ client.aliases = new Enmap();
 client.folder = new Enmap();
 client.settings = new Enmap({provider: new EnmapLevel({name: 'settings'})});
 
-var debug = client.config.debugMode;
+var debug = process.argv.includes('--debug') || process.argv.includes('-d');
 
 var options = { // walk module options
   followLinks: false
@@ -48,14 +50,15 @@ var options = { // walk module options
 };
 
 const init = async () => {
-
+  if(debug) client.logger.warn('Debug mode enabled');
+  client.before = new Date();
   // Here we load commands into memory, as a collection, so they're accessible
   // here and everywhere else.
   const cmdFiles = walk.walk('./commands/', options);
   client.logger.log('Loading commands...');
   cmdFiles.on('file', (root, fileStats, next) => { // eslint-disable-line no-unused-vars
     var cmdPath = path.join(__dirname, root);
-    cmdPath = cmdPath.substring(cmdPath.indexOf('commands/') + 9)
+    cmdPath = cmdPath.substring(cmdPath.indexOf('commands/') + 9);
     client.loadCommand(cmdPath, fileStats.name);
     next();
   });
@@ -81,7 +84,7 @@ const init = async () => {
     // Here we login the client.
     if (debug) client.login(client.config.debugtoken);
     else client.login(client.config.token);
-  })
+  });
 
 // End top-level async/await function.
 };

@@ -17,23 +17,18 @@ const config = {
 
   // Default per-server settings. New guilds have these settings.
 
-  // DO NOT LEAVE ANY OF THESE BLANK, AS YOU WILL NOT BE ABLE TO UPDATE THEM
-  // VIA COMMANDS IN THE GUILD.
-
   'defaultSettings' : {
     'prefix': '!w ',
     'modLogChannel': 'mod_logs',
     'modRole': 'Mods',
     'adminRole': 'Admins',
-    'systemNotice': 'true', // This gives a notice when a user tries to run a command that they do not have permission to use.
+    'systemNotice': 'true', // "You do not have permission to use this command!" or something
     'welcomeEnabled': 'false',
     'welcomeChannel': 'welcome',
     'welcomeMessage': 'Welcome to the server, {{user}}!',
     'announcementsChannel': 'announcements',
     'botCommanderRole': 'Bot Commander'
   },
-
-  'debugMode': false,
 
   // COLORS
   colors: {
@@ -56,14 +51,8 @@ const config = {
       check: () => true
     },
 
-    // This is your permission level, the staff levels should always be above the rest of the roles.
     { level: 2,
-      // This is the name of the role.
       name: 'Moderator',
-      // The following lines check the guild the message came from for the roles.
-      // Then it checks if the member that authored the message has the role.
-      // If they do return true, which will allow them to execute the command in question.
-      // If they don't then return false, which will prevent them from executing the command.
       check: (message) => {
         try {
           const modRole = message.guild.roles.find(r => r.name.toLowerCase() === message.settings.modRole.toLowerCase());
@@ -99,17 +88,13 @@ const config = {
     // This is the server owner.
     { level: 5,
       name: 'Server Owner',
-      // Simple check, if the guild owner id matches the message author's ID, then it will return true.
-      // Otherwise it will return false.
       check: (message) => message.channel.type === 'text' ? (message.guild.owner.user.id === message.author.id ? true : false) : false
     },
 
-    // Bot Support is a special inbetween level that has the equivalent of server owner access
+    // Bot Support is a special in-between level that has the equivalent of server owner access
     // to any server they joins, in order to help troubleshoot the bot on behalf of owners.
     { level: 8,
       name: 'Bot Support',
-      // The check is by reading if an ID is part of this array. Yes, this means you need to
-      // change this and reboot the bot to add a support user. Make it better yourself!
       check: (message) => config.support.includes(message.author.id)
     },
 
