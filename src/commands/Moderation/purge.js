@@ -1,4 +1,3 @@
-/* eslint-disable */
 module.exports.run = (client, message, args) => {
   if(!message.guild.me.permissions.has('MANAGE_MESSAGES')) return message.channel.send(':x: `|` :bomb: **I am missing permissions to Manage Messages!**');
   if(!message.member.permissions.has('MANAGE_MESSAGES')) return message.channel.send(':x: `|` :bomb: **You do not have permissions to Manage Messages!**');
