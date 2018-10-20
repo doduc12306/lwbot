@@ -17,9 +17,9 @@ const sequelize = new Sequelize('database', 'user', 'password', {
   host: 'localhost',
   dialect: 'sqlite',
   logging: false,
-  storage: 'database.sqlite',
+  storage: 'tags.sqlite',
 });
-sequelize.define('tags', {
+var tags = sequelize.define('tags', {
   name: {
     type: Sequelize.STRING,
     unique: true,
@@ -32,6 +32,8 @@ sequelize.define('tags', {
     allowNull: false,
   },
 });
+tags.sync();
+sequelize.sync();
 
 client.config = require('./config.js');
 client.logger = require('./util/Logger');
