@@ -1,3 +1,18 @@
+const Sequelize = require('sequelize');
+var killList = new Sequelize('database', 'user', 'password', {
+  host: 'localhost',
+  dialect: 'sqlite',
+  logging: false,
+  storage: 'databases/killList.sqlite'
+});
+killList = killList.define('killList', {
+  user: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }
+});
+killList.sync();
+
 module.exports = async (client, packet) => {
   if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
   if(client.config.debugMode) return;
@@ -69,8 +84,12 @@ module.exports = async (client, packet) => {
       case '📝':
         toggleRole('453294003002015744');
         break;
-      case '👻':
-        toggleRole('497871607692263425');
+      case '👻': // Murder Mystery Role
+        killList.findOne({where: {user: packet.user_id}})
+          .then(data => {
+            if (data === null) toggleRole('497871607692263425');
+            else client.users.get(packet.user_id).send(':x: You were already killed!');
+          });
         break;
     }
   }
