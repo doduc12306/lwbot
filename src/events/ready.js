@@ -1,29 +1,5 @@
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize('database', 'user', 'password', {
-  host: 'localhost',
-  dialect: 'sqlite',
-  logging: false,
-  // SQLite only
-  storage: 'tags.sqlite',
-});
-const Tags = sequelize.define('tags', {
-  name: {
-    type: Sequelize.STRING,
-    unique: true,
-  },
-  description: Sequelize.TEXT,
-  username: Sequelize.STRING,
-  usage_count: {
-    type: Sequelize.INTEGER,
-    defaultValue: 0,
-    allowNull: false,
-  },
-});
 const { statuses } = require('../util/statuses');
-
 module.exports = async client => {
-  Tags.sync();
-
   Array.prototype.randomElement = function(array) {
     return array[Math.floor(Math.random() * array.length)];
   };
