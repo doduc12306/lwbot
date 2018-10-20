@@ -15,6 +15,8 @@ const config = {
 
   'client_secret': 'TWqz7cHZY5mrIaHpB1FFFVtSWXFocpce',
 
+  'debugMode': process.argv.includes('-d') || process.argv.includes('--debug'),
+
   // Default per-server settings. New guilds have these settings.
 
   'defaultSettings' : {
