@@ -30,6 +30,7 @@ module.exports = async (message) => {
     }
   }, {timestamps: false});
   message.guild.xp.sync();
+  guildTable.sync();
 
   /**
    *

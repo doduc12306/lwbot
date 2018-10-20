@@ -20,6 +20,7 @@ module.exports = (client) => {
     }
   });
   client.bank.sync();
+  bank.sync();
 
   client.bank.add = (userID, amount) => {
     client.bank.findOne({where: {user: userID}}).then(async user => {
