@@ -12,5 +12,5 @@ module.exports = async (client, member) => {
   if(welcomeEnabled !== 'true') return;
   welcomeChannel = member.guild.channels.find(channel => channel.name === welcomeChannel);
   if(welcomeChannel === null) return;
-  welcomeChannel.send(welcomeMessage.replaceAll('{{user}}', member.user.toString));
+  welcomeChannel.send(welcomeMessage.replaceAll('{{user}}', member.user.toString()));
 };
