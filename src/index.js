@@ -87,7 +87,6 @@ const init = async () => {
     // Here we login the client.
     if (debug) client.login(process.env.DEBUG_TOKEN);
     else client.login(process.env.TOKEN);
-    //else client.login(process.env.TOKEN);
   });
 
 // End top-level async/await function.
