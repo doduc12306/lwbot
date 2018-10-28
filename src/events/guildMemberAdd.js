@@ -1,5 +1,4 @@
 // This event executes when a new member joins a server. Let's welcome them!
-/* eslint-disable */
 module.exports = async (client, member) => {
   if(member.user.bot) return;
   var welcomeEnabled;

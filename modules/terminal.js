@@ -1,4 +1,3 @@
-/* eslint-disable */
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const moment = require('moment');
@@ -66,9 +65,9 @@ function s() {
             channel.fetchMessages({limit: 10}).then(messages => {
               messages = messages.sort((a, b) => a.createdTimestamp > b.createdTimestamp);
               messages.forEach(message => {
-                  var mentionedColor = message.isMemberMentioned(client.user) || message.isMemberMentioned(client.users.get('107599228900999168')) ? '^#^y^k' : '^:';
-                  if (message.author.bot) term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^#^B[BOT]^ ^K^/${moment(message.createdTimestamp).format('h:mma â€¢ M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
-                  else term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
+                var mentionedColor = message.isMemberMentioned(client.user) || message.isMemberMentioned(client.users.get('107599228900999168')) ? '^#^y^k' : '^:';
+                if (message.author.bot) term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^#^B[BOT]^ ^K^/${moment(message.createdTimestamp).format('h:mma â€¢ M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
+                else term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
               });
               term.info('Finished fetching messages');
             });
@@ -98,7 +97,7 @@ function s() {
 
       else if(input.startsWith(':dm')) {
         if(input.substring(4) === '') return term.err('No text/name/id to dm!');
-        if(dmUser) client.users.get(dmUser).send(input.substring(4));
+        //if(dmUser) client.users.get(dmUser).send(input.substring(4));
         s();
       }
 
@@ -138,13 +137,13 @@ function s() {
 
     else if(input === '') s();
     else {
-        if (curServer === undefined) term.err('There is no server set yet!');
-        else if (curChannel === undefined) term.err('There is no channel set yet!');
-        else {
-            await term('\n');
-            await curChannel.send(input);
-        }
-        s();
+      if (curServer === undefined) term.err('There is no server set yet!');
+      else if (curChannel === undefined) term.err('There is no channel set yet!');
+      else {
+        await term('\n');
+        await curChannel.send(input);
+      }
+      s();
     }
   });
 }
