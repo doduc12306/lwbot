@@ -8,12 +8,8 @@ const config = {
   // Bot Support, level 8 by default. Array of user ID strings
   'support': ['158272711146209281'],
 
-  // Your Bot's Token. Available on https://discordapp.com/developers/applications/me
-  'token': 'Mzc3MjA1MzM5MzIzMzY3NDI1.Dar1YA.0AIexER1daemthd1bG84DJJPHKQ',
-  'giphy': 'y118kMRynO3XKfcHrRkpuWQ9CEXrqDfg',
-  'debugtoken': 'Mzk0OTEzOTAzNDY2OTA1NjAx.DfXfBA.WbzI-ijiZYKxQJAftJ8S029RjE4',
-
-  'client_secret': 'TWqz7cHZY5mrIaHpB1FFFVtSWXFocpce',
+  // [ 2018.10.28 ] TOKENS REMOVED - ADDED TO .env FILE
+  // 
 
   'debugMode': process.argv.includes('-d') || process.argv.includes('--debug'),
 
