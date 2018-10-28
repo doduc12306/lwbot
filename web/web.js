@@ -1,11 +1,11 @@
 const express = require('express');
 var app = express();
 const path = require('path');
-const config = require('../config.js');
 var snek = require('snekfetch');
-var Sequelize = require('sequelize');
+require('dotenv').config();
+// var Sequelize = require('sequelize');
 
-var webUserBase = new Sequelize('database', 'user', 'password', {
+/* var webUserBase = new Sequelize('database', 'user', 'password', {
   host: 'localhost',
   dialect: 'sqlite',
   logging: false,
@@ -26,12 +26,12 @@ var userTable = webUserBase.define('userTable', {
   },
   userID: Sequelize.STRING
 });
-userTable.sync();
+userTable.sync(); */
 
 app.use('/assets', express.static(__dirname + '/assets'));
 app.use('/favicons', express.static(__dirname + '/favicons'));
 
-app.listen(80, () => console.log('Website listening on port 80!')); // Actually supposed to be port 80 but for testing purposes it's on 8080 (since my fucking ISP blocked 80)
+app.listen(8080, () => console.log('Website listening on port 8080!')); // Actually supposed to be port 80 but for testing purposes it's on 8080 (since my fucking ISP blocked 80)
 
 express.addPage = (page) => app.get(`/${page}`, (req, res) => res.sendFile(path.join(__dirname, `./${page}.html`)));
 
@@ -42,7 +42,7 @@ app.get('/authorizing', async (req, res) => {
 
   var data = {
     'client_id': '377205339323367425',
-    'client_secret': config.client_secret,
+    'client_secret': process.env.CLIENT_SECRET,
     'grant_type': 'authorization_code',
     'code': req.query.code,
     'redirect_uri': 'http://localhost:8080/authorizing',
@@ -53,8 +53,8 @@ app.get('/authorizing', async (req, res) => {
     await snek.post('https://discordapp.com/api/v6/oauth2/token', { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, data: data })
       .then(data => {
         console.log(data.text);
-        userTable.create({access_token: data.text.access_token, refresh_token: data.text.refresh_token, expires: data.text.expires_in});
-        userTable.sync();
+        //userTable.create({access_token: data.text.access_token, refresh_token: data.text.refresh_token, expires: data.text.expires_in});
+        //userTable.sync();
         res.sendFile(path.join(__dirname, './error-pages/auth-success.html'));
       })
       .catch(e => {
@@ -86,4 +86,4 @@ app.use(function(err, req, res) {
   res.status(500).sendFile(path.join(__dirname, './error-pages/500.html'));
 });
 
-module.exports = { userTable };
+// module.exports = { userTable };
