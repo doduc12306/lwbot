@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 exports.run = (client, message) => {
-  var giphy = require('giphy-api')(client.config.giphy);
+  var giphy = require('giphy-api')(process.env.GIPHY);
 
   giphy.random({
     tag: 'kiss sexy kissing hot makeout anime',
