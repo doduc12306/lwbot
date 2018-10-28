@@ -3,10 +3,12 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const moment = require('moment');
 require('moment-duration-format');
-const config = require('../src/config.js');
 var term = require('terminal-kit').terminal;
 const { inspect } = require('util');
 const timestamp = `^K[${moment().format('YYYY-MM-DD HH:mm:ss')}]^ `;
+
+var { join } = require('path');
+require('dotenv').config({ path: join(__dirname, '../.env') });
 
 var curServer;
 var curChannel;
@@ -16,7 +18,8 @@ term.log = text => term(`${timestamp}${text}\n`);
 term.err = text => term(`\n${timestamp}^#^R^k[ERROR]^ ^r${text}\n`);
 term.warn = text => term(`${timestamp}^#^y^k[WARN]^ ^y${text}\n`);
 
-client.login(config.token);
+if(process.argv.includes('-d') || process.argv.includes('--debug')) client.login(process.env.DEBUG_TOKEN);
+else client.login(process.env.TOKEN);
 
 client.on('ready', () => {
   curServer = client.guilds.get('332632603737849856');
@@ -100,6 +103,10 @@ function s() {
       }
 
       else if(input.startsWith(':eval')) {
+        var message;
+        message.guild = curServer;
+        message.channel = curChannel;
+
         const token = client.token.split('').join('[^]{0,2}');
         const rev = client.token.split('').reverse().join('[^]{0,2}');
         const filter = new RegExp(`${token}|${rev}`, 'g');
