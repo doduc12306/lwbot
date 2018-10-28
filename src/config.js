@@ -9,7 +9,7 @@ const config = {
   'support': ['158272711146209281'],
 
   // [ 2018.10.28 ] TOKENS REMOVED - ADDED TO .env FILE
-  // 
+  // [ 2018.10.28 ] TOKENS REGENERATED - don't even try, commit lurkers
 
   'debugMode': process.argv.includes('-d') || process.argv.includes('--debug'),
 
