@@ -2,13 +2,18 @@ if (process.version.slice(1).split('.')[0] < 8) throw new Error('Node 8.0.0 or h
 
 const Discord = require('discord.js');
 const Sequelize = require('sequelize');
+
 const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
+
 var walk = require('walk');
-var path = require('path');
+
 const Enmap = require('enmap');
 const EnmapLevel = require('enmap-level');
-require('dotenv').config();
+
+var { join } = require('path');
+require('dotenv').config({ path: join(__dirname, '../.env') });
+
 const client = new Discord.Client({
   fetchAllMembers: true,
   disabledEvents: ['TYPING_START', 'USER_NOTE_UPDATE', 'RELATIONSHIP_ADD', 'RELATIONSHIP_REMOVE']
@@ -60,7 +65,7 @@ const init = async () => {
   const cmdFiles = walk.walk('./commands/', options);
   client.logger.log('Loading commands...');
   cmdFiles.on('file', (root, fileStats, next) => { // eslint-disable-line no-unused-vars
-    var cmdPath = path.join(__dirname, root);
+    var cmdPath = join(__dirname, root);
     cmdPath = cmdPath.substring(cmdPath.indexOf('commands/') + 9);
     client.loadCommand(cmdPath, fileStats.name);
     next();
