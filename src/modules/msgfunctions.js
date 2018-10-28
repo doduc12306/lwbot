@@ -223,7 +223,6 @@ module.exports = async (message) => {
   // XP Leveling sequence
 
   // Other various functions
-  /* eslint-disable */
   message.functions = {
     parseChannel: (data, outputType) => {
       var channelObj;
@@ -262,16 +261,16 @@ module.exports = async (message) => {
         if (!data || data === null) return reject(new TypeError('No data given to parse user information'));
 
         if (typeof data === 'string') {
-          parsedUser = client.users.get(data);
+          parsedUser = message.client.users.get(data);
           if (parsedUser === undefined || parsedUser === null) {
-            parsedUser = client.users.find(user => user.username === data);
+            parsedUser = message.client.users.find(user => user.username === data);
             if (parsedUser === undefined || parsedUser === null) return reject(new Error('User not found'));
             else userObj = parsedUser;
           } else userObj = parsedUser;
         }
 
         else if (typeof data === 'object') {
-          parsedUser = client.users.get(data.id);
+          parsedUser = message.client.users.get(data.id);
           if (parsedUser === undefined || parsedUser === null) return reject(new Error('[Object Parse] User not found'));
           else userObj = parsedUser;
         }
@@ -279,7 +278,7 @@ module.exports = async (message) => {
 
         if (!outputType || outputType === null) return resolve(userObj);
         else if (outputType.toLowerCase() === 'id') return resolve(userObj.id);
-        else if (outputType.toLowerCase() === 'name') return resolve(uerObj.name);
+        else if (outputType.toLowerCase() === 'username') return resolve(userObj.username);
         else return reject(new TypeError('Unknown output type; must be "id" or "name"'));
       });
     },
@@ -290,9 +289,9 @@ module.exports = async (message) => {
         if (!data || data === null) return reject(new TypeError('No data given to parse guild information'));
         if (typeof data !== 'string') return reject(new TypeError('Data must be a string'));
 
-        parsedGuild = client.guilds.get(data);
+        parsedGuild = message.client.guilds.get(data);
         if (parsedGuild === undefined) {
-          parsedGuild = client.guilds.find(g => g.name === data);
+          parsedGuild = message.client.guilds.find(g => g.name === data);
           if (parsedGuild === undefined) return reject(new Error('Guild not found'));
           else guildObj = parsedGuild;
         } else guildObj = parsedGuild;
