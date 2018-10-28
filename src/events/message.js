@@ -63,6 +63,8 @@ module.exports = async (client, message) => {
     }
   }
 
+  client.tags.sync();
+
   // If the command exists, **AND** the user has permission, run it.
   await cmd.run(client, message, args, level);
   client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name} in ${message.guild.name} (${message.guild.id})`);

@@ -1,46 +1,19 @@
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize('database', 'user', 'password', {
-  host: 'localhost',
-  dialect: 'sqlite',
-  logging: false,
-  // SQLite only
-  storage: 'tags.sqlite',
-});
-
-const Tags = sequelize.define('tags', {
-  name: {
-    type: Sequelize.STRING,
-    unique: true,
-  },
-  description: Sequelize.TEXT,
-  username: Sequelize.STRING,
-  usage_count: {
-    type: Sequelize.INTEGER,
-    defaultValue: 0,
-    allowNull: false,
-  },
-});
-
 module.exports.run = async (client, message, args) => {
-  await Tags.sync();
-
   const tagName = args.shift();
   const tagDescription = args.join(' ');
 
   try {
     // equivalent to: INSERT INTO tags (name, descrption, username) values (?, ?, ?);
-    const tag = await Tags.create({
+    const tag = await client.tags.create({
       name: tagName,
       description: tagDescription,
       username: message.author.username,
     });
-    return message.reply(`Tag ${tag.name} added.`);
+    return message.channel.send(`:white_check_mark: **\`${tag.name}\` created.**`);
   }
   catch (e) {
-    if (e.name === 'SequelizeUniqueConstraintError') {
-      return message.reply('That tag already exists.');
-    }
-    return message.reply(`Something went wrong with adding a tag.
+    if (e.name === 'SequelizeUniqueConstraintError') return message.reply(':x: **Tag already exists**');
+    return message.channel.send(`Something went wrong with adding a tag.
         ${e}`);
   }
 };

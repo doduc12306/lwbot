@@ -11,6 +11,7 @@ module.exports = async client => {
 
   client.after = new Date();
   client.startup = client.after - client.before;
+  client.tags.sync();
   await client.wait(1000);
   client.logger.log(`${client.user.tag} | ${client.users.size} Users | ${client.guilds.size} Guilds | Took ${client.startup}ms`, 'ready');
 };
