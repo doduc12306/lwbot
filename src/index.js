@@ -8,6 +8,7 @@ var walk = require('walk');
 var path = require('path');
 const Enmap = require('enmap');
 const EnmapLevel = require('enmap-level');
+require('dotenv').config();
 const client = new Discord.Client({
   fetchAllMembers: true,
   disabledEvents: ['TYPING_START', 'USER_NOTE_UPDATE', 'RELATIONSHIP_ADD', 'RELATIONSHIP_REMOVE']
@@ -84,8 +85,9 @@ const init = async () => {
     }
 
     // Here we login the client.
-    if (debug) client.login(client.config.debugtoken);
-    else client.login(client.config.token);
+    if (debug) client.login(process.env.DEBUG_TOKEN);
+    else client.login(process.env.TOKEN);
+    //else client.login(process.env.TOKEN);
   });
 
 // End top-level async/await function.
