@@ -16,7 +16,8 @@ require('dotenv').config({ path: join(__dirname, '../.env') });
 
 const client = new Discord.Client({
   fetchAllMembers: true,
-  disabledEvents: ['TYPING_START', 'USER_NOTE_UPDATE', 'RELATIONSHIP_ADD', 'RELATIONSHIP_REMOVE']
+  disabledEvents: ['TYPING_START', 'USER_NOTE_UPDATE', 'RELATIONSHIP_ADD', 'RELATIONSHIP_REMOVE'],
+  ws: { large_threshold: 1000 }
 });
 
 const sequelize = new Sequelize('database', 'user', 'password', {
