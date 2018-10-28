@@ -1,8 +1,10 @@
 const express = require('express');
 var app = express();
-const path = require('path');
 var snek = require('snekfetch');
-require('dotenv').config();
+
+var { join } = require('path');
+require('dotenv').config({ path: join(__dirname, '../.env') });
+
 // var Sequelize = require('sequelize');
 
 /* var webUserBase = new Sequelize('database', 'user', 'password', {
@@ -33,9 +35,9 @@ app.use('/favicons', express.static(__dirname + '/favicons'));
 
 app.listen(8080, () => console.log('Website listening on port 8080!')); // Actually supposed to be port 80 but for testing purposes it's on 8080 (since my fucking ISP blocked 80)
 
-express.addPage = (page) => app.get(`/${page}`, (req, res) => res.sendFile(path.join(__dirname, `./${page}.html`)));
+express.addPage = (page) => app.get(`/${page}`, (req, res) => res.sendFile(join(__dirname, `./${page}.html`)));
 
-app.get('/', async (req, res) => res.sendFile(path.join(__dirname, './index.html')));
+app.get('/', async (req, res) => res.sendFile(join(__dirname, './index.html')));
 
 app.get('/authorizing', async (req, res) => {
   if (req.query.code === undefined) return;
@@ -55,15 +57,15 @@ app.get('/authorizing', async (req, res) => {
         console.log(data.text);
         //userTable.create({access_token: data.text.access_token, refresh_token: data.text.refresh_token, expires: data.text.expires_in});
         //userTable.sync();
-        res.sendFile(path.join(__dirname, './error-pages/auth-success.html'));
+        res.sendFile(join(__dirname, './error-pages/auth-success.html'));
       })
       .catch(e => {
         console.log(e);
-        res.sendFile(path.join(__dirname, './error-pages/auth-error.html'));
+        res.sendFile(join(__dirname, './error-pages/auth-error.html'));
       });
   } catch (e) {
     console.log(e);
-    res.sendFile(path.join(__dirname, './error-pages/auth-error.html'));
+    res.sendFile(join(__dirname, './error-pages/auth-error.html'));
   }
 });
 
@@ -78,12 +80,12 @@ express.addPage('terms');
 express.addPage('servers');
 
 app.use(function(req, res) {
-  res.status(404).sendFile(path.join(__dirname, './error-pages/404.html'));
+  res.status(404).sendFile(join(__dirname, './error-pages/404.html'));
 });
 
 app.use(function(err, req, res) {
   console.error(err.stack);
-  res.status(500).sendFile(path.join(__dirname, './error-pages/500.html'));
+  res.status(500).sendFile(join(__dirname, './error-pages/500.html'));
 });
 
 // module.exports = { userTable };
