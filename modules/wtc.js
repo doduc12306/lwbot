@@ -31,24 +31,9 @@ client.on('message', async message => {
   if(!message.content.startsWith(prefix)) return;
   if (!['381192127050153993', '444250305618509824', '332632603737849856'].includes(message.guild.id)) return message.channel.send(':x: `|` **This guild is not authorized to use any of these commands!**');
 
+  const args = message.content.slice(prefix.length).trim().split(/ +/g);
+
   if(message.content === `${prefix}ping`) return message.channel.send(`:ping_pong: ${Math.round(client.ping)}ms`);
-
-  if (message.content.startsWith(`${prefix}kill`)) {
-    if (!['420220760066490379', '107599228900999168'].includes(message.author.id)) return message.channel.send(':x: `|` **Only chair / James can access this command!**');
-    if (message.mentions.members.size === 0) return message.channel.send(':x: `|` **You didn\'t mention anyone to kill!**');
-
-    message.mentions.members.forEach(async mention => {
-      var role = '497871607692263425';
-      if (!mention.roles.has(role)) return message.channel.send(`:x: \`|\` **${mention.user.tag} didn't have the Murder Mystery role. No action was taken.**`);
-      await killList.findOrCreate({where: {user: mention.user.id}})
-        .then(() => {
-          mention.removeRole(role);
-          message.channel.send(`:white_check_mark: \`|\` **Removed Murder Mystery from \`${mention.user.tag}\` and added to killed list.**`);
-        })
-        .catch(e => message.channel.send(`<@107599228900999168> :x: **Error adding user to kill db:** \`${e}\``));
-      await setTimeout(() => { }, 1000);
-    });
-  }
 
   if(message.content === `${prefix}dead`) {
     var deadList = [];
@@ -59,6 +44,41 @@ client.on('message', async message => {
         .setDescription(deadList.join(' '))
       );
     });
+  }
+
+  // Partnerships
+  if(message.content.startsWith(`${prefix}partner`)) {
+    var content = args.join(' ').split(' | ');
+    var title = content[0].substring(7);
+    var description = content[1];
+    var invite = content[2];
+
+    var cmdargs = content[3];
+
+    if(!title) return message.channel.send(':x: **No title was given to this partnership!**');
+    if(!description) return message.channel.send(':x: **No descripiton was given to this partnership!**');
+    if(!invite) return message.channel.send(':x: **No invite was given to this partnership!**');
+
+    var embed = new Discord.RichEmbed()
+      .setTitle(title)
+      .setDescription(description)
+      .addField('Invite', invite);
+
+    if(cmdargs) {
+      if(cmdargs.includes('color=')) {
+        var color = cmdargs.match(/color=(\S*)/gi)[0].substring(6);
+        if(color.startsWith('#')) color = color.split('#')[1];
+        embed.setColor(color);
+      }
+      if(cmdargs.includes('img=')) {
+        var img = cmdargs.match(/img=(\S*)/gi)[0].substring(4);
+        embed.setImage(img);
+      }
+    } else {
+      embed.setColor(require('../src/config').colors.green);
+    }
+
+    message.channel.send(embed);
   }
 });
 
