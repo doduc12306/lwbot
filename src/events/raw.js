@@ -84,12 +84,8 @@ module.exports = async (client, packet) => {
       case '📝':
         toggleRole('453294003002015744');
         break;
-      case '👻': // Murder Mystery Role
-        killList.findOne({where: {user: packet.user_id}})
-          .then(data => {
-            if (data === null) toggleRole('497871607692263425');
-            else client.users.get(packet.user_id).send(':x: You were already killed!');
-          });
+      case '🤝':
+        toggleRole('506247359316099082');
         break;
     }
   }
