@@ -27,8 +27,8 @@ else client.login(process.env.TOKEN);
 client.on('ready', () => console.log(`Wtc addon ready: ${client.user.tag}`));
 
 client.on('message', async message => {
-  if(message.author.bot || message.author === client.user) return;
-  if(!message.content.startsWith(prefix)) return;
+  if (message.author.bot || message.author === client.user) return;
+  if (!message.content.startsWith(prefix)) return;
   if (!['381192127050153993', '444250305618509824', '332632603737849856'].includes(message.guild.id)) return message.channel.send(':x: `|` **This guild is not authorized to use any of these commands!**');
 
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
@@ -66,12 +66,12 @@ client.on('message', async message => {
 
     if(cmdargs) {
       if(cmdargs.includes('color=')) {
-        var color = cmdargs.match(/color=(\S*)/gi)[0].substring(6);
+        var color = cmdargs.match(/color=(\S+)/gi)[0].substring(6);
         if(color.startsWith('#')) color = color.split('#')[1];
         embed.setColor(color);
       }
       if(cmdargs.includes('img=')) {
-        var img = cmdargs.match(/img=(\S*)/gi)[0].substring(4);
+        var img = cmdargs.match(/img=(\S+)/gi)[0].substring(4);
         embed.setImage(img);
       }
     } else {
