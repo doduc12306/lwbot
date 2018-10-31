@@ -70,10 +70,12 @@ client.on('message', async message => {
         if(color.startsWith('#')) color = color.split('#')[1];
         embed.setColor(color);
       }
+
       if(cmdargs.includes('img=')) {
         var img = cmdargs.match(/img=(\S+)/gi)[0].substring(4);
         embed.setImage(img);
       }
+      
     } else {
       embed.setColor(require('../src/config').colors.green);
     }
