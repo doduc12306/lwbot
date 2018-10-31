@@ -1,22 +1,32 @@
-const ud = require('urban-dictionary');
+const { get } = require('snekfetch');
 const Discord = require('discord.js');
-
 module.exports.run = (client, message, args) => {
-  var definition = args.join(' ');
+  var word = args.join(' ');
 
-  if (!definition) return message.channel.send(':x: You forgot a word to look up!');
+  if (!word) return message.channel.send(':x: You forgot a word to look up!');
 
-  ud.term(definition, function(error, entries) {
-    if (error) {
-      if (error) message.channel.send(`:x: I couldn't find ${definition}`);
-    } else {
-      message.channel.send(new Discord.RichEmbed()
-        .addField(entries[0].word, entries[0].definition, true)
-        .addField('Example:', `*${entries[0].example}*`)
-        .setColor(client.config.colors.green)
-      );
-    }
+  get(`http://api.urbandictionary.com/v0/define?term=${word}`).then(data => {
+    data = JSON.parse(data.text).list[0];
+
+    if(data === undefined) return message.channel.send(`:x: **I couldn't find ${clean(word)}**`);
+
+    var definition = data.definition.length >= 1024 ? definition = data.definition : definition = data.definition.substring(0, 1020) + '...';
+
+    message.channel.send(new Discord.RichEmbed()
+      .setColor(client.config.colors.green)
+      .addField(data.word, clean(definition))
+      .addField('Example', `*${clean(data.example)}*`)
+      .setTimestamp(data.written_on)
+      .setFooter(`👍 ${data.thumbs_up} | 👎 ${data.thumbs_down}`)
+    );
   });
+
+  function clean(text) {
+    return text
+      .replace(/`/g, '`' + String.fromCharCode(8203))
+      .replace(/@/g, '@' + String.fromCharCode(8203))
+      .replace(/\[(\S+)\]/gi, match => match.substring(1, match.length - 1));
+  }
 };
 
 exports.conf = {
