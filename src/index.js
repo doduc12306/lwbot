@@ -51,15 +51,13 @@ client.aliases = new Enmap();
 client.folder = new Enmap();
 client.settings = new Enmap({provider: new EnmapLevel({name: 'settings'})});
 
-var debug = process.argv.includes('--debug') || process.argv.includes('-d');
-
 var options = { // walk module options
   followLinks: false
   , filters: ['Temp', '_Temp']
 };
 
 const init = async () => {
-  if(debug) client.logger.warn('Debug mode enabled');
+  if(client.config.debugMode) client.logger.warn('Debug mode enabled');
   client.before = new Date();
   // Here we load commands into memory, as a collection, so they're accessible
   // here and everywhere else.
@@ -73,15 +71,18 @@ const init = async () => {
   });
 
   cmdFiles.on('end', async () => {
+    await client.logger.log('All commands finished loading!');
     // Then we load events, which will include our message and ready event.
     const evtFiles = await readdir('./events/');
     client.logger.log(`Loading a total of ${evtFiles.length} events.`);
-    evtFiles.forEach(file => {
+    evtFiles.forEach(async file => {
       const eventName = file.split('.')[0];
       const event = require(`./events/${file}`);
       client.on(eventName, event.bind(null, client));
       delete require.cache[require.resolve(`./events/${file}`)];
+      await client.logger.log(`Loaded ${file}`);
     });
+    await client.logger.log('All events finished loading!');
 
     // Generate a cache of client permissions for pretty perms
     client.levelCache = {};
@@ -91,7 +92,7 @@ const init = async () => {
     }
 
     // Here we login the client.
-    if (debug) client.login(process.env.DEBUG_TOKEN);
+    if (client.config.debugMode) client.login(process.env.DEBUG_TOKEN);
     else client.login(process.env.TOKEN);
   });
 
