@@ -39,7 +39,7 @@ module.exports = async (client, message) => {
   const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
 
   var systemNotice = client.config.defaultSettings.systemNotice;
-  if (!message.guild) prefix = client.config.defaultSettings.systemNotice;
+  if (!message.guild) systemNotice = client.config.defaultSettings.systemNotice;
   else {
     await message.guild.settings.findOrCreate({ where: { key: 'systemNotice' }, defaults: { value: 'true' } });
     systemNotice = await message.guild.settings.get('systemNotice');
