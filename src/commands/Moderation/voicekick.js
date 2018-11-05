@@ -36,7 +36,7 @@ module.exports.run = async (client, message, args) => {
     toKick.send(dmMsg);
     await message.guild.settings.get('modLogChannel')
       .then(async modLogChannel => {
-        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` :boot: **Voicekicked user \`${toKick.tag}\`**`);
+        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` :boot: **Voicekicked user \`${toKick.user.tag}\`**`);
       })
       .catch(async () => message.channel.send(`:warning: **Voicekick completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``));
 

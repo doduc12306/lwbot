@@ -41,7 +41,7 @@ module.exports.run = async (client, message, args) => {
     toMute.addRole(role);
     await message.guild.settings.get('modLogChannel')
       .then(async modLogChannel => {
-        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` ${mutedEmote} **Tempmuted user \`${toMute.tag}\`**`);
+        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` ${mutedEmote} **Tempmuted user \`${toMute.user.tag}\`**`);
       })
       .catch(async () => message.channel.send(`:warning: **Tempmute issued, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``));
 

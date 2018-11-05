@@ -25,7 +25,7 @@ module.exports.run = async (client, message, args) => {
     toWarn.send(dmMsg);
     await message.guild.settings.get('modLogChannel')
       .then(async modLogChannel => {
-        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` :warning: **Warned user \`${toWarn.tag}\`**`);
+        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` :warning: **Warned user \`${toWarn.user.tag}\`**`);
       })
       .catch(async () => message.channel.send(`:warning: **Warning completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``));
   });

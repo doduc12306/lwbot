@@ -32,7 +32,7 @@ module.exports.run = async (client, message, args) => {
     await message.guild.unban(toBan);
     await message.guild.settings.get('modLogChannel')
       .then(async modLogChannel => {
-        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Softbanned user \`${toBan.tag}\`**`);
+        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Softbanned user \`${toBan.user.tag}\`**`);
       })
       .catch(async () => message.channel.send(`:warning: **Softban completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``));
 

@@ -29,7 +29,7 @@ module.exports.run = async (client, message, args) => {
       await message.guild.unban(toUnban.id);
       await message.guild.settings.get('modLogChannel')
         .then(async modLogChannel => {
-          message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` ${unBanHammer} **Unbanned user \`${toUnban.tag}\`**`);
+          message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` ${unBanHammer} **Unbanned user \`${toUnban.user.tag}\`**`);
         })
         .catch(async () => message.channel.send(`:warning: **Unban completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``));
 
