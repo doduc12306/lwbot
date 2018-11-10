@@ -56,6 +56,26 @@ client.on('message', async message => {
 
     message.channel.send(embed);
   }
+
+  if(message.content.startsWith(`${prefix}pingrole`)) {
+    if (!message.member.roles.some(r => ['436632593480548393', '381207509685370880', '469993430127476757', '447140023918395402'].includes(r.id))) return message.channel.send(':x: `|` **You do not have permission to use this command!**');
+    if (!message.guild.me.permissions.has('MANAGE_ROLES')) return message.channel.send(':x: `|` **Missing permission:** `Manage Roles`');
+
+    var content = args.join(' ').split(' | '); // eslint-disable-line
+
+    var role = content[0].substring(8).trim();
+    if(!role) return message.channel.send(':x: `|` **You didn\'t give the name of a role to ping!**');
+    role = message.guild.roles.find(role => role.name === role);
+    if(role === null) return message.channel.send(':x: `|` **I could not find that role!**');
+
+    if(role.position >= message.guild.me.highestRole.position) return message.channel.send(`:x: \`|\` \`${role.name}\` **is too high for me!** (Move it below my role)`);
+
+    var msg = content.slice(1).join(' ');
+
+    await role.edit({mentionable: true});
+    await message.channel.send(`${role.toString()} | ${msg}`);
+    await role.edit({mentionable: false});
+  }
 });
 
 client.on('guildMemberAdd', member => {
