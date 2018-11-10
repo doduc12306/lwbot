@@ -2,51 +2,33 @@ const Discord = require('discord.js');
 var moment = require('moment');
 
 module.exports.run = (client, message) => {
-  try {
-    var user = message.mentions.users.first() ? message.mentions.users.first() : message.author;
-    var userM = message.mentions.members.first() ? message.mentions.members.first() : message.member;
+  const member = message.mentions.members.size === 0 ? message.member : message.mentions.members.first();
+  const { user } = member;
 
-    var embed = new Discord.RichEmbed()
-      .setAuthor(user.tag, user.avatarURL)
-      .addField('ID', user.id, true)
-      .setThumbnail(user.avatarURL)
-      .setDescription(user.toString());
 
-    var status;
-    if(user.presence.status === 'online') status = '<:online:450674128777904149> Online';
-    else if(user.presence.status === 'offline') status = '<:offline:450674445670154240> Offline';
-    else if(user.presence.status === 'dnd') status = '<:dnd:450674354163023882> Do Not Disturb';
-    else if(user.presence.status === 'idle') status = '<:idle:450674222176403456> Idle';
-    else if(user.presence.game.streaming) status = `<:streaming:450674542717698058> Streaming [${user.presence.game.name}](${user.presence.game.url})`;
-    embed.addField('Status', status, true);
+  const embed = new Discord.RichEmbed()
+    .setAuthor(user.tag, user.avatarURL)
+    .addField('ID', user.id, true)
+    .setThumbnail(user.avatarURL)
+    .setDescription(user.toString())
+    .addField('Status', user.presence.status === 'online' ? '<:online:450674128777904149> Online' : user.presence.status === 'dnd' ? '<:dnd:450674354163023882> Do Not Disturb' : user.presence.status === 'idle' ? '<:idle:450674222176403456> Idle' : `<:streaming:450674542717698058> Streaming [${user.presence.game.name}](${user.presence.game.url})`, true);
 
-    if(user.presence.game) {
-      if(!user.presence.game.streaming) embed.addField('Game', user.presence.game.name, true);
-    }
+  if(user.presence.game && !user.presence.game.streaming) embed.addField('Game', user.presence.game.name, true);
 
-    if(userM.nickname) embed.addField('Nickname', userM.nickname, true);
+  if(member.nickname) embed.addField('Nickname', member.nickname, true);
 
-    if(userM.displayColor === 0) embed.setColor(client.config.colors.green);
-    else embed.setColor(userM.displayColor);
+  embed.setColor(member.displayColor === 0 ? client.config.colors.green : member.displayColor);
+  embed.addField('Joined', moment(member.joinedAt).format('MMM Do YYYY, h:mm a'), true);
+  embed.addField('Registered', moment(user.createdAt).format('MMM Do YYYY, h:mm a'), true);
 
-    embed.addField('Joined', moment(userM.joinedAt).format('MMM Do YYYY, h:mm a'), true);
-    embed.addField('Registered', moment(user.createdAt).format('MMM Do YYYY, h:mm a'), true);
-
-    if(userM.roles.map(g => g.toString()).join(' ').trim() !== '@everyone') {
-      var roles = userM.roles.map(g => g.toString())
-        .join(' ')
-        .split('@everyone')
-        .join(' ')
-        .trim();
-
-      if(roles.length > 1024) embed.addField('Roles', `${userM.roles.map(g => g.toString()).size} roles.`, true);
-      else embed.addField('Roles', roles, true);
-    }
-
-    message.channel.send(embed).catch(e => message.channel.send(e));
-  } catch (e) {
-    message.channel.send(e.stack);
+  if(member.roles.size > 1) {
+    const roles = member.roles.filter(({ id }) => id !== message.guild.id).map((role) => role.toString()).join(' ').trim();
+    embed.addField('Roles', roles.length > 1024 ? `${member.roles.size} roles.` : roles, true);
   }
+
+  message.channel.send(embed).catch((e) => {
+    message.channel.send(e);
+  });
 };
 
 exports.conf = {
