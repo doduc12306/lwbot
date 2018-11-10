@@ -1,23 +1,8 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const Sequelize = require('sequelize');
 
 var { join } = require('path');
 require('dotenv').config({ path: join(__dirname, '../.env') });
-
-var killList = new Sequelize('database', 'user', 'password', {
-  host: 'localhost',
-  dialect: 'sqlite',
-  logging: false,
-  storage: '../src/databases/killList.sqlite'
-});
-killList = killList.define('killList', {
-  user: {
-    type: Sequelize.STRING,
-    allowNull: false
-  }
-});
-killList.sync();
 
 const prefix = '~wa ';
 
@@ -34,17 +19,6 @@ client.on('message', async message => {
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
 
   if(message.content === `${prefix}ping`) return message.channel.send(`:ping_pong: ${Math.round(client.ping)}ms`);
-
-  if(message.content === `${prefix}dead`) {
-    var deadList = [];
-    killList.findAll().then(async dead => {
-      for(var users of dead) deadList.push(client.users.get(users.dataValues.user));
-      message.channel.send(new Discord.RichEmbed()
-        .setColor(require('../src/config').colors.red)
-        .setDescription(deadList.join(' '))
-      );
-    });
-  }
 
   // Partnerships
   if(message.content.startsWith(`${prefix}partner`)) {
@@ -75,7 +49,7 @@ client.on('message', async message => {
         var img = cmdargs.match(/img=(\S+)/gi)[0].substring(4);
         embed.setImage(img);
       }
-      
+
     } else {
       embed.setColor(require('../src/config').colors.green);
     }
