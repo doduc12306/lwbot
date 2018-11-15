@@ -10,7 +10,7 @@ module.exports.run = (client, message, args) => {
 
     if(data === undefined) return message.channel.send(`:x: **I couldn't find ${clean(word)}**`);
 
-    var definition = data.definition.length >= 1024 ? definition = data.definition : definition = data.definition.substring(0, 1020) + '...';
+    var definition = data.definition.length <= 1024 ? definition = data.definition : definition = data.definition.substring(0, 1020) + '...';
 
     message.channel.send(new Discord.RichEmbed()
       .setColor(client.config.colors.green)
