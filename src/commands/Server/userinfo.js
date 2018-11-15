@@ -42,5 +42,5 @@ exports.help = {
   name: 'userinfo',
   description: 'Shows a user\'s information',
   usage: 'userinfo [user]',
-  category: 'Misc'
+  category: 'Server'
 };
