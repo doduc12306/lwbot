@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 
-module.exports = async (message) => {
+module.exports = async (client, message) => {
 
   if(message.channel.type === 'dm') return;
   // FROM HERE IS GUILD SUPPORT. PUT ALL THINGS THAT DONT REQUIRE A GUILD ABOVE THIS
