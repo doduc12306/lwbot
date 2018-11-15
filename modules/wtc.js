@@ -22,6 +22,9 @@ client.on('message', async message => {
 
   // Partnerships
   if(message.content.startsWith(`${prefix}partner`)) {
+    if (!message.member.roles.has('506236968393375745')) return message.channel.send(':x: `|` **You do not have permission to use this command!**');
+    if (!message.guild.me.permissions.has('MANAGE_ROLES')) return message.channel.send(':x: `|` **Missing permission:** `Manage Roles`');
+
     var content = args.join(' ').split(' | ');
     var title = content[0].substring(7);
     var description = content[1];
@@ -54,7 +57,11 @@ client.on('message', async message => {
       embed.setColor(require('../src/config').colors.green);
     }
 
-    message.channel.send(embed);
+    var role = message.guild.roles.get('506247359316099082');
+
+    await role.edit({ mentionable: true });
+    await message.channel.send(role.toString(), {embed: embed});
+    await role.edit({ mentionable: false });
   }
 
   if(message.content.startsWith(`${prefix}pingrole`)) {
@@ -63,7 +70,7 @@ client.on('message', async message => {
 
     var content = args.join(' ').split(' | '); // eslint-disable-line
 
-    var role = content[0].substring(8).trim();
+    var role = content[0].substring(8).trim(); // eslint-disable-line
     if(!role) return message.channel.send(':x: `|` **You didn\'t give the name of a role to ping!**');
     role = message.guild.roles.find(role => role.name === role);
     if(role === null) return message.channel.send(':x: `|` **I could not find that role!**');
