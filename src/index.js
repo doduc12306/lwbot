@@ -1,7 +1,6 @@
 if (process.version.slice(1).split('.')[0] < 8) throw new Error('Node 8.0.0 or higher is required. Update Node on your system.');
 
 const Discord = require('discord.js');
-const Sequelize = require('sequelize');
 
 const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
@@ -19,28 +18,6 @@ const client = new Discord.Client({
   disabledEvents: ['TYPING_START', 'USER_NOTE_UPDATE', 'RELATIONSHIP_ADD', 'RELATIONSHIP_REMOVE'],
   ws: { large_threshold: 1000 }
 });
-
-const sequelize = new Sequelize('database', 'user', 'password', {
-  host: 'localhost',
-  dialect: 'sqlite',
-  logging: false,
-  storage: 'tags.sqlite',
-});
-var tags = sequelize.define('tags', {
-  name: {
-    type: Sequelize.STRING,
-    unique: true,
-  },
-  description: Sequelize.TEXT,
-  username: Sequelize.STRING,
-  usage_count: {
-    type: Sequelize.INTEGER,
-    defaultValue: 0,
-    allowNull: false,
-  },
-});
-tags.sync();
-sequelize.sync();
 
 client.config = require('./config.js');
 client.logger = require('./util/Logger');
