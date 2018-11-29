@@ -5,7 +5,6 @@ module.exports.run = (client, message) => {
   const member = message.mentions.members.size === 0 ? message.member : message.mentions.members.first();
   const { user } = member;
 
-
   const embed = new Discord.RichEmbed()
     .setAuthor(user.tag, user.avatarURL)
     .addField('ID', user.id, true)
