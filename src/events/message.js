@@ -4,7 +4,7 @@
 
 module.exports = async (client, message) => {
   if (message.author.bot) return;
-  require('../modules/msgfunctions.js')(message);
+  require('../modules/msgfunctions.js')(client, message);
 
   // Thanks, MDN
   function getRandomIntInclusive(min, max) {
