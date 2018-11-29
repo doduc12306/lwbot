@@ -53,7 +53,7 @@ const config = {
       name: 'Moderator',
       check: (message) => {
         try {
-          const modRole = message.guild.roles.find(r => r.name.toLowerCase() === message.settings.modRole.toLowerCase());
+          const modRole = message.guild.roles.find(r => r.name.toLowerCase() === message.client.settings.get(message.guild.id).modRole.toLowerCase());
           if (modRole && message.member.roles.has(modRole.id)) return true;
         } catch (e) {
           return false;
