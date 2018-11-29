@@ -47,3 +47,5 @@ exports.warn = (...args) => this.log(...args, 'warn');
 exports.debug = (...args) => this.log(...args, 'debug');
 
 exports.cmd = (...args) => this.log(...args, 'cmd');
+
+exports.debug = (...args) => this.log(...args, 'debug');
