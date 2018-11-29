@@ -9,8 +9,8 @@ module.exports = async client => {
     client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
   }, 60000);
 
-  client.after = new Date();
-  client.startup = client.after - client.before;
+  var after = new Date();
+  client.startup = after - client.before;
   client.tags.sync();
   await client.wait(1000);
   client.logger.log(`${client.user.tag} | ${client.users.size} Users | ${client.guilds.size} Guilds | Took ${client.startup}ms`, 'ready');
