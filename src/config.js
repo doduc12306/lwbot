@@ -65,7 +65,7 @@ const config = {
       name: 'Administrator',
       check: (message) => {
         try {
-          const adminRole = message.guild.roles.find(r => r.name.toLowerCase() === message.settings.adminRole.toLowerCase());
+          const adminRole = message.guild.roles.find(r => r.name.toLowerCase() === message.client.settings.get(message.guild.id).adminRole.toLowerCase());
           return ((adminRole && message.member.roles.has(adminRole.id)) || message.member.permissions.has('ADMINISTRATOR'));
         } catch (e) {
           return false;
@@ -78,7 +78,7 @@ const config = {
       name: 'Bot Commander',
       check: (message) => {
         try{
-          const bcRole = message.guild.roles.find(r => r.name.toLowerCase() === message.settings.botCommanderRole.toLowerCase());
+          const bcRole = message.guild.roles.find(r => r.name.toLowerCase() === message.client.settings.get(message.guild.id).botCommanderRole.toLowerCase());
           return (bcRole && message.member.roles.has(bcRole.id));
         } catch (e) {return false;}
       }
