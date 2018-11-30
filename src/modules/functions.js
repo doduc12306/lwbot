@@ -228,7 +228,7 @@ module.exports = (client) => {
 
   // <Array>.random() returns a single random element from an array
   // [1, 2, 3, 4, 5].random() can return 1, 2, 3, 4 or 5.
-  Array.prototype.random = function() {
+  Array.prototype.randomElement = function() {
     return this[Math.floor(Math.random() * this.length)];
   };
 
