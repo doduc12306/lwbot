@@ -48,7 +48,7 @@ module.exports = async (client, message) => {
   // and clean way to grab one of 2 values!
   if (!cmd) return message.channel.send(`:x: That isn't one of my commands! Try ${prefix}help`);
 
-  if (!cmd.conf.enabled) if (systemNotice === 'true') return message.channel.send(`:x: \`${cmd}\` **is currently disabled.**`);
+  if (!cmd.conf.enabled) if (systemNotice === 'true') return message.channel.send(`:x: \`${cmd.help.name}\` **is currently disabled.**`);
 
   // Some commands may not be useable in DMs. This check prevents those commands from running
   // and return a friendly error message.
