@@ -8,7 +8,6 @@ const readdir = promisify(require('fs').readdir);
 var walk = require('walk');
 
 const Enmap = require('enmap');
-const EnmapLevel = require('enmap-level');
 
 var { join } = require('path');
 require('dotenv').config({ path: join(__dirname, '../.env') });
@@ -26,7 +25,6 @@ require('./modules/functions.js')(client);
 client.commands = new Enmap();
 client.aliases = new Enmap();
 client.folder = new Enmap();
-client.settings = new Enmap({provider: new EnmapLevel({name: 'settings'})});
 
 var options = { // walk module options
   followLinks: false

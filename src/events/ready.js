@@ -1,13 +1,28 @@
 const { statuses } = require('../util/statuses');
+const { promisify } = require('util');
+const readdir = promisify(require('fs').readdir);
+const Sequelize = require('sequelize');
+const Discord = require('discord.js');
 module.exports = async client => {
-  Array.prototype.randomElement = function(array) {
-    return array[Math.floor(Math.random() * array.length)];
-  };
-
   setInterval(() => {
-    var randomPl = statuses.randomElement(statuses);
+    var randomPl = statuses.randomElement();
     client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
   }, 60000);
+
+  const servers = await readdir('databases/servers/');
+  client.settings = new Discord.Collection();
+  await Promise.all(servers.map(async (server) => {
+    const serverId = server.split('.sqlite')[0];
+    const db = new Sequelize('database', 'username', 'password', {logging: false, host: 'localhost', storage: `databases/servers/${server}`, dialect: 'sqlite'});
+    client.logger.debug(`Opened server ${server}`);
+    const [data] = await db.query('SELECT * FROM \'settings\'');
+    const settings = {};
+    data.forEach(({ key, value }) => {
+      settings[key] = value;
+    });
+    client.settings.set(serverId, settings);
+    client.logger.debug(`Mapped settings for ${server}`);
+  }));
 
   var after = new Date();
   client.startup = after - client.before;

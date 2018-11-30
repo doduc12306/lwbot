@@ -83,10 +83,17 @@ const config = {
         } catch (e) {return false;}
       }
     },
-    // This is the server owner.
+    
+    // This is the server owner, or if they have an Owner role, since a lot of servers have multiple owners.
     { level: 5,
       name: 'Server Owner',
-      check: (message) => message.channel.type === 'text' ? (message.guild.owner.user.id === message.author.id ? true : false) : false
+      check: (message) => {
+        if(message.channel.type !== 'text') return false;
+        if(message.guild.owner.user.id !== message.author.id) {
+          const ownerRole = message.guild.roles.find(r => r.name.toLowerCase() === message.client.settings.get(message.guild.id).ownerRole.toLowerCase());
+          return (ownerRole && message.member.roles.has(ownerRole.id));
+        } else return true;
+      }
     },
 
     // Bot Support is a special in-between level that has the equivalent of server owner access

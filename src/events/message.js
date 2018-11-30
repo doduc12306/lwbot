@@ -79,5 +79,6 @@ module.exports = async (client, message) => {
     await message.guild.settings.findOrCreate({ where: { key: 'welcomeMessage' }, defaults: { value: 'Welcome to the server, {{user}}!' } });
     await message.guild.settings.findOrCreate({ where: { key: 'announcementChannel' }, defaults: { value: 'announcements' } });
     await message.guild.settings.findOrCreate({ where: { key: 'botCommanderRole' }, defaults: { value: 'Bot Commander' } });
+    await message.guild.settings.findOrCreate({ where: { key: 'ownerRole' }, defaults: { value: 'Owners' } });
   }
 };
