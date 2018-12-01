@@ -26,7 +26,7 @@ module.exports.run = (client, message, args) => {
 exports.conf = {
   enabled: true,
   guildOnly: true,
-  aliases: [],
+  aliases: ['roleinfo'],
   permLevel: 'User',
   requiresEmbed: true
 };
