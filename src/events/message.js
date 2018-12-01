@@ -63,6 +63,9 @@ module.exports = async (client, message) => {
     }
   }
 
+  if (cmd.conf.requiresEmbed && message.guild && !message.guild.me.permissionsIn(message.channel).serialize()['EMBED_LINKS'])
+    return message.channel.send(':x: **This command requires `Embed Links`, which I don\'t have!**');
+
   client.tags.sync();
 
   // If the command exists, **AND** the user has permission, run it.
