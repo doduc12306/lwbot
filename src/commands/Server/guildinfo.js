@@ -79,7 +79,8 @@ exports.conf = {
   enabled: true,
   aliases: ['serverinfo', 'server', 'guild'],
   permLevel: 'User',
-  guildOnly: true
+  guildOnly: true,
+  requiresEmbed: true
 };
 
 exports.help = {

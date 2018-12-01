@@ -23,7 +23,8 @@ exports.conf = {
   enabled: true,
   guildOnly: true,
   aliases: ['makeout'],
-  permLevel: 'User'
+  permLevel: 'User',
+  requiresEmbed: true
 };
 
 exports.help = {

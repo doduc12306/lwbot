@@ -16,7 +16,8 @@ exports.conf = {
   enabled: true,
   guildOnly: false,
   aliases: ['botinfo'],
-  permLevel: 'User'
+  permLevel: 'User',
+  requiresEmbed: true
 };
 
 exports.help = {

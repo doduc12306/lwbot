@@ -10,7 +10,7 @@ module.exports.run = (client, message) => {
     .addField('ID', user.id, true)
     .setThumbnail(user.avatarURL)
     .setDescription(user.toString())
-    .addField('Status', user.presence.status === 'online' ? '<:online:450674128777904149> Online' : user.presence.status === 'dnd' ? '<:dnd:450674354163023882> Do Not Disturb' : user.presence.status === 'idle' ? '<:idle:450674222176403456> Idle' : `<:streaming:450674542717698058> Streaming [${user.presence.game.name}](${user.presence.game.url})`, true);
+    .addField('Status', user.presence.status === 'online' ? '<:online:450674128777904149> Online' : user.presence.status === 'dnd' ? '<:dnd:450674354163023882> Do Not Disturb' : user.presence.status === 'idle' ? '<:idle:450674222176403456> Idle' : user.presence.status === 'offline' ? '<:offline:450674445670154240> Offline' : `<:streaming:450674542717698058> Streaming [${user.presence.game.name}](${user.presence.game.url})`, true);
 
   if(user.presence.game && !user.presence.game.streaming) embed.addField('Game', user.presence.game.name, true);
 
@@ -34,7 +34,8 @@ exports.conf = {
   enabled: true,
   guildOnly: true,
   aliases: ['whois', 'user'],
-  permLevel: 'User'
+  permLevel: 'User',
+  requiresEmbed: true
 };
 
 exports.help = {

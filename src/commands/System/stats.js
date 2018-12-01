@@ -18,7 +18,8 @@ exports.conf = {
   enabled: true,
   guildOnly: false,
   aliases: ['uptime'],
-  permLevel: 'User'
+  permLevel: 'User',
+  requiresEmbed: true
 };
 
 exports.help = {

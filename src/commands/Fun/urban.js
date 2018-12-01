@@ -17,7 +17,7 @@ module.exports.run = (client, message, args) => {
       .addField(data.word, clean(definition))
       .addField('Example', `*${clean(data.example)}*`)
       .setTimestamp(data.written_on)
-      .setFooter(`👍 ${data.thumbs_up} | 👎 ${data.thumbs_down}`)
+      .setFooter(`👝 ${data.thumbs_up} | 👎 ${data.thumbs_down}`)
     );
   });
 
@@ -33,7 +33,8 @@ exports.conf = {
   enabled: true,
   guildOnly: false,
   aliases: ['ud', 'urbandictionary'],
-  permLevel: 'User'
+  permLevel: 'User',
+  requiresEmbed: true
 };
 
 exports.help = {
