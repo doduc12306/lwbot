@@ -223,7 +223,9 @@ module.exports = async (client, message) => {
     });
   };
 
-  // XP Leveling sequence
+  // XP Leveling sequence here
+
+  // End XP Leveling sequence
 
   /* eslint-disable */
   // Other various functions
@@ -278,8 +280,8 @@ module.exports = async (client, message) => {
       if(message.mentions.channels.size === 0) {
         var channel = message.guild.channels.get(data);
         if(channel === undefined) {
-          data = data.split('#')[1];
-          channel = message.guild.channels.find(r => r.name.toLowerCase().includes(data.toLowerCase()));
+          if(data.startsWith('#')) data = data.split('#')[1];
+          channel = message.guild.channels.find(r => r.name.includes(data));
           if (channel === null) throw new Error('I couldn\'t find that channel!');
           else return channel;
         } else return channel;
