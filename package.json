@@ -33,12 +33,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/jennasisis/lwbot-rewrite.git"
+    "url": "http://gitlab.com/akii0008/lwbot-rewrite.git"
   },
   "author": "jennasisis/akii",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jennasisis/lwbot-rewrite/issues"
+    "url": "https://gitlab.com/akii0008/lwbot-rewrite/issues"
   },
-  "homepage": "https://github.com/jennasisis/lwbot-rewrite#readme"
+  "homepage": "https://gitlab.com/akii0008/lwbot-rewrite#readme"
 }
