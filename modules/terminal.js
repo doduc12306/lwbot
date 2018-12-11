@@ -102,7 +102,7 @@ function s() {
       }
 
       else if(input.startsWith(':eval')) {
-        var message;
+        var message = {};
         message.guild = curServer;
         message.channel = curChannel;
 
