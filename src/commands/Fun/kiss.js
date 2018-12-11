@@ -20,7 +20,7 @@ exports.run = (client, message) => {
 };
 
 exports.conf = {
-  enabled: true,
+  enabled: false,
   guildOnly: true,
   aliases: ['makeout'],
   permLevel: 'User',
