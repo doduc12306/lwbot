@@ -236,21 +236,4 @@ module.exports = (client) => {
   client.wait = require('util').promisify(setTimeout);
 
   client.xpLockSet = new Set();
-
-  // These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
-  process.on('uncaughtException', (err) => {
-    const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, 'g'), './');
-    if (errorMsg.trim().includes('at WebSocketConnection.onError')) client.logger.log('Disconnected! Lost connection to websocket', 'disconnect');
-    else client.logger.error(`Uncaught Exception: ${errorMsg}`);
-    process.exit(1);
-  });
-
-  process.on('unhandledRejection', err => {
-    client.logger.error(`Unhandled rejection: ${err.stack}`);
-  });
-
-  client.on('disconnect', () => client.logger.log('Client disconnected!', 'disconnect'));
-  client.on('reconnecting', () => client.logger.log('Reconnecting...', 'reconnecting'));
-  client.on('resume', replayed => client.logger.log(`Client resumed! Replayed ${replayed} events`, 'resume'));
-  client.on('warn', info => client.logger.warn(`Warning: "${info}"`));
 };
