@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 
 const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
+const fs = require('fs');
 
 var walk = require('walk');
 
@@ -38,7 +39,7 @@ const init = async () => {
   // here and everywhere else.
   const cmdFiles = walk.walk('./commands/', options);
   client.logger.log('Loading commands...');
-  cmdFiles.on('file', (root, fileStats, next) => { // eslint-disable-line no-unused-vars
+  cmdFiles.on('file', (root, fileStats, next) => {
     var cmdPath = join(__dirname, root);
     cmdPath = cmdPath.substring(cmdPath.indexOf('commands/') + 9);
     client.loadCommand(cmdPath, fileStats.name);
@@ -79,8 +80,20 @@ init();
 // These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
 process.on('uncaughtException', (err) => {
   const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, 'g'), './');
-  if (errorMsg.trim().includes('at WebSocketConnection.onError')) client.logger.log('Disconnected! Lost connection to websocket', 'disconnect');
-  else client.logger.error(`Uncaught Exception: ${errorMsg}`);
+  if (errorMsg.trim().includes('at WebSocketConnection.onError')) {
+    client.logger.log('Disconnected! Lost connection to websocket', 'disconnect');
+    fs.writeFile('./e', 'lost connection', (e, file) => {
+      if(e) console.error(e);
+      else client.logger.debug('Wrote log | ' + file);
+    });
+  } else {
+    client.logger.error(`Uncaught Exception: ${errorMsg}`);
+    fs.writeFile('./e', errorMsg, (e, file) => {
+      if(e) console.error(e);
+      else client.logger.debug('Wrote log | ' + file);
+    });
+  }
+
   process.exit(1);
 });
 
