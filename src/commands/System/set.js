@@ -6,7 +6,7 @@ const Discord = require('discord.js');
 // const action = args[0]; const key = args[1]; const value = args.slice(2);
 // OR the same as:
 // const [action, key, ...value] = args;
-exports.run = async (client, message, [action, key, ...value], level) => { // eslint-disable-line no-unused-vars
+exports.run = async (client, message, [action, key, ...value]) => {
   message.guild.settings.findAll().then(data => {
     if(action === 'view') {
       if(key) {

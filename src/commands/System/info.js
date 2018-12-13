@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 
-module.exports.run = (client, message, args) => { // eslint-disable-line no-unused-vars
+module.exports.run = (client, message) => {
   message.channel.send(new Discord.RichEmbed()
     .setColor('0x59D851')
     .setAuthor('LINE WEBTOON', client.user.avatarURL)

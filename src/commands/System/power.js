@@ -1,4 +1,4 @@
-exports.run = async (client, message, args) => {// eslint-disable-line no-unused-vars
+exports.run = async (client, message, args) => {
   if(!['shutdown', 'restart', 'reboot'].includes(args[0])) return message.channel.send(':x: | :arrows_counterclockwise: **Options:** shutdown restart / reboot');
 
   if(args[0] === 'shutdown') {

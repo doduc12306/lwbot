@@ -68,9 +68,9 @@ client.on('message', async message => {
     if (!message.member.roles.some(r => ['436632593480548393', '381207509685370880', '469993430127476757', '447140023918395402'].includes(r.id))) return message.channel.send(':x: `|` **You do not have permission to use this command!**');
     if (!message.guild.me.permissions.has('MANAGE_ROLES')) return message.channel.send(':x: `|` **Missing permission:** `Manage Roles`');
 
-    var content = args.join(' ').split(' | '); // eslint-disable-line
+    content = args.join(' ').split(' | ');
 
-    var role = content[0].substring(8).trim(); // eslint-disable-line
+    role = content[0].substring(8).trim();
     if(!role) return message.channel.send(':x: `|` **You didn\'t give the name of a role to ping!**');
     role = message.guild.roles.find(role => role.name === role);
     if(role === null) return message.channel.send(':x: `|` **I could not find that role!**');

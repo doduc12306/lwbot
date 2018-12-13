@@ -2,7 +2,7 @@ const moment = require('moment');
 const Discord = require('discord.js');
 require('moment-duration-format');
 
-exports.run = (client, message, args, level) => { // eslint-disable-line no-unused-vars
+exports.run = (client, message) => {
   message.channel.send(new Discord.RichEmbed()
     .setTitle('`Statistics`')
     .addField('Guilds', client.guilds.size, true)

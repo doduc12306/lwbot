@@ -1,6 +1,6 @@
 var Fstrings = [' with a transformer.', ' with poutine.', ', and what a fight it is! Whoa mama!', ', with two thousand blades!', '. SHORYUKEN!', '. HADOUKEN!', '. KA-POW!', ' with a pillow.', ' with a large fish.', ' with a burnt piece of toast.'];
 
-module.exports.run = (client, message, args) => { // eslint-disable-line no-unused-vars
+module.exports.run = (client, message) => {
   var user = message.mentions.users.first();
 
   var str = Fstrings.randomElement();

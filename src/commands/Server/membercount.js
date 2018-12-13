@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-module.exports.run = async (client, message, args) => { // eslint-disable-line no-unused-vars
+module.exports.run = async (client, message) => {
   await message.guild.fetchMembers();
 
   var bots = message.guild.members.filter(member => member.user.bot).map(g => g.toString()).length;
