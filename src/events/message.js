@@ -28,7 +28,7 @@ module.exports = async (client, message) => {
   }
 
   if (message.content.indexOf(prefix) !== 0) return;
-  const args = message.cleanContent.slice(prefix.length).trim().split(/ +/g);
+  const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 
   // Get the user or member's permission level from the elevation
