@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 
 module.exports.run = async (client, message, args) => {
-  var role = message.guild.roles.find('name', 'Muted') || message.guild.roles.find('name', 'muted');
+  var role = message.guild.roles.find(role => role.name === 'Muted') || message.guild.roles.find(role => role.name === 'muted');
   var toUnmute = message.mentions.members.first();
   var reason = args.slice(1).join(' ');
   var unmutedEmote = '<:unmuted:459458804376141824>';

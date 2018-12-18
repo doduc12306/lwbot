@@ -4,7 +4,7 @@ const moment = require('moment');
 require('moment-duration-format');
 
 module.exports.run = async (client, message, args) => {
-  var role = message.guild.roles.find('name', 'Muted') || message.guild.roles.find('name', 'muted');
+  var role = message.guild.roles.find(role => role.name === 'Muted') || message.guild.roles.find(role => role.name === 'muted');
   var toMute = message.mentions.members.first();
   var reason = args.slice(2).join(' ');
   var mutedEmote = '<:muted:459458717856038943>';
