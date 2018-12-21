@@ -6,9 +6,9 @@ module.exports.run = async (client, message, args) => {
   var reason = args.slice(1).join(' ');
   var mutedEmote = '<:muted:459458717856038943>';
 
-  if(!message.guild.me.permissions.has('MANAGE_ROLES')) return message.channel.send(`:x: \`|\` ${mutedEmote} **I am missing permissions: \`Manage Roles\``);
+  if(!message.guild.me.permissions.has('MANAGE_ROLES')) return message.channel.send(`:x: \`|\` ${mutedEmote} **I am missing permissions: \`Manage Roles\`**`);
   if(!toMute) return message.channel.send(`:x: \`|\` ${mutedEmote} **You didn't mention someone to mute!**`);
-  if(toMute.permissions.has('ADMINISTRATOR')) return message.channel.send(`:x: \`|\` ${mutedEmote} **${toMute.toString()} could not be muted because they have Administrator!`);
+  if(toMute.permissions.has('ADMINISTRATOR')) return message.channel.send(`:x: \`|\` ${mutedEmote} **${toMute.toString()} could not be muted because they have Administrator!**`);
   if(message.guild.me.highestRole.position < toMute.highestRole.position) return message.channel.send(`:x: \`|\` ${mutedEmote} **You need to move my role (${message.guild.me.highestRole.name}) above ${toMute.toString()}'s (${toMute.highestRole.name})!**`);
   if(toMute.roles.has(role.id)) return message.channel.send(`:x: \`|\` ${mutedEmote} **${toMute.toString()} is already muted!**`);
 
