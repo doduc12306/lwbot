@@ -1,18 +1,3 @@
-const Sequelize = require('sequelize');
-var killList = new Sequelize('database', 'user', 'password', {
-  host: 'localhost',
-  dialect: 'sqlite',
-  logging: false,
-  storage: 'databases/killList.sqlite'
-});
-killList = killList.define('killList', {
-  user: {
-    type: Sequelize.STRING,
-    allowNull: false
-  }
-});
-killList.sync();
-
 module.exports = async (client, packet) => {
   if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
   if(client.config.debugMode) return;
