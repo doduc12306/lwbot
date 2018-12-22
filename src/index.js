@@ -38,11 +38,13 @@ const init = async () => {
   const cmdFiles = walk.walk('./commands/', options);
   client.logger.log('Loading commands...');
   cmdFiles.on('file', (root, fileStats, next) => {
-    var cmdPath = require('os').platform().includes('win') 
+      var cmdPath = require('os').platform().includes('win') 
       ? root.substring(root.indexOf('commands\\') + 13) // Windows path finding
-      : cmdPath.join(__dirName, root).substring(cmdPath.indexOf('commands/') + 9); // Linux path finding
+      : join(__dirname, root).substring(join(__dirname, root).indexOf('commands/') + 9); // Linux path finding
+
     client.loadCommand(cmdPath, fileStats.name);
     next();
+
   });
 
   cmdFiles.on('end', async () => {
@@ -78,18 +80,17 @@ init();
 
 // These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
 process.on('uncaughtException', (err) => {
-  const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, 'g'), './');
-  if (errorMsg.trim().includes('at WebSocketConnection.onError')) {
+  if (err.trim().includes('at WebSocketConnection.onError')) {
     client.logger.log('Disconnected! Lost connection to websocket', 'disconnect');
-    fs.writeFile('./e', 'lost connection', (e, file) => {
+    fs.writeFileSync('./e', new Uint8Array(Buffer.from('lost connection to websocket')), e => {
       if(e) console.error(e);
-      else client.logger.debug('Wrote log | ' + file);
+      else client.logger.debug('Wrote error log');
     });
   } else {
-    client.logger.error(`Uncaught Exception: ${errorMsg}`);
-    fs.writeFile('./e', errorMsg, (e, file) => {
+    client.logger.error(`Uncaught Exception: ${err}`);
+    fs.writeFileSync('./e', new Uint8Array(Buffer.from(err)), e => {
       if(e) console.error(e);
-      else client.logger.debug('Wrote log | ' + file);
+      else client.logger.debug('Wrote error log');
     });
   }
 
