@@ -27,16 +27,14 @@ client.commands = new Enmap();
 client.aliases = new Enmap();
 client.folder = new Enmap();
 
-var options = { // walk module options
-  followLinks: false
-  , filters: ['Temp', '_Temp']
-};
-
 const init = async () => {
-  if(client.config.debugMode) client.logger.warn('Debug mode enabled');
   client.before = new Date();
   // Here we load commands into memory, as a collection, so they're accessible
   // here and everywhere else.
+  var options = { // walk module options
+    followLinks: false
+    , filters: ['Temp', '_Temp']
+  };
   const cmdFiles = walk.walk('./commands/', options);
   client.logger.log('Loading commands...');
   cmdFiles.on('file', (root, fileStats, next) => {
