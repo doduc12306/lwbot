@@ -158,6 +158,7 @@ module.exports = async (client, message) => {
 
       message.guild.settings.create({key: key, value: value})
         .then(() => {
+          client.settings.get(message.guild.id)[key] = value;
           return resolve(true);
         })
         .catch(e => {
@@ -176,6 +177,7 @@ module.exports = async (client, message) => {
       if(typeof key !== 'string') return reject(new TypeError(`"${key}" is not a string`));
       message.guild.settings.findOne({where: {key: key}}).then(data => {
         if(data === null) return reject(new Error(`The key "${key}" does not exist to delete`));
+        delete client.settings.get(message.guild.id)[key];
         message.guild.settings.destroy({where: {key: key}});
         return resolve(true);
       });
@@ -197,6 +199,7 @@ module.exports = async (client, message) => {
 
       message.guild.settings.findOne({where: {key: key}}).then(data => {
         if(data === null) return reject(new Error(`The key "${key}" does not exist to edit`));
+        client.settings.get(message.guild.id)[key] = newValue;
         message.guild.settings.update({value: newValue}, {where: {key: key}});
         return resolve(true);
       });
@@ -220,87 +223,72 @@ module.exports = async (client, message) => {
     });
   };
 
-  // XP Leveling sequence
+  // XP Leveling sequence here
 
+  // End XP Leveling sequence
+
+  /* eslint-disable */
   // Other various functions
   message.functions = {
-    parseChannel: (data, outputType) => {
-      var channelObj;
-      var parsedChannel;
-      return new Promise((resolve, reject) => {
-        if(!message.guild) return reject(new Error('Not in a guild!'));
-        if(!data || data === null) return reject(new TypeError('No data given to parse channel information'));
-
-        if(typeof data === 'string') {
-          parsedChannel = message.guild.channels.get(data);
-          if (parsedChannel === undefined || parsedChannel === null) {
-            parsedChannel = message.guild.channels.find(channel => channel.name === data);
-            if (parsedChannel === undefined || parsedChannel === null) return reject(new Error('Channel not found'));
-            else channelObj = parsedChannel;
-          } else channelObj = parsedChannel;
-        }
-
-        else if (typeof data === 'object') {
-          parsedChannel = message.guild.channels.get(data.id);
-          if (parsedChannel === undefined || parsedChannel === null) return reject(new Error('[Object Parse] Channel not found'));
-          else channelObj = parsedChannel;
-        }
-        else {return reject(new Error(`Data ("${data}") could not be parsed into a channel. Must be either string or object.`));}
-
-        if (!outputType || outputType === null) return resolve(channelObj);
-        else if(outputType.toLowerCase() === 'id') return resolve(channelObj.id);
-        else if(outputType.toLowerCase() === 'name') return resolve(channelObj.name);
-        else return reject(new TypeError('Unknown output type; must be "id" or "name"'));
-      });
+    parseRole: data => {
+      if (message.channel.type !== 'text') throw new Error('I can\'t find a role if I\'m not in a guild!');
+      if(!data) throw new Error('You didn\'t give me anything to find a role from!');
+      if(message.mentions.roles.size === 0) {
+        var role = message.guild.roles.get(data);
+        if(role === undefined) {
+          role = message.guild.roles.find(r => r.name.toLowerCase().includes(data.toLowerCase()));
+          if(role === null) throw new Error('I couldn\'t find that role! ');
+          else return role;
+        } else return role;
+      } else {
+        role = message.mentions.roles.first();
+        return role;
+      }
     },
-    parseUser: (data, outputType) => {
-      var userObj;
-      var parsedUser;
-      return new Promise((resolve, reject) => {
-        if (!message.guild) return reject(new Error('Not in a guild!'));
-        if (!data || data === null) return reject(new TypeError('No data given to parse user information'));
-
-        if (typeof data === 'string') {
-          parsedUser = message.client.users.get(data);
-          if (parsedUser === undefined || parsedUser === null) {
-            parsedUser = message.client.users.find(user => user.username === data);
-            if (parsedUser === undefined || parsedUser === null) return reject(new Error('User not found'));
-            else userObj = parsedUser;
-          } else userObj = parsedUser;
-        }
-
-        else if (typeof data === 'object') {
-          parsedUser = message.client.users.get(data.id);
-          if (parsedUser === undefined || parsedUser === null) return reject(new Error('[Object Parse] User not found'));
-          else userObj = parsedUser;
-        }
-        else { return reject(new Error(`Data ("${data}") could not be parsed into a user. Must be either string or object.`)); }
-
-        if (!outputType || outputType === null) return resolve(userObj);
-        else if (outputType.toLowerCase() === 'id') return resolve(userObj.id);
-        else if (outputType.toLowerCase() === 'username') return resolve(userObj.username);
-        else return reject(new TypeError('Unknown output type; must be "id" or "name"'));
-      });
+    parseUser: data => {
+      if(!data) throw new Error('You didn\'t give me anything to find a user from!');
+      if(message.mentions.users.size === 0) {
+        var user = client.users.get(data);
+        if(user === undefined) {
+          user = client.users.find(r => (r.username.toLowerCase().includes(data.toLowerCase()) || r.tag.toLowerCase() === data.toLowerCase()));
+          if(user === null) throw new Error('I couldn\'t find that user!');
+          else return user;
+        } else return user;
+      } else {
+        user = message.mentions.users.first();
+        return user;
+      }
     },
-    parseGuild: (data, outputType) => {
-      var parsedGuild;
-      var guildObj;
-      return new Promise((resolve, reject) => {
-        if (!data || data === null) return reject(new TypeError('No data given to parse guild information'));
-        if (typeof data !== 'string') return reject(new TypeError('Data must be a string'));
-
-        parsedGuild = message.client.guilds.get(data);
-        if (parsedGuild === undefined) {
-          parsedGuild = message.client.guilds.find(g => g.name === data);
-          if (parsedGuild === undefined) return reject(new Error('Guild not found'));
-          else guildObj = parsedGuild;
-        } else guildObj = parsedGuild;
-
-        if (!outputType || outputType === null) return resolve(guildObj);
-        else if (outputType.toLowerCase() === 'id') return resolve(guildObj.id);
-        else if (outputType.toLowerCase() === 'name') return resolve(guildObj.name);
-        else return reject(new TypeError('Unknown output type; must be "id" or "name"'));
-      });
+    parseMember: data => {
+      if (message.channel.type !== 'text') throw new Error('I can\'t find a member if I\'m not in a guild!');
+      if (!data) throw new Error('You didn\'t give me anything to find a member from!');
+      if(message.mentions.members.size === 0) {
+        var member = message.guild.members.get(data);
+        if(member === undefined) {
+          member = message.guild.members.find(r => (r.user.username.toLowerCase().includes(data.toLowerCase()) || r.user.tag.toLowerCase() === data.toLowerCase()));
+          if (member === null) throw new Error('I couldn\'t find that member!');
+          else return member;
+        } else return member;
+      } else {
+        member = message.mentions.members.first();
+        return member;
+      }
+    },
+    parseChannel: data => {
+      if (message.channel.type !== 'text') throw new Error('I can\'t find a channel if I\'m not in a guild!');
+      if (!data) throw new Error('You didn\'t give me anything to find a channel from!');
+      if(message.mentions.channels.size === 0) {
+        var channel = message.guild.channels.get(data);
+        if(channel === undefined) {
+          if(data.startsWith('#')) data = data.split('#')[1];
+          channel = message.guild.channels.find(r => r.name.includes(data));
+          if (channel === null) throw new Error('I couldn\'t find that channel!');
+          else return channel;
+        } else return channel;
+      } else {
+        channel = message.mentions.channels.first();
+        return channel;
+      }
     }
   };
 };

@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 var moment = require('moment');
 
-module.exports.run = (client, message, args) => { // eslint-disable-line no-unused-vars
+module.exports.run = (client, message) => {
   if (message.channel.type === 'dm') {
     message.channel.send(':x: This command will not work in DM\'s');
     return;
@@ -79,7 +79,8 @@ exports.conf = {
   enabled: true,
   aliases: ['serverinfo', 'server', 'guild'],
   permLevel: 'User',
-  guildOnly: true
+  guildOnly: true,
+  requiresEmbed: true
 };
 
 exports.help = {

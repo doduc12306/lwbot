@@ -44,7 +44,8 @@ exports.conf = {
   enabled: true,
   guildOnly: false,
   permLevel: 'Moderator',
-  aliases: ['anno']
+  aliases: ['anno'],
+  requiresEmbed: true
 };
 
 exports.help = {

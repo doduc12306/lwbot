@@ -1,6 +1,6 @@
 /* eslint-disable */
 const Discord = require('discord.js');
-module.exports.run = (client, message, args) => { // eslint-disable-line
+module.exports.run = (client, message, args) => {
   var user = message.mentions.users.first() ? message.mentions.users.first() : message.author;
 
   message.guild.modbase.findAll({where: {victim: user.id}}).then(logs => {
@@ -30,7 +30,8 @@ exports.conf = {
   enabled: true,
   guildOnly: true,
   aliases: [],
-  permLevel: 'User'
+  permLevel: 'User',
+  requiresEmbed: true
 };
 
 exports.help = {

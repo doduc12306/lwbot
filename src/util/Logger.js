@@ -3,6 +3,7 @@ Logger class for easy and aesthetically pleasing console logging
 */
 const chalk = require('chalk');
 const moment = require('moment');
+const config = require('../config');
 
 exports.log = (content, type = 'log') => {
   const timestamp = chalk.gray(`[${moment().format('YYYY-MM-DD HH:mm:ss')}]:`);
@@ -17,7 +18,8 @@ exports.log = (content, type = 'log') => {
       return console.log(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${chalk.red(content)} `);
     }
     case 'debug': {
-      return console.log(`${timestamp} ${chalk.green(type.toUpperCase())} ${content} `);
+      if(!config.debugMode) return;
+      return console.log(`${timestamp} ${chalk.white.bgCyan(type.toUpperCase())} ${chalk.italic.gray(content)} `);
     }
     case 'cmd': {
       return console.log(`${timestamp} ${chalk.black.bgWhite(type.toUpperCase())} ${content}`);
@@ -45,3 +47,5 @@ exports.warn = (...args) => this.log(...args, 'warn');
 exports.debug = (...args) => this.log(...args, 'debug');
 
 exports.cmd = (...args) => this.log(...args, 'cmd');
+
+exports.debug = (...args) => this.log(...args, 'debug');

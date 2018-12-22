@@ -32,7 +32,8 @@ exports.conf = {
   enabled: true,
   permLevel: 'Bot Owner',
   guildOnly: true,
-  aliases: ['leaderboard', 'xplevels', 'xpleaderboard']
+  aliases: ['leaderboard', 'xplevels', 'xpleaderboard'],
+  requiresEmbed: true
 };
 
 exports.help = {

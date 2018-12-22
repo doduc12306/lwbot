@@ -6,7 +6,7 @@ const Discord = require('discord.js');
 // const action = args[0]; const key = args[1]; const value = args.slice(2);
 // OR the same as:
 // const [action, key, ...value] = args;
-exports.run = async (client, message, [action, key, ...value], level) => { // eslint-disable-line no-unused-vars
+exports.run = async (client, message, [action, key, ...value]) => {
   message.guild.settings.findAll().then(data => {
     if(action === 'view') {
       if(key) {
@@ -35,27 +35,34 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
       if(!key) return message.channel.send(':x: `|` :gear: **You didn\'t provide a key to edit!**');
       message.guild.settings.get(key)
         .then(() => {
-          if(value < 1) return message.channel.send(':x: `|` :gear: **Please provide a new value.**');
+          if(value.length < 1) return message.channel.send(':x: `|` :gear: **Please provide a new value.**');
           message.guild.settings.edit(key, value.join(' '));
+          client.settings.get(message.guild.id)[key] = value.join(' ');
           message.channel.send(`:white_check_mark: \`|\` :gear: \`${key}\` **was successfully edited to** \`${value.join(' ')}\`**.**`);
         })
-        .catch(() => message.channel.send(`:x: \`|\` :gear: \`${key}\` **does not exist!** `));
+        .catch(() => message.channel.send(`:x: \`|\` :gear: \`${key}\` **does not exist!**`));
     } else
 
     if (action === 'add' || action === 'create') {
       if (!key) return message.channel.send(':x: `|` :gear: **You didn\'t provide a key to add!**');
-      if (value < 1) return message.channel.send(':x: `|` :gear: **Please provide a value.**');
-      message.guild.settings.add(key, value.join(' '));
-      message.channel.send(`:white_check_mark: \`|\` :gear: \`${key}\` **was successfully added with value** \`${value.join(' ')}\`**.**`);
+      message.guild.settings.get(key)
+        .then(() => message.channel.send(`:x: \`|\` :gear: \`${key}\` **already exists!**`))
+        .catch(() => {
+          if (value.length < 1) return message.channel.send(':x: `|` :gear: **Please provide a value.**');
+          message.guild.settings.add(key, value.join(' '));
+          client.settings.get(message.guild.id)[key] = value.join(' ');
+          message.channel.send(`:white_check_mark: \`|\` :gear: \`${key}\` **was successfully added with value** \`${value.join(' ')}\`**.**`);
+        });
     } else
 
     if (action === 'del' || action === 'delete') {
       if(!key) return message.channel.send(':x: `|` :gear: **You didn\'t provide a key to delete!**');
       message.guild.settings.get(key)
         .then(async () => {
-          const response = await client.awaitReply(message, `:warning: \`|\` :gear: **Are you** __***SURE***__ **you want to delete** \`${key}\`**? This CANNOT be undone!** (yes/no)`);
+          const response = await client.awaitReply(message, `:warning: \`|\` :gear: **Are you** __***SURE***__ **you want to delete** \`${key}\`**? This CANNOT be undone!** (y/n)`);
           if (['yes', 'y'].includes(response)) {
             message.guild.settings.delete(key);
+            delete client.settings.get(message.guild.id)[key];
             message.channel.send(`:white_check_mark: \`|\` :gear: **Successfully deleted** \`${key}\`**.**`);
           } else if (['no', 'n'].includes(response)) return message.channel.send(':white_check_mark: `|` :gear: **Action cancelled.**');
         })
@@ -66,9 +73,10 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
       if (!key) return message.channel.send(':x: `|` :gear: **You didn\'t provide a key to reset!**');
       message.guild.settings.get(key)
         .then(async () => {
-          const response = await client.awaitReply(message, `:warning: \`|\` :gear: **Are you** __***SURE***__ **you want to reset** \`${key}\`**? This CANNOT be undone!** (yes/no)`);
+          const response = await client.awaitReply(message, `:warning: \`|\` :gear: **Are you** __***SURE***__ **you want to reset** \`${key}\`**? This CANNOT be undone!** (y/n)`);
           if (['yes', 'y'].includes(response)) {
             message.guild.settings.edit(key, client.config.defaultSettings[key]);
+            client.settings.get(message.guild.id)[key] = client.config.defaultSettings[key];
             message.channel.send(`:white_check_mark: \`|\` :gear: **Successfully reset** \`${key}\` **to** \`${client.config.defaultSettings[key]}\`**.**`);
           } else if (['no', 'n'].includes(response)) return message.channel.send(':white_check_mark: `|` :gear: **Action cancelled.**');
         })
@@ -93,7 +101,8 @@ exports.conf = {
   enabled: true,
   guildOnly: true,
   aliases: ['setting', 'settings', 'conf'],
-  permLevel: 'Administrator'
+  permLevel: 'Administrator',
+  requiresEmbed: true
 };
 
 exports.help = {

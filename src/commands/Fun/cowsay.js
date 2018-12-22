@@ -1,14 +1,11 @@
-const cowsay = require('cowsay');
 module.exports.run = (client, message, args) => {
   var content = args.slice(0).join(' ');
   if(!content) return message.channel.send('** **');
 
-  message.channel.send(`\`root@lwbot-vps:~/lwbot-rewrite# cowsay ${content}\``)
-    .then(async msg => {
-      content = content.replaceAll('`', '');
-      await client.wait(700);
-      msg.edit(`\`\`\`\n${cowsay.say({text: content})}\n\`\`\``);
-    });
+  require('child_process').exec(`cowsay ${content}`, (e, out, err) => {
+    if(e || err) return message.channel.send(`:x: **There was an error:** ${e || err}`);
+    message.channel.send(`\`\`\`\n${out}\n\`\`\``);
+  });
 };
 
 exports.conf = {
@@ -20,7 +17,7 @@ exports.conf = {
 
 exports.help = {
   name: 'cowsay',
-  description: 'root@lwbot-vps:~/lwbot-rewrite# cowsay',
+  description: 'root@lwbot-vps:~/lwbot-rewrite/src/# cowsay',
   usage: 'cowsay <string>',
   category: 'Fun'
 };

@@ -43,10 +43,15 @@ module.exports.run = async (client, message, args) => {
     await message.guild.ban(toBan, {days: 1});
     await message.guild.settings.get('modLogChannel')
       .then(async modLogChannel => {
-        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Tempbanned user \`${toBan.user.tag}\`**`);
+        modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
+        if (modLogChannel === null) return message.channel.send(`:warning: **Tempban issued, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
+        if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
+          modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.channel.send(`:warning: **Tempban issued, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
+        }
+        await modLogChannel.send(modEmbed);
+        await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Tempbanned user \`${toBan.tag}\`**`);
       })
-      .catch(async () => message.channel.send(`:warning: **Tempban issued, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``));
-
+      .catch(async e => message.channel.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
     setTimeout(async () => {
       await message.guild.modbase.create({
         victim: toBan.id,
@@ -65,8 +70,15 @@ module.exports.run = async (client, message, args) => {
         else {message.guild.modbase.update({ reason: `${reason} | Tempban auto unban`}, { where: {id: info.id}}); await modEmbed.addField('Reason', `${reason} | Tempban auto unban`);}
 
         await message.guild.settings.get('modLogChannel')
-          .then(modLogChannel => message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false)
-          .catch(() => {});
+          .then(async modLogChannel => {
+            modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
+            if (modLogChannel === null) return message.channel.send(`:warning: **A tempban has completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
+            if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
+              modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.channel.send(`:warning: **A tempban has completed, but I errored:**\n I tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
+            }
+            await modLogChannel.send(modEmbed);
+          })
+          .catch(async e => message.channel.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
 
         message.guild.unban(toBan);
       });

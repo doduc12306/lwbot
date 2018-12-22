@@ -52,7 +52,8 @@ exports.conf = {
   enabled: true,
   guildOnly: false,
   aliases: ['h', 'halp', 'hlp', 'commands', 'cmds'],
-  permLevel: 'User'
+  permLevel: 'User',
+  requiresEmbed: true
 };
 
 exports.help = {

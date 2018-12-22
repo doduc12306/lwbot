@@ -1,15 +1,8 @@
-const Discord = require('discord.js');
-
 module.exports.run = (client, message, args) => {
   var command = client.commands.get(args[0]);
 
-  var embed = new Discord.RichEmbed()
-    .addField(command.help.name, `Enabled: ${command.conf.enabled}`);
-
-  if(command.conf.enabled) embed.setColor(client.config.colors.green);
-  else embed.setColor(client.config.colors.red);
-
-  message.channel.send(embed);
+  if(command.conf.enabled) message.channel.send(':white_check_mark: **This command is enabled.**');
+  else message.channel.send(':x: **This command is disabled.**');
 };
 
 exports.conf = {

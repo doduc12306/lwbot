@@ -4,11 +4,11 @@ const Discord = require('discord.js');
 
 const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
+const fs = require('fs');
 
 var walk = require('walk');
 
 const Enmap = require('enmap');
-const EnmapLevel = require('enmap-level');
 
 var { join } = require('path');
 require('dotenv').config({ path: join(__dirname, '../.env') });
@@ -26,7 +26,6 @@ require('./modules/functions.js')(client);
 client.commands = new Enmap();
 client.aliases = new Enmap();
 client.folder = new Enmap();
-client.settings = new Enmap({provider: new EnmapLevel({name: 'settings'})});
 
 var options = { // walk module options
   followLinks: false
@@ -40,7 +39,7 @@ const init = async () => {
   // here and everywhere else.
   const cmdFiles = walk.walk('./commands/', options);
   client.logger.log('Loading commands...');
-  cmdFiles.on('file', (root, fileStats, next) => { // eslint-disable-line no-unused-vars
+  cmdFiles.on('file', (root, fileStats, next) => {
     var cmdPath = join(__dirname, root);
     cmdPath = cmdPath.substring(cmdPath.indexOf('commands/') + 9);
     client.loadCommand(cmdPath, fileStats.name);
@@ -77,3 +76,32 @@ const init = async () => {
 };
 
 init();
+
+// These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
+process.on('uncaughtException', (err) => {
+  const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, 'g'), './');
+  if (errorMsg.trim().includes('at WebSocketConnection.onError')) {
+    client.logger.log('Disconnected! Lost connection to websocket', 'disconnect');
+    fs.writeFile('./e', 'lost connection', (e, file) => {
+      if(e) console.error(e);
+      else client.logger.debug('Wrote log | ' + file);
+    });
+  } else {
+    client.logger.error(`Uncaught Exception: ${errorMsg}`);
+    fs.writeFile('./e', errorMsg, (e, file) => {
+      if(e) console.error(e);
+      else client.logger.debug('Wrote log | ' + file);
+    });
+  }
+
+  process.exit(1);
+});
+
+process.on('unhandledRejection', err => {
+  client.logger.error(`Unhandled rejection: ${err.stack}`);
+});
+
+client.on('disconnect', () => client.logger.log('Client disconnected!', 'disconnect'));
+client.on('reconnecting', () => client.logger.log('Reconnecting...', 'reconnecting'));
+client.on('resume', replayed => client.logger.log(`Client resumed! Replayed ${replayed} events`, 'resume'));
+client.on('warn', info => client.logger.warn(`Warning: "${info}"`));

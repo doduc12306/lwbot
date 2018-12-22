@@ -53,7 +53,7 @@ const config = {
       name: 'Moderator',
       check: (message) => {
         try {
-          const modRole = message.guild.roles.find(r => r.name.toLowerCase() === message.settings.modRole.toLowerCase());
+          const modRole = message.guild.roles.find(r => r.name.toLowerCase() === message.client.settings.get(message.guild.id).modRole.toLowerCase());
           if (modRole && message.member.roles.has(modRole.id)) return true;
         } catch (e) {
           return false;
@@ -65,7 +65,7 @@ const config = {
       name: 'Administrator',
       check: (message) => {
         try {
-          const adminRole = message.guild.roles.find(r => r.name.toLowerCase() === message.settings.adminRole.toLowerCase());
+          const adminRole = message.guild.roles.find(r => r.name.toLowerCase() === message.client.settings.get(message.guild.id).adminRole.toLowerCase());
           return ((adminRole && message.member.roles.has(adminRole.id)) || message.member.permissions.has('ADMINISTRATOR'));
         } catch (e) {
           return false;
@@ -78,15 +78,22 @@ const config = {
       name: 'Bot Commander',
       check: (message) => {
         try{
-          const bcRole = message.guild.roles.find(r => r.name.toLowerCase() === message.settings.botCommanderRole.toLowerCase());
+          const bcRole = message.guild.roles.find(r => r.name.toLowerCase() === message.client.settings.get(message.guild.id).botCommanderRole.toLowerCase());
           return (bcRole && message.member.roles.has(bcRole.id));
         } catch (e) {return false;}
       }
     },
-    // This is the server owner.
+    
+    // This is the server owner, or if they have an Owner role, since a lot of servers have multiple owners.
     { level: 5,
       name: 'Server Owner',
-      check: (message) => message.channel.type === 'text' ? (message.guild.owner.user.id === message.author.id ? true : false) : false
+      check: (message) => {
+        if(message.channel.type !== 'text') return false;
+        if(message.guild.owner.user.id !== message.author.id) {
+          const ownerRole = message.guild.roles.find(r => r.name.toLowerCase() === message.client.settings.get(message.guild.id).ownerRole.toLowerCase());
+          return (ownerRole && message.member.roles.has(ownerRole.id));
+        } else return true;
+      }
     },
 
     // Bot Support is a special in-between level that has the equivalent of server owner access

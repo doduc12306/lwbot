@@ -4,6 +4,7 @@ databases/
 .vs/
 src/node_modules
 tests/
+src/e
 # Logs
 logs
 *.log
@@ -12,6 +13,7 @@ yarn-debug.log*
 yarn-error.log*
 data/
 test.js
+*.temp
 
 # Runtime data
 pids

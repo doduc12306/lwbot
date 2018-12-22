@@ -48,7 +48,7 @@ module.exports = async (client, message) => {
   // and clean way to grab one of 2 values!
   if (!cmd) return message.channel.send(`:x: That isn't one of my commands! Try ${prefix}help`);
 
-  if (!cmd.conf.enabled) if (systemNotice === 'true') return message.channel.send(`:x: \`${cmd}\` **is currently disabled.**`);
+  if (!cmd.conf.enabled) if (systemNotice === 'true') return message.channel.send(`:x: \`${cmd.help.name}\` **is currently disabled.**`);
 
   // Some commands may not be useable in DMs. This check prevents those commands from running
   // and return a friendly error message.
@@ -62,6 +62,9 @@ module.exports = async (client, message) => {
       return;
     }
   }
+
+  if (cmd.conf.requiresEmbed && message.guild && !message.guild.me.permissionsIn(message.channel).serialize()['EMBED_LINKS'])
+    return message.channel.send(':x: **This command requires `Embed Links`, which I don\'t have!**');
 
   client.tags.sync();
 
@@ -79,5 +82,6 @@ module.exports = async (client, message) => {
     await message.guild.settings.findOrCreate({ where: { key: 'welcomeMessage' }, defaults: { value: 'Welcome to the server, {{user}}!' } });
     await message.guild.settings.findOrCreate({ where: { key: 'announcementChannel' }, defaults: { value: 'announcements' } });
     await message.guild.settings.findOrCreate({ where: { key: 'botCommanderRole' }, defaults: { value: 'Bot Commander' } });
+    await message.guild.settings.findOrCreate({ where: { key: 'ownerRole' }, defaults: { value: 'Owners' } });
   }
 };

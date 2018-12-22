@@ -33,7 +33,8 @@ exports.conf = {
   enabled: true,
   guildOnly: false,
   aliases: ['ud', 'urbandictionary'],
-  permLevel: 'User'
+  permLevel: 'User',
+  requiresEmbed: true
 };
 
 exports.help = {

@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 
 module.exports.run = async (client, message, args) => {
-  var role = message.guild.roles.find('name', 'Muted') || message.guild.roles.find('name', 'muted');
+  var role = message.guild.roles.find(role => role.name === 'Muted') || message.guild.roles.find(role => role.name === 'muted');
   var toUnmute = message.mentions.members.first();
   var reason = args.slice(1).join(' ');
   var unmutedEmote = '<:unmuted:459458804376141824>';
@@ -31,9 +31,15 @@ module.exports.run = async (client, message, args) => {
     toUnmute.removeRole(role);
     await message.guild.settings.get('modLogChannel')
       .then(async modLogChannel => {
-        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` ${unmutedEmote} **Unmuted user \`${toUnmute.user.tag}\`**`);
+        modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
+        if (modLogChannel === null) return message.channel.send(`:warning: **Unmute completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
+        if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
+          modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.channel.send(`:warning: **Unmute completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
+        }
+        await modLogChannel.send(modEmbed);
+        await message.channel.send(`:white_check_mark: \`|\` ${unmutedEmote} **Unmuted user \`${toUnmute.user.tag}\`**`);
       })
-      .catch(async () => message.channel.send(`:warning: **Unmute completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``));
+      .catch(async e => message.channel.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
   });
 };
 

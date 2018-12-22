@@ -4,7 +4,7 @@ const moment = require('moment');
 require('moment-duration-format');
 
 module.exports.run = async (client, message, args) => {
-  var role = message.guild.roles.find('name', 'Muted') || message.guild.roles.find('name', 'muted');
+  var role = message.guild.roles.find(role => role.name === 'Muted') || message.guild.roles.find(role => role.name === 'muted');
   var toMute = message.mentions.members.first();
   var reason = args.slice(2).join(' ');
   var mutedEmote = '<:muted:459458717856038943>';
@@ -41,9 +41,15 @@ module.exports.run = async (client, message, args) => {
     toMute.addRole(role);
     await message.guild.settings.get('modLogChannel')
       .then(async modLogChannel => {
-        message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false; await message.channel.send(`:white_check_mark: \`|\` ${mutedEmote} **Tempmuted user \`${toMute.user.tag}\`**`);
+        modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
+        if (modLogChannel === null) return message.channel.send(`:warning: **Tempmute issued, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
+        if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
+          modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.channel.send(`:warning: **Tempmute issued, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
+        }
+        await modLogChannel.send(modEmbed);
+        await message.channel.send(`:white_check_mark: \`|\` ${mutedEmote} **Tempmuted user \`${toMute.user.tag}\`**`);
       })
-      .catch(async () => message.channel.send(`:warning: **Tempmute issued, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``));
+      .catch(async e => message.channel.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
 
     setTimeout(async () => {
       await message.guild.modbase.create({
@@ -64,8 +70,15 @@ module.exports.run = async (client, message, args) => {
 
         toMute.removeRole(role);
         await message.guild.settings.get('modLogChannel')
-          .then(async modLogChannel => message.guild.channels.find('name', modLogChannel) ? message.guild.channels.find('name', modLogChannel).send(modEmbed) : false)
-          .catch(async () => {});
+          .then(async modLogChannel => {
+            modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
+            if (modLogChannel === null) return message.channel.send(`:warning: **A tempmute has completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
+            if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
+              modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.channel.send(`:warning: **A tempmute has completed, but I errored:**\n I tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
+            }
+            await modLogChannel.send(modEmbed);
+          })
+          .catch(async e => message.channel.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
       });
     }, durationMs);
   });

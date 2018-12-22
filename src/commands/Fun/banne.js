@@ -1,9 +1,6 @@
-module.exports.run = async (client, message, args) => {
-  var toBanne = await message.functions.parseUser(args[0]);
-
-  if (typeof toBanne.catch === 'function') return message.channel.send(`${client.emojis.get('383800708841078785')} **u can no banne no user~!** :triumph: :triumph:`);
-
-  message.channel.send(`${client.emojis.get('383763992981667855')} **${toBanne} has ben banne~!** :sparkles:`);
+module.exports.run = async (client, message) => {
+  if (message.mentions.users.size === 0) return message.channel.send(`${client.emojis.get('383800708841078785')} **u didnt menshin sum1!!~** :triumph: :triumph:`);
+  message.channel.send(`${client.emojis.get('383763992981667855')} ${message.mentions.users.first()} **has bee banne~!!1!** :sparkles:`);
 };
 
 exports.conf = {
