@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const checkClient = new Discord.Client();
 // const client = new Discord.Client();
 

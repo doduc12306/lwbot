@@ -47,6 +47,7 @@
           "destructuring": "any",
           "ignoreReadBeforeAssign": false
         }
-      ]
+      ],
+      "no-unused-vars": "warn"
     }
   }
