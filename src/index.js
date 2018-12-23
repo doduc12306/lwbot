@@ -38,7 +38,7 @@ const init = async () => {
   const cmdFiles = walk.walk('./commands/', options);
   client.logger.log('Loading commands...');
   cmdFiles.on('file', (root, fileStats, next) => {
-      var cmdPath = require('os').platform().includes('win') 
+    var cmdPath = require('os').platform().includes('win') 
       ? root.substring(root.indexOf('commands\\') + 13) // Windows path finding
       : join(__dirname, root).substring(join(__dirname, root).indexOf('commands/') + 9); // Linux path finding
 
