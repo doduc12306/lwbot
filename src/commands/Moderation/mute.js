@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
 
 module.exports.run = async (client, message, args) => {
-  var role = message.guild.roles.find(role => role.name === 'Muted') || message.guild.roles.find(role => role.name === 'muted');
-  var toMute = message.mentions.members.first();
-  var reason = args.slice(1).join(' ');
-  var mutedEmote = '<:muted:459458717856038943>';
+  const role = message.guild.roles.find(role => role.name === 'Muted') || message.guild.roles.find(role => role.name === 'muted');
+  const toMute = message.mentions.members.first();
+  const reason = args.slice(1).join(' ');
+  const mutedEmote = '<:muted:459458717856038943>';
 
   if(!message.guild.me.permissions.has('MANAGE_ROLES')) return message.channel.send(`:x: \`|\` ${mutedEmote} **I am missing permissions: \`Manage Roles\`**`);
   if(!toMute) return message.channel.send(`:x: \`|\` ${mutedEmote} **You didn't mention someone to mute!**`);
@@ -17,9 +17,9 @@ module.exports.run = async (client, message, args) => {
     moderator: message.author.id,
     type: 'mute'
   }).then(async info => {
-    var dmMsg = `${mutedEmote} **You were muted in** \`${message.guild.name}\` \`|\` :busts_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `${mutedEmote} **You were muted in** \`${message.guild.name}\` \`|\` :busts_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
-    var modEmbed = new Discord.RichEmbed()
+    const modEmbed = new Discord.RichEmbed()
       .setThumbnail(toMute.user.avatarURL)
       .setColor(client.config.colors.purple)
       .setAuthor(`Muted ${toMute.user.tag} (${toMute.user.id})`)

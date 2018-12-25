@@ -4,7 +4,7 @@ const { post } = require('snekfetch');
 const Discord = require('discord.js');
 const Sequelize = require('sequelize');
 const moment = require('moment');
-var parse = require('parse-duration');
+const parse = require('parse-duration');
 require('moment-duration-format');
 
 exports.run = async (client, message, args) => {

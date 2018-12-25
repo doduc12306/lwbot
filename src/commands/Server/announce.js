@@ -4,24 +4,24 @@ module.exports.run = async (client, message, args) => {
     const settings = client.settings.get(message.guild.id);
 
     //if ( message.member.permissions.has(`MANAGE_MESSAGES`) || message.author.id === `107599228900999168`) {
-    var date = new Date();
+    const date = new Date();
 
     String.prototype.replaceAll = function(search, replacement) {
-      var target = this;
+      const target = this;
       return target.replace(new RegExp(search, 'g'), replacement);
     };
 
     const messageContent = args.join(' ');
     const splitter = messageContent.split(' | ');
-    var title = splitter[0];
-    var part2 = splitter[1];
-    var cmdargs = splitter[2];
+    const title = splitter[0];
+    const part2 = splitter[1];
+    const cmdargs = splitter[2];
 
     if (!title) return message.channel.send(':x: Missing a title!');
     if (!part2) return message.channel.send(':x: Missing the content!');
-    var content = part2.replaceAll('/n', '\n').trim();
+    const content = part2.replaceAll('/n', '\n').trim();
 
-    var color = 54371;
+    let color = 54371;
     if (cmdargs) {
       if (cmdargs.includes('color=')) {color = cmdargs.substring(cmdargs.indexOf('color=')+6);} else {color = 54371;}
     } else {color = 54371; announce();}

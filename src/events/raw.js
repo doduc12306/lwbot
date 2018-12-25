@@ -1,29 +1,14 @@
-const Sequelize = require('sequelize');
-var killList = new Sequelize('database', 'user', 'password', {
-  host: 'localhost',
-  dialect: 'sqlite',
-  logging: false,
-  storage: 'databases/killList.sqlite'
-});
-killList = killList.define('killList', {
-  user: {
-    type: Sequelize.STRING,
-    allowNull: false
-  }
-});
-killList.sync();
-
 module.exports = async (client, packet) => {
   if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
   if(client.config.debugMode) return;
   packet = packet.d;
 
-  var genreChannel = client.channels.get('444375693728546816');
-  var pingChannel = client.channels.get('440974386544115713');
-  var miscChannel = client.channels.get('444375656139063296');
+  const genreChannel = client.channels.get('444375693728546816');
+  const pingChannel = client.channels.get('440974386544115713');
+  const miscChannel = client.channels.get('444375656139063296');
 
-  var guild = client.guilds.get(packet.guild_id);
-  var member = guild.members.get(packet.user_id);
+  const guild = client.guilds.get(packet.guild_id);
+  const member = guild.members.get(packet.user_id);
   function toggleRole(role) {
     if (!member.roles.has(role)) member.addRole(role);
     else member.removeRole(role);

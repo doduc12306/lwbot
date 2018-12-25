@@ -2,22 +2,22 @@ const Discord = require('discord.js');
 
 module.exports.run = async (client, message, args) => {
   try {
-    var reason = args.slice(1).join(' ');
-    var unBanHammer = '<:unbanhammer:459404085301346304>';
+    const reason = args.slice(1).join(' ');
+    const unBanHammer = '<:unbanhammer:459404085301346304>';
 
     if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${unBanHammer} **I am missing permissions:** \`Ban Members\``);
     if(!message.member.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${unBanHammer} **You are missing permissions:** \`Ban Members\``);
     if(!args[0]) return message.channel.send(`:x: \`|\` ${unBanHammer} **You didn't give the ID of someone to unban!**`);
     await client.fetchUser(args[0]).catch(() => message.channel.send(`:x: \`|\` ${unBanHammer} **I could not find that user!** (Is that the correct ID?)`));
 
-    var toUnban = await client.fetchUser(args[0]);
+    const toUnban = await client.fetchUser(args[0]);
 
     await message.guild.modbase.create({
       victim: toUnban.id,
       moderator: message.author.id,
       type: 'unban'
     }).then(async info => {
-      var modEmbed = new Discord.RichEmbed()
+      const modEmbed = new Discord.RichEmbed()
         .setThumbnail(toUnban.avatarURL)
         .setColor(client.config.colors.green)
         .setFooter(`ID: ${toUnban.id} | Case: ${info.id}`)

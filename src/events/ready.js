@@ -5,7 +5,7 @@ const Sequelize = require('sequelize');
 const Discord = require('discord.js');
 module.exports = async client => {
   setInterval(() => {
-    var randomPl = statuses.randomElement();
+    const randomPl = statuses.randomElement();
     client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
   }, 60000);
 
@@ -24,11 +24,12 @@ module.exports = async client => {
     client.logger.debug(`Mapped settings for ${server}`);
   }));
 
-  var after = new Date();
+  const after = new Date();
   client.startup = after - client.before;
   client.tags.sync();
   await client.wait(1000);
   client.logger.log(`${client.user.tag} | ${client.users.size} Users | ${client.guilds.size} Guilds | Took ${client.startup}ms`, 'ready');
+  if(client.config.debugMode) client.logger.warn('Debug mode enabled');
 
   // Finds if there was an error generated on unhandledRejection the last time the bot started up.
   // This is achieved by writing a new file on error, exiting, then on restart, reading the file

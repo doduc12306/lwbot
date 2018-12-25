@@ -5,7 +5,7 @@ module.exports = async (client, guild) => {
   if(guild.id === '439438441764356097') return guild.leave();
   client.logger.log(`Joined guild ${guild.name} (${guild.id})`);
 
-  var guildTable = new Sequelize('database', 'user', 'password', {
+  const guildTable = new Sequelize('database', 'user', 'password', {
     host: 'localhost',
     dialect: 'sqlite',
     storage: `databases/servers/${guild.id}.sqlite`,
@@ -36,11 +36,11 @@ module.exports = async (client, guild) => {
   if (!guild.me.permissions.has('SEND_MESSAGES')) guild.owner.send(':x: **CRITICAL PERMISSION MISSING:** `Send Messages` **WHICH EVERYTHING REQUIRES!**');
   if (!guild.me.permissions.has('EMBED_LINKS')) guild.owner.send(':x: **CRITICAL PERMISSION MISSING:** `Embed Links` **WHICH EVERYTHING REQUIRES!**');
 
-  var textErrored = false;
-  var voiceErrored = false;
-  var mutedRoleCreateError = false;
+  let textErrored = false;
+  let voiceErrored = false;
+  let mutedRoleCreateError = false;
 
-  var role = await guild.roles.find(role => role.name === 'Muted');
+  let role = await guild.roles.find(role => role.name === 'Muted');
   if(role === null) {
     role = await guild.roles.find(role => role.name === 'muted');
     if(role === null) {
@@ -56,7 +56,7 @@ module.exports = async (client, guild) => {
   });
 
   if(mutedRoleCreateError) {
-    var msg = ':x: **Something went wrong during my setup process.**\n`-` I was unable to create a Muted role.';
+    let msg = ':x: **Something went wrong during my setup process.**\n`-` I was unable to create a Muted role.';
     if(textErrored) msg += '\n`-` I was unable to disallow the Muted role from talking in text channels.';
     if(voiceErrored) msg += '\n`-` I was unable to disallow the Muted role from talking in voice channels.';
     msg += '\n\n**Please re-invite me.** When you invite me, please make sure I have all the permissions indicated on the invite page.';

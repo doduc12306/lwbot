@@ -22,7 +22,7 @@ exports.run = async (client, message, [action, key, ...value]) => {
           .setTitle('Settings')
           .setFooter('Guild Settings');
 
-        for (var settings of data) {
+        for (let settings of data) {
           settings = settings.dataValues;
           embed.addField(settings.key, settings.value, true);
         }
@@ -87,7 +87,7 @@ exports.run = async (client, message, [action, key, ...value]) => {
         .setTitle('Settings')
         .setFooter('Guild Settings');
 
-      for (settings of data) {
+      for (let settings of data) {
         settings = settings.dataValues;
         embed.addField(settings.key, settings.value, true);
       }

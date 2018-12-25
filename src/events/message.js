@@ -20,7 +20,7 @@ module.exports = async (client, message) => {
     }
   }
 
-  var prefix = client.config.defaultSettings.prefix;
+  let prefix = client.config.defaultSettings.prefix;
   if (!message.guild) prefix = client.config.defaultSettings.prefix;
   else {
     await message.guild.settings.findOrCreate({where: {key: 'prefix'}, defaults: {value: '!w '}});
@@ -38,7 +38,7 @@ module.exports = async (client, message) => {
   // in app.js.
   const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
 
-  var systemNotice = client.config.defaultSettings.systemNotice;
+  let systemNotice = client.config.defaultSettings.systemNotice;
   if (!message.guild) systemNotice = client.config.defaultSettings.systemNotice;
   else {
     await message.guild.settings.findOrCreate({ where: { key: 'systemNotice' }, defaults: { value: 'true' } });
@@ -69,8 +69,8 @@ module.exports = async (client, message) => {
   client.tags.sync();
 
   // If the command exists, **AND** the user has permission, run it.
-  await cmd.run(client, message, args, level);
   client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name} in ${message.guild.name} (${message.guild.id})`);
+  await cmd.run(client, message, args, level);
 
   // Other server database checks
   if (message.guild) {

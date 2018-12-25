@@ -1,5 +1,5 @@
-var moment = require('moment');
-var Discord = require('discord.js');
+const moment = require('moment');
+const Discord = require('discord.js');
 module.exports.run = (client, message, args) => {
   if(!args[0]) return message.channel.send(':x: **You didn\'t give the ID of a message to quote!**');
 

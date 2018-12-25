@@ -1,5 +1,5 @@
 module.exports.run = (client, message) => {
-  var slot = [':monkey:', ':frog:', ':elephant:', ':snail:', ':bee:',':star:', ':fox:', ':crown:', ':four_leaf_clover:', ':lemon:', ':cherries:', ':melon:', ':grapes:', ':bomb:', ':unicorn:', ':zap:', '<a:parrotHD:397047432640331777>', ':pear:', ':banana:', ':tangerine:', ':watermelon:', ':gem:'];
+  const slot = [':monkey:', ':frog:', ':elephant:', ':snail:', ':bee:',':star:', ':fox:', ':crown:', ':four_leaf_clover:', ':lemon:', ':cherries:', ':melon:', ':grapes:', ':bomb:', ':unicorn:', ':zap:', '<a:parrotHD:397047432640331777>', ':pear:', ':banana:', ':tangerine:', ':watermelon:', ':gem:'];
 
   // var specialGood = [':four_leaf_clover:', ':star:', '<a:parrotHD:397047432640331777>', ':gem:'];
   // var specialBad = [':bomb:'];
@@ -9,8 +9,8 @@ module.exports.run = (client, message) => {
   };
 
   try {
-    var slots = [];
-    for (var i; i < 10; i++) {
+    const slots = [];
+    for (let i; i < 10; i++) {
       slots.push(slot.randomElement(slot));
     }
 

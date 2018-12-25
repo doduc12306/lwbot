@@ -1,9 +1,9 @@
 const Discord = require('discord.js');
 module.exports.run = async (client, message, args) => {
-  var toBan = message.mentions.users.first();
-  var toBanM = message.mentions.members.first();
-  var reason = args.slice(1).join(' ');
-  var bhEmote = '<:banhammer:459184964110385153>';
+  const toBan = message.mentions.users.first();
+  const toBanM = message.mentions.members.first();
+  const reason = args.slice(1).join(' ');
+  const bhEmote = '<:banhammer:459184964110385153>';
 
   if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${bhEmote} **I am missing permissions:** \`Ban Members\``);
   if(!message.member.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
@@ -15,9 +15,9 @@ module.exports.run = async (client, message, args) => {
     moderator: message.author.id,
     type: 'ban'
   }).then(async info => {
-    var dmMsg = `${bhEmote} **You were banned from** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `${bhEmote} **You were banned from** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
-    var modEmbed = new Discord.RichEmbed()
+    const modEmbed = new Discord.RichEmbed()
       .setThumbnail(toBan.avatarURL)
       .setColor(client.config.colors.red)
       .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)

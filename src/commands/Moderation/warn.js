@@ -1,8 +1,8 @@
 const Discord = require('discord.js');
 
 module.exports.run = async (client, message, args) => {
-  var toWarn = message.mentions.users.first();
-  var reason = args.slice(1).join(' ');
+  const toWarn = message.mentions.users.first();
+  const reason = args.slice(1).join(' ');
 
   if(!toWarn) return message.channel.send(':x: `|` :warning: **You didn\'t mention someone to warn!**');
 
@@ -11,9 +11,9 @@ module.exports.run = async (client, message, args) => {
     moderator: message.author.id,
     type: 'warn'
   }).then(async info => {
-    var dmMsg = `:warning: **You were warned in** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `:warning: **You were warned in** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
-    var modEmbed = new Discord.RichEmbed()
+    const modEmbed = new Discord.RichEmbed()
       .setThumbnail(toWarn.avatarURL)
       .setColor(client.config.colors.yellow)
       .setFooter(`ID: ${toWarn.id} | Case: ${info.id}`)

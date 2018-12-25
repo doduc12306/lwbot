@@ -6,9 +6,9 @@ module.exports.run = async (client, message) => {
       ['id', 'DESC']
     ]
   }).then(data => {
-    var embed = new Discord.RichEmbed()
+    const embed = new Discord.RichEmbed()
       .setColor(client.config.colors.green);
-    for (var values of data) {
+    for (const values of data) {
       if(data.indexOf(values) === 0) {
         if (message.guild.members.get(values.dataValues.user) === undefined) embed.addField(':crown: `[User Left]`', `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
         else embed.addField(`:crown: ${message.guild.members.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);

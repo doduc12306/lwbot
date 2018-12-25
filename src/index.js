@@ -6,11 +6,11 @@ const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
 const fs = require('fs');
 
-var walk = require('walk');
+const walk = require('walk');
 
 const Enmap = require('enmap');
 
-var { join } = require('path');
+const { join } = require('path');
 require('dotenv').config({ path: join(__dirname, '../.env') });
 
 const client = new Discord.Client({
@@ -27,23 +27,24 @@ client.commands = new Enmap();
 client.aliases = new Enmap();
 client.folder = new Enmap();
 
-var options = { // walk module options
-  followLinks: false
-  , filters: ['Temp', '_Temp']
-};
-
 const init = async () => {
-  if(client.config.debugMode) client.logger.warn('Debug mode enabled');
   client.before = new Date();
   // Here we load commands into memory, as a collection, so they're accessible
   // here and everywhere else.
+  const options = { // walk module options
+    followLinks: false
+    , filters: ['Temp', '_Temp']
+  };
   const cmdFiles = walk.walk('./commands/', options);
   client.logger.log('Loading commands...');
   cmdFiles.on('file', (root, fileStats, next) => {
-    var cmdPath = join(__dirname, root);
-    cmdPath = cmdPath.substring(cmdPath.indexOf('commands/') + 9);
+    const cmdPath = require('os').platform().includes('win') 
+      ? root.substring(root.indexOf('commands\\') + 13) // Windows path finding
+      : join(__dirname, root).substring(join(__dirname, root).indexOf('commands/') + 9); // Linux path finding
+
     client.loadCommand(cmdPath, fileStats.name);
     next();
+
   });
 
   cmdFiles.on('end', async () => {
@@ -79,18 +80,19 @@ init();
 
 // These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
 process.on('uncaughtException', (err) => {
-  const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, 'g'), './');
-  if (errorMsg.trim().includes('at WebSocketConnection.onError')) {
+  if (err.stack.trim().includes('at WebSocketConnection.onError')) {
     client.logger.log('Disconnected! Lost connection to websocket', 'disconnect');
-    fs.writeFile('./e', 'lost connection', (e, file) => {
+    if(client.config.debugMode) return process.exit(1);
+    fs.writeFileSync('./e', 'lost connection to websocket', e => {
       if(e) console.error(e);
-      else client.logger.debug('Wrote log | ' + file);
+      else client.logger.debug('Wrote error log');
     });
   } else {
-    client.logger.error(`Uncaught Exception: ${errorMsg}`);
-    fs.writeFile('./e', errorMsg, (e, file) => {
+    client.logger.error(`Uncaught Exception: ${err}`);
+    if(client.config.debugMode) return process.exit(1);
+    fs.writeFileSync('./e', err.stack, e => {
       if(e) console.error(e);
-      else client.logger.debug('Wrote log | ' + file);
+      else client.logger.debug('Wrote error log');
     });
   }
 

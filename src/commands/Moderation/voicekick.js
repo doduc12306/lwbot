@@ -1,9 +1,9 @@
 const Discord = require('discord.js');
 
 module.exports.run = async (client, message, args) => {
-  var toKick = message.mentions.users.first();
-  var toKickM = message.mentions.members.first();
-  var reason = args.slice(1).join(' ');
+  const toKick = message.mentions.users.first();
+  const toKickM = message.mentions.members.first();
+  const reason = args.slice(1).join(' ');
 
   if(!message.guild.me.permissions.has('MOVE_MEMBERS')) return message.channel.send(':x: `|` :boot: **I am missing permissions:** `Move Members`');
   if(!message.guild.me.permissions.has('MANAGE_CHANNELS')) return message.channel.send(':x: `|` :boot: **I am missing permissions:** `Manage Channels` ');
@@ -18,9 +18,9 @@ module.exports.run = async (client, message, args) => {
     moderator: message.author.id,
     type: 'voicekick'
   }).then(async info => {
-    var dmMsg = `:boot: **You were voicekicked from** \`${message.member.voiceChannel.name}\`, **in** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `:boot: **You were voicekicked from** \`${message.member.voiceChannel.name}\`, **in** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
-    var modEmbed = new Discord.RichEmbed()
+    const modEmbed = new Discord.RichEmbed()
       .setThumbnail(toKick.avatarURL)
       .setColor('0xA80000')
       .setFooter(`ID: ${toKick.id} | Case: ${info.id}`)
@@ -30,7 +30,7 @@ module.exports.run = async (client, message, args) => {
 
     if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
-    var vc = await message.guild.createChannel('Voice Kick', 'voice');
+    const vc = await message.guild.createChannel('Voice Kick', 'voice');
     await toKickM.setVoiceChannel(vc);
     await vc.delete();
     toKick.send(dmMsg);

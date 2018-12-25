@@ -1,6 +1,6 @@
-var ascii = require('ascii-art');
+const ascii = require('ascii-art');
 module.exports.run = (client, message, args) => {
-  var text = args.join(' ');
+  const text = args.join(' ');
   if(!text) return message.channel.send(':x: **No text to ascii-ify**');
   ascii.font(text, 'Doom', rendered => {
     message.channel.send(`\`\`\`${rendered}\`\`\``, {split: true});

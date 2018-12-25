@@ -1,5 +1,5 @@
 module.exports.run = (client, message, args) => {
-  var content = args.slice(0).join(' ');
+  const content = args.slice(0).join(' ');
   if(!content) return message.channel.send('** **');
 
   require('child_process').exec(`cowsay ${content}`, (e, out, err) => {

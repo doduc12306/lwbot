@@ -14,6 +14,7 @@ yarn-error.log*
 data/
 test.js
 *.temp
+src/commands/Misc/rules.js
 
 # Runtime data
 pids

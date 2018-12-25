@@ -1,14 +1,14 @@
 const Discord = require('discord.js');
-var parse = require('parse-duration');
+const parse = require('parse-duration');
 const moment = require('moment');
 require('moment-duration-format');
 
 module.exports.run = async (client, message, args) => {
-  var toBan = message.mentions.users.first();
-  var toBanM = message.mentions.members.first();
-  var reason = args.slice(2).join(' ');
-  var duration = args[1];
-  var bhEmote = '<:banhammer:459184964110385153>';
+  const toBan = message.mentions.users.first();
+  const toBanM = message.mentions.members.first();
+  const reason = args.slice(2).join(' ');
+  const duration = args[1];
+  const bhEmote = '<:banhammer:459184964110385153>';
 
   if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${bhEmote} **I am missing permissions:** \`Ban Members\``);
   if(!message.member.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
@@ -16,8 +16,8 @@ module.exports.run = async (client, message, args) => {
   if(!duration) return message.channel.send(`:x: \`|\` ${bhEmote} **You didn't set a duration!**`);
   if(!toBanM.bannable) return message.channel.send(`:x: \`|\` ${bhEmote} **This member could not be banned!**`);
 
-  var durationMs = parse(duration);
-  var durationHR = moment.duration(durationMs).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]'); // HR = "Human Readable"
+  const durationMs = parse(duration);
+  const durationHR = moment.duration(durationMs).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]'); // HR = "Human Readable"
 
   if(durationMs === 0) return message.channel.send(`:x: \`|\` ${bhEmote} **${duration} is not a valid duration!**`);
 
@@ -27,9 +27,9 @@ module.exports.run = async (client, message, args) => {
     type: 'tempban',
     duration: durationMs
   }).then(async info => {
-    var dmMsg = `${bhEmote} **You were tempbanned from** \`${message.guild.name}\` ***for*** \`${durationHR}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `${bhEmote} **You were tempbanned from** \`${message.guild.name}\` ***for*** \`${durationHR}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
-    var modEmbed = new Discord.RichEmbed()
+    let modEmbed = new Discord.RichEmbed()
       .setThumbnail(toBan.avatarURL)
       .setColor('0xFF0000')
       .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
