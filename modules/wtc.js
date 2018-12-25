@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-var { join } = require('path');
+const { join } = require('path');
 require('dotenv').config({ path: join(__dirname, '../.env') });
 
 const prefix = '~wa ';
@@ -25,31 +25,31 @@ client.on('message', async message => {
     if (!message.member.roles.has('506236968393375745')) return message.channel.send(':x: `|` **You do not have permission to use this command!**');
     if (!message.guild.me.permissions.has('MANAGE_ROLES')) return message.channel.send(':x: `|` **Missing permission:** `Manage Roles`');
 
-    var content = args.join(' ').split(' | ');
-    var title = content[0].substring(7);
-    var description = content[1];
-    var invite = content[2];
+    const content = args.join(' ').split(' | ');
+    const title = content[0].substring(7);
+    const description = content[1];
+    const invite = content[2];
 
-    var cmdargs = content[3];
+    const cmdargs = content[3];
 
     if(!title) return message.channel.send(':x: **No title was given to this partnership!**');
     if(!description) return message.channel.send(':x: **No descripiton was given to this partnership!**');
     if(!invite) return message.channel.send(':x: **No invite was given to this partnership!**');
 
-    var embed = new Discord.RichEmbed()
+    const embed = new Discord.RichEmbed()
       .setTitle(title)
       .setDescription(description)
       .addField('Invite', invite);
 
     if(cmdargs) {
       if(cmdargs.includes('color=')) {
-        var color = cmdargs.match(/color=(\S+)/gi)[0].substring(6);
+        let color = cmdargs.match(/color=(\S+)/gi)[0].substring(6);
         if(color.startsWith('#')) color = color.split('#')[1];
         embed.setColor(color);
       }
 
       if(cmdargs.includes('img=')) {
-        var img = cmdargs.match(/img=(\S+)/gi)[0].substring(4);
+        const img = cmdargs.match(/img=(\S+)/gi)[0].substring(4);
         embed.setImage(img);
       }
 
@@ -57,7 +57,7 @@ client.on('message', async message => {
       embed.setColor(require('../src/config').colors.green);
     }
 
-    var role = message.guild.roles.get('506247359316099082');
+    const role = message.guild.roles.get('506247359316099082');
 
     await role.edit({ mentionable: true });
     await message.channel.send(role.toString(), {embed: embed});
@@ -68,16 +68,16 @@ client.on('message', async message => {
     if (!message.member.roles.some(r => ['436632593480548393', '381207509685370880', '469993430127476757', '447140023918395402'].includes(r.id))) return message.channel.send(':x: `|` **You do not have permission to use this command!**');
     if (!message.guild.me.permissions.has('MANAGE_ROLES')) return message.channel.send(':x: `|` **Missing permission:** `Manage Roles`');
 
-    content = args.join(' ').split(' | ');
+    const content = args.join(' ').split(' | ');
 
-    role = content[0].substring(8).trim();
+    let role = content[0].substring(8).trim();
     if(!role) return message.channel.send(':x: `|` **You didn\'t give the name of a role to ping!**');
     role = message.guild.roles.find(role => role.name === role);
     if(role === null) return message.channel.send(':x: `|` **I could not find that role!**');
 
     if(role.position >= message.guild.me.highestRole.position) return message.channel.send(`:x: \`|\` \`${role.name}\` **is too high for me!** (Move it below my role)`);
 
-    var msg = content.slice(1).join(' ');
+    const msg = content.slice(1).join(' ');
 
     await role.edit({mentionable: true});
     await message.channel.send(`${role.toString()} | ${msg}`);

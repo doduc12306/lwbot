@@ -1,8 +1,8 @@
 const express = require('express');
-var app = express();
-var snek = require('snekfetch');
+const app = express();
+const snek = require('snekfetch');
 
-var { join } = require('path');
+const { join } = require('path');
 require('dotenv').config({ path: join(__dirname, '../.env') });
 
 // var Sequelize = require('sequelize');
@@ -42,7 +42,7 @@ app.get('/', async (req, res) => res.sendFile(join(__dirname, './index.html')));
 app.get('/authorizing', async (req, res) => {
   if (req.query.code === undefined) return;
 
-  var data = {
+  const data = {
     'client_id': '377205339323367425',
     'client_secret': process.env.CLIENT_SECRET,
     'grant_type': 'authorization_code',

@@ -3,12 +3,12 @@ module.exports = async (client, packet) => {
   if(client.config.debugMode) return;
   packet = packet.d;
 
-  var genreChannel = client.channels.get('444375693728546816');
-  var pingChannel = client.channels.get('440974386544115713');
-  var miscChannel = client.channels.get('444375656139063296');
+  const genreChannel = client.channels.get('444375693728546816');
+  const pingChannel = client.channels.get('440974386544115713');
+  const miscChannel = client.channels.get('444375656139063296');
 
-  var guild = client.guilds.get(packet.guild_id);
-  var member = guild.members.get(packet.user_id);
+  const guild = client.guilds.get(packet.guild_id);
+  const member = guild.members.get(packet.user_id);
   function toggleRole(role) {
     if (!member.roles.has(role)) member.addRole(role);
     else member.removeRole(role);

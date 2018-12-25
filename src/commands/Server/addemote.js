@@ -1,7 +1,7 @@
 module.exports.run = (client, message, args) => {
   if (message.member.hasPermission('MANAGE_EMOJIS')) {
-    var emojiName = args[0];
-    var emojiURL = args[1];
+    const emojiName = args[0];
+    const emojiURL = args[1];
 
     if (!emojiName) return message.channel.send(':x: You forgot the emoji name!');
     if (!emojiURL) return message.channel.send(':x: You forgot the emoji url!');

@@ -6,11 +6,11 @@ const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
 const fs = require('fs');
 
-var walk = require('walk');
+const walk = require('walk');
 
 const Enmap = require('enmap');
 
-var { join } = require('path');
+const { join } = require('path');
 require('dotenv').config({ path: join(__dirname, '../.env') });
 
 const client = new Discord.Client({
@@ -31,14 +31,14 @@ const init = async () => {
   client.before = new Date();
   // Here we load commands into memory, as a collection, so they're accessible
   // here and everywhere else.
-  var options = { // walk module options
+  const options = { // walk module options
     followLinks: false
     , filters: ['Temp', '_Temp']
   };
   const cmdFiles = walk.walk('./commands/', options);
   client.logger.log('Loading commands...');
   cmdFiles.on('file', (root, fileStats, next) => {
-    var cmdPath = require('os').platform().includes('win') 
+    const cmdPath = require('os').platform().includes('win') 
       ? root.substring(root.indexOf('commands\\') + 13) // Windows path finding
       : join(__dirname, root).substring(join(__dirname, root).indexOf('commands/') + 9); // Linux path finding
 
@@ -80,15 +80,17 @@ init();
 
 // These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
 process.on('uncaughtException', (err) => {
-  if (err.trim().includes('at WebSocketConnection.onError')) {
+  if (err.stack.trim().includes('at WebSocketConnection.onError')) {
     client.logger.log('Disconnected! Lost connection to websocket', 'disconnect');
-    fs.writeFileSync('./e', new Uint8Array(Buffer.from('lost connection to websocket')), e => {
+    if(client.config.debugMode) return process.exit(1);
+    fs.writeFileSync('./e', 'lost connection to websocket', e => {
       if(e) console.error(e);
       else client.logger.debug('Wrote error log');
     });
   } else {
     client.logger.error(`Uncaught Exception: ${err}`);
-    fs.writeFileSync('./e', new Uint8Array(Buffer.from(err)), e => {
+    if(client.config.debugMode) return process.exit(1);
+    fs.writeFileSync('./e', err.stack, e => {
       if(e) console.error(e);
       else client.logger.debug('Wrote error log');
     });

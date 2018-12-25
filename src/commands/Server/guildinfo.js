@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-var moment = require('moment');
+const moment = require('moment');
 
 module.exports.run = (client, message) => {
   if (message.channel.type === 'dm') {
@@ -7,14 +7,14 @@ module.exports.run = (client, message) => {
     return;
   } else {
 
-    var guildIcon;
+    let guildIcon;
     //If the guild icon is empty, sets guildIcon to owner's avatar
     if (message.guild.iconURL) {guildIcon = message.guild.iconURL;}
     else {guildIcon = message.guild.owner.user.avatarURL;}
 
-    var emotes;
+    let emotes;
     //Goes with the emote parsing
-    var emoteInfo = message.guild.emojis.map(e=>e.toString()).join(' ');
+    const emoteInfo = message.guild.emojis.map(e=>e.toString()).join(' ');
     //Checks to see if the total character count of all the emojis combined is ≥ 1024
     if (emoteInfo.length >= 1024) {
       emotes = `${message.guild.emojis.size} emotes`;
@@ -27,10 +27,10 @@ module.exports.run = (client, message) => {
     }
 
     //You can probably tell what this is by looking at the var name
-    var guildCreatedAt = moment(message.guild.createdAt).format('MMM Do YYYY, h:mm a');
+    const guildCreatedAt = moment(message.guild.createdAt).format('MMM Do YYYY, h:mm a');
 
     //Pretty-ifies the region
-    var region;
+    let region;
     if (message.guild.region === 'us-east') {region = '<:regionFlagUSA:393889521449566208> Eastern USA';}
     else if (message.guild.region === 'brazil') {region = '<:regionFlagBrazil:393889521177198602> Brazil';}
     else if (message.guild.region === 'eu-central') {region = '<:regionFlagEurope:393889521155964929> Central Europe';}
@@ -46,7 +46,7 @@ module.exports.run = (client, message) => {
     else {region = '<:regionFlagWumpus:393900238244675606> Wumpus Land (Unknown / Error)';}
 
     //Verification level checker
-    var verification;
+    let verification;
 
     if (message.guild.verificationLevel === 0) {verification = 'None';}
     else if (message.guild.verificationLevel === 1) {verification = 'Low';}
@@ -55,7 +55,7 @@ module.exports.run = (client, message) => {
     else if (message.guild.verificationLevel === 4) {verification = '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻ (Extreme: Verified phone)';}
 
     // embed color
-    var color = message.guild.me.displayColor;
+    let color = message.guild.me.displayColor;
     if(message.guild.me.displayColor === 0) color = '0x59D851';
 
     //The actual message

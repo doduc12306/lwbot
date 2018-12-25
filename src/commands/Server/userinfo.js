@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-var moment = require('moment');
+const moment = require('moment');
 
 module.exports.run = (client, message) => {
   const member = message.mentions.members.size === 0 ? message.member : message.mentions.members.first();

@@ -1,17 +1,17 @@
 const Discord = require('discord.js');
-var parse = require('parse-duration');
+const parse = require('parse-duration');
 const moment = require('moment');
 require('moment-duration-format');
 
 module.exports.run = async (client, message, args) => {
-  var role = message.guild.roles.find(role => role.name === 'Muted') || message.guild.roles.find(role => role.name === 'muted');
-  var toMute = message.mentions.members.first();
-  var reason = args.slice(2).join(' ');
-  var mutedEmote = '<:muted:459458717856038943>';
+  const role = message.guild.roles.find(role => role.name === 'Muted') || message.guild.roles.find(role => role.name === 'muted');
+  const toMute = message.mentions.members.first();
+  const reason = args.slice(2).join(' ');
+  const mutedEmote = '<:muted:459458717856038943>';
 
-  var duration = args[1];
-  var durationMs = parse(duration);
-  var durationHR = moment.duration(durationMs).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]'); // HR = "Human Readable"
+  const duration = args[1];
+  const durationMs = parse(duration);
+  const durationHR = moment.duration(durationMs).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]'); // HR = "Human Readable"
 
   if(!message.guild.me.permissions.has('MANAGE_ROLES')) return message.channel.send(`:x: \`|\` ${mutedEmote} **I am missing permissions: \`Manage Roles\``);
   if(!toMute) return message.channel.send(`:x: \`|\` ${mutedEmote} **You didn't mention someone to mute!**`);
@@ -25,9 +25,9 @@ module.exports.run = async (client, message, args) => {
     type: 'mute',
     duration: durationMs
   }).then(async info => {
-    var dmMsg = `${mutedEmote} **You were tempmuted in** \`${message.guild.name}\` **for** \`${durationHR}\` \`|\` :busts_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `${mutedEmote} **You were tempmuted in** \`${message.guild.name}\` **for** \`${durationHR}\` \`|\` :busts_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
-    var modEmbed = new Discord.RichEmbed()
+    let modEmbed = new Discord.RichEmbed()
       .setThumbnail(toMute.user.avatarURL)
       .setColor(client.config.colors.purple)
       .setFooter(`ID: ${toMute.user.id} | Case: ${info.id}`)

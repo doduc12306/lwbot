@@ -1,7 +1,7 @@
 const { get } = require('snekfetch');
 const Discord = require('discord.js');
 module.exports.run = (client, message, args) => {
-  var word = args.join(' ');
+  const word = args.join(' ');
 
   if (!word) return message.channel.send(':x: You forgot a word to look up!');
 
@@ -10,7 +10,7 @@ module.exports.run = (client, message, args) => {
 
     if(data === undefined) return message.channel.send(`:x: **I couldn't find ${clean(word)}**`);
 
-    var definition = data.definition.length <= 1024 ? definition = data.definition : definition = data.definition.substring(0, 1020) + '...';
+    let definition = data.definition.length <= 1024 ? definition = data.definition : definition = data.definition.substring(0, 1020) + '...';
 
     message.channel.send(new Discord.RichEmbed()
       .setColor(client.config.colors.green)

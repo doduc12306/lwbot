@@ -2,15 +2,15 @@ const Discord = require('discord.js');
 
 module.exports.run = async (client, message, args) => {
   try {
-    var reason = args.slice(1).join(' ');
-    var bhEmote = '<a:hammerglitched:459396837741297671>';
+    const reason = args.slice(1).join(' ');
+    const bhEmote = '<a:hammerglitched:459396837741297671>';
 
     if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${bhEmote} **I am missing permissions:** \`Ban Members\``);
     if(!message.member.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
     if(!args[0]) return message.channel.send(`:x: \`|\` ${bhEmote} **You didn't give the ID of someone to ban!**`);
     await client.fetchUser(args[0]).catch(() => message.channel.send(`:x: \`|\` ${bhEmote} **I could not find that user!**`));
 
-    var toBan = await client.fetchUser(args[0]);
+    const toBan = await client.fetchUser(args[0]);
 
     await message.guild.modbase.create({
       victim: toBan.id,
@@ -19,7 +19,7 @@ module.exports.run = async (client, message, args) => {
     }).then(async info => {
       if(reason) message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});
 
-      var modEmbed = new Discord.RichEmbed()
+      const modEmbed = new Discord.RichEmbed()
         .setThumbnail(toBan.avatarURL)
         .setColor(client.config.colors.black)
         .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)

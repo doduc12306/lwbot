@@ -1,11 +1,11 @@
 // This event executes when a new member joins a server. Let's welcome them!
 module.exports = async (client, member) => {
   if(member.user.bot) return;
-  var welcomeEnabled;
+  let welcomeEnabled;
   await member.guild.settings.get('welcomeEnabled').then(value => welcomeEnabled = value).catch(e => client.logger.error(e));
-  var welcomeMessage;
+  let welcomeMessage;
   await member.guild.settings.get('welcomeMessage').then(value => welcomeMessage = value).catch(e => client.logger.error(e));
-  var welcomeChannel;
+  let welcomeChannel;
   await member.guild.settings.get('welcomeChannel').then(value => welcomeChannel = value).catch(e => client.logger.error(e));
 
   if(welcomeEnabled !== 'true') return;

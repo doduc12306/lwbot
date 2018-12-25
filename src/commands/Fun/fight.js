@@ -1,9 +1,9 @@
-var Fstrings = [' with a transformer.', ' with poutine.', ', and what a fight it is! Whoa mama!', ', with two thousand blades!', '. SHORYUKEN!', '. HADOUKEN!', '. KA-POW!', ' with a pillow.', ' with a large fish.', ' with a burnt piece of toast.'];
+const Fstrings = [' with a transformer.', ' with poutine.', ', and what a fight it is! Whoa mama!', ', with two thousand blades!', '. SHORYUKEN!', '. HADOUKEN!', '. KA-POW!', ' with a pillow.', ' with a large fish.', ' with a burnt piece of toast.'];
 
 module.exports.run = (client, message) => {
-  var user = message.mentions.users.first();
+  const user = message.mentions.users.first();
 
-  var str = Fstrings.randomElement();
+  const str = Fstrings.randomElement();
 
   if(!user) return message.channel.send(`${message.author} is fighting no one${str}`);
   if(user === message.author) return message.channel.send(`${user} is fighting themselves${str}`);
@@ -11,7 +11,7 @@ module.exports.run = (client, message) => {
 
   message.channel.send(`${message.author} is fighting ${user}${str}`)
     .then(msg => {
-      var n = Math.floor(Math.random()*2);
+      const n = Math.floor(Math.random()*2);
       setTimeout(() => {
         if(n === 0) return msg.edit(`:trophy: **${message.author} WON!**`);
         if(n === 1) return msg.edit(`:trophy: **${user} WON!**`);

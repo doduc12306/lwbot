@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 module.exports = (client) => {
 
-  var bank = new Sequelize('database', 'user', 'password', {
+  const bank = new Sequelize('database', 'user', 'password', {
     host: 'localhost',
     dialect: 'sqlite',
     logging: false,
@@ -76,7 +76,7 @@ module.exports = (client) => {
   };
 
   // Tags system
-  var tagBase = new Sequelize('database', 'username', 'password', {
+  const tagBase = new Sequelize('database', 'username', 'password', {
     host: 'localhost',
     dialect: 'sqlite',
     logging: false,
@@ -222,14 +222,20 @@ module.exports = (client) => {
   // <String>.replaceAll() returns a string that replaces all of a specific text, for example:
   // "Welcome to the server, {{user}}! Please have a fun time here, {{user}}!" returns "server, @User! ... here, @User!"
   String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
-    return target.replace(new RegExp(search, 'g'), replacement);
+    return this.replace(new RegExp(search, 'g'), replacement);
   };
 
   // <Array>.random() returns a single random element from an array
   // [1, 2, 3, 4, 5].random() can return 1, 2, 3, 4 or 5.
   Array.prototype.randomElement = function() {
     return this[Math.floor(Math.random() * this.length)];
+  };
+
+  // <Object>.inspect() - shortcut to util.inspect()
+  client.inspect = (obj, depth) => {
+    if(!obj) throw new Error('No object given to inspect');
+    if(typeof obj !== 'object') throw new TypeError(`"${obj}" is not an object`);
+    return require('util').inspect(obj, {depth: typeof depth === 'number' ? depth : 0, colors: true});
   };
 
   // `await client.wait(1000);` to "pause" for 1 second.

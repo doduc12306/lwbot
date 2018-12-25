@@ -1,6 +1,6 @@
 module.exports.run = async (client, message, args) => {
-  var folder = args[0];
-  var cmd = args[1];
+  const folder = args[0];
+  const cmd = args[1];
 
   if(!folder) return message.channel.send(':x: **Missing a folder!**');
   if(!cmd) return message.channel.send(':x: **Missing command name!**');

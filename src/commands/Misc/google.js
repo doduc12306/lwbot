@@ -1,8 +1,8 @@
-var google = require('google');
+const google = require('google');
 
 module.exports.run = (client, message, args) => {
   try {
-    var query = args.slice(0).join(' ');
+    const query = args.slice(0).join(' ');
 
     if (!query) return message.channel.send(':x: `|` 🔍 **You didn\'t say something to google!**');
 
@@ -12,9 +12,9 @@ module.exports.run = (client, message, args) => {
         message.channel.send(':x: `|` 🔍 **There was an error during the search process. Please try again later.**');
         return console.error(err);
       }
-      var link = res.links[0];
+      const link = res.links[0];
 
-      var response = `🔍 **\`${link.title}\`** - ${link.href}`;
+      const response = `🔍 **\`${link.title}\`** - ${link.href}`;
 
       message.channel.send(response).catch(e => {
         message.channel.send(':x: `|` 🔍 **There was an error during the search process. Please try again later.**');

@@ -32,11 +32,11 @@ exports.run = async (client, message, args, level) => {
     if (client.commands.has(command)) {
       command = client.commands.get(command);
       if (level < client.levelCache[command.conf.permLevel]) return message.channel.send(':x: You do not have access to this command!');
-      var desc = `**Description:** ${command.help.description}\n**Usage:** ${command.help.usage}\n**Required Perm:** ${command.conf.permLevel}\n**Category:** ${command.help.category}`;
+      let desc = `**Description:** ${command.help.description}\n**Usage:** ${command.help.usage}\n**Required Perm:** ${command.conf.permLevel}\n**Category:** ${command.help.category}`;
 
       if (command.conf.aliases.join(', ')) desc += `\n**Aliases:** ${command.conf.aliases.join(', ')}`;
 
-      var cmdEmbed = new Discord.RichEmbed()
+      const cmdEmbed = new Discord.RichEmbed()
         .setTitle(command.help.name.toProperCase())
         .setDescription(desc)
         .setColor(client.config.colors.green)

@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 
 module.exports.run = (client, message) => {
-  var pings = client.pings.filter(g => g !== undefined).join(', ');
+  const pings = client.pings.filter(g => g !== undefined).join(', ');
 
   message.channel.send(new Discord.RichEmbed()
     .addField(':ping_pong: Ping', 'Pinging... (Pinging...)')

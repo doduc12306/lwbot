@@ -2,15 +2,15 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const moment = require('moment');
 require('moment-duration-format');
-var term = require('terminal-kit').terminal;
+const term = require('terminal-kit').terminal;
 const { inspect } = require('util');
 const timestamp = `^K[${moment().format('YYYY-MM-DD HH:mm:ss')}]^ `;
 
-var { join } = require('path');
+const { join } = require('path');
 require('dotenv').config({ path: join(__dirname, '../.env') });
 
-var curServer;
-var curChannel;
+let curServer;
+let curChannel;
 
 term.info = text => term(`${timestamp}^#^B[INFO]^ ^B${text}\n`);
 term.log = text => term(`${timestamp}${text}\n`);
@@ -39,7 +39,7 @@ client.on('message', async message => {
   if (message.cleanContent === 'terminal.exit' && message.author.id === '107599228900999168') {console.clear(); process.exit();}
   if (message.cleanContent === 'terminal.input' && message.author.id === '107599228900999168') s();
 
-  var mentionedColor = message.isMemberMentioned(client.user) || message.isMemberMentioned(client.users.get('107599228900999168')) ? '^#^y^k' : '^:';
+  const mentionedColor = message.isMemberMentioned(client.user) || message.isMemberMentioned(client.users.get('107599228900999168')) ? '^#^y^k' : '^:';
 
   if (message.author.bot) term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^#^B[BOT]^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}^:\n`);
   else term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
@@ -65,7 +65,7 @@ function s() {
             channel.fetchMessages({limit: 10}).then(messages => {
               messages = messages.sort((a, b) => a.createdTimestamp > b.createdTimestamp);
               messages.forEach(message => {
-                var mentionedColor = message.isMemberMentioned(client.user) || message.isMemberMentioned(client.users.get('107599228900999168')) ? '^#^y^k' : '^:';
+                const mentionedColor = message.isMemberMentioned(client.user) || message.isMemberMentioned(client.users.get('107599228900999168')) ? '^#^y^k' : '^:';
                 if (message.author.bot) term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^#^B[BOT]^ ^K^/${moment(message.createdTimestamp).format('h:mma â€¢ M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
                 else term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
               });
@@ -86,7 +86,7 @@ function s() {
             curServer = guild;
             term('\n');
             term.info(`Current server switched to ^W${guild.name}^ ^K^/(${guild.id})`);
-            var channel = guild.channels.find(g => g.name === curChannel.name);
+            const channel = guild.channels.find(g => g.name === curChannel.name);
             if(channel === undefined || channel == null) {
               term.warn('No channel with previous name found. Please set a new one.');
             } else curChannel = guild.channels.find(g => g.name === curChannel.name);
@@ -102,7 +102,7 @@ function s() {
       }
 
       else if(input.startsWith(':eval')) {
-        var message = {};
+        const message = {};
         message.guild = curServer;
         message.channel = curChannel;
 
@@ -155,8 +155,8 @@ process.on('SIGINT', () => process.exit());
 
 // Various functions
 function parseChannel(data, outputType) {
-  var channelObj;
-  var parsedChannel;
+  let channelObj;
+  let parsedChannel;
   return new Promise((resolve, reject) => {
     if (!data || data === null) return reject(new TypeError('No data given to parse channel information'));
 
@@ -184,8 +184,8 @@ function parseChannel(data, outputType) {
 }
 
 function parseGuild(data, outputType) {
-  var parsedGuild;
-  var guildObj;
+  let parsedGuild;
+  let guildObj;
   return new Promise((resolve, reject) => {
     if (!data || data === null) return reject(new TypeError('No data given to parse guild information'));
     if(typeof data !== 'string') return reject(new TypeError('Data must be a string'));

@@ -1,5 +1,5 @@
 module.exports.run = (client, message, args) => {
-  var command = client.commands.get(args[0]);
+  const command = client.commands.get(args[0]);
 
   if(command.conf.enabled) message.channel.send(':white_check_mark: **This command is enabled.**');
   else message.channel.send(':x: **This command is disabled.**');

@@ -1,6 +1,6 @@
 module.exports.run = (client, message) => {
-  var user = message.mentions.users.first() ? message.mentions.users.first() : message.author;
-  var userAvatar = user.avatarURL.split('?size=')[0];
+  const user = message.mentions.users.first() ? message.mentions.users.first() : message.author;
+  const userAvatar = user.avatarURL.split('?size=')[0];
   message.channel.send(`Avatar for **${user.tag}**`, {files: [userAvatar]});
 };
 

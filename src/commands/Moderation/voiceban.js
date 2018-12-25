@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
 
 module.exports.run = async (client, message, args) => {
-  var toBan = message.mentions.users.first();
-  var toBanM = message.mentions.members.first();
-  var reason = args.slice(1).join(' ');
-  var vbEmote = '<:banhammer:459184964110385153>';
+  const toBan = message.mentions.users.first();
+  const toBanM = message.mentions.members.first();
+  const reason = args.slice(1).join(' ');
+  const vbEmote = '<:banhammer:459184964110385153>';
 
   if(!message.guild.me.permissions.has('MOVE_MEMBERS')) return message.channel.send(`:x: \`|\` ${vbEmote} **I am missing permissions:** \`Move Members\``);
   if(!message.guild.me.permissions.has('MANAGE_CHANNELS')) return message.channel.send(`:x: \`|\` ${vbEmote} **I am missing permissions:** \`Manage Channels\` `);
@@ -19,9 +19,9 @@ module.exports.run = async (client, message, args) => {
     moderator: message.author.id,
     type: 'voiceban'
   }).then(async info => {
-    var dmMsg = `${vbEmote} **You were voicebanned from** \`${message.member.voiceChannel.name}\`, **in** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `${vbEmote} **You were voicebanned from** \`${message.member.voiceChannel.name}\`, **in** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
-    var modEmbed = new Discord.RichEmbed()
+    const modEmbed = new Discord.RichEmbed()
       .setThumbnail(toBan.avatarURL)
       .setColor('0xA80000')
       .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
@@ -31,7 +31,7 @@ module.exports.run = async (client, message, args) => {
 
     if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
-    var vc = await message.guild.createChannel('Voice Ban', 'voice');
+    const vc = await message.guild.createChannel('Voice Ban', 'voice');
     await toBanM.setVoiceChannel(vc);
     await message.member.voiceChannel.overwritePermissions(toBan, {CONNECT: false});
     await vc.delete();

@@ -1,9 +1,9 @@
 const Discord = require('discord.js');
 
 module.exports.run = async (client, message, args) => {
-  var toKick = message.mentions.users.first();
-  var toKickM = message.mentions.members.first();
-  var reason = args.slice(1).join(' ');
+  const toKick = message.mentions.users.first();
+  const toKickM = message.mentions.members.first();
+  const reason = args.slice(1).join(' ');
 
   if(!message.guild.me.permissions.has('KICK_MEMBERS')) return message.channel.send(':x: `|` :boot: **I am missing permissions:** `Kick Members`');
   if(!message.member.permissions.has('KICK_MEMBERS')) return message.channel.send(':x: `|` :boot: **You are missing permissions:** `Kick Members`');
@@ -15,9 +15,9 @@ module.exports.run = async (client, message, args) => {
     moderator: message.author.id,
     type: 'kick'
   }).then(async info => {
-    var dmMsg = `:boot: **You were kicked from** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `:boot: **You were kicked from** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
-    var modEmbed = new Discord.RichEmbed()
+    const modEmbed = new Discord.RichEmbed()
       .setThumbnail(toKick.avatarURL)
       .setColor('0xff8e2b')
       .setFooter(`ID: ${toKick.id} | Case: ${info.id}`)

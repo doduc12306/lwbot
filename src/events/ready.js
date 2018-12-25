@@ -5,7 +5,7 @@ const Sequelize = require('sequelize');
 const Discord = require('discord.js');
 module.exports = async client => {
   setInterval(() => {
-    var randomPl = statuses.randomElement();
+    const randomPl = statuses.randomElement();
     client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
   }, 60000);
 
@@ -24,7 +24,7 @@ module.exports = async client => {
     client.logger.debug(`Mapped settings for ${server}`);
   }));
 
-  var after = new Date();
+  const after = new Date();
   client.startup = after - client.before;
   client.tags.sync();
   await client.wait(1000);

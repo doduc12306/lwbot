@@ -6,7 +6,7 @@ module.exports = async (client, message) => {
   // FROM HERE IS GUILD SUPPORT. PUT ALL THINGS THAT DONT REQUIRE A GUILD ABOVE THIS
 
   // XP support
-  var guildTable = new Sequelize('database', 'user', 'password', {
+  const guildTable = new Sequelize('database', 'user', 'password', {
     host: 'localhost',
     dialect: 'sqlite',
     logging: false,
