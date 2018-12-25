@@ -105,3 +105,7 @@ client.on('disconnect', () => client.logger.log('Client disconnected!', 'disconn
 client.on('reconnecting', () => client.logger.log('Reconnecting...', 'reconnecting'));
 client.on('resume', replayed => client.logger.log(`Client resumed! Replayed ${replayed} events`, 'resume'));
 client.on('warn', info => client.logger.warn(`Warning: "${info}"`));
+
+// lwbot-rewrite - Discord bot
+// Copyright (C) 2017-2019 Samir Buch
+// License is applicable to all files and folders within directory
