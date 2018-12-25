@@ -27,7 +27,7 @@ module.exports.run = async (client, message, args) => {
     } else {color = 54371; announce();}
 
     function announce() { // eslint-disable-line no-inner-declarations
-      message.guild.channels.find('name', settings.announcementsChannel).send(new Discord.RichEmbed()
+      message.guild.channels.find(channel => channel.name === settings.announcementsChannel).send(new Discord.RichEmbed()
         .setColor(color)
         .setAuthor(message.author.username, message.author.avatarURL)
         .setFooter(`${date.toDateString()} @ ${date.toTimeString().substring(0,5)}`)

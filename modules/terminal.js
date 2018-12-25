@@ -29,10 +29,18 @@ client.on('ready', () => {
   term.info(`Set current channel to ^W#${curChannel.name} ^:^K^/(${curChannel.id})`);
   s();
 });
-
+/* eslint-disable */
 client.on('message', async message => {
   // Message formatting
-  //message.cleanContent = message.cleanContent.replace(/(\*\*?|_)((?:\\\1|(?:(?!\1).))*)\1/g, match => `^/${match.substring(1, match.length - 1)}^:`)
+  message.formattedContent = message.cleanContent
+    /* .replace(/(\*{1})([^\*]*)(\*{1})/g, match => {
+      console.log(`Italic: ${match}`);
+      return `^/${match.substring(1, match.length - 1)}^:`
+    }) /* Italic terminal formatting */
+    /* .replace(/(\*{2})([^\*]*)(\*{2})/g, match => {
+      console.log(`Bold: ${match}`);
+      return `^+${match.substring(2, match.length - 2)}^:`
+    }) /* Bold terminal formatting */
 
   if(curServer !== message.guild) return;
   if(curChannel !== message.channel) return;
@@ -41,8 +49,7 @@ client.on('message', async message => {
 
   const mentionedColor = message.isMemberMentioned(client.user) || message.isMemberMentioned(client.users.get('107599228900999168')) ? '^#^y^k' : '^:';
 
-  if (message.author.bot) term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^#^B[BOT]^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}^:\n`);
-  else term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
+  term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(message.author.bot ? '^ ^#^B[BOT]^ ' : '')(` ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}^:\n${mentionedColor}${message.formattedContent}^:\n`);
 });
 
 function s() {
@@ -65,8 +72,8 @@ function s() {
             channel.fetchMessages({limit: 10}).then(messages => {
               messages = messages.sort((a, b) => a.createdTimestamp > b.createdTimestamp);
               messages.forEach(message => {
-                const mentionedColor = message.isMemberMentioned(client.user) || message.isMemberMentioned(client.users.get('107599228900999168')) ? '^#^y^k' : '^:';
-                if (message.author.bot) term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^#^B[BOT]^ ^K^/${moment(message.createdTimestamp).format('h:mma â€¢ M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
+                var mentionedColor = message.isMemberMentioned(client.user) || message.isMemberMentioned(client.users.get('107599228900999168')) ? '^#^y^k' : '^:';
+                if (message.author.bot) term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^#^B[BOT]^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
                 else term.colorRgbHex((message.member.displayColor).toString(16)).bold(message.member.displayName)(`^ ^K^/${moment(message.createdTimestamp).format('h:mma • M/DD/YYYY')}^:\n${mentionedColor}${message.cleanContent}\n`);
               });
               term.info('Finished fetching messages');
