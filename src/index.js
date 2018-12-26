@@ -38,7 +38,7 @@ const init = async () => {
   const cmdFiles = walk.walk('./commands/', options);
   client.logger.log('Loading commands...');
   cmdFiles.on('file', (root, fileStats, next) => {
-    const cmdPath = require('os').platform().includes('win') 
+    const cmdPath = require('os').platform().includes('win')
       ? root.substring(root.indexOf('commands\\') + 13) // Windows path finding
       : join(__dirname, root).substring(join(__dirname, root).indexOf('commands/') + 9); // Linux path finding
 
@@ -101,6 +101,14 @@ process.on('uncaughtException', (err) => {
 
 process.on('unhandledRejection', err => {
   client.logger.error(`Unhandled rejection: ${err.stack}`);
+});
+
+process.on('SIGINT', async () => {
+  console.log('');
+  client.logger.log('SIGINT detected! Cleaning up and exiting...');
+  await client.destroy();
+  client.logger.log('Client destroyed. Exiting...');
+  await process.exit();
 });
 
 client.on('disconnect', () => client.logger.log('Client disconnected!', 'disconnect'));
