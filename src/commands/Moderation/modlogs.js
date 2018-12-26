@@ -24,7 +24,6 @@ module.exports.run = (client, message) => {
       }
       message.channel.send(embed);
     } else {
-      console.log('Else!');
       let min = 0;
       let max = 8;
       let curPage = 1;
@@ -41,8 +40,7 @@ module.exports.run = (client, message) => {
             ? client.users.get(data.dataValues.moderator)
             : '[User not found]';
         embed.addField(`Case **${data.dataValues.id}** \`|\` **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
-        console.log(logs.indexOf(data));
-        if(logs.indexOf(data) >= max) {console.log('Break!'); break;}
+        if(logs.indexOf(data) >= max) break;
       }
 
       message.channel.send(embed).then(async msg => {
@@ -75,8 +73,7 @@ module.exports.run = (client, message) => {
                     ? client.users.get(data.dataValues.moderator)
                     : '[User not found]';
                 embed.addField(`Case **${data.dataValues.id}** \`|\` **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
-                console.log(logs.indexOf(data));
-                if(logs.indexOf(data) >= max) {console.log('a. break!'); break;}
+                if(logs.indexOf(data) >= max) break;
               }
               msg.edit(embed);
 
@@ -86,14 +83,18 @@ module.exports.run = (client, message) => {
               min = await min + 9;
               max = await max + 9;
               curPage = await curPage + 1;
-
-              console.log(`Min: ${min}\nMax: ${max}\nCurrent Page: ${curPage}`);
+              if (curPage > Math.ceil(logs.length / 9)) {
+                await curPage--;
+                min = min - 9;
+                max = max - 9;
+                return;
+              }
 
               embed = new Discord.RichEmbed()
                 .setColor(client.config.colors.green)
                 .setTitle(`Modlogs for ${user.tag} | Page ${curPage}`);
 
-              for(const data of logs) {
+                for(const data of logs) {
                 const index = logs.indexOf(data);
                 if(index < min) continue;
                 const reason = data.dataValues.reason === null ? 'No reason given' : data.dataValues.reason;
@@ -103,9 +104,6 @@ module.exports.run = (client, message) => {
                     ? client.users.get(data.dataValues.moderator)
                     : '[User not found]';
                 embed.addField(`Case **${data.dataValues.id}** \`|\` **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
-                console.log(index);
-
-                
               }
               msg.edit(embed);
 
