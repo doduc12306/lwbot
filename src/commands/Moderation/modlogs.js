@@ -30,7 +30,7 @@ module.exports.run = (client, message) => {
 
       let embed = new Discord.RichEmbed()
         .setColor(client.config.colors.green)
-        .setTitle(`Modlogs for ${user.tag} | Page ${curPage}`);
+        .setTitle(`Modlogs for ${user.tag} | Page ${curPage}/${Math.ceil(logs.length / 9)}`);
 
       for(const data of logs) {
         const reason = data.dataValues.reason === null ? 'No reason given' : data.dataValues.reason;
@@ -62,7 +62,7 @@ module.exports.run = (client, message) => {
 
               embed = new Discord.RichEmbed()
                 .setColor(client.config.colors.green)
-                .setTitle(`Modlogs for ${user.tag} | Page ${curPage}`);
+                .setTitle(`Modlogs for ${user.tag} | Page ${curPage}/${Math.ceil(logs.length / 9)}`);
 
               for(const data of logs) {
                 if(logs.indexOf(data) < min) continue;
@@ -87,12 +87,14 @@ module.exports.run = (client, message) => {
                 await curPage--;
                 min = min - 9;
                 max = max - 9;
+                msg.edit(embed.setFooter('This is the final page. There is no more data past this range.'));
+                setTimeout(() => msg.edit(embed.setFooter('')), 5000);
                 return;
               }
 
               embed = new Discord.RichEmbed()
                 .setColor(client.config.colors.green)
-                .setTitle(`Modlogs for ${user.tag} | Page ${curPage}`);
+                .setTitle(`Modlogs for ${user.tag} | Page ${curPage}/${Math.ceil(logs.length / 9)}`);
 
                 for(const data of logs) {
                 const index = logs.indexOf(data);
