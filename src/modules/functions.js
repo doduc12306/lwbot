@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const { Collection } = require('discord.js');
 
 module.exports = (client) => {
 
@@ -242,4 +243,8 @@ module.exports = (client) => {
   client.wait = require('util').promisify(setTimeout);
 
   client.xpLockSet = new Set();
+
+  client.msgCmdHistory = new Collection();
+
+  //setInterval(() => client.msgCmdHistory.delete(client.msgCmdHistory.first()), 5000);
 };
