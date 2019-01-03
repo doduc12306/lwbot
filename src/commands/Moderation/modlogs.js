@@ -1,4 +1,3 @@
-/* eslint-disable */
 const Discord = require('discord.js');
 module.exports.run = (client, message) => {
   const user = message.mentions.users.first() ? message.mentions.users.first() : message.author;
@@ -96,7 +95,7 @@ module.exports.run = (client, message) => {
                 .setColor(client.config.colors.green)
                 .setTitle(`Modlogs for ${user.tag} | Page ${curPage}/${Math.ceil(logs.length / 9)}`);
 
-                for(const data of logs) {
+              for(const data of logs) {
                 const index = logs.indexOf(data);
                 if(index < min) continue;
                 const reason = data.dataValues.reason === null ? 'No reason given' : data.dataValues.reason;

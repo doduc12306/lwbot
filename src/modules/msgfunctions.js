@@ -264,35 +264,35 @@ module.exports = async (client, message) => {
 
   // End XP Leveling sequence
 
-  /* eslint-disable */
+
   // Other various functions
   message.functions = {
     parseRole: data => {
       if (message.channel.type !== 'text') throw new Error('I can\'t find a role if I\'m not in a guild!');
       if(!data) throw new Error('You didn\'t give me anything to find a role from!');
       if(message.mentions.roles.size === 0) {
-        var role = message.guild.roles.get(data);
+        let role = message.guild.roles.get(data);
         if(role === undefined) {
           role = message.guild.roles.find(r => r.name.toLowerCase().includes(data.toLowerCase()));
           if(role === null) throw new Error('I couldn\'t find that role! ');
           else return role;
         } else return role;
       } else {
-        role = message.mentions.roles.first();
+        const role = message.mentions.roles.first();
         return role;
       }
     },
     parseUser: data => {
       if(!data) throw new Error('You didn\'t give me anything to find a user from!');
       if(message.mentions.users.size === 0) {
-        var user = client.users.get(data);
+        let user = client.users.get(data);
         if(user === undefined) {
           user = client.users.find(r => (r.username.toLowerCase().includes(data.toLowerCase()) || r.tag.toLowerCase() === data.toLowerCase()));
           if(user === null) throw new Error('I couldn\'t find that user!');
           else return user;
         } else return user;
       } else {
-        user = message.mentions.users.first();
+        const user = message.mentions.users.first();
         return user;
       }
     },
@@ -300,14 +300,14 @@ module.exports = async (client, message) => {
       if (message.channel.type !== 'text') throw new Error('I can\'t find a member if I\'m not in a guild!');
       if (!data) throw new Error('You didn\'t give me anything to find a member from!');
       if(message.mentions.members.size === 0) {
-        var member = message.guild.members.get(data);
+        let member = message.guild.members.get(data);
         if(member === undefined) {
           member = message.guild.members.find(r => (r.user.username.toLowerCase().includes(data.toLowerCase()) || r.user.tag.toLowerCase() === data.toLowerCase()));
           if (member === null) throw new Error('I couldn\'t find that member!');
           else return member;
         } else return member;
       } else {
-        member = message.mentions.members.first();
+        const member = message.mentions.members.first();
         return member;
       }
     },
@@ -315,7 +315,7 @@ module.exports = async (client, message) => {
       if (message.channel.type !== 'text') throw new Error('I can\'t find a channel if I\'m not in a guild!');
       if (!data) throw new Error('You didn\'t give me anything to find a channel from!');
       if(message.mentions.channels.size === 0) {
-        var channel = message.guild.channels.get(data);
+        let channel = message.guild.channels.get(data);
         if(channel === undefined) {
           if(data.startsWith('#')) data = data.split('#')[1];
           channel = message.guild.channels.find(r => r.name.includes(data));
@@ -323,7 +323,7 @@ module.exports = async (client, message) => {
           else return channel;
         } else return channel;
       } else {
-        channel = message.mentions.channels.first();
+        const channel = message.mentions.channels.first();
         return channel;
       }
     }

@@ -1,12 +1,12 @@
-/* eslint-disable */
+
 const Discord = require('discord.js');
 const moment = require('moment');
 module.exports.run = (client, message, args) => {
-  var role = message.mentions.roles.size === 0 ? args[0] : message.mentions.roles.first();
+  let role = message.mentions.roles.size === 0 ? args[0] : message.mentions.roles.first();
   try {
     role = message.functions.parseRole(role);
 
-    var embed = new Discord.RichEmbed()
+    const embed = new Discord.RichEmbed()
       .setColor(role.color === 0 ? client.config.colors.green : role.color)
       .addField('Name', role.name, true)
       .addField('ID', role.id, true)
