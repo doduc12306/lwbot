@@ -10,16 +10,16 @@ module.exports.run = async (client, message, args) => {
   const duration = args[1];
   const bhEmote = '<:banhammer:459184964110385153>';
 
-  if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${bhEmote} **I am missing permissions:** \`Ban Members\``);
-  if(!message.member.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
-  if(!toBan) return message.channel.send(`:x: \`|\` ${bhEmote} **You didn't mention someone to ban!**`);
-  if(!duration) return message.channel.send(`:x: \`|\` ${bhEmote} **You didn't set a duration!**`);
-  if(!toBanM.bannable) return message.channel.send(`:x: \`|\` ${bhEmote} **This member could not be banned!**`);
+  if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.send(`:x: \`|\` ${bhEmote} **I am missing permissions:** \`Ban Members\``);
+  if(!message.member.permissions.has('BAN_MEMBERS')) return message.send(`:x: \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
+  if(!toBan) return message.send(`:x: \`|\` ${bhEmote} **You didn't mention someone to ban!**`);
+  if(!duration) return message.send(`:x: \`|\` ${bhEmote} **You didn't set a duration!**`);
+  if(!toBanM.bannable) return message.send(`:x: \`|\` ${bhEmote} **This member could not be banned!**`);
 
   const durationMs = parse(duration);
   const durationHR = moment.duration(durationMs).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]'); // HR = "Human Readable"
 
-  if(durationMs === 0) return message.channel.send(`:x: \`|\` ${bhEmote} **${duration} is not a valid duration!**`);
+  if(durationMs === 0) return message.send(`:x: \`|\` ${bhEmote} **${duration} is not a valid duration!**`);
 
   await message.guild.modbase.create({
     victim: toBan.id,
@@ -44,14 +44,14 @@ module.exports.run = async (client, message, args) => {
     await message.guild.settings.get('modLogChannel')
       .then(async modLogChannel => {
         modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
-        if (modLogChannel === null) return message.channel.send(`:warning: **Tempban issued, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
+        if (modLogChannel === null) return message.send(`:warning: **Tempban issued, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
         if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
-          modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.channel.send(`:warning: **Tempban issued, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
+          modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`:warning: **Tempban issued, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);
-        await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Tempbanned user \`${toBan.tag}\`**`);
+        await message.send(`:white_check_mark: \`|\` ${bhEmote} **Tempbanned user \`${toBan.tag}\`**`);
       })
-      .catch(async e => message.channel.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
+      .catch(async e => message.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
     setTimeout(async () => {
       await message.guild.modbase.create({
         victim: toBan.id,
@@ -72,13 +72,13 @@ module.exports.run = async (client, message, args) => {
         await message.guild.settings.get('modLogChannel')
           .then(async modLogChannel => {
             modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
-            if (modLogChannel === null) return message.channel.send(`:warning: **A tempban has completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
+            if (modLogChannel === null) return message.send(`:warning: **A tempban has completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
             if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
-              modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.channel.send(`:warning: **A tempban has completed, but I errored:**\n I tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
+              modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`:warning: **A tempban has completed, but I errored:**\n I tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
             }
             await modLogChannel.send(modEmbed);
           })
-          .catch(async e => message.channel.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
+          .catch(async e => message.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
 
         message.guild.unban(toBan);
       });

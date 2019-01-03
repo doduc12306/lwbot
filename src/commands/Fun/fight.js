@@ -5,11 +5,11 @@ module.exports.run = (client, message) => {
 
   const str = Fstrings.randomElement();
 
-  if(!user) return message.channel.send(`${message.author} is fighting no one${str}`);
-  if(user === message.author) return message.channel.send(`${user} is fighting themselves${str}`);
-  if(user === client.user) return message.channel.send(`${user} is fighting me${str}`).then(msg => setTimeout(() => msg.edit(':trophy: **I WON!**'), 2000));
+  if(!user) return message.send(`${message.author} is fighting no one${str}`);
+  if(user === message.author) return message.send(`${user} is fighting themselves${str}`);
+  if(user === client.user) return message.send(`${user} is fighting me${str}`).then(msg => setTimeout(() => msg.edit(':trophy: **I WON!**'), 2000));
 
-  message.channel.send(`${message.author} is fighting ${user}${str}`)
+  message.send(`${message.author} is fighting ${user}${str}`)
     .then(msg => {
       const n = Math.floor(Math.random()*2);
       setTimeout(() => {

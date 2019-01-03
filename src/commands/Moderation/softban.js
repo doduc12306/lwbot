@@ -6,10 +6,10 @@ module.exports.run = async (client, message, args) => {
   const reason = args.slice(1).join(' ');
   const bhEmote = '<:banhammer:459184964110385153>';
 
-  if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${bhEmote} **I am missing permissions:** \`Ban Members\``);
-  if(!message.member.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
-  if(!toBan) return message.channel.send(`:x: \`|\` ${bhEmote} **You didn't mention someone to ban!**`);
-  if(!toBanM.bannable) return message.channel.send(`:x: \`|\` ${bhEmote} **This member could not be banned!**`);
+  if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.send(`:x: \`|\` ${bhEmote} **I am missing permissions:** \`Ban Members\``);
+  if(!message.member.permissions.has('BAN_MEMBERS')) return message.send(`:x: \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
+  if(!toBan) return message.send(`:x: \`|\` ${bhEmote} **You didn't mention someone to ban!**`);
+  if(!toBanM.bannable) return message.send(`:x: \`|\` ${bhEmote} **This member could not be banned!**`);
 
   await message.guild.modbase.create({
     victim: toBan.id,
@@ -33,14 +33,14 @@ module.exports.run = async (client, message, args) => {
     await message.guild.settings.get('modLogChannel')
       .then(async modLogChannel => {
         modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
-        if (modLogChannel === null) return message.channel.send(`:warning: **Softban completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
+        if (modLogChannel === null) return message.send(`:warning: **Softban completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
         if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
-          modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.channel.send(`:warning: **Softban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
+          modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`:warning: **Softban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);
-        await message.channel.send(`:white_check_mark: \`|\` ${bhEmote} **Softbanned user \`${toBan.tag}\`**`);
+        await message.send(`:white_check_mark: \`|\` ${bhEmote} **Softbanned user \`${toBan.tag}\`**`);
       })
-      .catch(async e => message.channel.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
+      .catch(async e => message.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
   });
 };
 

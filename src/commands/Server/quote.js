@@ -1,11 +1,11 @@
 const moment = require('moment');
 const Discord = require('discord.js');
 module.exports.run = (client, message, args) => {
-  if(!args[0]) return message.channel.send(':x: **You didn\'t give the ID of a message to quote!**');
+  if(!args[0]) return message.send(':x: **You didn\'t give the ID of a message to quote!**');
 
   message.channel.fetchMessage(args[0])
     .then(msg => {
-      message.channel.send(new Discord.RichEmbed()
+      message.send(new Discord.RichEmbed()
         .setColor(msg.member.displayColor === 0 ? client.config.colors.green : msg.member.displayColor)
         .setAuthor(msg.author.tag, msg.author.avatarURL)
         .setDescription(`*\`\`\`\n"${msg.content}"\n\`\`\`*`)
@@ -13,9 +13,9 @@ module.exports.run = (client, message, args) => {
       );
     })
     .catch(e => {
-      if(e.message.includes('Invalid Form Body')) return message.channel.send(':x: **That isn\'t a valid message ID!**');
-      else if(e.message.includes('Unknown Message')) return message.channel.send(':x: **I couldn\'t find that message!** `(Is it in the channel?)`');
-      else return message.channel.send(`:x: **Something went wrong during the process, the message could not be fetched.**\n:gear: *Debug information:*\n\`\`\`${e}\`\`\``);
+      if(e.message.includes('Invalid Form Body')) return message.send(':x: **That isn\'t a valid message ID!**');
+      else if(e.message.includes('Unknown Message')) return message.send(':x: **I couldn\'t find that message!** `(Is it in the channel?)`');
+      else return message.send(`:x: **Something went wrong during the process, the message could not be fetched.**\n:gear: *Debug information:*\n\`\`\`${e}\`\`\``);
     });
 };
 

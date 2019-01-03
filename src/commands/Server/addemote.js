@@ -3,14 +3,14 @@ module.exports.run = (client, message, args) => {
     const emojiName = args[0];
     const emojiURL = args[1];
 
-    if (!emojiName) return message.channel.send(':x: You forgot the emoji name!');
-    if (!emojiURL) return message.channel.send(':x: You forgot the emoji url!');
+    if (!emojiName) return message.send(':x: You forgot the emoji name!');
+    if (!emojiURL) return message.send(':x: You forgot the emoji url!');
 
     message.guild.createEmoji(emojiURL, emojiName, null, `${message.author.tag} created emoji ${emojiName}`)
-      .then(emote => message.channel.send(`:white_check_mark: Emote **\`${emote.name}\`** ${emote} created!`))
-      .catch(err => message.channel.send(`:x: Something went wrong:\n${err}`));
+      .then(emote => message.send(`:white_check_mark: Emote **\`${emote.name}\`** ${emote} created!`))
+      .catch(err => message.send(`:x: Something went wrong:\n${err}`));
 
-  } else message.channel.send(':x: Missing Permission: `Manage Emojis`');
+  } else message.send(':x: Missing Permission: `Manage Emojis`');
 };
 
 exports.conf = {

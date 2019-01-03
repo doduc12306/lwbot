@@ -2,12 +2,12 @@ module.exports.run = async (client, message, args) => {
   const folder = args[0];
   const cmd = args[1];
 
-  if(!folder) return message.channel.send(':x: **Missing a folder!**');
-  if(!cmd) return message.channel.send(':x: **Missing command name!**');
+  if(!folder) return message.send(':x: **Missing a folder!**');
+  if(!cmd) return message.send(':x: **Missing command name!**');
 
   const response = await client.loadCommand(folder, cmd);
-  if(response === false) return message.channel.send(`:white_check_mark: **Loaded ${args[0]}/${args[1]}**`);
-  else message.channel.send(`:x: **${response}**`);
+  if(response === false) return message.send(`:white_check_mark: **Loaded ${args[0]}/${args[1]}**`);
+  else message.send(`:x: **${response}**`);
 };
 
 exports.conf = {

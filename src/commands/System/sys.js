@@ -7,22 +7,22 @@ module.exports.run = async (client, message, args) => {
   const filter = new RegExp(`${token}|${rev}`, 'g');
   try {
     require('child_process').exec(code, async (e, out, err) => {
-      if(e || err) return message.channel.send(e || err, {code: 'xl'});
+      if(e || err) return message.send(e || err, {code: 'xl'});
       out = out.replace(filter, 'FILTERED TOKEN');
       out = clean(out);
       if (out.length < 1950) {
-        message.channel.send(out, {code: 'bash'});
+        message.send(out, {code: 'bash'});
       } else {
         try {
           const { body } = await post('https://www.hastebin.com/documents').send(out);
-          message.channel.send(`:x: **Output too long, uploaded to hastebin:** https://www.hastebin.com/${body.key}.js `);
+          message.send(`:x: **Output too long, uploaded to hastebin:** https://www.hastebin.com/${body.key}.js `);
         } catch (error) {
-          message.channel.send(`:x: **Hastebin upload error:** \`${error.name}\`\n\`\`\`\n${error.message}\n\`\`\``);
+          message.send(`:x: **Hastebin upload error:** \`${error.name}\`\n\`\`\`\n${error.message}\n\`\`\``);
         }
       }
     });
   } catch (error) {
-    message.channel.send(`\`\`\`xl\n${error}\n\`\`\``);
+    message.send(`\`\`\`xl\n${error}\n\`\`\``);
   }
 
   function clean(text) {

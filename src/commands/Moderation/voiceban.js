@@ -6,13 +6,13 @@ module.exports.run = async (client, message, args) => {
   const reason = args.slice(1).join(' ');
   const vbEmote = '<:banhammer:459184964110385153>';
 
-  if(!message.guild.me.permissions.has('MOVE_MEMBERS')) return message.channel.send(`:x: \`|\` ${vbEmote} **I am missing permissions:** \`Move Members\``);
-  if(!message.guild.me.permissions.has('MANAGE_CHANNELS')) return message.channel.send(`:x: \`|\` ${vbEmote} **I am missing permissions:** \`Manage Channels\` `);
-  if(!message.member.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${vbEmote} **You are missing permissions:** \`Ban Members\``);
-  if(!toBan) return message.channel.send(`:x: \`|\` ${vbEmote} **You didn't mention someone to voiceban!**`);
-  if(!message.member.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} **You are not in the voice channel!**`);
-  if(!toBanM.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} ${toBan.toString()} **isn't in a voice channel!**`);
-  if(!toBanM.voiceChannel === message.member.voiceChannel) return message.channel.send(`:x: \`|\` ${vbEmote} **You must be in the same voice channel as** ${toBan.toString()}`);
+  if(!message.guild.me.permissions.has('MOVE_MEMBERS')) return message.send(`:x: \`|\` ${vbEmote} **I am missing permissions:** \`Move Members\``);
+  if(!message.guild.me.permissions.has('MANAGE_CHANNELS')) return message.send(`:x: \`|\` ${vbEmote} **I am missing permissions:** \`Manage Channels\` `);
+  if(!message.member.permissions.has('BAN_MEMBERS')) return message.send(`:x: \`|\` ${vbEmote} **You are missing permissions:** \`Ban Members\``);
+  if(!toBan) return message.send(`:x: \`|\` ${vbEmote} **You didn't mention someone to voiceban!**`);
+  if(!message.member.voiceChannel) return message.send(`:x: \`|\` ${vbEmote} **You are not in the voice channel!**`);
+  if(!toBanM.voiceChannel) return message.send(`:x: \`|\` ${vbEmote} ${toBan.toString()} **isn't in a voice channel!**`);
+  if(!toBanM.voiceChannel === message.member.voiceChannel) return message.send(`:x: \`|\` ${vbEmote} **You must be in the same voice channel as** ${toBan.toString()}`);
 
   await message.guild.modbase.create({
     victim: toBan.id,
@@ -39,14 +39,14 @@ module.exports.run = async (client, message, args) => {
     await message.guild.settings.get('modLogChannel')
       .then(async modLogChannel => {
         modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
-        if (modLogChannel === null) return message.channel.send(`:warning: **Voiceban completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
+        if (modLogChannel === null) return message.send(`:warning: **Voiceban completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
         if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
-          modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.channel.send(`:warning: **Voiceban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
+          modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`:warning: **Voiceban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);
-        await message.channel.send(`:white_check_mark: \`|\` ${vbEmote} **Voicebanned user \`${toBan.tag}\`**`);
+        await message.send(`:white_check_mark: \`|\` ${vbEmote} **Voicebanned user \`${toBan.tag}\`**`);
       })
-      .catch(async e => message.channel.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
+      .catch(async e => message.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
   });
 };
 

@@ -1,6 +1,6 @@
 module.exports.run = async (client, message) => {
-  if (message.mentions.users.size === 0) return message.channel.send(`${client.emojis.get('383800708841078785')} **u didnt menshin sum1!!~** :triumph: :triumph:`);
-  message.channel.send(`${client.emojis.get('383763992981667855')} ${message.mentions.users.first()} **has bee banne~!!1!** :sparkles:`);
+  if (message.mentions.users.size === 0) return message.send(`${client.emojis.get('383800708841078785')} **u didnt menshin sum1!!~** :triumph: :triumph:`);
+  message.send(`${client.emojis.get('383763992981667855')} ${message.mentions.users.first()} **has bee banne~!!1!** :sparkles:`);
 };
 
 exports.conf = {

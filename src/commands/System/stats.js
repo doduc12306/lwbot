@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 require('moment-duration-format');
 
 exports.run = (client, message) => {
-  message.channel.send(new Discord.RichEmbed()
+  message.send(new Discord.RichEmbed()
     .setTitle('`Statistics`')
     .addField('Guilds', client.guilds.size, true)
     .addField('Users', client.users.size, true)

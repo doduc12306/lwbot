@@ -4,25 +4,25 @@ module.exports.run = (client, message, args) => {
   try {
     const query = args.slice(0).join(' ');
 
-    if (!query) return message.channel.send(':x: `|` 🔍 **You didn\'t say something to google!**');
+    if (!query) return message.send(':x: `|` 🔍 **You didn\'t say something to google!**');
 
     google.resultsPerPage = 1;
     google(query, function(err, res) {
       if (err) {
-        message.channel.send(':x: `|` 🔍 **There was an error during the search process. Please try again later.**');
+        message.send(':x: `|` 🔍 **There was an error during the search process. Please try again later.**');
         return console.error(err);
       }
       const link = res.links[0];
 
       const response = `🔍 **\`${link.title}\`** - ${link.href}`;
 
-      message.channel.send(response).catch(e => {
-        message.channel.send(':x: `|` 🔍 **There was an error during the search process. Please try again later.**');
+      message.send(response).catch(e => {
+        message.send(':x: `|` 🔍 **There was an error during the search process. Please try again later.**');
         console.log(`Catch error: ${e}`);
       });
     });
   } catch (e) {
-    message.channel.send(':x: `|` 🔍 **There was an error during the search process. Please try again later.**');
+    message.send(':x: `|` 🔍 **There was an error during the search process. Please try again later.**');
     console.log(`Try-catch error: ${e}`);
   }
 };

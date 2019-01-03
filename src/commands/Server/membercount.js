@@ -16,7 +16,7 @@ module.exports.run = async (client, message) => {
     .addField('Status', `<:online:450674128777904149> **Online:** ${online}\n<:idle:450674222176403456> **Idle:** ${idle}\n<:dnd:450674354163023882> **Do Not Disturb:** ${dnd}\n<:offline:450674445670154240> **Offline:** ${offline}\n<:streaming:450674542717698058> **Streaming:** ${streaming}`)
     .setColor(client.config.colors.green);
 
-  message.channel.send(embed);
+  message.send(embed);
 };
 
 exports.conf = {

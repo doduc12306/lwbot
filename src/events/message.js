@@ -46,25 +46,22 @@ module.exports = async (client, message) => {
   }
   // using this const varName = thing OR otherthing; is a pretty efficient
   // and clean way to grab one of 2 values!
-  if (!cmd) return message.channel.send(`:x: That isn't one of my commands! Try ${prefix}help`);
+  if (!cmd) return message.send(`:x: That isn't one of my commands! Try ${prefix}help`);
 
-  if (!cmd.conf.enabled) if (systemNotice === 'true') return message.channel.send(`:x: \`${cmd.help.name}\` **is currently disabled.**`);
+  if (!cmd.conf.enabled) if (systemNotice === 'true') return message.send(`:x: \`${cmd.help.name}\` **is currently disabled.**`);
 
   // Some commands may not be useable in DMs. This check prevents those commands from running
   // and return a friendly error message.
-  if (cmd && !message.guild && cmd.conf.guildOnly)
-    return message.channel.send(':x: **This command cannot be run in DM\'s.**');
+  if (cmd && !message.guild && cmd.conf.guildOnly) return message.send(':x: **This command cannot be run in DM\'s.**');
 
   if (level < client.levelCache[cmd.conf.permLevel]) {
     if (systemNotice === 'true') {
-      return message.channel.send(`:x: You do not have permission to use this command.\nYour permission level is ${level} (${client.config.permLevels.find(l => l.level === level).name})\nThis command requires level ${client.levelCache[cmd.conf.permLevel]} (${cmd.conf.permLevel})`);
-    } else {
-      return;
-    }
+      return message.send(`:x: You do not have permission to use this command.\nYour permission level is ${level} (${client.config.permLevels.find(l => l.level === level).name})\nThis command requires level ${client.levelCache[cmd.conf.permLevel]} (${cmd.conf.permLevel})`);
+    } else return;
   }
 
   if (cmd.conf.requiresEmbed && message.guild && !message.guild.me.permissionsIn(message.channel).serialize()['EMBED_LINKS'])
-    return message.channel.send(':x: **This command requires `Embed Links`, which I don\'t have!**');
+    return message.send(':x: **This command requires `Embed Links`, which I don\'t have!**');
 
   client.tags.sync();
 

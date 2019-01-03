@@ -3,7 +3,7 @@ const moment = require('moment');
 
 module.exports.run = (client, message) => {
   if (message.channel.type === 'dm') {
-    message.channel.send(':x: This command will not work in DM\'s');
+    message.send(':x: This command will not work in DM\'s');
     return;
   } else {
 
@@ -59,7 +59,7 @@ module.exports.run = (client, message) => {
     if(message.guild.me.displayColor === 0) color = '0x59D851';
 
     //The actual message
-    message.channel.send(new Discord.RichEmbed()
+    message.send(new Discord.RichEmbed()
       .setColor(color)
       .setThumbnail(guildIcon)
       .setAuthor(`Information on ${message.guild.name}:`, guildIcon, null)

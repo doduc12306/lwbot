@@ -1,23 +1,23 @@
 exports.run = async (client, message, args) => {
-  if (!args[0]) return message.channel.send(':x: You didn\'t give me a command to reload!');
+  if (!args[0]) return message.send(':x: You didn\'t give me a command to reload!');
   if (args[0] === 'file') {
     try {
       let toReload = args[1];
       if(!toReload.includes('../../')) toReload = `../../${args[1]}`;
       delete require.cache[require.resolve(toReload)];
-      message.channel.send(`:white_check_mark: **Reloaded** \`${toReload}\``);
+      message.send(`:white_check_mark: **Reloaded** \`${toReload}\``);
       client.logger.log('Reloaded '+toReload);
     } catch (err) {
-      return message.channel.send(`:x: \`${err}\``);
+      return message.send(`:x: \`${err}\``);
     }
   } else {
     let response = await client.unloadCommand(args[0]);
-    if (response) return message.channel.send(`:x: **Error Unloading:** ${response}`);
+    if (response) return message.send(`:x: **Error Unloading:** ${response}`);
 
     response = client.loadCommand(client.folder.get(args[0]), args[0]);
-    if (response) return message.channel.send(`:x: **Error Loading:** \`${response}\``);
+    if (response) return message.send(`:x: **Error Loading:** \`${response}\``);
 
-    message.channel.send(`:white_check_mark: **Reloaded** \`${args[0]}\``);
+    message.send(`:white_check_mark: **Reloaded** \`${args[0]}\``);
   }
 };
 

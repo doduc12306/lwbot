@@ -223,6 +223,43 @@ module.exports = async (client, message) => {
     });
   };
 
+  message.send = (content, options) => {
+    return new Promise((resolve, reject) => {
+      if(!content) return reject(new Error('Cannot send an empty message'));
+
+      if (message.edited) return message.channel.fetchMessage(client.msgCmdHistory[message.id]).then(async msg => {
+        const embedC = typeof content === 'object'; // embedC = "embed Check"
+
+        options = {
+          embed: embedC
+            ? content
+            : msg.embeds.length !== 0
+              ? {} : {},
+          code: options
+            ? options.code
+              ? options.code
+              : undefined
+            : undefined
+        };
+
+        msg.clearReactions();
+
+        return resolve(msg.edit(embedC ? '' : content, options)); // If content === object, send (text) nothing. Else, send the content
+      });
+
+      if(!client.msgCmdHistory.has(message.id)) {
+        if (options) return message.channel.send(content, options).then(msg => {
+          client.msgCmdHistory[message.id] = msg.id;
+          return resolve(msg);
+        });
+        else return message.channel.send(content).then(msg => {
+          client.msgCmdHistory[message.id] = msg.id;
+          return resolve(msg);
+        });
+      }
+    });
+  };
+
   // XP Leveling sequence here
 
   // End XP Leveling sequence

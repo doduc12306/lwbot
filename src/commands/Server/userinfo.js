@@ -25,8 +25,8 @@ module.exports.run = (client, message) => {
     embed.addField('Roles', roles.length > 1024 ? `${member.roles.size} roles.` : roles, true);
   }
 
-  message.channel.send(embed).catch((e) => {
-    message.channel.send(e);
+  message.send(embed).catch((e) => {
+    message.send(e);
   });
 };
 

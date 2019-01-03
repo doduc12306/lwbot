@@ -24,7 +24,7 @@ module.exports.run = async (client, message) => {
         else embed.addField(`#${data.indexOf(values) + 1} ${message.guild.members.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
       }
     }
-    message.channel.send(embed);
+    message.send(embed);
   });
 };
 

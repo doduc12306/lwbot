@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports.run = (client, message) => {
   const pings = client.pings.filter(g => g !== undefined).join(', ');
 
-  message.channel.send(new Discord.RichEmbed()
+  message.send(new Discord.RichEmbed()
     .addField(':ping_pong: Ping', 'Pinging... (Pinging...)')
     .addField(':left_right_arrow: Latency', 'Pinging...')
     .setColor(client.config.colors.yellow)

@@ -1,4 +1,4 @@
-module.exports.run = (client, message) => message.channel.send('( ͡° ͜ʖ ͡°)');
+module.exports.run = (client, message) => message.send('( ͡° ͜ʖ ͡°)');
 
 exports.conf = {
   enabled: true,

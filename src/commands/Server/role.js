@@ -19,8 +19,8 @@ module.exports.run = (client, message, args) => {
 
     role.color === 0 ? true : embed.addField('Color', '#'+role.color.toString(16), true);
 
-    message.channel.send(embed);
-  } catch (e) {message.channel.send(`:x: **${e}**`);}
+    message.send(embed);
+  } catch (e) {message.send(`:x: **${e}**`);}
 };
 
 exports.conf = {

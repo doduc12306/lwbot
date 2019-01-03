@@ -1,14 +1,14 @@
 exports.run = async (client, message, args) => {
-  if(!['shutdown', 'restart', 'reboot'].includes(args[0])) return message.channel.send(':x: | :arrows_counterclockwise: **Options:** shutdown restart / reboot');
+  if(!['shutdown', 'restart', 'reboot'].includes(args[0])) return message.send(':x: | :arrows_counterclockwise: **Options:** shutdown restart / reboot');
 
   if(args[0] === 'shutdown') {
-    message.channel.send(':white_check_mark: | :stop_sign: **Shutting down...**');
+    message.send(':white_check_mark: | :stop_sign: **Shutting down...**');
     require('child_process').exec('pm2 stop LWBot');
     process.exit();
   }
 
   if(args[0] === 'restart' || args[0] === 'reboot') {
-    message.channel.send(`:white_check_mark: \`|\` :arrows_counterclockwise: **${args[0].toProperCase()}ing...**`);
+    message.send(`:white_check_mark: \`|\` :arrows_counterclockwise: **${args[0].toProperCase()}ing...**`);
     require('child_process').exec('pm2 restart LWBot');
   }
 };

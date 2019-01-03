@@ -18,12 +18,12 @@ module.exports.run = (client, message) => {
     // slots[3] | slots[4] | slots[5]
     // slots[6] | slots[7] | slots[8]
 
-    if(slots[3] === slots[4] && slots[4] === slots[5] && slots[5] === slots[3]) message.channel.send('You win!');
-    else message.channel.send('You lose!');
+    if(slots[3] === slots[4] && slots[4] === slots[5] && slots[5] === slots[3]) message.send('You win!');
+    else message.send('You lose!');
     // TODO: Change this ^ so that it's more styled.. actually show the slot items in the message
     // TODO: Include the specialGood and specialBad in the if statements
   } catch (err) {
-    message.channel.send(`:x: ${err}`);
+    message.send(`:x: ${err}`);
   }
 };
 

@@ -17,8 +17,8 @@ module.exports.run = async (client, message, args) => {
     const part2 = splitter[1];
     const cmdargs = splitter[2];
 
-    if (!title) return message.channel.send(':x: Missing a title!');
-    if (!part2) return message.channel.send(':x: Missing the content!');
+    if (!title) return message.send(':x: Missing a title!');
+    if (!part2) return message.send(':x: Missing the content!');
     const content = part2.replaceAll('/n', '\n').trim();
 
     let color = 54371;
@@ -33,11 +33,11 @@ module.exports.run = async (client, message, args) => {
         .setFooter(`${date.toDateString()} @ ${date.toTimeString().substring(0,5)}`)
         .addField(title, content)
       );
-      if (cmdargs) message.channel.send(`:white_check_mark: **Announcement sent!** | **Args:** \`${cmdargs}\``);
-      else message.channel.send(':white_check_mark: **Announcement sent!**');
+      if (cmdargs) message.send(`:white_check_mark: **Announcement sent!** | **Args:** \`${cmdargs}\``);
+      else message.send(':white_check_mark: **Announcement sent!**');
     }
-    // } else message.channel.send(`:x: You do not have access to this command!`);
-  } catch (err) {message.channel.send(`:x: ${err}`);}
+    // } else message.send(`:x: You do not have access to this command!`);
+  } catch (err) {message.send(`:x: ${err}`);}
 };
 
 exports.conf = {

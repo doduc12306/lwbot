@@ -1,10 +1,10 @@
 module.exports.run = (client, message, args) => {
   const content = args.slice(0).join(' ');
-  if(!content) return message.channel.send('** **');
+  if(!content) return message.send('** **');
 
   require('child_process').exec(`cowsay ${content}`, (e, out, err) => {
-    if(e || err) return message.channel.send(`:x: **There was an error:** ${e || err}`);
-    message.channel.send(`\`\`\`\n${out}\n\`\`\``);
+    if(e || err) return message.send(`:x: **There was an error:** ${e || err}`);
+    message.send(`\`\`\`\n${out}\n\`\`\``);
   });
 };
 

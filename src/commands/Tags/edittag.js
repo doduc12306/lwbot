@@ -6,9 +6,9 @@ module.exports.run = async (client, message, args) => {
   // equivalent to: UPDATE tags (descrption) values (?) WHERE name='?';
   const affectedRows = await client.tags.update({ description: tagDescription }, { where: { name: tagName } });
   if (affectedRows > 0) {
-    return message.channel.send(`:white_check_mark: **\`${tagName}\` edited.**`);
+    return message.send(`:white_check_mark: **\`${tagName}\` edited.**`);
   }
-  return message.channel.send(`:x: **\`${tagName}\` does not exist**`);
+  return message.send(`:x: **\`${tagName}\` does not exist**`);
 };
 
 exports.conf = {

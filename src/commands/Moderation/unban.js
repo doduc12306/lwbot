@@ -5,10 +5,10 @@ module.exports.run = async (client, message, args) => {
     const reason = args.slice(1).join(' ');
     const unBanHammer = '<:unbanhammer:459404085301346304>';
 
-    if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${unBanHammer} **I am missing permissions:** \`Ban Members\``);
-    if(!message.member.permissions.has('BAN_MEMBERS')) return message.channel.send(`:x: \`|\` ${unBanHammer} **You are missing permissions:** \`Ban Members\``);
-    if(!args[0]) return message.channel.send(`:x: \`|\` ${unBanHammer} **You didn't give the ID of someone to unban!**`);
-    await client.fetchUser(args[0]).catch(() => message.channel.send(`:x: \`|\` ${unBanHammer} **I could not find that user!** (Is that the correct ID?)`));
+    if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.send(`:x: \`|\` ${unBanHammer} **I am missing permissions:** \`Ban Members\``);
+    if(!message.member.permissions.has('BAN_MEMBERS')) return message.send(`:x: \`|\` ${unBanHammer} **You are missing permissions:** \`Ban Members\``);
+    if(!args[0]) return message.send(`:x: \`|\` ${unBanHammer} **You didn't give the ID of someone to unban!**`);
+    await client.fetchUser(args[0]).catch(() => message.send(`:x: \`|\` ${unBanHammer} **I could not find that user!** (Is that the correct ID?)`));
 
     const toUnban = await client.fetchUser(args[0]);
 
@@ -30,14 +30,14 @@ module.exports.run = async (client, message, args) => {
       await message.guild.settings.get('modLogChannel')
         .then(async modLogChannel => {
           modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
-          if (modLogChannel === null) return message.channel.send(`:warning: **Unban completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
+          if (modLogChannel === null) return message.send(`:warning: **Unban completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
           if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
-            modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.channel.send(`:warning: **Unban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
+            modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`:warning: **Unban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
           }
           await modLogChannel.send(modEmbed);
-          await message.channel.send(`:white_check_mark: \`|\` ${unBanHammer} **Unbanned user \`${toUnban.tag}\`**`);
+          await message.send(`:white_check_mark: \`|\` ${unBanHammer} **Unbanned user \`${toUnban.tag}\`**`);
         })
-        .catch(async e => message.channel.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
+        .catch(async e => message.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
     });
   } catch (e) {console.log(e);}
 

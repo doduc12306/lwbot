@@ -10,7 +10,7 @@ module.exports.run = (client, message) => {
       .setColor(client.config.colors.green)
       .setTitle(`Modlogs for ${user.tag}`);
 
-    if(logs.length === 0) return message.channel.send(embed.setDescription('No logs found'));
+    if(logs.length === 0) return message.send(embed.setDescription('No logs found'));
     if(logs.length <= 9) {
       for (const data of logs) {
         const reason = data.dataValues.reason === null ? 'No reason given' : data.dataValues.reason;
@@ -22,7 +22,7 @@ module.exports.run = (client, message) => {
         embed.addField(`Case **${data.dataValues.id}** \`|\` **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
 
       }
-      message.channel.send(embed);
+      message.send(embed);
     } else {
       let min = 0;
       let max = 8;
@@ -43,7 +43,7 @@ module.exports.run = (client, message) => {
         if(logs.indexOf(data) >= max) break;
       }
 
-      message.channel.send(embed).then(async msg => {
+      message.send(embed).then(async msg => {
         await msg.react('◀');
         await msg.react('🛑');
         await msg.react('▶');

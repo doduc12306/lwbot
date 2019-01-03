@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 
 module.exports.run = (client, message) => {
-  message.channel.send(new Discord.RichEmbed()
+  message.send(new Discord.RichEmbed()
     .setColor('0x59D851')
     .setAuthor('LINE WEBTOON', client.user.avatarURL)
     .setThumbnail(client.user.avatarURL)

@@ -19,20 +19,20 @@ exports.run = async (client, message, args) => {
     output = output.replace(filter, 'FILTERED TOKEN');
     output = clean(output);
     if (output.length < 1950) {
-      message.channel.send(output, {code: 'js'});
+      message.send(output, {code: 'js'});
     } else {
       try {
         const { body } = await post('https://www.hastebin.com/documents').send(output);
-        message.channel.send(`:x: **Output too long, uploaded to hastebin:** https://www.hastebin.com/${body.key}.js `);
+        message.send(`:x: **Output too long, uploaded to hastebin:** https://www.hastebin.com/${body.key}.js `);
       } catch (error) {
-        message.channel.send(`:x: **Hastebin upload error:** \`${error.name}\`\n\`\`\`\n${error.message}\n\`\`\``);
+        message.send(`:x: **Hastebin upload error:** \`${error.name}\`\n\`\`\`\n${error.message}\n\`\`\``);
       }
     }
   } catch (error) {
     error = error.stack.split('\n'); // eslint-disable-line no-ex-assign
     if (error[1].trim() === 'at Object.exports.run (/Users/akii/Documents/bots/lwbot-rewrite/src/commands/System/eval.js:16:23)'
-    || error[1].trim() === 'at Object.exports.run (/root/lwbot-rewrite/src/commands/System/eval.js:16:23)') return message.channel.send(`:x: **An error occurred:** \`${error[0]}\``);
-    message.channel.send(`:x: **An error occurred:** \`${error[0]}\`\n\`\`\`\n${error[1].trim()}\n\`\`\``);
+    || error[1].trim() === 'at Object.exports.run (/root/lwbot-rewrite/src/commands/System/eval.js:16:23)') return message.send(`:x: **An error occurred:** \`${error[0]}\``);
+    message.send(`:x: **An error occurred:** \`${error[0]}\`\n\`\`\`\n${error[1].trim()}\n\`\`\``);
   }
 
   function clean(text)  {
