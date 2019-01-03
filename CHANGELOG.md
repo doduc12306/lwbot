@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.8 [1/3/2019]
+First release of 2019 \o/
+### Command edit functionality
+A user sends a command. The bot sends the output. The user edits the command message to a new command. The bot edits the corresponding output.<br>
+This takes into account embeds, message options, reactions, and sets them all accordingly.
+
 ## v1.4.7 [12/1/2018]
 Yes, I jumped a few patch versions. Please don't shoot me.
 Changes since last release:
