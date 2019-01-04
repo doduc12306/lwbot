@@ -22,7 +22,7 @@ module.exports.run = async (client, message, args) => {
   await message.guild.modbase.create({
     victim: toMute.id,
     moderator: message.author.id,
-    type: 'mute',
+    type: 'tempmute',
     duration: durationMs
   }).then(async info => {
     let dmMsg = `${mutedEmote} **You were tempmuted in** \`${message.guild.name}\` **for** \`${durationHR}\` \`|\` :busts_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
@@ -58,12 +58,12 @@ module.exports.run = async (client, message, args) => {
         type: 'tempmute unmute',
       }).then(async info => {
         modEmbed = new Discord.RichEmbed()
-          .setThumbnail(toMute.avatarURL)
+          .setThumbnail(toMute.user.avatarURL)
           .setColor(client.config.colors.green)
           .setAuthor(`Unmuted ${toMute.user.tag} (${toMute.id})`)
           .setFooter(`ID: ${toMute.id} | Case: ${info.id}`)
           .addField('User', `${toMute.toString()} (${toMute.user.tag})`)
-          .addField('Moderator', client.user.toString());
+          .addField('Moderator', `${client.user.toString()} (${client.user.tag})`);
 
         if(!reason) {message.guild.modbase.update({ reason: 'Tempmute auto unmute' }, { where: {id: info.id}}); await modEmbed.addField('Reason', 'Tempmute auto unmute');}
         else {message.guild.modbase.update({ reason: `${reason} | Tempmute auto unmute`}, { where: {id: info.id}}); await modEmbed.addField('Reason', `${reason} | Tempmute auto unmute`);}

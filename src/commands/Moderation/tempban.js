@@ -31,7 +31,7 @@ module.exports.run = async (client, message, args) => {
 
     let modEmbed = new Discord.RichEmbed()
       .setThumbnail(toBan.avatarURL)
-      .setColor('0xFF0000')
+      .setColor(client.config.colors.red)
       .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
       .addField('Tempbanned User', `${toBan.toString()} (${toBan.tag})`)
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`)
