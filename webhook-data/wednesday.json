@@ -4,7 +4,7 @@
       "author": {
         "name": "New Updates!",
         "url": "http://www.webtoons.com/",
-        "icon_url": "https://www.flamecon.org/wp-content/uploads/2018/01/Webtoon-Logo.png"
+        "icon_url": "https://cdn.discordapp.com/attachments/450672740886904847/530858105819627530/line_avatar.png"
       },
       "description": "Here are the Webtoons updates for today!",
       "color":7506394,
@@ -15,12 +15,12 @@
       "fields":[
         {
           "name":":herb: Slice of Life:",
-          "value":"[My Name is Benny](https://www.webtoons.com/en/slice-of-life/my-name-is-benny/list?title_no=1279)\n[My Giant Nerd Boyfriend](https://www.webtoons.com/en/slice-of-life/my-giant-nerd-boyfriend/list?title_no=958)",
+          "value":"[My Giant Nerd Boyfriend](https://www.webtoons.com/en/slice-of-life/my-giant-nerd-boyfriend/list?title_no=958)\n[My Name is Benny](https://www.webtoons.com/en/slice-of-life/my-name-is-benny/list?title_no=1279)",
           "inline":true
         },
         {
           "name":":performing_arts: Drama:",
-          "value":"[The World Where I Belong](https://www.webtoons.com/en/drama/the-world-where-i-belong/list?title_no=1318)\n[A Good Day to be a Dog](https://www.webtoons.com/en/drama/a-good-day-tobe-a-dog/list?title_no=1390)\n[Gourmet Hound](https://www.webtoons.com/en/drama/gourmet-hound/list?title_no=1245)\n[True Beauty](https://www.webtoons.com/en/drama/truebeauty/list?title_no=1436)\n[Odd Girl Out](https://www.webtoons.com/en/drama/odd-girl-out/list?title_no=1420)",
+          "value":"[True Beauty](https://www.webtoons.com/en/drama/truebeauty/list?title_no=1436)\n[A Good Day to be a Dog](https://www.webtoons.com/en/drama/a-good-day-tobe-a-dog/list?title_no=1390)\n[Odd Girl Out](https://www.webtoons.com/en/drama/odd-girl-out/list?title_no=1420)\n[The World Where I Belong](https://www.webtoons.com/en/drama/the-world-where-i-belong/list?title_no=1318)",
           "inline":true
         },
         {
@@ -30,21 +30,21 @@
         },
         {
          "name":":joy: Comedy:",
-         "value":"[Behind the GIFs](https://www.webtoons.com/en/comedy/behind-the-gifs/list?title_no=658)\n[dustineractive](https://www.webtoons.com/en/comedy/dustinteractive/list?title_no=907)\n[Safely Endangered](https://www.webtoons.com/en/comedy/safely-endangered/list?title_no=352)",
+         "value":"[Bluechair](https://www.webtoons.com/en/comedy/bluechair/list?title_no=199)\n[Safely Endangered](https://www.webtoons.com/en/comedy/safely-endangered/list?title_no=352)\n[dustinteractive](https://www.webtoons.com/en/comedy/dustinteractive/list?title_no=907)\n[Behind the GIFs](https://www.webtoons.com/en/comedy/behind-the-gifs/list?title_no=658)",
          "inline": true
         },
         {
          "name":":heart: Romance:",
-         "value": "[Days of Hana](https://www.webtoons.com/en/romance/days-of-hana/list?title_no=1246)\n[Yumi's Cells](https://www.webtoons.com/en/romance/yumi-cell/list?title_no=478)\n[The Devil is a Handsome Man](https://www.webtoons.com/en/romance/the-devil-is-a-handsome-man/list?title_no=1311)\n[Super Secret](https://www.webtoons.com/en/romance/super-secret/list?title_no=666)",
+         "value": "[Super Secret](https://www.webtoons.com/en/romance/super-secret/list?title_no=666)\n[Days of Hana](https://www.webtoons.com/en/romance/days-of-hana/list?title_no=1246)\n[The Devil is a Handsome Man](https://www.webtoons.com/en/romance/the-devil-is-a-handsome-man/list?title_no=1311)\n[Yumi's Cells](https://www.webtoons.com/en/romance/yumi-cell/list?title_no=478)",
          "inline": true
         },
         { "name": ":sparkles: Fantasy:",
-          "value": "[Sword Interval](https://www.webtoons.com/en/fantasy/sword-interval/list?title_no=486)\n[Elf & Warrior](https://www.webtoons.com/en/fantasy/elf-and-warrior/list?title_no=908)\n[The Steam Dragon Express](https://www.webtoons.com/en/fantasy/steam-dragon-express/list?title_no=1270)\n[Rise from Ashes](https://www.webtoons.com/en/fantasy/rise-from-ashes/list?title_no=959)\n[DICE](https://www.webtoons.com/en/fantasy/dice/list?title_no=64)\n[Rebirth](https://www.webtoons.com/en/fantasy/rebirth/list?title_no=1412)",
+          "value": "[Rebirth](https://www.webtoons.com/en/fantasy/rebirth/list?title_no=1412)\n[DICE](https://www.webtoons.com/en/fantasy/dice/list?title_no=64)\n[Rise from Ashes](https://www.webtoons.com/en/fantasy/rise-from-ashes/list?title_no=959)\n[Elf & Warrior](https://www.webtoons.com/en/fantasy/elf-and-warrior/list?title_no=908)\n[The Strange Tales of Oscar Zahn](https://www.webtoons.com/en/fantasy/the-strange-tales-of-oscar-zahn/list?title_no=685)\n[Sword Interval](https://www.webtoons.com/en/fantasy/sword-interval/list?title_no=486)\n[Shadow Pirates](https://www.webtoons.com/en/fantasy/shadow-pirates/list?title_no=1455)",
           "inline": true
         },
         {
           "name": ":question: Other:",
-          "value": "[Tales of the Unusual](https://www.webtoons.com/en/thriller/tales-of-the-unusual/list?title_no=68)\n[Cyberbunk](https://www.webtoons.com/en/sf/cyberbunk/list?title_no=466)\n[War Cry](https://www.webtoons.com/en/super-hero/war-cry/list?title_no=1247)\n[Denma](https://www.webtoons.com/en/sf/denma/list?title_no=921)\n[XINK3R](https://www.webtoons.com/en/super-hero/xinker/list?title_no=541)\n[Moon You](https://www.webtoons.com/en/sf/moonyou/list?title_no=1340)",
+          "value": "[Outrage](https://www.webtoons.com/en/super-hero/outrage/list?title_no=1450)\n[Moon You](https://www.webtoons.com/en/sf/moonyou/list?title_no=1340)\n[XINK3R](https://www.webtoons.com/en/super-hero/xinker/list?title_no=541)\n[Denma](https://www.webtoons.com/en/sf/denma/list?title_no=921)\n[Backchannel](https://www.webtoons.com/en/super-hero/backchannel/list?title_no=1456)",
           "inline": true
         }
       ]
