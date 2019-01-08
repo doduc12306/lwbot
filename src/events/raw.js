@@ -1,21 +1,21 @@
 module.exports = async (client, packet) => {
   if (!['MESSAGE_REACTION_ADD', 'MESSAGE_REACTION_REMOVE'].includes(packet.t)) return;
   if(client.config.debugMode) return;
-  packet = packet.d;
 
   const genreChannel = client.channels.get('444375693728546816');
   const pingChannel = client.channels.get('440974386544115713');
   const miscChannel = client.channels.get('444375656139063296');
 
-  const guild = client.guilds.get(packet.guild_id);
-  const member = guild.members.get(packet.user_id);
+  const guild = client.guilds.get(packet.d.guild_id);
+  const member = guild.members.get(packet.d.user_id);
+
   function toggleRole(role) {
-    if (!member.roles.has(role)) member.addRole(role);
-    else member.removeRole(role);
+    if(packet.t === 'MESSAGE_REACTION_ADD') member.addRole(role);
+    if(packet.t === 'MESSAGE_REACTION_REMOVE') member.removeRole(role);
   }
 
-  if(packet.channel_id === genreChannel.id) {
-    switch(packet.emoji.name) {
+  if(packet.d.channel_id === genreChannel.id) {
+    switch(packet.d.emoji.name) {
       case '⚔':
         toggleRole('444346550760636417');
         break;
@@ -43,8 +43,8 @@ module.exports = async (client, packet) => {
     }
   }
 
-  if(packet.channel_id === pingChannel.id) {
-    switch (packet.emoji.name) {
+  if(packet.d.channel_id === pingChannel.id) {
+    switch (packet.d.emoji.name) {
       case '📌':
         toggleRole('432633011515949067');
         break;
@@ -78,8 +78,8 @@ module.exports = async (client, packet) => {
     }
   }
 
-  if(packet.channel_id === miscChannel.id) {
-    switch (packet.emoji.name) {
+  if(packet.d.channel_id === miscChannel.id) {
+    switch (packet.d.emoji.name) {
       case '📩':
         toggleRole('444347837560520704');
         break;
@@ -120,7 +120,7 @@ module.exports = async (client, packet) => {
         toggleRole('444346408670330890');
         break;
       case '📙':
-        toggleRole('444340936286273538');
+        toggleRole('444347691619844107');
         break;
     }
   }
