@@ -40,16 +40,34 @@ client.on('message', async message => {
   }
 
   if(message.content === '~we info'){
-    emojiDb.findAll({order: [['count', 'DESC']]}).then(data => {
+    emojiDb.findAll({order: [['count', 'DESC']]}).then(async data => {
       var desc = '';
       for(let emoji of data) {
         desc += `${emoji.dataValues.emoji}: Used **${emoji.dataValues.count}** times\n`;
       }
-      const embed = new Discord.RichEmbed()
-      .setTitle('Emoji Usage Info')
-      .setDescription(desc)
-      .setColor('0x59D851');
+      let desc1 = '';
+      let desc2 = '';
+      if(desc.length >= 2048) {
+          desc1 = desc.substring(0, 2048);
+          desc2 = desc.substring(2049);
+          
+          await message.channel.send(new Discord.RichEmbed()
+            .setTitle('Emoji Usage Info (Page 1)')
+            .setDescription(desc1)
+            .setColor('0x59D851')
+          );
+          await message.channel.send(new Discord.RichEmbed()
+            .setTitle('Emoji Usage Info (Page 2)')
+            .setDescription(desc2)
+            .setColor('0x59D851')
+          );
+      } else {
+        const embed = new Discord.RichEmbed()
+            .setTitle('Emoji Usage Info')
+            .setDescription(desc)
+            .setColor('0x59D851');
       message.channel.send(embed);
+      }
     });
   }
 });
