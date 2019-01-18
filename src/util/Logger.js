@@ -6,7 +6,7 @@ const moment = require('moment');
 const config = require('../config');
 
 exports.log = (content, type = 'log') => {
-  const timestamp = chalk.gray(`[${moment().format('YYYY-MM-DD HH:mm:ss')}]:`);
+  const timestamp = chalk.gray(`[${moment().format('MM/DD/YYYY HH:mm:ss')}]:`);
   switch (type) {
     case 'log': {
       return console.log(`${timestamp} ${chalk.bgBlue(type.toUpperCase())} ${content} `);
@@ -20,6 +20,10 @@ exports.log = (content, type = 'log') => {
     case 'debug': {
       if(!config.debugMode) return;
       return console.log(`${timestamp} ${chalk.white.bgCyan(type.toUpperCase())} ${chalk.italic.gray(content)} `);
+    }
+    case 'verbose': {
+      if(!config.verboseMode) return;
+      return console.log(`${timestamp} ${chalk.white.bgBlack(type.toUpperCase())} ${chalk.italic.gray(content)} `);
     }
     case 'cmd': {
       return console.log(`${timestamp} ${chalk.black.bgWhite(type.toUpperCase())} ${content}`);
@@ -49,3 +53,5 @@ exports.debug = (...args) => this.log(...args, 'debug');
 exports.cmd = (...args) => this.log(...args, 'cmd');
 
 exports.debug = (...args) => this.log(...args, 'debug');
+
+exports.verbose = (...args) => this.log(...args, 'verbose');
