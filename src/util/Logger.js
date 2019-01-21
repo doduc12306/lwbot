@@ -18,12 +18,12 @@ exports.log = (content, type = 'log') => {
       return console.log(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${chalk.red(content)} `);
     }
     case 'debug': {
-      if(!config.debugMode) return;
-      return console.log(`${timestamp} ${chalk.white.bgCyan(type.toUpperCase())} ${chalk.italic.gray(content)} `);
+      if(config.debugMode) return console.log(`${timestamp} ${chalk.white.bgCyan(type.toUpperCase())} ${chalk.italic.gray(content)} `);
+      break;
     }
     case 'verbose': {
-      if(!config.verboseMode) return;
-      return console.log(`${timestamp} ${chalk.white.bgBlack(type.toUpperCase())} ${chalk.italic.gray(content)} `);
+      if(config.verboseMode) return console.log(`${timestamp} ${chalk.white.bgBlack(type.toUpperCase())} ${chalk.italic.gray(content)} `);
+      break;
     }
     case 'cmd': {
       return console.log(`${timestamp} ${chalk.black.bgWhite(type.toUpperCase())} ${content}`);
