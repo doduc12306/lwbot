@@ -1,4 +1,3 @@
-
 const Discord = require('discord.js');
 const moment = require('moment');
 module.exports.run = (client, message, args) => {
@@ -10,12 +9,12 @@ module.exports.run = (client, message, args) => {
       .setColor(role.color === 0 ? client.config.colors.green : role.color)
       .addField('Name', role.name, true)
       .addField('ID', role.id, true)
-      .addField('Created', moment(role.createdAt).format('MMM Do YYYY, h:mm a'))
+      .addField('Created', moment(role.createdAt).format('MMM Do YYYY, h:mm a'), true)
       .addField('Position', `${role.position} (of ${message.guild.roles.size-1})`, true)
       .addField('Members', `${role.members.size} (${role.members.filter(g => g.user.presence.status === 'online').size} online)`, true)
       .addField('Mentionable', role.mentionable ? 'Yes' : 'No', true)
       .addField('Managed', role.managed ? 'Yes' : 'No', true)
-      .addField('Hoisted', role.host ? 'Yes' : 'No', true);
+      .addField('Hoisted', role.hoist ? 'Yes' : 'No', true);
 
     role.color === 0 ? true : embed.addField('Color', '#'+role.color.toString(16), true);
 
