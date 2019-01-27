@@ -31,16 +31,18 @@ exports.run = async (client, message, args, level) => {
     let command = args[0];
     if (client.commands.has(command)) {
       command = client.commands.get(command);
-      if (level < client.levelCache[command.conf.permLevel]) return message.send(':x: You do not have access to this command!');
       let desc = `**Description:** ${command.help.description}\n**Usage:** ${command.help.usage}\n**Required Perm:** ${command.conf.permLevel}\n**Category:** ${command.help.category}`;
 
       if (command.conf.aliases.join(', ')) desc += `\n**Aliases:** ${command.conf.aliases.join(', ')}`;
+
+      if (level < client.levelCache[command.conf.permLevel]) desc += ':x: **You do not have access to this command.**';
 
       const cmdEmbed = new Discord.RichEmbed()
         .setTitle(command.help.name.toProperCase())
         .setDescription(desc)
         .setColor(client.config.colors.green)
-        .setFooter('All <arguments> are required • All [arguments] are optional');
+        .setFooter('<required arguments> | [optional arguments]')
+        .setTimestamp();
 
       message.send(cmdEmbed);
 
