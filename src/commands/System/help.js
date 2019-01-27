@@ -6,7 +6,7 @@ exports.run = async (client, message, args, level) => {
     const prefix = message.guild ? await message.guild.settings.get('prefix') : client.config.defaultSettings.prefix;
 
     // Filter all commands by which are available for the user's level, using the <Collection>.filter() method.
-    const myCommands = message.guild ? client.commands.filter(cmd => client.levelCache[cmd.conf.permLevel] <= level && cmd.conf.enabled) : client.commands.filter(cmd => client.levelCache[cmd.conf.permLevel] <= level && cmd.conf.guildOnly !== true && cmd.conf.enabled);
+    const myCommands = message.guild ? client.commands.filter(cmd => client.levelCache[cmd.conf.permLevel] <= level && cmd.conf.enabled && !cmd.conf.hidden) : client.commands.filter(cmd => client.levelCache[cmd.conf.permLevel] <= level && cmd.conf.guildOnly !== true && cmd.conf.enabled && !cmd.conf.hidden);
 
     // Here we have to get the command names only, and we use that array to get the longest name.
     // This make the help commands "aligned" in the output.
