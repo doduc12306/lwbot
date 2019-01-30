@@ -3,8 +3,9 @@ if (process.version.slice(1).split('.')[0] < 8) throw new Error('Node 8.0.0 or h
 const Discord = require('discord.js');
 
 const { promisify } = require('util');
-const readdir = promisify(require('fs').readdir);
-const fs = require('fs');
+let { readdir, writeFileSync } = require('fs');
+readdir = promisify(readdir);
+writeFileSync = promisify(writeFileSync);
 
 const walk = require('walk');
 
@@ -81,16 +82,16 @@ init();
 // These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
 process.on('uncaughtException', (err) => {
   if (err.stack.trim().includes('at WebSocketConnection.onError')) {
-    client.logger.log('Disconnected! Lost connection to websocket', 'disconnect');
+    client.logger.log('Disconnected! Lost connection to websocket\n'+err.stack, 'disconnect');
     if(client.config.debugMode) return process.exit(1);
-    fs.writeFileSync('./e', 'lost connection to websocket', e => {
+    writeFileSync('./e', 'lost connection to websocket', e => {
       if(e) console.error(e);
       else client.logger.debug('Wrote error log');
     });
   } else {
     client.logger.error(`Uncaught Exception: ${err}`);
     if(client.config.debugMode) return process.exit(1);
-    fs.writeFileSync('./e', err.stack, e => {
+    writeFileSync('./e', err.stack, e => {
       if(e) console.error(e);
       else client.logger.debug('Wrote error log');
     });
