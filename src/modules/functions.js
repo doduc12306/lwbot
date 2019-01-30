@@ -235,9 +235,10 @@ module.exports = (client) => {
   // <Object>.inspect() - shortcut to util.inspect()
   client.inspect = (obj, depth) => {
     if(!obj) throw new Error('No object given to inspect');
-    if(typeof obj !== 'object') throw new TypeError(`"${obj}" is not an object`);
     return require('util').inspect(obj, {depth: typeof depth === 'number' ? depth : 0, colors: true});
   };
+
+  client.verbose = content => client.logger.verbose(content);
 
   // `await client.wait(1000);` to "pause" for 1 second.
   client.wait = require('util').promisify(setTimeout);
