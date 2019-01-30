@@ -31,6 +31,7 @@ module.exports = async client => {
   client.tags.sync();
   client.logger.log(`${client.user.tag} | ${client.users.size} Users | ${client.guilds.size} Guilds | Took ${client.startup}ms`, 'ready');
   if(client.config.debugMode) client.logger.warn('Debug mode enabled');
+  if(client.config.verboseMode) client.logger.warn('Verbose mode enabled');
 
   // Finds if there was an error generated on uncaughtException the last time the bot started up.
   // This is achieved by writing a new file on error, exiting, then on restart, reading the file
