@@ -22,6 +22,7 @@ exports.log = (content, type = 'log') => {
       break;
     }
     case 'verbose': {
+      if(!['string', 'number'].includes(typeof content)) content = require('util').inspect(content, {depth: 0, colors: true});
       if(config.verboseMode) return console.log(`${timestamp} ${chalk.white.bgBlack(type.toUpperCase())} ${chalk.italic.gray(content)} `);
       break;
     }
