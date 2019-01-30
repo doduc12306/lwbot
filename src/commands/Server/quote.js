@@ -26,24 +26,7 @@ module.exports.run = (client, message, args) => {
       })
       .catch(e => {
         if (e.message.includes('Invalid Form Body')) return message.send(':x: **That isn\'t a valid message ID!**');
-        else if (e.message.includes('Unknown Message')) {
-          const channels = message.guild.channels.filter(g => g.type === 'text').array();
-          message.channel.startTyping();
-          for (const channel of channels) {
-            channel.fetchMessage(args[0])
-              .then(msg => {
-                message.channel.stopTyping(true);
-                return message.send(new Discord.RichEmbed()
-                  .setColor(msg.member.displayColor === 0 ? client.config.colors.green : msg.member.displayColor)
-                  .setAuthor(msg.author.tag, msg.author.avatarURL)
-                  .addField('Message', msg.content)
-                  .addField('Jump To Message', `https://discordapp.com/channels/${message.guild.id}/${msg.channel.id}/${msg.id}`)
-                  .setTimestamp(msg.createdTimestamp)
-                );
-              })
-              .catch(() => {});
-          }
-        }
+        else if (e.message.includes('Unknown Message')) return message.send(':x: **That message could not be found in the current channel!**');
         else return message.send(`:x: **Something went wrong during the process, the message could not be fetched.**\n:gear: *Debug information:*\n\`\`\`${e}\`\`\``);
       });
   }
