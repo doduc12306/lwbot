@@ -239,10 +239,15 @@ module.exports = async (client, message) => {
             ? options.code
               ? options.code
               : undefined
+            : undefined,
+          split: options
+            ? options.split
+              ? options.split
+              : undefined
             : undefined
         };
 
-        msg.clearReactions();
+        if(msg.reactions.size > 0) msg.clearReactions();
 
         return resolve(msg.edit(embedC ? '' : content, options)); // If content === object, send (text) nothing. Else, send the content
       });
