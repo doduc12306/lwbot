@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-module.exports.run = (client) => client.users.get(client.config.ownerID).send(new Discord.RichEmbed().setTitle('Invite me to another server!').setDescription(`https://discordapp.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot`).setColor('0x59D851'));
+module.exports.run = (client) => client.users.get(client.config.ownerID).send(new Discord.RichEmbed().setTitle('Invite me to another server!').setDescription(`https://discordapp.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=1610083703&scope=bot`).setColor(client.config.colors.green));
 
 exports.conf = {
   enabled: true,

@@ -59,7 +59,7 @@ exports.conf = {
 
 exports.help = {
   name: 'quote',
-  description: 'Quote a user based on message ID.\nMessage must be in the same channel as command.',
-  usage: 'quote <message ID / member mention>',
+  description: 'Quote a user based on message ID or @mention',
+  usage: 'quote <message ID / @mention>',
   category: 'Server'
 };

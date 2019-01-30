@@ -1,5 +1,15 @@
 if (process.version.slice(1).split('.')[0] < 8) throw new Error('Node 8.0.0 or higher is required. Update Node on your system.');
 
+for (const arg of process.argv) {
+  if (arg.startsWith('-') && !['d', 'v', '-debug', '-verbose'].includes(arg.substring(1))) {
+    console.error('Invalid flag: "'+arg+'"');
+    console.error('Valid flags:');
+    console.error('   -d OR --debug   : Login as Debug Bot');
+    console.error('   -v OR --verbose : Advanced logging');
+    process.exit(1);
+  }
+}
+
 const Discord = require('discord.js');
 
 const { promisify } = require('util');
@@ -69,9 +79,7 @@ const init = async () => {
       client.levelCache[thisLevel.name] = thisLevel.level;
     }
 
-    // Here we login the client.
-    if (client.config.debugMode) client.login(process.env.DEBUG_TOKEN);
-    else client.login(process.env.TOKEN);
+    client.login(client.config.debugMode ? process.env.DEBUG_TOKEN : process.env.TOKEN);
   });
 
 // End top-level async/await function.

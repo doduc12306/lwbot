@@ -15,7 +15,7 @@ module.exports = async client => {
     const serverId = server.split('.sqlite')[0];
     const db = new Sequelize('database', 'username', 'password', {logging: false, host: 'localhost', storage: `databases/servers/${server}`, dialect: 'sqlite'});
     client.logger.verbose(`Opened server ${server}`);
-    if(!server.endsWith('.sqlite')) return client.logger.warn('Non-sqlite file found in databases/servers! File: ' + server);
+    if(!server.endsWith('.sqlite')) return client.logger.error('Non-sqlite file found in databases/servers! File: ' + server);
     if(!/[1-9]+/g.test(server)) client.logger.warn('Non-server file found in databases/servers! File: ' + server);
     const [data] = await db.query('SELECT * FROM \'settings\'');
     const settings = {};
@@ -29,7 +29,6 @@ module.exports = async client => {
   const after = new Date();
   client.startup = after - client.before;
   client.tags.sync();
-  await client.wait(1000);
   client.logger.log(`${client.user.tag} | ${client.users.size} Users | ${client.guilds.size} Guilds | Took ${client.startup}ms`, 'ready');
   if(client.config.debugMode) client.logger.warn('Debug mode enabled');
 
