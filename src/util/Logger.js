@@ -12,10 +12,10 @@ exports.log = (content, type = 'log') => {
       return console.log(`${timestamp} ${chalk.bgBlue(type.toUpperCase())} ${content} `);
     }
     case 'warn': {
-      return console.log(`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${chalk.yellow(content)} `);
+      return console.warn(`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${chalk.yellow(content)} `);
     }
     case 'error': {
-      return console.log(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${chalk.red(content)} `);
+      return console.error(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${chalk.red(content)} `);
     }
     case 'debug': {
       if(config.debugMode) return console.log(`${timestamp} ${chalk.white.bgCyan(type.toUpperCase())} ${chalk.italic.gray(content)} `);
@@ -36,7 +36,7 @@ exports.log = (content, type = 'log') => {
       return console.log(`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${content}`);
     }
     case 'disconnect': {
-      return console.log(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${content} `);
+      return console.warn(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${content} `);
     }
     case 'resume': {
       return console.log(`${timestamp} ${chalk.black.bgGreen(type.toUpperCase())} ${content}`);
