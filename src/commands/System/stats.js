@@ -8,7 +8,7 @@ exports.run = (client, message) => {
     .addField('Guilds', client.guilds.size, true)
     .addField('Users', client.users.size, true)
     .addField('Memory Usage', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`, true)
-    .addField('Uptime', `:robot: ${moment.duration(client.uptime).format('M [months] W [weeks] D [days], H [hours], m [mins], s [secs]')}\n :desktop: ${require('child_process').execSync('uptime -p').toString().split('up')[1].trim()}`, true)
+    .addField('Uptime', `:robot: ${moment.duration(client.uptime).format('M [months] W [weeks] D [days], H [hours], m [mins], s [secs]')} \`|\` :desktop: ${require('child_process').execSync('uptime -p').toString().split('up')[1].trim()}`, true)
     .setColor(client.config.colors.green)
     .setTimestamp()
   );
