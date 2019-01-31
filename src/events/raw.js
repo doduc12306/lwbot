@@ -10,8 +10,8 @@ module.exports = async (client, packet) => {
   const member = guild.members.get(packet.d.user_id);
 
   function toggleRole(role) {
-    if (packet.t === 'MESSAGE_REACTION_ADD') member.addRole(role).then(() => client.verbose(`raw | Added role ${client.roles.get(role).name} (${role}) to ${member.user.tag} (${member.user.id})`)).catch(e => client.verbose(e));
-    if (packet.t === 'MESSAGE_REACTION_REMOVE') member.removeRole(role).then(() => client.verbose(`raw | Removed role ${client.roles.get(role).name} (${role}) from ${member.user.tag} (${member.user.id})`)).catch(e => client.verbose(e));
+    if (packet.t === 'MESSAGE_REACTION_ADD') member.addRole(role).then(() => client.verbose(`raw | Added role ${guild.roles.get(role).name} (${role}) to ${member.user.tag} (${member.user.id})`)).catch(e => client.verbose(e));
+    if (packet.t === 'MESSAGE_REACTION_REMOVE') member.removeRole(role).then(() => client.verbose(`raw | Removed role ${guild.roles.get(role).name} (${role}) from ${member.user.tag} (${member.user.id})`)).catch(e => client.verbose(e));
   }
 
   if(packet.d.channel_id === genreChannel.id) {
