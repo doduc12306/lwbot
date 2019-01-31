@@ -8,7 +8,6 @@ module.exports = async client => {
   setInterval(() => {
     const randomPl = statuses.randomElement();
     client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
-    client.verbose(`status set | Set playing status to ${randomPl[0]}, ${randomPl[1]}`);
   }, 60000);
 
   const servers = await readdir('databases/servers/');
@@ -35,21 +34,17 @@ module.exports = async client => {
   if(client.config.debugMode) client.logger.warn('Debug mode enabled');
   if(client.config.verboseMode) client.logger.warn('Verbose mode enabled');
 
-  await client.wait(5000);
-
   client.verbose(`
 
       ______ ______  _____  _____  _   _    _____  _____   ______   ___   _   _
-      |  ___|| ___ \|  _  ||_   _|| | | |  |_   _||_   _|  |  _  \ / _ \ | \ | |
-      | |_   | |_/ /| | | |  | |  | |_| |    | |    | |    | | | |/ /_\ \|  \| |
+      |  ___|| ___ \\|  _  ||_   _|| | | |  |_   _||_   _|  |  _  \\ / _ \\ | \\ | |
+      | |_   | |_/ /| | | |  | |  | |_| |    | |    | |    | | | |/ /_\\ \\|  \\| |
       |  _|  |    / | | | |  | |  |  _  |    | |    | |    | | | ||  _  || . ' |
-      | |    | |\ \ \ \_/ /  | |  | | | |   _| |_   | |    | |/ / | | | || |\  |
-      \_|    \_| \_| \___/   \_/  \_| |_/   \___/   \_/    |___/  \_| |_/\_| \_/
+      | |    | |\\ \\ \\ \\_/ /  | |  | | | |   _| |_   | |    | |/ / | | | || |\\  |
+      \\_|    \\_| \\_| \\___/   \\_/  \\_| |_/   \\___/   \\_/    |___/  \\_| |_/\\_| \\_/
 
 
   `);
-
-
 
   // Finds if there was an error generated on uncaughtException the last time the bot started up.
   // This is achieved by writing a new file on error, exiting, then on restart, reading the file
