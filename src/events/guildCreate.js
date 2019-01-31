@@ -22,6 +22,11 @@ module.exports = async (client, guild) => {
   }, {timestamps: false});
   await guildTable.sync();
 
+  await guild.settings.findOrCreate({ where: { key: 'systemNotice' }, defaults: { value: 'true' } });
+  await guild.settings.findOrCreate({ where: { key: 'prefix' }, defaults: { value: '!w ' } });
+  await guild.settings.findOrCreate({ where: { key: 'capsWarnEnabled' }, defaults: { value: 'false' } });
+  await guild.settings.findOrCreate({ where: { key: 'capsThreshold' }, defaults: { value: '70' } });
+  await guild.settings.findOrCreate({ where: { key: 'staffBypassesLimits' }, defaults: { value: 'true' } });
   await guild.settings.findOrCreate({ where: { key: 'modLogChannel' }, defaults: { value: 'mod_logs' } });
   await guild.settings.findOrCreate({ where: { key: 'modRole' }, defaults: { value: 'Mods' } });
   await guild.settings.findOrCreate({ where: { key: 'adminRole' }, defaults: { value: 'Admins' } });
@@ -40,19 +45,21 @@ module.exports = async (client, guild) => {
   let voiceErrored = false;
   let mutedRoleCreateError = false;
 
-  let role = await guild.roles.find(role => role.name === 'Muted');
-  if(role === null) {
-    role = await guild.roles.find(role => role.name === 'muted');
-    if(role === null) {
-      role = await guild.createRole({name: 'Muted', color: 'ORANGE'}, 'Initial Setup Process: Created role to add channel permissions with').catch(() => mutedRoleCreateError = true);
-    }
-  }
+  let role = await guild.roles.find(g => g.name.toLowerCase() === 'muted');
+  client.verbose(client.inspect(role));
+  if(role === null) role = await guild.createRole({name: 'Muted', color: 'DARK_ORANGE', position: guild.me.highestRole.position - 1}, 'Guild setup!')
+    .then(() => client.verbose(`guildCreate | Created muted role in ${guild.name} (${guild.id})`))
+    .catch(e => {mutedRoleCreateError = true; client.verbose(e);});
 
   await guild.channels.filter(g => g.type === 'text').forEach(channel => {
-    channel.overwritePermissions(role, {SEND_MESSAGES: false, ADD_REACTIONS: false}, 'Initial Setup Process').catch(() => textErrored = true);
+    channel.overwritePermissions(role, {SEND_MESSAGES: false, ADD_REACTIONS: false}, 'Initial Setup Process')
+      .then(() => client.verbose(`guildCreate | Wrote permissions for text channel #${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`))
+      .catch(e => {client.verbose(e); textErrored = true;});
   });
   await guild.channels.filter(g => g.type === 'voice').forEach(channel => {
-    channel.overwritePermissions(role, {CONNECT: false, SPEAK: false}, 'Inital Setup Process').catch(() => voiceErrored = true);
+    channel.overwritePermissions(role, {CONNECT: false, SPEAK: false}, 'Inital Setup Process')
+      .then(() => client.verbose(`guildCreate | Wrote permissions for voice channel ${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`))
+      .catch(e => {client.verbose(e); voiceErrored = true;});
   });
 
   if(mutedRoleCreateError) {

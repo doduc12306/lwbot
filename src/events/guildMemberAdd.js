@@ -1,5 +1,6 @@
 // This event executes when a new member joins a server. Let's welcome them!
 module.exports = async (client, member) => {
+  client.verbose(`guildMemberAdd | ${member}`);
   if(member.user.bot) return;
   let welcomeEnabled;
   await member.guild.settings.get('welcomeEnabled').then(value => welcomeEnabled = value).catch(e => client.logger.error(e));

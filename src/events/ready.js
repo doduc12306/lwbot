@@ -7,6 +7,7 @@ module.exports = async client => {
   setInterval(() => {
     const randomPl = statuses.randomElement();
     client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
+    client.verbose(`status set | Set playing status to ${randomPl[0]}, ${randomPl[1]}`);
   }, 60000);
 
   const servers = await readdir('databases/servers/');
@@ -14,16 +15,16 @@ module.exports = async client => {
   await Promise.all(servers.map(async (server) => {
     const serverId = server.split('.sqlite')[0];
     const db = new Sequelize('database', 'username', 'password', {logging: false, host: 'localhost', storage: `databases/servers/${server}`, dialect: 'sqlite'});
-    client.logger.verbose(`Opened server ${server}`);
+    client.verbose(`Opened server ${server}`);
     if(!server.endsWith('.sqlite')) return client.logger.error('Non-sqlite file found in databases/servers! File: ' + server);
-    if(!/[1-9]+/g.test(server)) client.logger.warn('Non-server file found in databases/servers! File: ' + server);
+    if(!/\d+/g.test(server)) client.logger.warn('Non-server file found in databases/servers! File: ' + server);
     const [data] = await db.query('SELECT * FROM \'settings\'');
     const settings = {};
     data.forEach(({ key, value }) => {
       settings[key] = value;
     });
     client.settings.set(serverId, settings);
-    client.logger.verbose(`Mapped settings for ${server}`);
+    client.verbose(`Mapped settings for ${server}`);
   }));
 
   const after = new Date();
