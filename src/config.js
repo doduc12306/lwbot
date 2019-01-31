@@ -12,6 +12,7 @@ const config = {
   // [ 2018.10.28 ] TOKENS REGENERATED - don't even try, commit lurkers
 
   'debugMode': process.argv.includes('-d') || process.argv.includes('--debug'),
+  'verboseMode': process.argv.includes('-v') || process.argv.includes('--verbose'),
 
   // Default per-server settings. New guilds have these settings.
 
@@ -25,7 +26,10 @@ const config = {
     'welcomeChannel': 'welcome',
     'welcomeMessage': 'Welcome to the server, {{user}}!',
     'announcementsChannel': 'announcements',
-    'botCommanderRole': 'Bot Commander'
+    'botCommanderRole': 'Bot Commander',
+    'ownerRole': 'Owners',
+    'capsThreshold': '70', // (70%), not 70 or more characters.
+    'staffBypassesLimits': 'true'
   },
 
   // COLORS
@@ -83,7 +87,7 @@ const config = {
         } catch (e) {return false;}
       }
     },
-    
+
     // This is the server owner, or if they have an Owner role, since a lot of servers have multiple owners.
     { level: 5,
       name: 'Server Owner',
