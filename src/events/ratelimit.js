@@ -1,7 +1,11 @@
 module.exports = (client, rateLimitInfo) => {
-  client.logger.error('Ratelimited!');
-  console.error(rateLimitInfo);
-  client.logger.error('Process will shut down now.');
-  if(process.env._pm2_version) return require('child_process').exec('pm2 stop LWBot');
-  else process.exit(1);
+  client.logger.warn(`RATELIMITED!
+  ______   ___   _____  _____  _      _____ ___  ___ _____  _____  _____ ______
+  | ___ \\ / _ \\ |_   _||  ___|| |    |_   _||  \\/  ||_   _||_   _||  ___||  _  \\
+  | |_/ // /_\\ \\  | |  | |__  | |      | |  | .  . |  | |    | |  | |__  | | | |
+  |    / |  _  |  | |  |  __| | |      | |  | |\\/| |  | |    | |  |  __| | | | |
+  | |\\ \\ | | | |  | |  | |___ | |____ _| |_ | |  | | _| |_   | |  | |___ | |/ /
+  \\_| \\_|\\_| |_/  \\_/  \\____/ \\_____/ \\___/ \\_|  |_/ \\___/   \\_/  \\____/ |___/
+  `);
+  console.warn(rateLimitInfo);
 };
