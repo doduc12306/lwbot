@@ -6,14 +6,6 @@ module.exports = async (client, message) => {
   if (message.author.bot) return;
   require('../modules/msgfunctions.js')(client, message);
 
-  if (message.channel.type !== 'dm') {
-    if (!client.xpLockSet.has(message.author.id)) {
-      message.guild.xp.add(message.author.id, Math.floor(Math.random() * (Math.floor(2) - Math.ceil(1) + 1)) + Math.ceil(1)); // Adds either 1 or 2 xp ...
-      client.xpLockSet.add(message.author.id);
-      setTimeout(() => client.xpLockSet.delete(message.author.id), 60000); // ... per minute.
-    }
-  }
-
   let capsWarnEnabled = client.config.defaultSettings.capsWarnEnabled;
   if (!message.guild) capsWarnEnabled = client.config.defaultSettings.capsWarnEnabled;
   else {
@@ -46,6 +38,14 @@ module.exports = async (client, message) => {
       if(staffBypassesLimits === 'true');
       else { message.delete(); message.send(emsg).then(msg => msg.delete(6000)); }
     } else { message.delete(); message.send(emsg).then(msg => msg.delete(6000)); }
+  }
+
+  if (message.channel.type !== 'dm') {
+    if (!client.xpLockSet.has(message.author.id)) {
+      message.guild.xp.add(message.author.id, Math.floor(Math.random() * (Math.floor(2) - Math.ceil(1) + 1)) + Math.ceil(1)); // Adds either 1 or 2 xp ...
+      client.xpLockSet.add(message.author.id);
+      setTimeout(() => client.xpLockSet.delete(message.author.id), 60000); // ... per minute.
+    }
   }
 
   let prefix = client.config.defaultSettings.prefix;
