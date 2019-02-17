@@ -4,7 +4,11 @@
 
 module.exports = async (client, message) => {
   if (message.author.bot) return;
-  require('../modules/msgfunctions.js')(client, message);
+
+  require('../modules/message/settings.js')(client, message);
+  require('../modules/message/xp.js')(client, message);
+  require('../modules/message/misc.js')(client, message);
+  require('../modules/client/protos.js')(client);
 
   let capsWarnEnabled = client.config.defaultSettings.capsWarnEnabled;
   if (!message.guild) capsWarnEnabled = client.config.defaultSettings.capsWarnEnabled;
