@@ -1,4 +1,4 @@
-module.exports.statuses = [
+module.exports = client => [
   /* Playing */
   ['with Shin-Ae', { type: 'PLAYING' }],
   ['with James', { type: 'PLAYING' }],
@@ -17,7 +17,6 @@ module.exports.statuses = [
   ['Adobe Illustrator', { type: 'PLAYING' }],
   ['Fire Alpaca', { type: 'PLAYING' }],
   ['for the money', { type: 'PLAYING' }],
-  ['YAAAASSSSS', { type: 'PLAYING' }],
   ['with my code', { type: 'PLAYING' }],
   ['with time', { type: 'PLAYING' }],
   ['in space', { type: 'PLAYING' }],
@@ -26,16 +25,10 @@ module.exports.statuses = [
   ['with the ratelimit ;)', { type: 'PLAYING' }],
   ['with the Podcast crew', { type: 'PLAYING' }],
   ['[status]', { type: 'PLAYING' }],
+  ['TODO: Add witty status', { type: 'PLAYING' }],
   ['[object Object]', { type: 'PLAYING' }],
   ['against the clock', { type: 'PLAYING' }],
-  ['Error 301: Moved Permanently', { type: 'PLAYING' }],
-  ['Error 400: Bad Request', { type: 'PLAYING' }],
-  ['Error 403: Forbidden', { type: 'PLAYING' }],
   ['Error 404: Not Found', { type: 'PLAYING' }],
-  ['Error 418: I\'m a teapot', { type: 'PLAYING' }],
-  ['Error 500: Internal Server Error', { type: 'PLAYING' }],
-  ['Error 502: Bad Gateway', { type: 'PLAYING' }],
-  ['Error 503: Service Unavailble', { type: 'PLAYING' }],
   ['with your ships', { type: 'PLAYING' }],
   ['Monopoly', { type: 'PLAYING' }],
   ['with life in a box', { type: 'PLAYING' }],
@@ -58,17 +51,22 @@ module.exports.statuses = [
   ['with Chris McCoy @ Safely Endangered', { type: 'PLAYING' }],
   [' ', { type: 'PLAYING' }],
   ['nothing.. b-baka!! (つω⊂* ) Why do you care?? Hmph! (/□＼*)・゜', { type: 'PLAYING' }],
+  ['hl3_beta-B1', { type: 'PLAYING' }],
+  [`with ${client.users.size} users!`, { type: 'PLAYING' }],
+  [`with ${client.guilds.size} servers!`, { type: 'PLAYING' }],
 
   /* Watching */
   ['Netflix', { type: 'WATCHING' }],
   ['you', { type: 'WATCHING' }],
   ['you sleep', { type: 'WATCHING' }],
-  ['nothing.. b-baka!! (つω⊂* ) Why do you care?? Hmph! (/□＼*)・゜', { type: 'WATCHING' }],
+  [`${client.users.size} users...`, { type: 'WATCHING' }],
+  [`${client.guilds.size} servers...`, { type: 'WATCHING' }],
+  [`${client.channels.size} channels...`, { type: 'WATCHING' }],
 
   /* Listening to */
   ['Spotify', { type: 'LISTENING' }],
   ['your conversations-- I mean what', { type: 'LISTENING' }],
-  ['nothing.. b-baka!! (つω⊂* ) Why do you care?? Hmph! (/□＼*)・゜', { type: 'LISTENING' }]
+  [`${client.users.size} users-- wait I'm not allowed to oops`, { type: 'WATCHING' }]
 ];
 
-module.exports.statuses.enabled = true;
+module.exports.enabled = true;
