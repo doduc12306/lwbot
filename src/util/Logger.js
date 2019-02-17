@@ -18,12 +18,12 @@ exports.log = (content, type = 'log') => {
       return console.error(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${chalk.red(content)} `);
     }
     case 'debug': {
-      if(config.debugMode) return console.log(`${timestamp} ${chalk.white.bgCyan(type.toUpperCase())} ${chalk.italic.gray(content)} `);
+      if(config.debugMode) return console.log(`${timestamp} ${chalk.white.bgCyan(type.toUpperCase())} ${chalk.gray(content)} `);
       break;
     }
     case 'verbose': {
       if(!['string', 'number'].includes(typeof content)) content = require('util').inspect(content, {depth: 0, colors: true});
-      if(config.verboseMode) return console.log(`${timestamp} ${chalk.white.bgBlack(type.toUpperCase())} ${chalk.italic.gray(content)} `);
+      if(config.verboseMode) return console.log(`${timestamp} ${chalk.white.bgBlack(type.toUpperCase())} ${chalk.gray(content)} `);
       break;
     }
     case 'cmd': {
