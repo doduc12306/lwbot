@@ -55,10 +55,10 @@ const config = {
 
     { level: 2,
       name: 'Moderator',
-      check: (message) => {
+      check: member => {
         try {
-          const modRole = message.guild.roles.find(r => r.name.toLowerCase() === message.client.settings.get(message.guild.id).modRole.toLowerCase());
-          if (modRole && message.member.roles.has(modRole.id)) return true;
+          const modRole = member.guild.roles.find(r => r.name.toLowerCase() === member.user.client.settings.get(member.guild.id).modRole.toLowerCase());
+          if (modRole && member.roles.has(modRole.id)) return true;
         } catch (e) {
           return false;
         }
@@ -67,10 +67,10 @@ const config = {
 
     { level: 3,
       name: 'Administrator',
-      check: (message) => {
+      check: member => {
         try {
-          const adminRole = message.guild.roles.find(r => r.name.toLowerCase() === message.client.settings.get(message.guild.id).adminRole.toLowerCase());
-          return ((adminRole && message.member.roles.has(adminRole.id)) || message.member.permissions.has('ADMINISTRATOR'));
+          const adminRole = member.guild.roles.find(r => r.name.toLowerCase() === member.user.client.settings.get(member.guild.id).adminRole.toLowerCase());
+          return ((adminRole && member.roles.has(adminRole.id)) || member.permissions.has('ADMINISTRATOR'));
         } catch (e) {
           return false;
         }
@@ -80,10 +80,10 @@ const config = {
     {
       level: 4,
       name: 'Bot Commander',
-      check: (message) => {
+      check: member => {
         try{
-          const bcRole = message.guild.roles.find(r => r.name.toLowerCase() === message.client.settings.get(message.guild.id).botCommanderRole.toLowerCase());
-          return (bcRole && message.member.roles.has(bcRole.id));
+          const bcRole = member.guild.roles.find(r => r.name.toLowerCase() === member.user.client.settings.get(member.guild.id).botCommanderRole.toLowerCase());
+          return (bcRole && member.roles.has(bcRole.id));
         } catch (e) {return false;}
       }
     },
@@ -91,11 +91,11 @@ const config = {
     // This is the server owner, or if they have an Owner role, since a lot of servers have multiple owners.
     { level: 5,
       name: 'Server Owner',
-      check: (message) => {
-        if(message.channel.type !== 'text') return false;
-        if(message.guild.owner.user.id !== message.author.id) {
-          const ownerRole = message.guild.roles.find(r => r.name.toLowerCase() === message.client.settings.get(message.guild.id).ownerRole.toLowerCase());
-          return (ownerRole && message.member.roles.has(ownerRole.id));
+      check: member => {
+        if(!member.guild) return false;
+        if(member.guild.owner.user.id !== member.user.id) {
+          const ownerRole = member.guild.roles.find(r => r.name.toLowerCase() === member.user.client.settings.get(member.guild.id).ownerRole.toLowerCase());
+          return (ownerRole && member.roles.has(ownerRole.id));
         } else return true;
       }
     },
@@ -104,13 +104,13 @@ const config = {
     // to any server they joins, in order to help troubleshoot the bot on behalf of owners.
     { level: 8,
       name: 'Bot Support',
-      check: (message) => config.support.includes(message.author.id)
+      check: member => config.support.includes(member.user.id)
     },
 
     // Bot Admin has some limited access like rebooting the bot or reloading commands.
     { level: 9,
       name: 'Bot Admin',
-      check: (message) => config.admins.includes(message.author.id)
+      check: member => config.admins.includes(member.user.id)
     },
 
     // This is the bot owner, this should be the highest permission level available.
@@ -119,7 +119,7 @@ const config = {
     { level: 10,
       name: 'Bot Owner',
       // Another simple check, compares the message author id to the one stored in the config file.
-      check: (message) => message.client.config.ownerID === message.author.id
+      check: member => member.user.client.config.ownerID === member.user.id
     }
   ]
 };
