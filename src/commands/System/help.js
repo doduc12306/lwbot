@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 
-exports.run = async (client, message, args, level) => {
+exports.run = async (client, message, args) => {
+  const level = client.permlevel(message.member);
   // If no specific command is called, show all filtered commands.
   if (!args[0]) {
     const prefix = message.guild ? await message.guild.settings.get('prefix') : client.config.defaultSettings.prefix;
