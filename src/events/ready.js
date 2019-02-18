@@ -17,9 +17,8 @@ module.exports = async client => {
 
   const statuses = require('../util/statuses')(client);
   setInterval(() => {
-    if (statuses.enabled) {
-      const randomPl = statuses.randomElement();
-      client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);}
+    const randomPl = statuses.randomElement();
+    client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
   }, 60000);
 
   const servers = await readdir('databases/servers/');
