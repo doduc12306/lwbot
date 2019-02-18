@@ -3,15 +3,22 @@ const Discord = require('discord.js');
 require('moment-duration-format');
 
 exports.run = (client, message) => {
-  message.send(new Discord.RichEmbed()
+  const embed = new Discord.RichEmbed()
     .setTitle('`Statistics`')
     .addField('Guilds', client.guilds.size, true)
     .addField('Users', client.users.size, true)
     .addField('Memory Usage', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`, true)
-    .addField('Uptime', `:robot: ${moment.duration(client.uptime).format('M [months] W [weeks] D [days], H [hours], m [mins], s [secs]')} \`|\` :desktop: ${require('child_process').execSync('uptime -p').toString().split('up')[1].trim()}`, true)
     .setColor(client.config.colors.green)
-    .setTimestamp()
-  );
+    .setTimestamp();
+
+  const CU = moment.duration(client.uptime).format('M [months] W [weeks] D [days], H [hours], m [mins], s [seconds]'); // CU = client uptime
+
+  if(require('os').platform() === 'darwin') embed.addField('Uptime', `:robot: : ${CU} | :desktop: : ${require('child_process').execSync('uptime').toString().split('load averages')[0]}`, true);
+  else embed.addField('Uptime:', `:robot: : ${CU} | :desktop: : ${require('child_process').execSync('uptime -p').toString().split('up')[1]}`, true);
+
+  if(client.config.verboseMode) embed.addField('Verbose Benchmarks', JSON.stringify(message.benchmarks));
+
+  message.send(embed);
 };
 
 exports.conf = {
