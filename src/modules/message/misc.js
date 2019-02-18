@@ -39,7 +39,6 @@ module.exports = async (client, message) => {
           } else return reject(new Error(e));
         });
 
-
       if(!client.msgCmdHistory.has(message.id)) {
         if (options) return message.channel.send(content, options).then(msg => {
           client.msgCmdHistory[message.id] = msg.id;
