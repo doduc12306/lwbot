@@ -33,6 +33,7 @@ const client = new Discord.Client({
 client.config = require('./config.js');
 client.logger = require('./util/Logger');
 require('./modules/client/misc.js')(client);
+require('./modules/client/protos.js')(client);
 
 client.commands = new Enmap();
 client.aliases = new Enmap();
@@ -55,7 +56,6 @@ const init = async () => {
 
     client.loadCommand(cmdPath, fileStats.name);
     next();
-
   });
 
   cmdFiles.on('end', async () => {
@@ -67,7 +67,6 @@ const init = async () => {
       const eventName = file.split('.')[0];
       const event = require(`./events/${file}`);
       client.on(eventName, event.bind(null, client));
-      delete require.cache[require.resolve(`./events/${file}`)];
       await client.logger.log(`Loaded ${file}`);
     });
     await client.logger.log('All events finished loading!');
