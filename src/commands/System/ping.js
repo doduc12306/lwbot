@@ -19,7 +19,7 @@ module.exports.run = (client, message) => {
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: [],
+  aliases: ['pong', 'p', 'pnig', '🏓'],
   permLevel: 'User',
   requiresEmbed: true
 };
