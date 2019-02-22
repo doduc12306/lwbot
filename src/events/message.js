@@ -10,6 +10,7 @@ module.exports = async (client, message) => {
   if (message.channel.type !== 'dm') require('../modules/message/settings.js')(client, message);
   require('../modules/message/xp.js')(client, message);
   require('../modules/message/misc.js')(client, message);
+  require('../modules/message/commands.js')(client, message);
   message.benchmarks['RequireBenchmark'] = new Date() - a;
 
   let capsWarnEnabled = client.config.defaultSettings.capsWarnEnabled;
@@ -77,6 +78,18 @@ module.exports = async (client, message) => {
   const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
   message.benchmarks['CmdGetterBenchmark'] = new Date() - a;
 
+  let cmdInDb;
+  if (message.guild) {
+    await message.guild.commands.findOne({ where: { command: cmd.conf.name } }).then(data => {
+      if(!data) cmdInDb === null;
+      else {
+        data.dataValues.enabled = data.dataValues.enabled === '1' ? true : false;
+        cmdInDb = data.dataValues;
+      }
+    });
+  }
+  message.benchmarks['CmdInDbGetterBenchmark'] = new Date() - a;
+
   const systemNotice = message.guild
     ? client.settings.get(message.guild.id)['systemNotice']
     : client.config.defaultSettings.systemNotice;
@@ -86,8 +99,13 @@ module.exports = async (client, message) => {
   // and clean way to grab one of 2 values!
   if (!cmd) return message.send(`:x: **That isn't one of my commands!** Try \`${prefix}help\``);
 
-  if(!cmd.conf.enabled && systemNotice === 'true' && message.author.id !== client.config.ownerID) return message.send(`:x: **The command** \`${cmd}\` **is currently disabled.**`);
-  message.benchmarks['CmdEnabledBenchmark'] = new Date() - a;
+  if ((!cmdInDb || !cmd.conf.enabled) && message.author.id !== client.config.ownerID) return message.send(':x: **That command is disabled globally by the developer!**');
+  else {
+    if(!cmdInDb.enabled) {
+      if(systemNotice === 'true') message.send(':x: **This command is disabled for the server!**');
+      return;
+    }
+  }
 
   // Some commands may not be useable in DMs. This check prevents those commands from running
   // and return a friendly error message.
@@ -104,9 +122,6 @@ module.exports = async (client, message) => {
   if (cmd.conf.requiresEmbed && message.guild && !message.guild.me.permissionsIn(message.channel).serialize()['EMBED_LINKS'])
     return message.send(':x: **This command requires `Embed Links`, which I don\'t have!**');
   message.benchmarks['EmbedCheckBenchmark'] = new Date() - a;
-
-  client.tags.sync();
-  message.benchmarks['TagsSyncBenchmark'] = new Date() - a;
 
   // If the command exists, **AND** the user has permission, run it.
   client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name} in ${message.guild.name} (${message.guild.id})`);
@@ -132,5 +147,16 @@ module.exports = async (client, message) => {
     message.guild.settings.findOrCreate({ where: { key: 'capsThreshold' }, defaults: { value: '70' } });
 
     message.guild.settings.findOrCreate({ where: { key: 'staffBypassesLimits' }, defaults: { value: 'true' } });
+
+    message.guild.settings.sync();
+
+    for (const command of client.commands.filter(g => g.conf.enabled)) {
+      const folder = client.folder.get(command[0]);
+      const enabled = command[1].conf.enabled;
+      const permLevel = command[1].conf.permLevel;
+
+      await message.guild.commands.findOrCreate({ where: { command: command[0] }, defaults: { folder: folder, enabled: enabled, permLevel: permLevel } });
+    }
+    message.guild.commands.sync();
   }
 };

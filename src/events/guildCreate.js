@@ -22,21 +22,13 @@ module.exports = async (client, guild) => {
   }, {timestamps: false});
   await guildTable.sync();
 
-  await guild.settings.findOrCreate({ where: { key: 'systemNotice' }, defaults: { value: 'true' } });
-  await guild.settings.findOrCreate({ where: { key: 'prefix' }, defaults: { value: '!w ' } });
-  await guild.settings.findOrCreate({ where: { key: 'capsWarnEnabled' }, defaults: { value: 'false' } });
-  await guild.settings.findOrCreate({ where: { key: 'capsThreshold' }, defaults: { value: '70' } });
-  await guild.settings.findOrCreate({ where: { key: 'staffBypassesLimits' }, defaults: { value: 'true' } });
-  await guild.settings.findOrCreate({ where: { key: 'modLogChannel' }, defaults: { value: 'mod_logs' } });
-  await guild.settings.findOrCreate({ where: { key: 'modRole' }, defaults: { value: 'Mods' } });
-  await guild.settings.findOrCreate({ where: { key: 'adminRole' }, defaults: { value: 'Admins' } });
-  await guild.settings.findOrCreate({ where: { key: 'welcomeEnabled' }, defaults: { value: 'true' } });
-  await guild.settings.findOrCreate({ where: { key: 'welcomeChannel' }, defaults: { value: 'welcome' } });
-  await guild.settings.findOrCreate({ where: { key: 'welcomeMessage' }, defaults: { value: 'Welcome to the server, {{user}}!' } });
-  await guild.settings.findOrCreate({ where: { key: 'announcementChannel' }, defaults: { value: 'announcements' } });
-  await guild.settings.findOrCreate({ where: { key: 'botCommanderRole' }, defaults: { value: 'Bot Commander' } });
-  await guild.settings.findOrCreate({ where: { key: 'ownerRole'}, defaults: { value: 'Owners' } });
+  const settings = {};
+  for(const setting of Object.entries(client.config.defaultSettings)) {
+    await guild.settings.findOrCreate({ where: { key: setting[0] }, defaults: { value: setting[1] } });
+    settings[setting[0]] = setting[1];
+  }
   guildTable.sync();
+  client.settings.set(guild.id, settings);
 
   if (!guild.me.permissions.has('SEND_MESSAGES')) guild.owner.send(':x: **CRITICAL PERMISSION MISSING:** `Send Messages` **WHICH EVERYTHING REQUIRES!**');
   if (!guild.me.permissions.has('EMBED_LINKS')) guild.owner.send(':x: **CRITICAL PERMISSION MISSING:** `Embed Links` **WHICH EVERYTHING REQUIRES!**');
@@ -46,21 +38,26 @@ module.exports = async (client, guild) => {
   let mutedRoleCreateError = false;
 
   let role = await guild.roles.find(g => g.name.toLowerCase() === 'muted');
-  client.verbose(client.inspect(role));
-  if(role === null) role = await guild.createRole({name: 'Muted', color: 'DARK_ORANGE', position: guild.me.highestRole.position - 1}, 'Guild setup!')
-    .then(() => client.verbose(`guildCreate | Created muted role in ${guild.name} (${guild.id})`))
-    .catch(e => {mutedRoleCreateError = true; client.verbose(e);});
+  if(role === null) {role = await guild.createRole({name: 'Muted', color: 'DARK_ORANGE', position: guild.me.highestRole.position - 1}, 'Guild Create | Guild setup!')
+    .then(role => {client.verbose(`guildCreate | Created muted role in ${guild.name} (${guild.id})`); owPerms(role);})
+    .catch(e => {mutedRoleCreateError = true; client.verbose(e);});}
+  else {owPerms(role);}
 
-  await guild.channels.filter(g => g.type === 'text').forEach(channel => {
-    channel.overwritePermissions(role, {SEND_MESSAGES: false, ADD_REACTIONS: false}, 'Initial Setup Process')
-      .then(() => client.verbose(`guildCreate | Wrote permissions for text channel #${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`))
-      .catch(e => {client.verbose(e); textErrored = true;});
-  });
-  await guild.channels.filter(g => g.type === 'voice').forEach(channel => {
-    channel.overwritePermissions(role, {CONNECT: false, SPEAK: false}, 'Inital Setup Process')
-      .then(() => client.verbose(`guildCreate | Wrote permissions for voice channel ${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`))
-      .catch(e => {client.verbose(e); voiceErrored = true;});
-  });
+  async function owPerms(role) {
+    await guild.channels.filter(g => g.type === 'text').forEach(channel => {
+      if (guild.me.permissionsIn(channel).serialize()['MANAGE_ROLES']) {channel.overwritePermissions(role, { SEND_MESSAGES: false, ADD_REACTIONS: false }, 'Initial Setup Process')
+        .then(() => client.verbose(`guildCreate | Wrote permissions for text channel #${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`))
+        .catch(e => { client.verbose(e); textErrored = true; });}
+      else client.logger.verbose(`guildCreate | Tried to write permissions to text channel #${channel.name} (${channel.id}) in ${guild.name} (${guild.id}), but I'm missing the MANAGE_ROLES permission.`);
+    });
+    await guild.channels.filter(g => g.type === 'voice').forEach(channel => {
+      if (guild.me.permissionsIn(channel).serialize()['MANAGE_ROLES']) {
+        channel.overwritePermissions(role, { CONNECT: false, SPEAK: false }, 'Inital Setup Process')
+          .then(() => client.verbose(`guildCreate | Wrote permissions for voice channel ${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`))
+          .catch(e => { client.verbose(e); voiceErrored = true; });}
+      else client.logger.verbose(`guildCreate | Tried to write permissions to voice channel ${channel.name} (${channel.id}) in ${guild.name} (${guild.id}), but I'm missing the MANAGE_ROLES permission.`);
+    });
+  }
 
   if(mutedRoleCreateError) {
     let msg = ':x: **Something went wrong during my setup process.**\n`-` I was unable to create a Muted role.';
@@ -68,5 +65,34 @@ module.exports = async (client, guild) => {
     if(voiceErrored) msg += '\n`-` I was unable to disallow the Muted role from talking in voice channels.';
     msg += '\n\n**Please re-invite me.** When you invite me, please make sure I have all the permissions indicated on the invite page.';
     guild.owner.send(msg);
+  }
+
+  guild.commands = await guildTable.define('commands', {
+    command: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      unique: true
+    },
+    folder: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    enabled: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false
+    },
+    permLevel: {
+      type: Sequelize.STRING,
+      allowNull: false
+    }
+  }, { timestamps: false });
+  await guildTable.sync();
+
+  for (const command of client.commands.filter(g => g.conf.enabled)) {
+    const folder = client.folder.get(command[0]);
+    const enabled = command[1].conf.enabled;
+    const permLevel = command[1].conf.permLevel;
+
+    await guild.commands.findOrCreate({ where: { command: command[0] }, defaults: { folder: folder, enabled: enabled, permLevel: permLevel } });
   }
 };
