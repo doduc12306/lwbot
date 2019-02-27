@@ -1,5 +1,5 @@
 exports.run = async (client, message, args) => {
-  if (!args[0]) return message.send(':x: You didn\'t give me a command to reload!');
+  if (!args[0]) return message.send(':x: You didn\'t give me a command/file to reload!');
   if (args[0] === 'file') {
     try {
       let toReload = args[1];
@@ -11,10 +11,12 @@ exports.run = async (client, message, args) => {
       return message.send(`:x: \`${err}\``);
     }
   } else {
-    let response = await client.unloadCommand(args[0]);
+    const cmd = client.commands.get(args[0]) || client.commands.get(client.aliases.get(args[0]));
+    if(!cmd) return message.send(`:x: \`|\` \`${args[0]}\` **does not exist!**`);
+    let response = await client.unloadCommand(cmd.help.name);
     if (response) return message.send(`:x: **Error Unloading:** ${response}`);
 
-    response = client.loadCommand(client.folder.get(args[0]), args[0]);
+    response = client.loadCommand(client.folder.get(cmd.help.name), cmd.help.name);
     if (response) return message.send(`:x: **Error Loading:** \`${response}\``);
 
     message.send(`:white_check_mark: **Reloaded** \`${args[0]}\``);
