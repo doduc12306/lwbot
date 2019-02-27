@@ -9,17 +9,17 @@ module.exports.run = async (client, message) => {
     const embed = new Discord.RichEmbed()
       .setColor(client.config.colors.green);
     for (const values of data) {
-      if(data.indexOf(values) === 0) {
+      if (data.indexOf(values) === 0) {
         if (message.guild.members.get(values.dataValues.user) === undefined) embed.addField(':crown: `[User Left]`', `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
         else embed.addField(`:crown: ${message.guild.members.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
-      } else if(data.indexOf(values) === 1) {
+      } else if (data.indexOf(values) === 1) {
         if (message.guild.members.get(values.dataValues.user) === undefined) embed.addField(':second_place: `[User Left]`', `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
         else embed.addField(`:second_place: ${message.guild.members.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
-      } else if(data.indexOf(values) === 2) {
+      } else if (data.indexOf(values) === 2) {
         if (message.guild.members.get(values.dataValues.user) === undefined) embed.addField(':third_place: `[User Left]`', `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
         else embed.addField(`:third_place: ${message.guild.members.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
       }
-      if(data.indexOf(values) <= 9 && data.indexOf(values) >= 3) {
+      if (data.indexOf(values) <= 9 && data.indexOf(values) >= 3) {
         if (message.guild.members.get(values.dataValues.user) === undefined) embed.addField(`#${data.indexOf(values) + 1} \`[User Left]\``, `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
         else embed.addField(`#${data.indexOf(values) + 1} ${message.guild.members.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${undefined}`);
       }
@@ -29,8 +29,8 @@ module.exports.run = async (client, message) => {
 };
 
 exports.conf = {
-  enabled: true,
-  permLevel: 'Bot Owner',
+  enabled: false,
+  permLevel: 'User',
   guildOnly: true,
   aliases: ['leaderboard', 'xplevels', 'xpleaderboard'],
   requiresEmbed: true

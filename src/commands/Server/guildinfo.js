@@ -9,12 +9,12 @@ module.exports.run = (client, message) => {
 
     let guildIcon;
     //If the guild icon is empty, sets guildIcon to owner's avatar
-    if (message.guild.iconURL) {guildIcon = message.guild.iconURL;}
-    else {guildIcon = message.guild.owner.user.avatarURL;}
+    if (message.guild.iconURL) { guildIcon = message.guild.iconURL; }
+    else { guildIcon = message.guild.owner.user.avatarURL; }
 
     let emotes;
     //Goes with the emote parsing
-    const emoteInfo = message.guild.emojis.map(e=>e.toString()).join(' ');
+    const emoteInfo = message.guild.emojis.map(e => e.toString()).join(' ');
     //Checks to see if the total character count of all the emojis combined is ≥ 1024
     if (emoteInfo.length >= 1024) {
       emotes = `${message.guild.emojis.size} emotes`;
@@ -23,7 +23,7 @@ module.exports.run = (client, message) => {
       emotes = 'None';
       //Sets emotes to all of the emojis, and they get printed in the embed field
     } else {
-      emotes = message.guild.emojis.map(e=>e.toString()).join(' ');
+      emotes = message.guild.emojis.map(e => e.toString()).join(' ');
     }
 
     //You can probably tell what this is by looking at the var name
@@ -31,32 +31,32 @@ module.exports.run = (client, message) => {
 
     //Pretty-ifies the region
     let region;
-    if (message.guild.region === 'us-east') {region = '<:regionFlagUSA:393889521449566208> Eastern USA';}
-    else if (message.guild.region === 'brazil') {region = '<:regionFlagBrazil:393889521177198602> Brazil';}
-    else if (message.guild.region === 'eu-central') {region = '<:regionFlagEurope:393889521155964929> Central Europe';}
-    else if (message.guild.region === 'hongkong') {region = '<:regionFlagHongKong:393889521134993409> Hong Kong';}
-    else if (message.guild.region === 'japan') {region = '<:regionFlagJapan:393889521487577109> Japan';}
-    else if (message.guild.region === 'russia') {region = '<:regionFlagRussia:393889521009295371> Russia';}
-    else if (message.guild.region === 'singapore') {region = '<:regionFlagSingapore:393889521608949781> Singapore';}
-    else if (message.guild.region === 'sydney') {region = '<:regionFlagSydney:393889521374068746> Sydney';}
-    else if (message.guild.region === 'us-central') {region = '<:regionFlagUSA:393889521449566208> Central USA';}
-    else if (message.guild.region === 'us-south') {region = '<:regionFlagUSA:393889521449566208> Southern USA';}
-    else if (message.guild.region === 'us-west') {region = '<:regionFlagUSA:393889521449566208> Western USA';}
-    else if (message.guild.region === 'eu-west') {region = '<:regionFlagEurope:393889521155964929> Western Europe';}
-    else {region = '<:regionFlagWumpus:393900238244675606> Wumpus Land (Unknown / Error)';}
+    if (message.guild.region === 'us-east') { region = '<:regionFlagUSA:393889521449566208> Eastern USA'; }
+    else if (message.guild.region === 'brazil') { region = '<:regionFlagBrazil:393889521177198602> Brazil'; }
+    else if (message.guild.region === 'eu-central') { region = '<:regionFlagEurope:393889521155964929> Central Europe'; }
+    else if (message.guild.region === 'hongkong') { region = '<:regionFlagHongKong:393889521134993409> Hong Kong'; }
+    else if (message.guild.region === 'japan') { region = '<:regionFlagJapan:393889521487577109> Japan'; }
+    else if (message.guild.region === 'russia') { region = '<:regionFlagRussia:393889521009295371> Russia'; }
+    else if (message.guild.region === 'singapore') { region = '<:regionFlagSingapore:393889521608949781> Singapore'; }
+    else if (message.guild.region === 'sydney') { region = '<:regionFlagSydney:393889521374068746> Sydney'; }
+    else if (message.guild.region === 'us-central') { region = '<:regionFlagUSA:393889521449566208> Central USA'; }
+    else if (message.guild.region === 'us-south') { region = '<:regionFlagUSA:393889521449566208> Southern USA'; }
+    else if (message.guild.region === 'us-west') { region = '<:regionFlagUSA:393889521449566208> Western USA'; }
+    else if (message.guild.region === 'eu-west') { region = '<:regionFlagEurope:393889521155964929> Western Europe'; }
+    else { region = '<:regionFlagWumpus:393900238244675606> Wumpus Land (Unknown / Error)'; }
 
     //Verification level checker
     let verification;
 
-    if (message.guild.verificationLevel === 0) {verification = 'None';}
-    else if (message.guild.verificationLevel === 1) {verification = 'Low';}
-    else if (message.guild.verificationLevel === 2) {verification = 'Medium';}
-    else if (message.guild.verificationLevel === 3) {verification = '(╯°□°）╯︵ ┻━┻ (High: 10 minutes on server)';}
-    else if (message.guild.verificationLevel === 4) {verification = '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻ (Extreme: Verified phone)';}
+    if (message.guild.verificationLevel === 0) { verification = 'None'; }
+    else if (message.guild.verificationLevel === 1) { verification = 'Low'; }
+    else if (message.guild.verificationLevel === 2) { verification = 'Medium'; }
+    else if (message.guild.verificationLevel === 3) { verification = '(╯°□°）╯︵ ┻━┻ (High: 10 minutes on server)'; }
+    else if (message.guild.verificationLevel === 4) { verification = '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻ (Extreme: Verified phone)'; }
 
     // embed color
     let color = message.guild.me.displayColor;
-    if(message.guild.me.displayColor === 0) color = '0x59D851';
+    if (message.guild.me.displayColor === 0) color = '0x59D851';
 
     //The actual message
     message.send(new Discord.RichEmbed()
