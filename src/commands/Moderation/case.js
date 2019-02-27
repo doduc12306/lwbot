@@ -8,7 +8,7 @@ module.exports.run = async (client, message, args) => {
   if(!id) return message.send(':x: **You didn\'t give me the case number to look up!**');
 
   const log = await message.guild.modbase.findOne({where: { id: id }});
-  if(log === null) return message.send(`:x: **I couldn't find case** \`${id}\`!`);
+  if(!log) return message.send(`:x: **I couldn't find case** \`${id}\`!`);
 
   const victim = client.users.get(log.dataValues.victim);
   const moderator = client.users.get(log.dataValues.moderator);

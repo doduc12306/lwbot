@@ -38,7 +38,7 @@ module.exports = async (client, guild) => {
   let mutedRoleCreateError = false;
 
   let role = await guild.roles.find(g => g.name.toLowerCase() === 'muted');
-  if(role === null) {role = await guild.createRole({name: 'Muted', color: 'DARK_ORANGE', position: guild.me.highestRole.position - 1}, 'Guild Create | Guild setup!')
+  if(!role) {role = await guild.createRole({name: 'Muted', color: 'DARK_ORANGE', position: guild.me.highestRole.position - 1}, 'Guild Create | Guild setup!')
     .then(role => {client.verbose(`guildCreate | Created muted role in ${guild.name} (${guild.id})`); owPerms(role);})
     .catch(e => {mutedRoleCreateError = true; client.verbose(e);});}
   else {owPerms(role);}

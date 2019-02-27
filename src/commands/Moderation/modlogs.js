@@ -12,7 +12,7 @@ module.exports.run = (client, message) => {
     if(logs.length === 0) return message.send(embed.setDescription('No logs found'));
     if(logs.length <= 9) {
       for (const data of logs) {
-        const reason = data.dataValues.reason === null ? 'No reason given' : data.dataValues.reason;
+        const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
         const mod = message.guild.members.get(data.dataValues.moderator).user
           ? message.guild.members.get(data.dataValues.moderator).user
           : client.users.get(data.dataValues.moderator)
@@ -32,7 +32,7 @@ module.exports.run = (client, message) => {
         .setTitle(`Modlogs for ${user.tag} | Page ${curPage}/${Math.ceil(logs.length / 9)}`);
 
       for(const data of logs) {
-        const reason = data.dataValues.reason === null ? 'No reason given' : data.dataValues.reason;
+        const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
         const mod = message.guild.members.get(data.dataValues.moderator).user
           ? message.guild.members.get(data.dataValues.moderator).user
           : client.users.get(data.dataValues.moderator)
@@ -65,7 +65,7 @@ module.exports.run = (client, message) => {
 
               for(const data of logs) {
                 if(logs.indexOf(data) < min) continue;
-                const reason = data.dataValues.reason === null ? 'No reason given' : data.dataValues.reason;
+                const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
                 const mod = message.guild.members.get(data.dataValues.moderator).user
                   ? message.guild.members.get(data.dataValues.moderator).user
                   : client.users.get(data.dataValues.moderator)
@@ -98,7 +98,7 @@ module.exports.run = (client, message) => {
               for(const data of logs) {
                 const index = logs.indexOf(data);
                 if(index < min) continue;
-                const reason = data.dataValues.reason === null ? 'No reason given' : data.dataValues.reason;
+                const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
                 const mod = message.guild.members.get(data.dataValues.moderator).user
                   ? message.guild.members.get(data.dataValues.moderator).user
                   : client.users.get(data.dataValues.moderator)

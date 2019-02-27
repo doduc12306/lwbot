@@ -165,25 +165,25 @@ function parseChannel(data, outputType) {
   let channelObj;
   let parsedChannel;
   return new Promise((resolve, reject) => {
-    if (!data || data === null) return reject(new TypeError('No data given to parse channel information'));
+    if (!data) return reject(new TypeError('No data given to parse channel information'));
 
     if (typeof data === 'string') {
       parsedChannel = curServer.channels.get(data);
-      if (parsedChannel === undefined || parsedChannel === null) {
+      if (!parsedChannel) {
         parsedChannel = curServer.channels.find(channel => channel.name === data);
-        if (parsedChannel === undefined || parsedChannel === null) return reject(new Error('[String Parse] Channel not found'));
+        if (!parsedChannel) return reject(new Error('[String Parse] Channel not found'));
         else channelObj = parsedChannel;
       } else channelObj = parsedChannel;
     }
 
     else if (typeof data === 'object') {
       parsedChannel = curServer.channels.get(data.id);
-      if (parsedChannel === undefined || parsedChannel === null) return reject(new Error('[Object Parse] Channel not found'));
+      if (!parsedChannel) return reject(new Error('[Object Parse] Channel not found'));
       else channelObj = parsedChannel;
     }
     else { return reject(new Error(`Data ("${data}") could not be parsed into a channel. Must be either string or object.`)); }
 
-    if (!outputType || outputType === null) return resolve(channelObj);
+    if (!outputType) return resolve(channelObj);
     else if (outputType.toLowerCase() === 'id') return resolve(channelObj.id);
     else if (outputType.toLowerCase() === 'name') return resolve(channelObj.name);
     else return reject(new TypeError('Unknown output type; must be "id" or "name"'));
@@ -194,7 +194,7 @@ function parseGuild(data, outputType) {
   let parsedGuild;
   let guildObj;
   return new Promise((resolve, reject) => {
-    if (!data || data === null) return reject(new TypeError('No data given to parse guild information'));
+    if (!data) return reject(new TypeError('No data given to parse guild information'));
     if(typeof data !== 'string') return reject(new TypeError('Data must be a string'));
 
     parsedGuild = client.guilds.get(data);
@@ -204,7 +204,7 @@ function parseGuild(data, outputType) {
       else guildObj = parsedGuild;
     } else guildObj = parsedGuild;
 
-    if (!outputType || outputType === null) return resolve(guildObj);
+    if (!outputType) return resolve(guildObj);
     else if (outputType.toLowerCase() === 'id') return resolve(guildObj.id);
     else if (outputType.toLowerCase() === 'name') return resolve(guildObj.name);
     else return reject(new TypeError('Unknown output type; must be "id" or "name"'));

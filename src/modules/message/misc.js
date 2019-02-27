@@ -61,7 +61,7 @@ module.exports = async (client, message) => {
         let role = message.guild.roles.get(data);
         if(role === undefined) {
           role = message.guild.roles.find(r => r.name.toLowerCase().includes(data.toLowerCase()));
-          if(role === null) throw new Error('I couldn\'t find that role! ');
+          if(!role) throw new Error('I couldn\'t find that role! ');
           else return role;
         } else return role;
       } else {
@@ -75,7 +75,7 @@ module.exports = async (client, message) => {
         let user = client.users.get(data);
         if(user === undefined) {
           user = client.users.find(r => (r.username.toLowerCase().includes(data.toLowerCase()) || r.tag.toLowerCase() === data.toLowerCase()));
-          if(user === null) throw new Error('I couldn\'t find that user!');
+          if(!user) throw new Error('I couldn\'t find that user!');
           else return user;
         } else return user;
       } else {
@@ -90,7 +90,7 @@ module.exports = async (client, message) => {
         let member = message.guild.members.get(data);
         if(member === undefined) {
           member = message.guild.members.find(r => (r.user.username.toLowerCase().includes(data.toLowerCase()) || r.user.tag.toLowerCase() === data.toLowerCase()));
-          if (member === null) throw new Error('I couldn\'t find that member!');
+          if (!member) throw new Error('I couldn\'t find that member!');
           else return member;
         } else return member;
       } else {
@@ -106,7 +106,7 @@ module.exports = async (client, message) => {
         if(channel === undefined) {
           if(data.startsWith('#')) data = data.split('#')[1];
           channel = message.guild.channels.find(r => r.name.includes(data));
-          if (channel === null) throw new Error('I couldn\'t find that channel!');
+          if (!channel) throw new Error('I couldn\'t find that channel!');
           else return channel;
         } else return channel;
       } else {

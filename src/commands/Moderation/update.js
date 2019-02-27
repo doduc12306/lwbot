@@ -5,7 +5,7 @@ module.exports.run = async (client, message, args) => {
   if (!id) return message.send(':x: **You didn\'t give the ID of a case to update!**');
 
   const log = await message.guild.modbase.findOne({ where: { id: id } });
-  if (log === null) return message.send(`:x: **I couldn't find case** \`${id}\`!`);
+  if (!log) return message.send(`:x: **I couldn't find case** \`${id}\`!`);
   if (!reason) return message.send(':x: **You didn\'t give a new reason!**');
 
   message.guild.modbase.update({ reason: reason }, { where: { id: id } }).then(() => {

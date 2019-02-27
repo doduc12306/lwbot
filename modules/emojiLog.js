@@ -33,7 +33,7 @@ client.on('message', async message => {
     for (let emoji of message.content.match(/<:[A-z1-9]+:\d+>/gi)) {
       if(!client.guilds.get('381192127050153993').emojis.has(emoji.substring(emoji.indexOf(':', 2) + 1, emoji.length - 1))) return;
       emojiDb.findOne({where: {emoji: emoji}}).then(async data => {
-        if(data === null) await emojiDb.create({emoji: emoji, count: 1});
+        if(!data) await emojiDb.create({emoji: emoji, count: 1});
         else emojiDb.update({count: data.dataValues.count + 1}, {where: {emoji: emoji}})
       });
     }
@@ -50,7 +50,7 @@ client.on('message', async message => {
       if(desc.length >= 2048) {
           desc1 = desc.substring(0, 2048);
           desc2 = desc.substring(2049);
-          
+
           await message.channel.send(new Discord.RichEmbed()
             .setTitle('Emoji Usage Info (Page 1)')
             .setDescription(desc1)

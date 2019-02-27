@@ -23,7 +23,7 @@ module.exports = client => {
 
   client.bank.add = (userID, amount) => {
     client.bank.findOne({ where: { user: userID } }).then(async user => {
-      if (user === null) {
+      if (!user) {
         await client.bank.create({ user: userID, balance: 1000 });
         await client.bank.update({ balance: user.balance + amount }, { where: { user: userID } });
         client.bank.sync();
@@ -37,7 +37,7 @@ module.exports = client => {
 
   client.bank.subtract = (userID, amount) => {
     client.bank.findOne({ where: { user: userID } }).then(async user => {
-      if (user === null) {
+      if (!user) {
         await client.bank.create({ user: userID, balance: 1000 });
         await client.bank.update({ balance: user.balance - amount }, { where: { user: userID } });
         client.bank.sync();
@@ -51,7 +51,7 @@ module.exports = client => {
 
   client.bank.set = (userID, amount) => {
     client.bank.findOne({ where: { user: userID } }).then(async user => {
-      if (user === null) {
+      if (!user) {
         await client.bank.create({ user: userID, balance: 1000 });
         await client.bank.update({ balance: amount }, { where: { user: userID } });
         client.bank.sync();
@@ -66,7 +66,7 @@ module.exports = client => {
   client.bank.get = async userID => {
     return new Promise((resolve) => {
       client.bank.findOne({ where: { user: userID } }).then(async user => {
-        if (user === null) {
+        if (!user) {
           await client.bank.create({ user: userID, balance: 1000 });
         }
         resolve(user.balance);

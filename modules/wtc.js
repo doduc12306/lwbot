@@ -73,7 +73,7 @@ client.on('message', async message => {
     let role = content[0].substring(8).trim();
     if(!role) return message.channel.send(':x: `|` **You didn\'t give the name of a role to ping!**');
     role = message.guild.roles.find(role => role.name === role);
-    if(role === null) return message.channel.send(':x: `|` **I could not find that role!**');
+    if(!role) return message.channel.send(':x: `|` **I could not find that role!**');
 
     if(role.position >= message.guild.me.highestRole.position) return message.channel.send(`:x: \`|\` \`${role.name}\` **is too high for me!** (Move it below my role)`);
 

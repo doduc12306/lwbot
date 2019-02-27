@@ -53,7 +53,7 @@ module.exports = (client, message) => {
       if (!key) return reject(new Error('Missing key to delete'));
       if (typeof key !== 'string') return reject(new TypeError(`"${key}" is not a string`));
       message.guild.settings.findOne({ where: { key: key } }).then(data => {
-        if (data === null) return reject(new Error(`The key "${key}" does not exist to delete`));
+        if (!data) return reject(new Error(`The key "${key}" does not exist to delete`));
         delete client.settings.get(message.guild.id)[key];
         message.guild.settings.destroy({ where: { key: key } });
         return resolve(true);
@@ -75,7 +75,7 @@ module.exports = (client, message) => {
       if (typeof newValue !== 'string') return reject(new TypeError(`"${newValue}" is not a string`));
 
       message.guild.settings.findOne({ where: { key: key } }).then(data => {
-        if (data === null) return reject(new Error(`The key "${key}" does not exist to edit`));
+        if (!data) return reject(new Error(`The key "${key}" does not exist to edit`));
         client.settings.get(message.guild.id)[key] = newValue;
         message.guild.settings.update({ value: newValue }, { where: { key: key } });
         return resolve(true);
@@ -94,7 +94,7 @@ module.exports = (client, message) => {
       if (typeof key !== 'string') return reject(new TypeError(`"${key}" is not a string`));
 
       message.guild.settings.findOne({ where: { key: key } }).then(data => {
-        if (data === null) return reject(new Error(`"${key}" does not exist to get`));
+        if (!data) return reject(new Error(`"${key}" does not exist to get`));
         return resolve(data.value);
       });
     });
