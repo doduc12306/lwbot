@@ -80,12 +80,9 @@ module.exports = async (client, message) => {
 
   let cmdInDb;
   if (message.guild) {
-    await message.guild.commands.findOne({ where: { command: cmd.conf.name } }).then(data => {
+    await message.guild.commands.findOne({ where: { command: cmd.help.name } }).then(data => {
       if(!data) cmdInDb === null;
-      else {
-        data.dataValues.enabled = data.dataValues.enabled === '1' ? true : false;
-        cmdInDb = data.dataValues;
-      }
+      else cmdInDb = data.dataValues;
     });
   }
   message.benchmarks['CmdInDbGetterBenchmark'] = new Date() - a;
