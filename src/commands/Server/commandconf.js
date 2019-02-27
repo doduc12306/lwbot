@@ -44,7 +44,9 @@ module.exports.run = async (client, message, [option, command, ...permlevel]) =>
       break;
     }
     case 'setperm': {
-      if (!permlevel || !['User', 'Moderator', 'Administrator', 'Bot Commander', 'Server Owner'].includes(permlevel)) return message.send(':x: `|` :gear: **Invalid permission level!** Accepted values: `User`, `Moderator`, `Administrator`, `Bot Commander`, or `Server Owner`'); // Type validation
+      if(!permlevel) return message.send(':x: `|` **You didn\'t give me a perm level to set the command to!**');
+      if(!client.levelCache[permlevel]) return message.send(`:x: \`|\` \`${permlevel}\` **is not recognized as a valid permission level!**`);
+      if(client.levelCache[permlevel] > client.permlevel(message.member)) return message.send(`:x: \`|\` **You cannot set** \`${command}\` **to** \`${permlevel}\`**!** Doing so would remove your access.`);
 
       message.guild.commands.update({ permLevel: permlevel }, { where: { command: command } })
         .then(() => message.send(`:white_check_mark: \`|\` :gear: \`${command}\`**'s permission level has been updated to ${permlevel}.**`))
