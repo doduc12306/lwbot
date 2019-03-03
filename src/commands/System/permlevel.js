@@ -1,5 +1,5 @@
 exports.run = async (client, message) => {
-  const level = client.permlevel(message.member);
+  const level = message.guild ? client.permlevel(message.member) : () => { return message.send('**You are in DMs.** Your permission level is assumed 0 - User'); };
   const friendly = client.config.permLevels.find(l => l.level === level).name;
   message.send(`Your permission level is: ${level} - ${friendly}`);
 };
