@@ -10,7 +10,7 @@ module.exports = async (client, message) => {
   if (message.channel.type !== 'dm') require('../modules/message/settings.js')(client, message);
   require('../modules/message/xp.js')(client, message);
   require('../modules/message/misc.js')(client, message);
-  require('../modules/message/commands.js')(client, message);
+  if (message.channel.type !== 'dm') require('../modules/message/commands.js')(client, message);
   message.benchmarks['RequireBenchmark'] = new Date() - a;
 
   let capsWarnEnabled = client.config.defaultSettings.capsWarnEnabled;
@@ -78,23 +78,24 @@ module.exports = async (client, message) => {
   const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
   message.benchmarks['CmdGetterBenchmark'] = new Date() - a;
 
+  if (!cmd) return message.send(`:x: **That isn't one of my commands!** Try \`${prefix}help\``);
+
   let cmdInDb;
   if (message.guild) {
     await message.guild.commands.findOne({ where: { command: cmd.help.name } }).then(data => {
       if(!data) cmdInDb === null;
       else cmdInDb = data.dataValues;
     });
-  }
+  } else cmdInDb = {
+    enabled: cmd.conf.enabled,
+    permLevel: cmd.conf.permLevel
+  };
   message.benchmarks['CmdInDbGetterBenchmark'] = new Date() - a;
 
   const systemNotice = message.guild
     ? client.settings.get(message.guild.id)['systemNotice']
     : client.config.defaultSettings.systemNotice;
   message.benchmarks['SystemNoticeBenchmark'] = new Date() - a;
-
-  // using this const varName = thing OR otherthing; is a pretty efficient
-  // and clean way to grab one of 2 values!
-  if (!cmd) return message.send(`:x: **That isn't one of my commands!** Try \`${prefix}help\``);
 
   if ((!cmdInDb || !cmd.conf.enabled) && message.author.id !== client.config.ownerID) return message.send(':x: **That command is disabled globally by the developer!**');
   else {
@@ -109,22 +110,22 @@ module.exports = async (client, message) => {
   if (cmd && !message.guild && cmd.conf.guildOnly) return message.send(':x: **This command cannot be run in DM\'s.**');
   message.benchmarks['CmdDmsBenchmark'] = new Date() - a;
 
-  if (level < client.levelCache[cmd.conf.permLevel]) {
-    if (systemNotice === 'true') {
-      return message.send(`:x: You do not have permission to use this command.\nYour permission level is ${level} (${client.config.permLevels.find(l => l.level === level).name})\nThis command requires level ${client.levelCache[cmd.conf.permLevel]} (${cmd.conf.permLevel})`);
-    } else return;
+  if(client.levelCache[cmdInDb.permLevel] > level) {
+    if (systemNotice === 'true') message.send(':x: **You do not have permission to use this command!**');
+    return;
   }
-  message.benchmarks['PermCheckBenchmark'] = new Date() - a;
+  message.benchmarks['DbPermCheckBenchmark'] = new Date() - a;
 
   if (cmd.conf.requiresEmbed && message.guild && !message.guild.me.permissionsIn(message.channel).serialize()['EMBED_LINKS'])
     return message.send(':x: **This command requires `Embed Links`, which I don\'t have!**');
   message.benchmarks['EmbedCheckBenchmark'] = new Date() - a;
 
   // If the command exists, **AND** the user has permission, run it.
-  client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name} in ${message.guild.name} (${message.guild.id})`);
+  client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name} ${message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs'}`);
   await cmd.run(client, message, args, level);
   message.benchmarks['CmdRunBenchmark'] = new Date() - a;
   message.benchmarks['TOTAL_BENCHMARK'] = new Date() - a;
+  client.logger.verbose(message.benchmarks);
 
   // Other server database checks
   if (message.guild) {
