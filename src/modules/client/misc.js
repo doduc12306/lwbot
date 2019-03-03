@@ -12,6 +12,8 @@ module.exports = (client) => {
 
   */
   client.permlevel = member => {
+    if (!member.guild) return 0; // If the member given isn't in a guild (for DMs) return 0 - User for the permlevel
+
     let permlvl = 0;
 
     const permOrder = client.config.permLevels.slice(0).sort((p, c) => p.level < c.level ? 1 : -1);
@@ -26,6 +28,7 @@ module.exports = (client) => {
     }
     return permlvl;
   };
+  client.permLevel = member => { return client.permlevel(member); }; // An alias just in case I mess up permlevel casing
 
   /*
   SINGLE-LINE AWAITMESSAGE
@@ -63,7 +66,7 @@ module.exports = (client) => {
     if (text && text.constructor.name == 'Promise')
       text = await text;
     if (typeof evaled !== 'string')
-      text = require('util').inspect(text, {depth: 0});
+      text = require('util').inspect(text, { depth: 0 });
 
     text = text
       .replace(/`/g, '`' + String.fromCharCode(8203))
@@ -112,8 +115,8 @@ module.exports = (client) => {
 
   // <Object>.inspect() - shortcut to util.inspect()
   client.inspect = (obj, depth) => {
-    if(!obj) throw new Error('No object given to inspect');
-    return require('util').inspect(obj, {depth: typeof depth === 'number' ? depth : 0, colors: true});
+    if (!obj) throw new Error('No object given to inspect');
+    return require('util').inspect(obj, { depth: typeof depth === 'number' ? depth : 0, colors: true });
   };
 
   client.verbose = content => client.logger.verbose(content);
