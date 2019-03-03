@@ -125,7 +125,6 @@ module.exports = async (client, message) => {
   await cmd.run(client, message, args, level);
   message.benchmarks['CmdRunBenchmark'] = new Date() - a;
   message.benchmarks['TOTAL_BENCHMARK'] = new Date() - a;
-  client.logger.verbose(message.benchmarks);
 
   // Other server database checks
   if (message.guild) {
@@ -152,8 +151,16 @@ module.exports = async (client, message) => {
       const folder = client.folder.get(command[0]);
       const enabled = command[1].conf.enabled;
       const permLevel = command[1].conf.permLevel;
-
-      await message.guild.commands.findOrCreate({ where: { command: command[0] }, defaults: { folder: folder, enabled: enabled, permLevel: permLevel } });
+      
+      await message.guild.commands.findOrCreate({ where: { command: command[0], permLevel: permLevel }, defaults: { folder: folder, enabled: enabled } })
+        .catch(async e => {
+          if(e.name === 'SequelizeUniqueConstraintError') {
+            await message.guild.commands.destroy({ where: { command: command[0] }});
+            await message.guild.commands.create({ command: command[0], permLevel: permLevel, folder: folder, enabled: enabled });
+            message.guild.commands.sync();
+          }
+          else client.logger.error(e);
+        });
     }
     message.guild.commands.sync();
   }
