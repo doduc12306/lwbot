@@ -1,0 +1,86 @@
+/* eslint-disable */
+const aki = require('aki-api');
+const { RichEmbed } = require('discord.js');
+module.exports.run = async (client, message, args) => {
+  aki.start('en', (resolve, err) => {
+    if (err) { message.send(`:x: **Sorry!** There was some error when starting the game. Please try again later.`); client.logger.error(err); }
+    else {
+      // START THE GAME
+
+      var region = 'en';
+      var session = resolve.session;
+      var signature = resolve.signature;
+      var step = 0;
+
+      var reactionsObject = {
+        '✅': 0, // Yes
+        '❌': 1, // No
+        '🤷': 2, // Don't Know
+        '👍': 3, // Probably
+        '👎': 4  // Probably Not
+      }
+
+      message.send(new RichEmbed()
+        .setColor(client.config.colors.green)
+        .setTitle(resolve.question)
+        .setDescription(':white_check_mark: **Yes** | :x: **No** | :shrug: **Don\'t Know** | :thumbsup: **Probably** | :thumbsdown: **Probably Not**')
+        .setFooter('React with 🛑 to stop')
+      ).then(async msg => {
+
+        await msg.react('✅');
+        await msg.react('❌');
+        await msg.react('🤷');
+        await msg.react('👍');
+        await msg.react('👎');
+
+        const filter = (reaction, user) => ['✅', '❌', '🤷', '👍', '👎', '🛑'].includes(reaction.emoji.name) && user.id === message.author.id;
+        const collector = msg.createReactionCollector(filter)
+          .on('collect', async g => {
+            if (['✅', '❌', '🤷', '👍', '👎'].includes(g._emoji.name)) {
+              aki.step(region, session, signature, reactionsObject[g._emoji.name], step, (res, error) => {
+                console.log(res.progress);
+                console.log(`Region: ${region}\nSession: ${session}\nSignature: ${signature}\n0\nStep: ${step}`);
+                //if (error) { message.send(':x: **There was an error.** Game ended.'); client.logger.error(error); return collector.emit('end'); }
+                if (parseInt(res.progress) >= 98) {
+                  return aki.win(region, session, signature, step, (resolve, e) => {
+                    console.log(resolve);
+                    //if (e) { message.send(':x: **There was an error.** Game ended.'); client.logger.error(error); return collector.emit('end'); }
+                    msg.edit(new RichEmbed()
+                      .setColor(client.config.colors.green)
+                      .addField('I guess...', `**${resolve.answers[0].name}!** | ${resolve.answers[0].description}`)
+                      .setImage(resolve.answers[0].absolute_picture_path)
+                    );
+                  });
+                }
+                step++;
+                msg.edit(new RichEmbed()
+                  .setColor(client.config.colors.green)
+                  .setTitle(res.nextQuestion)
+                  .setDescription(':white_check_mark: **Yes** | :x: **No** | :shrug: **Don\'t Know** | :thumbsup: **Probably** | :thumbsdown: **Probably Not**')
+                  .setFooter('React with 🛑 to stop')
+                );
+              });
+              msg.reactions.get(g._emoji.name).remove(message.author);
+            } else if (g._emoji.name === '🛑') { collector.emit('end'); }
+            else msg.reactions.get(g._emoji.name).remove(message.author);
+          })
+          .on('end', () => msg.clearReactions());
+
+      });
+    }
+  });
+};
+
+exports.conf = {
+  enabled: false,
+  permLevel: 'User',
+  aliases: ['aki'],
+  guildOnly: false
+};
+
+exports.help = {
+  name: 'akinator',
+  description: 'Play a game of Akinator!',
+  usage: 'akinator',
+  category: 'Fun'
+};
