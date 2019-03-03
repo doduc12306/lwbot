@@ -15,7 +15,7 @@ exports.run = async (client, message, args) => {
     const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
 
     let currentCategory = '';
-    let output = `[Use ${prefix}help <commandname> for details]\n`;
+    let output = `[Use ${prefix}help <command> for details]\n`;
     const sorted = myCommands.array().sort((p, c) => p.help.category > c.help.category ? 1 : p.help.name > c.help.name && p.help.category === c.help.category ? 1 : -1);
     sorted.forEach(c => {
       const cat = c.help.category;
@@ -25,6 +25,7 @@ exports.run = async (client, message, args) => {
       }
       output += `${prefix}${c.help.name}${' '.repeat(longest - c.help.name.length)} :: ${c.help.description}\n`;
     });
+    if(message.channel.type === 'dm') output += `\n\n(Run ${prefix}help in a guild to see more commands!)`;
     await message.react('✅');
     await message.author.send(output, { code: 'asciidoc', split: true });
   } else {
