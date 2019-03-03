@@ -44,13 +44,13 @@ module.exports.run = async (client, message, [option, command, ...permlevel]) =>
       break;
     }
     case 'setperm': {
-      if(!permlevel) return message.send(':x: `|` :gear: **You didn\'t give me a perm level to set the command to!**');
       permlevel = permlevel.join(' ');
-      if(!client.levelCache[permlevel]) return message.send(`:x: \`|\` :gear: \`${permlevel}\` **is not recognized as a valid permission level!**`);
+      if(!permlevel || permlevel === '') return message.send(':x: `|` :gear: **You didn\'t give me a perm level to set the command to!**');
+      if(![0, 1, 2, 3, 4, 5, 8, 9, 10].includes(client.levelCache[permlevel])) return message.send(`:x: \`|\` :gear: \`${permlevel}\` **is not recognized as a valid permission level!**`);
       if(client.levelCache[permlevel] > client.permlevel(message.member)) return message.send(`:x: \`|\` :gear: **You cannot set** \`${command}\` **to** \`${permlevel}\`**!** Doing so would remove your access.`);
 
       message.guild.commands.update({ permLevel: permlevel }, { where: { command: command } })
-        .then(() => message.send(`:white_check_mark: \`|\` :gear: \`${command}\`**'s permission level has been updated to ${permlevel}.**`))
+        .then(() => message.send(`:white_check_mark: \`|\` :gear: \`${command}\`**'s permission level has been updated to** \`${permlevel}\`**.**`))
         .catch(e => {
           message.send(`:x: \`|\` :gear: \`${command}\`**'s permission level could not be changed.** Please try again later.`);
           client.logger.error(e);
