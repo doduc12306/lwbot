@@ -23,7 +23,7 @@ module.exports.run = (client, message) => {
     // TODO: Change this ^ so that it's more styled.. actually show the slot items in the message
     // TODO: Include the specialGood and specialBad in the if statements
   } catch (err) {
-    message.send(`:x: ${err}`);
+    message.send(`❌ ${err}`);
   }
 };
 

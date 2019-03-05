@@ -15,9 +15,9 @@ module.exports.run = async (client, message, args) => {
       } else {
         try {
           const { body } = await post('https://www.hastebin.com/documents').send(out);
-          message.send(`:x: **Output too long, uploaded to hastebin:** https://www.hastebin.com/${body.key}.js `);
+          message.send(`❌ **Output too long, uploaded to hastebin:** https://www.hastebin.com/${body.key}.js `);
         } catch (error) {
-          message.send(`:x: **Hastebin upload error:** \`${error.name}\`\n\`\`\`\n${error.message}\n\`\`\``);
+          message.send(`❌ **Hastebin upload error:** \`${error.name}\`\n\`\`\`\n${error.message}\n\`\`\``);
         }
       }
     });

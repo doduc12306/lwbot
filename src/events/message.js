@@ -78,7 +78,7 @@ module.exports = async (client, message) => {
   const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
   message.benchmarks['CmdGetterBenchmark'] = new Date() - a;
 
-  if (!cmd) return message.send(`:x: **That isn't one of my commands!** Try \`${prefix}help\``);
+  if (!cmd) return message.send(`❌ **That isn't one of my commands!** Try \`${prefix}help\``);
 
   let cmdInDb;
   if (message.guild) {
@@ -97,27 +97,27 @@ module.exports = async (client, message) => {
     : client.config.defaultSettings.systemNotice;
   message.benchmarks['SystemNoticeBenchmark'] = new Date() - a;
 
-  if ((!cmdInDb || !cmd.conf.enabled) && message.author.id !== client.config.ownerID) return message.send(':x: **That command is disabled globally by the developer!**');
+  if ((!cmdInDb || !cmd.conf.enabled) && message.author.id !== client.config.ownerID) return message.send('❌ **That command is disabled globally by the developer!**');
   else {
     if(!cmdInDb.enabled) {
-      if(systemNotice === 'true') message.send(':x: **This command is disabled for the server!**');
+      if(systemNotice === 'true') message.send('❌ **This command is disabled for the server!**');
       return;
     }
   }
 
   // Some commands may not be useable in DMs. This check prevents those commands from running
   // and return a friendly error message.
-  if (cmd && !message.guild && cmd.conf.guildOnly) return message.send(':x: **This command cannot be run in DM\'s.**');
+  if (cmd && !message.guild && cmd.conf.guildOnly) return message.send('❌ **This command cannot be run in DM\'s.**');
   message.benchmarks['CmdDmsBenchmark'] = new Date() - a;
 
   if(client.levelCache[cmdInDb.permLevel] > level) {
-    if (systemNotice === 'true') message.send(':x: **You do not have permission to use this command!**');
+    if (systemNotice === 'true') message.send('❌ **You do not have permission to use this command!**');
     return;
   }
   message.benchmarks['DbPermCheckBenchmark'] = new Date() - a;
 
   if (cmd.conf.requiresEmbed && message.guild && !message.guild.me.permissionsIn(message.channel).serialize()['EMBED_LINKS'])
-    return message.send(':x: **This command requires `Embed Links`, which I don\'t have!**');
+    return message.send('❌ **This command requires `Embed Links`, which I don\'t have!**');
   message.benchmarks['EmbedCheckBenchmark'] = new Date() - a;
 
   // If the command exists, **AND** the user has permission, run it.

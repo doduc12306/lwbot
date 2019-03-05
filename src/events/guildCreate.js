@@ -30,8 +30,8 @@ module.exports = async (client, guild) => {
   guildTable.sync();
   client.settings.set(guild.id, settings);
 
-  if (!guild.me.permissions.has('SEND_MESSAGES')) guild.owner.send(':x: **CRITICAL PERMISSION MISSING:** `Send Messages` **WHICH EVERYTHING REQUIRES!**');
-  if (!guild.me.permissions.has('EMBED_LINKS')) guild.owner.send(':x: **CRITICAL PERMISSION MISSING:** `Embed Links` **WHICH EVERYTHING REQUIRES!**');
+  if (!guild.me.permissions.has('SEND_MESSAGES')) guild.owner.send('❌ **CRITICAL PERMISSION MISSING:** `Send Messages` **WHICH EVERYTHING REQUIRES!**');
+  if (!guild.me.permissions.has('EMBED_LINKS')) guild.owner.send('❌ **CRITICAL PERMISSION MISSING:** `Embed Links` **WHICH EVERYTHING REQUIRES!**');
 
   let textErrored = false;
   let voiceErrored = false;
@@ -60,7 +60,7 @@ module.exports = async (client, guild) => {
   }
 
   if(mutedRoleCreateError) {
-    let msg = ':x: **Something went wrong during my setup process.**\n`-` I was unable to create a Muted role.';
+    let msg = '❌ **Something went wrong during my setup process.**\n`-` I was unable to create a Muted role.';
     if(textErrored) msg += '\n`-` I was unable to disallow the Muted role from talking in text channels.';
     if(voiceErrored) msg += '\n`-` I was unable to disallow the Muted role from talking in voice channels.';
     msg += '\n\n**Please re-invite me.** When you invite me, please make sure I have all the permissions indicated on the invite page.';

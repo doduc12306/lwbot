@@ -5,10 +5,10 @@ module.exports.run = async (client, message, args) => {
     const reason = args.slice(1).join(' ');
     const bhEmote = '<a:hammerglitched:459396837741297671>';
 
-    if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.send(`:x: \`|\` ${bhEmote} **I am missing permissions:** \`Ban Members\``);
-    if(!message.member.permissions.has('BAN_MEMBERS')) return message.send(`:x: \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
-    if(!args[0]) return message.send(`:x: \`|\` ${bhEmote} **You didn't give the ID of someone to ban!**`);
-    await client.fetchUser(args[0]).catch(() => message.send(`:x: \`|\` ${bhEmote} **I could not find that user!**`));
+    if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.send(`❌ \`|\` ${bhEmote} **I am missing permissions:** \`Ban Members\``);
+    if(!message.member.permissions.has('BAN_MEMBERS')) return message.send(`❌ \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
+    if(!args[0]) return message.send(`❌ \`|\` ${bhEmote} **You didn't give the ID of someone to ban!**`);
+    await client.fetchUser(args[0]).catch(() => message.send(`❌ \`|\` ${bhEmote} **I could not find that user!**`));
 
     const toBan = await client.fetchUser(args[0]);
 
@@ -37,11 +37,11 @@ module.exports.run = async (client, message, args) => {
             modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`:warning: **Hackban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
           }
           await modLogChannel.send(modEmbed);
-          await message.send(`:white_check_mark: \`|\` ${bhEmote} **Hackanned user \`${toBan.tag}\`**`);
+          await message.send(`✅ \`|\` ${bhEmote} **Hackanned user \`${toBan.tag}\`**`);
         })
-        .catch(async e => message.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
+        .catch(async e => message.send(`❌ **There was an error finding the mod log channel:** \`${e.stack}\``));
     });
-  } catch (e) {console.log(e);}
+  } catch (e) {client.logger.error(e);}
 
 };
 

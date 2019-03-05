@@ -4,7 +4,7 @@ module.exports.run = async (client, message, args) => {
   const toWarn = message.mentions.users.first();
   const reason = args.slice(1).join(' ');
 
-  if(!toWarn) return message.send(':x: `|` :warning: **You didn\'t mention someone to warn!**');
+  if(!toWarn) return message.send('❌ `|` :warning: **You didn\'t mention someone to warn!**');
 
   await message.guild.modbase.create({
     victim: toWarn.id,
@@ -20,7 +20,7 @@ module.exports.run = async (client, message, args) => {
       .addField('Warned User', `${toWarn.toString()} (${toWarn.tag})`)
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`);
 
-    if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
+    if(reason) {dmMsg += `\n\n⚙️ **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
     toWarn.send(dmMsg);
     await message.guild.settings.get('modLogChannel')
@@ -31,9 +31,9 @@ module.exports.run = async (client, message, args) => {
           modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`:warning: **Warn completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);
-        await message.send(`:white_check_mark: \`|\` :warning: **Warned user \`${toWarn.tag}\`**`);
+        await message.send(`✅ \`|\` :warning: **Warned user \`${toWarn.tag}\`**`);
       })
-      .catch(async e => message.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
+      .catch(async e => message.send(`❌ **There was an error finding the mod log channel:** \`${e.stack}\``));
   });
 };
 

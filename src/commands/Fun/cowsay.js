@@ -3,7 +3,7 @@ module.exports.run = (client, message, args) => {
   if(!content) return message.send('** **');
 
   require('child_process').exec(`cowsay ${content}`, (e, out, err) => {
-    if(e || err) return message.send(`:x: **There was an error:** ${e || err}`);
+    if(e || err) return message.send(`❌ **There was an error:** ${e || err}`);
     message.send(`\`\`\`\n${out}\n\`\`\``);
   });
 };

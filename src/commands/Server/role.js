@@ -19,7 +19,7 @@ module.exports.run = (client, message, args) => {
     role.color === 0 ? true : embed.addField('Color', '#'+role.color.toString(16), true);
 
     message.send(embed);
-  } catch (e) {message.send(`:x: **${e}**`);}
+  } catch (e) {message.send(`❌ **${e}**`);}
 };
 
 exports.conf = {

@@ -3,12 +3,12 @@ const Discord = require('discord.js');
 module.exports.run = (client, message, args) => {
   const word = args.join(' ');
 
-  if (!word) return message.send(':x: You forgot a word to look up!');
+  if (!word) return message.send('❌ You forgot a word to look up!');
 
   get(`http://api.urbandictionary.com/v0/define?term=${word}`).then(data => {
     data = JSON.parse(data.text).list[0];
 
-    if(data === undefined) return message.send(`:x: **I couldn't find ${clean(word)}**`);
+    if(data === undefined) return message.send(`❌ **I couldn't find ${clean(word)}**`);
 
     let definition;
     definition = data.definition.length <= 1024 ? definition = data.definition : definition = data.definition.substring(0, 1020) + '...';

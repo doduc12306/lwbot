@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 module.exports.run = (client, message, args) => {
   if(message.mentions.members.size === 0) {
-    if(!args[0]) return message.send(':x: **You didn\'t give the ID of a message to quote!**');
+    if(!args[0]) return message.send('❌ **You didn\'t give the ID of a message to quote!**');
   }
 
   if(message.mentions.members.size !== 0) {
@@ -25,9 +25,9 @@ module.exports.run = (client, message, args) => {
         );
       })
       .catch(e => {
-        if (e.message.includes('Invalid Form Body')) return message.send(':x: **That isn\'t a valid message ID!**');
-        else if (e.message.includes('Unknown Message')) return message.send(':x: **That message could not be found in the current channel!**');
-        else return message.send(`:x: **Something went wrong during the process, the message could not be fetched.**\n:gear: *Debug information:*\n\`\`\`${e}\`\`\``);
+        if (e.message.includes('Invalid Form Body')) return message.send('❌ **That isn\'t a valid message ID!**');
+        else if (e.message.includes('Unknown Message')) return message.send('❌ **That message could not be found in the current channel!**');
+        else return message.send(`❌ **Something went wrong during the process, the message could not be fetched.**\n⚙️ *Debug information:*\n\`\`\`${e}\`\`\``);
       });
   }
 };

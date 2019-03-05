@@ -14,7 +14,7 @@ client.on('ready', () => console.log(`Wtc addon ready: ${client.user.tag}`));
 client.on('message', async message => {
   if (message.author.bot || message.author === client.user) return;
   if (!message.content.startsWith(prefix)) return;
-  if (!['381192127050153993', '444250305618509824', '332632603737849856'].includes(message.guild.id)) return message.channel.send(':x: `|` **This guild is not authorized to use any of these commands!**');
+  if (!['381192127050153993', '444250305618509824', '332632603737849856'].includes(message.guild.id)) return message.channel.send('❌ `|` **This guild is not authorized to use any of these commands!**');
 
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
 
@@ -22,8 +22,8 @@ client.on('message', async message => {
 
   // Partnerships
   if(message.content.startsWith(`${prefix}partner`)) {
-    if (!message.member.roles.has('506236968393375745')) return message.channel.send(':x: `|` **You do not have permission to use this command!**');
-    if (!message.guild.me.permissions.has('MANAGE_ROLES')) return message.channel.send(':x: `|` **Missing permission:** `Manage Roles`');
+    if (!message.member.roles.has('506236968393375745')) return message.channel.send('❌ `|` **You do not have permission to use this command!**');
+    if (!message.guild.me.permissions.has('MANAGE_ROLES')) return message.channel.send('❌ `|` **Missing permission:** `Manage Roles`');
 
     const content = args.join(' ').split(' | ');
     const title = content[0].substring(7);
@@ -32,9 +32,9 @@ client.on('message', async message => {
 
     const cmdargs = content[3];
 
-    if(!title) return message.channel.send(':x: **No title was given to this partnership!**');
-    if(!description) return message.channel.send(':x: **No descripiton was given to this partnership!**');
-    if(!invite) return message.channel.send(':x: **No invite was given to this partnership!**');
+    if(!title) return message.channel.send('❌ **No title was given to this partnership!**');
+    if(!description) return message.channel.send('❌ **No descripiton was given to this partnership!**');
+    if(!invite) return message.channel.send('❌ **No invite was given to this partnership!**');
 
     const embed = new Discord.RichEmbed()
       .setTitle(title)
@@ -65,17 +65,17 @@ client.on('message', async message => {
   }
 
   if(message.content.startsWith(`${prefix}pingrole`)) {
-    if (!message.member.roles.some(r => ['436632593480548393', '381207509685370880', '469993430127476757', '447140023918395402'].includes(r.id))) return message.channel.send(':x: `|` **You do not have permission to use this command!**');
-    if (!message.guild.me.permissions.has('MANAGE_ROLES')) return message.channel.send(':x: `|` **Missing permission:** `Manage Roles`');
+    if (!message.member.roles.some(r => ['436632593480548393', '381207509685370880', '469993430127476757', '447140023918395402'].includes(r.id))) return message.channel.send('❌ `|` **You do not have permission to use this command!**');
+    if (!message.guild.me.permissions.has('MANAGE_ROLES')) return message.channel.send('❌ `|` **Missing permission:** `Manage Roles`');
 
     const content = args.join(' ').split(' | ');
 
     let role = content[0].substring(8).trim();
-    if(!role) return message.channel.send(':x: `|` **You didn\'t give the name of a role to ping!**');
+    if(!role) return message.channel.send('❌ `|` **You didn\'t give the name of a role to ping!**');
     role = message.guild.roles.find(role => role.name === role);
-    if(!role) return message.channel.send(':x: `|` **I could not find that role!**');
+    if(!role) return message.channel.send('❌ `|` **I could not find that role!**');
 
-    if(role.position >= message.guild.me.highestRole.position) return message.channel.send(`:x: \`|\` \`${role.name}\` **is too high for me!** (Move it below my role)`);
+    if(role.position >= message.guild.me.highestRole.position) return message.channel.send(`❌ \`|\` \`${role.name}\` **is too high for me!** (Move it below my role)`);
 
     const msg = content.slice(1).join(' ');
 

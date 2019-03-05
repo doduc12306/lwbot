@@ -2,36 +2,36 @@
 
 module.exports.run = async (client, message, args) => {
   const type = args[0];
-  if(!['add', 'subtract', 'set', 'get'].includes(type)) return message.send(':x: | :bank: **Please say what you would like to do:** `add` `subtract` `set` `get`');
+  if(!['add', 'subtract', 'set', 'get'].includes(type)) return message.send('❌ | :bank: **Please say what you would like to do:** `add` `subtract` `set` `get`');
 
   const user = message.mentions.users.first() ? message.mentions.users.first() : message.author;
   let amount = args[1];
 
   if(type === 'add') {
-    if(isNaN(amount)) return message.send(`:x: \`|\` :bank: \`${amount}\` **is not a number!**`);
+    if(isNaN(amount)) return message.send(`❌ \`|\` :bank: \`${amount}\` **is not a number!**`);
     amount = parseInt(amount);
 
     client.bank.add(user.id, amount);
     await client.bank.sync();
-    client.bank.get(user.id).then(balance => message.send(`:white_check_mark: \`|\` :bank: **Successfully added** \`${amount}\` **to** \`${user.tag}\`**.** New balance: \`${balance}\`.`));
+    client.bank.get(user.id).then(balance => message.send(`✅ \`|\` :bank: **Successfully added** \`${amount}\` **to** \`${user.tag}\`**.** New balance: \`${balance}\`.`));
   }
 
   if(type === 'subtract') {
-    if(isNaN(amount)) return message.send(`:x: \`|\` :bank: \`${amount}\` **is not a number!**`);
+    if(isNaN(amount)) return message.send(`❌ \`|\` :bank: \`${amount}\` **is not a number!**`);
     amount = parseInt(amount);
 
     client.bank.subtract(user.id, amount);
     await client.bank.sync();
-    client.bank.get(user.id).then(balance => message.send(`:white_check_mark: \`|\` :bank: **Successfully subtracted** \`${amount}\` **from** \`${user.tag}\`**'s balance.** New balance: \`${balance}\`. `));
+    client.bank.get(user.id).then(balance => message.send(`✅ \`|\` :bank: **Successfully subtracted** \`${amount}\` **from** \`${user.tag}\`**'s balance.** New balance: \`${balance}\`. `));
   }
 
   if(type === 'set') {
-    if(isNaN(amount)) return message.send(`:x: \`|\` :bank: \`${amount}\` **is not a number!**`);
+    if(isNaN(amount)) return message.send(`❌ \`|\` :bank: \`${amount}\` **is not a number!**`);
     amount = parseInt(amount);
 
     client.bank.set(user.id, amount);
     await client.bank.sync();
-    client.bank.get(user.id).then(balance => message.send(`:white_check_mark: \`|\` :bank: **Successfully set** \`${user.tag}\`**'s balance to** \`${balance}\`**.**`));
+    client.bank.get(user.id).then(balance => message.send(`✅ \`|\` :bank: **Successfully set** \`${user.tag}\`**'s balance to** \`${balance}\`**.**`));
   }
 
   if(type === 'get') {

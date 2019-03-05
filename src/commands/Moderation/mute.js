@@ -6,11 +6,11 @@ module.exports.run = async (client, message, args) => {
   const reason = args.slice(1).join(' ');
   const mutedEmote = '<:muted:459458717856038943>';
 
-  if(!message.guild.me.permissions.has('MANAGE_ROLES')) return message.send(`:x: \`|\` ${mutedEmote} **I am missing permissions: \`Manage Roles\`**`);
-  if(!toMute) return message.send(`:x: \`|\` ${mutedEmote} **You didn't mention someone to mute!**`);
-  if(toMute.permissions.has('ADMINISTRATOR')) return message.send(`:x: \`|\` ${mutedEmote} **${toMute.toString()} could not be muted because they have Administrator!**`);
-  if(message.guild.me.highestRole.position < toMute.highestRole.position) return message.send(`:x: \`|\` ${mutedEmote} **You need to move my role (${message.guild.me.highestRole.name}) above ${toMute.toString()}'s (${toMute.highestRole.name})!**`);
-  if(toMute.roles.has(role.id)) return message.send(`:x: \`|\` ${mutedEmote} **${toMute.toString()} is already muted!**`);
+  if(!message.guild.me.permissions.has('MANAGE_ROLES')) return message.send(`❌ \`|\` ${mutedEmote} **I am missing permissions: \`Manage Roles\`**`);
+  if(!toMute) return message.send(`❌ \`|\` ${mutedEmote} **You didn't mention someone to mute!**`);
+  if(toMute.permissions.has('ADMINISTRATOR')) return message.send(`❌ \`|\` ${mutedEmote} **${toMute.toString()} could not be muted because they have Administrator!**`);
+  if(message.guild.me.highestRole.position < toMute.highestRole.position) return message.send(`❌ \`|\` ${mutedEmote} **You need to move my role (${message.guild.me.highestRole.name}) above ${toMute.toString()}'s (${toMute.highestRole.name})!**`);
+  if(toMute.roles.has(role.id)) return message.send(`❌ \`|\` ${mutedEmote} **${toMute.toString()} is already muted!**`);
 
   await message.guild.modbase.create({
     victim: toMute.id,
@@ -27,7 +27,7 @@ module.exports.run = async (client, message, args) => {
       .addField('User', `${toMute.user.toString()} (${toMute.user.tag})`)
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`);
 
-    if(reason) {dmMsg += `\n\n:gear: **Reason \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({reason: reason}, {where: {id: info.id}});}
+    if(reason) {dmMsg += `\n\n⚙️ **Reason \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({reason: reason}, {where: {id: info.id}});}
 
     toMute.user.send(dmMsg);
     toMute.addRole(role);
@@ -39,9 +39,9 @@ module.exports.run = async (client, message, args) => {
           modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`:warning: **Mute completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);
-        await message.send(`:white_check_mark: \`|\` ${mutedEmote} **Muted user \`${toMute.user.tag}\`**`);
+        await message.send(`✅ \`|\` ${mutedEmote} **Muted user \`${toMute.user.tag}\`**`);
       })
-      .catch(async e => message.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
+      .catch(async e => message.send(`❌ **There was an error finding the mod log channel:** \`${e.stack}\``));
   });
 };
 

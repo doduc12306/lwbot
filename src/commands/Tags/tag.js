@@ -7,7 +7,7 @@ module.exports.run = async (client, message, args) => {
     tag.increment('usage_count');
     return message.send(tag.get('description'));
   }
-  return message.send(`:x: **\`${tagName}\` does not exist**`);
+  return message.send(`❌ **\`${tagName}\` does not exist**`);
 };
 
 exports.conf = {

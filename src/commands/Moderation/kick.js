@@ -5,10 +5,10 @@ module.exports.run = async (client, message, args) => {
   const toKickM = message.mentions.members.first();
   const reason = args.slice(1).join(' ');
 
-  if(!message.guild.me.permissions.has('KICK_MEMBERS')) return message.send(':x: `|` :boot: **I am missing permissions:** `Kick Members`');
-  if(!message.member.permissions.has('KICK_MEMBERS')) return message.send(':x: `|` :boot: **You are missing permissions:** `Kick Members`');
-  if(!toKick) return message.send(':x: `|` :boot: **You didn\'t mention someone to kick!**');
-  if(!toKickM.kickable) return message.send(':x: `|` :boot: **This member could not be kicked!**');
+  if(!message.guild.me.permissions.has('KICK_MEMBERS')) return message.send('❌ `|` :boot: **I am missing permissions:** `Kick Members`');
+  if(!message.member.permissions.has('KICK_MEMBERS')) return message.send('❌ `|` :boot: **You are missing permissions:** `Kick Members`');
+  if(!toKick) return message.send('❌ `|` :boot: **You didn\'t mention someone to kick!**');
+  if(!toKickM.kickable) return message.send('❌ `|` :boot: **This member could not be kicked!**');
 
   await message.guild.modbase.create({
     victim: toKick.id,
@@ -24,7 +24,7 @@ module.exports.run = async (client, message, args) => {
       .addField('Kicked User', `${toKick.toString()} (${toKick.tag})`)
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`);
 
-    if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
+    if(reason) {dmMsg += `\n\n⚙️ **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
     await toKick.send(dmMsg);
     await toKickM.kick(toKick);
@@ -36,9 +36,9 @@ module.exports.run = async (client, message, args) => {
           modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`:warning: **Kick completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);
-        await message.send(`:white_check_mark: \`|\` :boot: **Kicked user \`${toKick.tag}\`**`);
+        await message.send(`✅ \`|\` :boot: **Kicked user \`${toKick.tag}\`**`);
       })
-      .catch(async e => message.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
+      .catch(async e => message.send(`❌ **There was an error finding the mod log channel:** \`${e.stack}\``));
   });
 };
 

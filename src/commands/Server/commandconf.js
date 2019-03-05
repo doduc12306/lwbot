@@ -1,63 +1,63 @@
 module.exports.run = async (client, message, [option, command, ...permlevel]) => {
   require('../../modules/message/commands.js')(client, message);
 
-  if (!option || !['enable', 'disable', 'setperm'].includes(option)) return message.send(':x: `|` :gear: **Invalid option!** Accepted values: `enable`, `disable`, or `setperm`');
-  if (!command) return message.send(':x: `|` :gear: **You didn\'t give a command to edit!**');
+  if (!option || !['enable', 'disable', 'setperm'].includes(option)) return message.send('❌ `|` ⚙️ **Invalid option!** Accepted values: `enable`, `disable`, or `setperm`');
+  if (!command) return message.send('❌ `|` ⚙️ **You didn\'t give a command to edit!**');
 
   const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
-  if (!cmd) return message.send(`:x: \`|\` :gear: \`${command}\` **does not exist, nor is it an alias!**`);
-  if (!cmd.conf.enabled) return message.send(`:x: \`|\` :gear: \`${command}\` **has been disabled globally by the developer!**`);
+  if (!cmd) return message.send(`❌ \`|\` ⚙️ \`${command}\` **does not exist, nor is it an alias!**`);
+  if (!cmd.conf.enabled) return message.send(`❌ \`|\` ⚙️ \`${command}\` **has been disabled globally by the developer!**`);
 
-  if (['commandconf'].includes(cmd.help.name)) return message.send(`:x: \`|\` :gear: \`${command}\` **cannot be edited!**`); // A list of commands that cannot be edited by ANYONE
+  if (['commandconf'].includes(cmd.help.name)) return message.send(`❌ \`|\` ⚙️ \`${command}\` **cannot be edited!**`); // A list of commands that cannot be edited by ANYONE
 
   if (['commandconf', 'eval', 'sys', 'power', 'registercmd', 'reload', 'set'].includes(cmd.help.name) && client.permlevel(message.member) > 5) return message.send('oh come *on* dude, you\'re a trusted member of my team. you trying to disable a vital command does *not* help. if it *really* needs to be disabled, get me to do it through the database or something.\n- Akii'); // Basically bot helper shaming, then redirecting to me.
 
   let cmdInDb;
   if (message.guild) {
     await message.guild.commands.findOne({ where: { command: command } }).then(data => {
-      if (!data) return message.send(`:x: \`|\` :gear: \`${command}\` **has been disabled globally by the developer!**`);
+      if (!data) return message.send(`❌ \`|\` ⚙️ \`${command}\` **has been disabled globally by the developer!**`);
       else cmdInDb = data.dataValues;
     });
   }
 
-  if (client.permlevel(message.member) < client.levelCache[cmdInDb.permLevel]) return message.send(`:x: \`|\` :gear: \`${command}\`**'s permission level is higher than yours!**`);
+  if (client.permlevel(message.member) < client.levelCache[cmdInDb.permLevel]) return message.send(`❌ \`|\` ⚙️ \`${command}\`**'s permission level is higher than yours!**`);
 
   switch (option.toLowerCase()) {
     case 'enable': {
-      if (cmdInDb.enabled) return message.send(`:x: \`|\` :gear: \`${command}\` **is already enabled!**`);
+      if (cmdInDb.enabled) return message.send(`❌ \`|\` ⚙️ \`${command}\` **is already enabled!**`);
       message.guild.commands.update({ enabled: true }, { where: { command: command } })
-        .then(() => message.send(`:white_check_mark: \`|\` :gear: \`${command}\` **is now enabled!**`))
+        .then(() => message.send(`✅ \`|\` ⚙️ \`${command}\` **is now enabled!**`))
         .catch(e => {
-          message.send(`:x: \`|\` :gear: \`${command}\` **could not be enabled!** Please try again later.`);
+          message.send(`❌ \`|\` ⚙️ \`${command}\` **could not be enabled!** Please try again later.`);
           client.logger.error(e);
         });
       break;
     }
     case 'disable': {
-      if (!cmdInDb.enabled) return message.send(`:x: \`|\` :gear: \`${command}\` **is already disabled!**`);
+      if (!cmdInDb.enabled) return message.send(`❌ \`|\` ⚙️ \`${command}\` **is already disabled!**`);
       message.guild.commands.update({ enabled: false }, { where: { command: command } })
-        .then(() => message.send(`:white_check_mark: \`|\` :gear: \`${command}\` **is now disabled!**`))
+        .then(() => message.send(`✅ \`|\` ⚙️ \`${command}\` **is now disabled!**`))
         .catch(e => {
-          message.send(`:x: \`|\` :gear: \`${command}\` **could not be disabled!** Please try again later.`);
+          message.send(`❌ \`|\` ⚙️ \`${command}\` **could not be disabled!** Please try again later.`);
           client.logger.error(e);
         });
       break;
     }
     case 'setperm': {
       permlevel = permlevel.join(' ');
-      if(!permlevel || permlevel === '') return message.send(':x: `|` :gear: **You didn\'t give me a perm level to set the command to!**');
-      if(![0, 1, 2, 3, 4, 5, 8, 9, 10].includes(client.levelCache[permlevel])) return message.send(`:x: \`|\` :gear: \`${permlevel}\` **is not recognized as a valid permission level!**`);
-      if(client.levelCache[permlevel] > client.permlevel(message.member)) return message.send(`:x: \`|\` :gear: **You cannot set** \`${command}\` **to** \`${permlevel}\`**!** Doing so would remove your access.`);
+      if(!permlevel || permlevel === '') return message.send('❌ `|` ⚙️ **You didn\'t give me a perm level to set the command to!**');
+      if(![0, 1, 2, 3, 4, 5, 8, 9, 10].includes(client.levelCache[permlevel])) return message.send(`❌ \`|\` ⚙️ \`${permlevel}\` **is not recognized as a valid permission level!**`);
+      if(client.levelCache[permlevel] > client.permlevel(message.member)) return message.send(`❌ \`|\` ⚙️ **You cannot set** \`${command}\` **to** \`${permlevel}\`**!** Doing so would remove your access.`);
 
       message.guild.commands.update({ permLevel: permlevel }, { where: { command: command } })
-        .then(() => message.send(`:white_check_mark: \`|\` :gear: \`${command}\`**'s permission level has been updated to** \`${permlevel}\`**.**`))
+        .then(() => message.send(`✅ \`|\` ⚙️ \`${command}\`**'s permission level has been updated to** \`${permlevel}\`**.**`))
         .catch(e => {
-          message.send(`:x: \`|\` :gear: \`${command}\`**'s permission level could not be changed.** Please try again later.`);
+          message.send(`❌ \`|\` ⚙️ \`${command}\`**'s permission level could not be changed.** Please try again later.`);
           client.logger.error(e);
         });
       break;
     }
-    default: return message.send(':x: `|` :gear: **Invalid option!** `enable`, `disable`, or `setperm` are accepted.');
+    default: return message.send('❌ `|` ⚙️ **Invalid option!** `enable`, `disable`, or `setperm` are accepted.');
   }
 
 };

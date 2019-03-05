@@ -5,10 +5,10 @@ module.exports.run = async (client, message, args) => {
   const reason = args.slice(1).join(' ');
   const bhEmote = '<:banhammer:459184964110385153>';
 
-  if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.send(`:x: \`|\` ${bhEmote} **I am missing permissions:** \`Ban Members\``);
-  if(!message.member.permissions.has('BAN_MEMBERS')) return message.send(`:x: \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
-  if(!toBan) return message.send(`:x: \`|\` ${bhEmote} **You didn't mention someone to ban!**`);
-  if(!toBanM.bannable) return message.send(`:x: \`|\` ${bhEmote} **This member could not be banned!**`);
+  if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.send(`❌ \`|\` ${bhEmote} **I am missing permissions:** \`Ban Members\``);
+  if(!message.member.permissions.has('BAN_MEMBERS')) return message.send(`❌ \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
+  if(!toBan) return message.send(`❌ \`|\` ${bhEmote} **You didn't mention someone to ban!**`);
+  if(!toBanM.bannable) return message.send(`❌ \`|\` ${bhEmote} **This member could not be banned!**`);
 
   await message.guild.modbase.create({
     victim: toBan.id,
@@ -24,7 +24,7 @@ module.exports.run = async (client, message, args) => {
       .addField('Banned User', `${toBan.toString()} (${toBan.tag})`)
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`);
 
-    if(reason) {dmMsg += `\n\n:gear: **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
+    if(reason) {dmMsg += `\n\n⚙️ **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
     await toBan.send(dmMsg);
     await message.guild.ban(toBan, {days: 2});
@@ -36,9 +36,9 @@ module.exports.run = async (client, message, args) => {
           modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`:warning: **Ban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);
-        await message.send(`:white_check_mark: \`|\` ${bhEmote} **Banned user \`${toBan.tag}\`**`);
+        await message.send(`✅ \`|\` ${bhEmote} **Banned user \`${toBan.tag}\`**`);
       })
-      .catch(async e => message.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
+      .catch(async e => message.send(`❌ **There was an error finding the mod log channel:** \`${e.stack}\``));
   });
 };
 

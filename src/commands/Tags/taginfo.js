@@ -6,7 +6,7 @@ module.exports.run = async (client, message, args) => {
   if (tag) {
     return message.send(`:information_source: **\`${tagName}\` created by \`${tag.username}\` at \`${require('moment')(tag.createdAt).format('MM/DD/YYYY HH:mm')}\`\n\t\t Used ${tag.usage_count} times**`);
   }
-  return message.send(`:x: **\`${tagName}\` does not exist**`);
+  return message.send(`❌ **\`${tagName}\` does not exist**`);
 };
 
 exports.conf = {

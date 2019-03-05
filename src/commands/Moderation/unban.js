@@ -5,10 +5,10 @@ module.exports.run = async (client, message, args) => {
     const reason = args.slice(1).join(' ');
     const unBanHammer = '<:unbanhammer:459404085301346304>';
 
-    if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.send(`:x: \`|\` ${unBanHammer} **I am missing permissions:** \`Ban Members\``);
-    if(!message.member.permissions.has('BAN_MEMBERS')) return message.send(`:x: \`|\` ${unBanHammer} **You are missing permissions:** \`Ban Members\``);
-    if(!args[0]) return message.send(`:x: \`|\` ${unBanHammer} **You didn't give the ID of someone to unban!**`);
-    await client.fetchUser(args[0]).catch(() => message.send(`:x: \`|\` ${unBanHammer} **I could not find that user!** (Is that the correct ID?)`));
+    if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.send(`❌ \`|\` ${unBanHammer} **I am missing permissions:** \`Ban Members\``);
+    if(!message.member.permissions.has('BAN_MEMBERS')) return message.send(`❌ \`|\` ${unBanHammer} **You are missing permissions:** \`Ban Members\``);
+    if(!args[0]) return message.send(`❌ \`|\` ${unBanHammer} **You didn't give the ID of someone to unban!**`);
+    await client.fetchUser(args[0]).catch(() => message.send(`❌ \`|\` ${unBanHammer} **I could not find that user!** (Is that the correct ID?)`));
 
     const toUnban = await client.fetchUser(args[0]);
 
@@ -35,11 +35,11 @@ module.exports.run = async (client, message, args) => {
             modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`:warning: **Unban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
           }
           await modLogChannel.send(modEmbed);
-          await message.send(`:white_check_mark: \`|\` ${unBanHammer} **Unbanned user \`${toUnban.tag}\`**`);
+          await message.send(`✅ \`|\` ${unBanHammer} **Unbanned user \`${toUnban.tag}\`**`);
         })
-        .catch(async e => message.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
+        .catch(async e => message.send(`❌ **There was an error finding the mod log channel:** \`${e.stack}\``));
     });
-  } catch (e) {console.log(e);}
+  } catch (e) {client.logger.error(e);}
 
 };
 

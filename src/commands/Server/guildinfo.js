@@ -3,7 +3,7 @@ const moment = require('moment');
 
 module.exports.run = (client, message) => {
   if (message.channel.type === 'dm') {
-    message.send(':x: This command will not work in DM\'s');
+    message.send('❌ This command will not work in DM\'s');
     return;
   } else {
 

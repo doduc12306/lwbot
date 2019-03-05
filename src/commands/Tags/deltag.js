@@ -1,9 +1,9 @@
 module.exports.run = async (client, message, args) => {
   const tagName = args;
   const rowCount = await client.tags.destroy({ where: { name: tagName } });
-  if (!rowCount) return message.send(':x: **Tag does not exist**');
+  if (!rowCount) return message.send('❌ **Tag does not exist**');
 
-  return message.send(':white_check_mark: **Tag deleted.**');
+  return message.send('✅ **Tag deleted.**');
 };
 
 exports.conf = {

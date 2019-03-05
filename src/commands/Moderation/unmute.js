@@ -6,10 +6,10 @@ module.exports.run = async (client, message, args) => {
   const reason = args.slice(1).join(' ');
   const unmutedEmote = '<:unmuted:459458804376141824>';
 
-  if(!message.guild.me.permissions.has('MANAGE_ROLES')) return message.send(`:x: \`|\` ${unmutedEmote} **I am missing permissions: \`Manage Roles\`**`);
-  if(!toUnmute) return message.send(`:x: \`|\` ${unmutedEmote} **You didn't mention someone to unmute!**`);
-  if(message.guild.me.highestRole.position < toUnmute.highestRole.position) return message.send(`:x: \`|\` ${unmutedEmote} **You need to move my role (${message.guild.me.highestRole.name}) above ${toUnmute.toString()}'s (${toUnmute.highestRole.name})!**`);
-  if(!toUnmute.roles.has(role.id)) return message.send(`:x: \`|\` ${unmutedEmote} **${toUnmute.user.tag} is already unmuted!**`);
+  if(!message.guild.me.permissions.has('MANAGE_ROLES')) return message.send(`❌ \`|\` ${unmutedEmote} **I am missing permissions: \`Manage Roles\`**`);
+  if(!toUnmute) return message.send(`❌ \`|\` ${unmutedEmote} **You didn't mention someone to unmute!**`);
+  if(message.guild.me.highestRole.position < toUnmute.highestRole.position) return message.send(`❌ \`|\` ${unmutedEmote} **You need to move my role (${message.guild.me.highestRole.name}) above ${toUnmute.toString()}'s (${toUnmute.highestRole.name})!**`);
+  if(!toUnmute.roles.has(role.id)) return message.send(`❌ \`|\` ${unmutedEmote} **${toUnmute.user.tag} is already unmuted!**`);
 
   await message.guild.modbase.create({
     victim: toUnmute.id,
@@ -25,7 +25,7 @@ module.exports.run = async (client, message, args) => {
       .addField('Unmuted User', `${toUnmute.user.toString()} (${toUnmute.user.tag})`)
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`);
 
-    if(reason) {dmMsg += `\n\n:gear: **Reason \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({reason: reason}, {where: {id: info.id}});}
+    if(reason) {dmMsg += `\n\n⚙️ **Reason \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({reason: reason}, {where: {id: info.id}});}
 
     toUnmute.user.send(dmMsg);
     toUnmute.removeRole(role);
@@ -37,9 +37,9 @@ module.exports.run = async (client, message, args) => {
           modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`:warning: **Unmute completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);
-        await message.send(`:white_check_mark: \`|\` ${unmutedEmote} **Unmuted user \`${toUnmute.user.tag}\`**`);
+        await message.send(`✅ \`|\` ${unmutedEmote} **Unmuted user \`${toUnmute.user.tag}\`**`);
       })
-      .catch(async e => message.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
+      .catch(async e => message.send(`❌ **There was an error finding the mod log channel:** \`${e.stack}\``));
   });
 };
 

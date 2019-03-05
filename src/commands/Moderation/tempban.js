@@ -10,16 +10,16 @@ module.exports.run = async (client, message, args) => {
   const duration = args[1];
   const bhEmote = '<:banhammer:459184964110385153>';
 
-  if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.send(`:x: \`|\` ${bhEmote} **I am missing permissions:** \`Ban Members\``);
-  if(!message.member.permissions.has('BAN_MEMBERS')) return message.send(`:x: \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
-  if(!toBan) return message.send(`:x: \`|\` ${bhEmote} **You didn't mention someone to ban!**`);
-  if(!duration) return message.send(`:x: \`|\` ${bhEmote} **You didn't set a duration!**`);
-  if(!toBanM.bannable) return message.send(`:x: \`|\` ${bhEmote} **This member could not be banned!**`);
+  if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.send(`❌ \`|\` ${bhEmote} **I am missing permissions:** \`Ban Members\``);
+  if(!message.member.permissions.has('BAN_MEMBERS')) return message.send(`❌ \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
+  if(!toBan) return message.send(`❌ \`|\` ${bhEmote} **You didn't mention someone to ban!**`);
+  if(!duration) return message.send(`❌ \`|\` ${bhEmote} **You didn't set a duration!**`);
+  if(!toBanM.bannable) return message.send(`❌ \`|\` ${bhEmote} **This member could not be banned!**`);
 
   const durationMs = parse(duration);
   const durationHR = moment.duration(durationMs).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]'); // HR = "Human Readable"
 
-  if(durationMs === 0) return message.send(`:x: \`|\` ${bhEmote} **${duration} is not a valid duration!**`);
+  if(durationMs === 0) return message.send(`❌ \`|\` ${bhEmote} **${duration} is not a valid duration!**`);
 
   await message.guild.modbase.create({
     victim: toBan.id,
@@ -37,7 +37,7 @@ module.exports.run = async (client, message, args) => {
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`)
       .addField('Duration', durationHR);
 
-    if(reason) {dmMsg += `\n\n:gear: **Reason:** \`${reason}\``; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
+    if(reason) {dmMsg += `\n\n⚙️ **Reason:** \`${reason}\``; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
 
     await toBan.send(dmMsg);
     await message.guild.ban(toBan, {days: 1});
@@ -49,9 +49,9 @@ module.exports.run = async (client, message, args) => {
           modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`:warning: **Tempban issued, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);
-        await message.send(`:white_check_mark: \`|\` ${bhEmote} **Tempbanned user \`${toBan.tag}\`**`);
+        await message.send(`✅ \`|\` ${bhEmote} **Tempbanned user \`${toBan.tag}\`**`);
       })
-      .catch(async e => message.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
+      .catch(async e => message.send(`❌ **There was an error finding the mod log channel:** \`${e.stack}\``));
     setTimeout(async () => {
       await message.guild.modbase.create({
         victim: toBan.id,
@@ -78,7 +78,7 @@ module.exports.run = async (client, message, args) => {
             }
             await modLogChannel.send(modEmbed);
           })
-          .catch(async e => message.send(`:x: **There was an error finding the mod log channel:** \`${e.stack}\``));
+          .catch(async e => message.send(`❌ **There was an error finding the mod log channel:** \`${e.stack}\``));
 
         message.guild.unban(toBan);
       });

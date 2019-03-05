@@ -13,9 +13,9 @@ exports.run = async (client, message, [action, key, ...value]) => {
         message.guild.settings.get(key)
           .then(() => {
             data = data.filter(g => g.key === key)[0].dataValues;
-            message.send(`:information_source: \`|\` :gear: **The value of** \`${key}\` **is** \`${data.value}\`**.**`);
+            message.send(`:information_source: \`|\` ⚙️ **The value of** \`${key}\` **is** \`${data.value}\`**.**`);
           })
-          .catch(() => message.send(`:x: \`|\` :gear: \`${key}\` **does not exist!** `));
+          .catch(() => message.send(`❌ \`|\` ⚙️ \`${key}\` **does not exist!** `));
       } else {
         const embed = new Discord.RichEmbed()
           .setColor(client.config.colors.green)
@@ -32,55 +32,55 @@ exports.run = async (client, message, [action, key, ...value]) => {
     } else
 
     if(action === 'edit') {
-      if(!key) return message.send(':x: `|` :gear: **You didn\'t provide a key to edit!**');
+      if(!key) return message.send('❌ `|` ⚙️ **You didn\'t provide a key to edit!**');
       message.guild.settings.get(key)
         .then(() => {
-          if(value.length < 1) return message.send(':x: `|` :gear: **Please provide a new value.**');
+          if(value.length < 1) return message.send('❌ `|` ⚙️ **Please provide a new value.**');
           message.guild.settings.edit(key, value.join(' '));
           client.settings.get(message.guild.id)[key] = value.join(' ');
-          message.send(`:white_check_mark: \`|\` :gear: \`${key}\` **was successfully edited to** \`${value.join(' ')}\`**.**`);
+          message.send(`✅ \`|\` ⚙️ \`${key}\` **was successfully edited to** \`${value.join(' ')}\`**.**`);
         })
-        .catch(() => message.send(`:x: \`|\` :gear: \`${key}\` **does not exist!**`));
+        .catch(() => message.send(`❌ \`|\` ⚙️ \`${key}\` **does not exist!**`));
     } else
 
     if (action === 'add' || action === 'create') {
-      if (!key) return message.send(':x: `|` :gear: **You didn\'t provide a key to add!**');
+      if (!key) return message.send('❌ `|` ⚙️ **You didn\'t provide a key to add!**');
       message.guild.settings.get(key)
-        .then(() => message.send(`:x: \`|\` :gear: \`${key}\` **already exists!**`))
+        .then(() => message.send(`❌ \`|\` ⚙️ \`${key}\` **already exists!**`))
         .catch(() => {
-          if (value.length < 1) return message.send(':x: `|` :gear: **Please provide a value.**');
+          if (value.length < 1) return message.send('❌ `|` ⚙️ **Please provide a value.**');
           message.guild.settings.add(key, value.join(' '));
           client.settings.get(message.guild.id)[key] = value.join(' ');
-          message.send(`:white_check_mark: \`|\` :gear: \`${key}\` **was successfully added with value** \`${value.join(' ')}\`**.**`);
+          message.send(`✅ \`|\` ⚙️ \`${key}\` **was successfully added with value** \`${value.join(' ')}\`**.**`);
         });
     } else
 
     if (action === 'del' || action === 'delete') {
-      if(!key) return message.send(':x: `|` :gear: **You didn\'t provide a key to delete!**');
+      if(!key) return message.send('❌ `|` ⚙️ **You didn\'t provide a key to delete!**');
       message.guild.settings.get(key)
         .then(async () => {
-          const response = await client.awaitReply(message, `:warning: \`|\` :gear: **Are you** __***SURE***__ **you want to delete** \`${key}\`**? This CANNOT be undone!** (y/n)`);
+          const response = await client.awaitReply(message, `:warning: \`|\` ⚙️ **Are you** __***SURE***__ **you want to delete** \`${key}\`**? This CANNOT be undone!** (y/n)`);
           if (['yes', 'y'].includes(response)) {
             message.guild.settings.delete(key);
             delete client.settings.get(message.guild.id)[key];
-            message.send(`:white_check_mark: \`|\` :gear: **Successfully deleted** \`${key}\`**.**`);
-          } else if (['no', 'n'].includes(response)) return message.send(':white_check_mark: `|` :gear: **Action cancelled.**');
+            message.send(`✅ \`|\` ⚙️ **Successfully deleted** \`${key}\`**.**`);
+          } else if (['no', 'n'].includes(response)) return message.send('✅ `|` ⚙️ **Action cancelled.**');
         })
-        .catch(() => message.send(`:x: \`|\` :gear: \`${key}\` **does not exist!**`));
+        .catch(() => message.send(`❌ \`|\` ⚙️ \`${key}\` **does not exist!**`));
     } else
 
     if(action === 'reset') {
-      if (!key) return message.send(':x: `|` :gear: **You didn\'t provide a key to reset!**');
+      if (!key) return message.send('❌ `|` ⚙️ **You didn\'t provide a key to reset!**');
       message.guild.settings.get(key)
         .then(async () => {
-          const response = await client.awaitReply(message, `:warning: \`|\` :gear: **Are you** __***SURE***__ **you want to reset** \`${key}\`**? This CANNOT be undone!** (y/n)`);
+          const response = await client.awaitReply(message, `:warning: \`|\` ⚙️ **Are you** __***SURE***__ **you want to reset** \`${key}\`**? This CANNOT be undone!** (y/n)`);
           if (['yes', 'y'].includes(response)) {
             message.guild.settings.edit(key, client.config.defaultSettings[key]);
             client.settings.get(message.guild.id)[key] = client.config.defaultSettings[key];
-            message.send(`:white_check_mark: \`|\` :gear: **Successfully reset** \`${key}\` **to** \`${client.config.defaultSettings[key]}\`**.**`);
-          } else if (['no', 'n'].includes(response)) return message.send(':white_check_mark: `|` :gear: **Action cancelled.**');
+            message.send(`✅ \`|\` ⚙️ **Successfully reset** \`${key}\` **to** \`${client.config.defaultSettings[key]}\`**.**`);
+          } else if (['no', 'n'].includes(response)) return message.send('✅ `|` ⚙️ **Action cancelled.**');
         })
-        .catch(() => message.send(`:x: \`|\` :gear: \`${key}\` **does not exist!**`));
+        .catch(() => message.send(`❌ \`|\` ⚙️ \`${key}\` **does not exist!**`));
     } else {
       const embed = new Discord.RichEmbed()
         .setColor(client.config.colors.green)
