@@ -23,7 +23,7 @@ module.exports = async client => {
 
   const servers = await readdir('databases/servers/');
   client.settings = new Discord.Collection();
-  await Promise.all(servers.map(async (server) => {
+  await Promise.all(servers.map(async server => {
     const serverId = server.split('.sqlite')[0];
     const db = new Sequelize('database', 'username', 'password', {logging: false, host: 'localhost', storage: `databases/servers/${server}`, dialect: 'sqlite'});
     client.verbose(`Opened server ${server}`);
