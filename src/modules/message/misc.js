@@ -1,8 +1,11 @@
+const { RichEmbed } = require('discord.js');
+/* eslint-disable */
 module.exports = async (client, message) => {
+  require('./settings.js')(client, message);
 
   // Message send function, pretty much extends message.channel.send/message.edit in that it allows the user to edit their command message and it runs that instead
   message.send = (content, options) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       if(!content) return reject(new Error('Cannot send an empty message'));
 
       if (message.edited) return message.channel.fetchMessage(client.msgCmdHistory[message.id])
@@ -38,6 +41,22 @@ module.exports = async (client, message) => {
             });
           } else return reject(new Error(e));
         });
+
+      await client.settings.get(message.guild.id)['owoMode'];
+
+      await content instanceof RichEmbed;
+
+      if(client.settings.get(message.guild.id)['owoMode'] === 'true' && !(content instanceof RichEmbed)) {
+        content = content
+          .replaceAll('r', 'w')
+          .replaceAll('l', 'w');
+
+        const ous = ['o', 'O', '0', 'u', 'U'];
+        const ws = ['w', 'W'];
+
+        content += ` ${[`${ous.randomElement()}${ws.randomElement()}${ous.randomElement()}`, ':3c'].randomElement()}`;
+      }
+      await client.msgCmdHistory.has(message.id);
 
       if(!client.msgCmdHistory.has(message.id)) {
         if (options) return message.channel.send(content, options).then(msg => {

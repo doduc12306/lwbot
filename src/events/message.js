@@ -145,13 +145,15 @@ module.exports = async (client, message) => {
 
     message.guild.settings.findOrCreate({ where: { key: 'staffBypassesLimits' }, defaults: { value: 'true' } });
 
+    message.guild.settings.findOrCreate({ where: { key: 'owoMode' }, defaults: { value: 'false' } });
+
     message.guild.settings.sync();
 
     for (const command of client.commands.filter(g => g.conf.enabled)) {
       const folder = client.folder.get(command[0]);
       const enabled = command[1].conf.enabled;
       const permLevel = command[1].conf.permLevel;
-      
+
       await message.guild.commands.findOrCreate({ where: { command: command[0], permLevel: permLevel }, defaults: { folder: folder, enabled: enabled } })
         .catch(async e => {
           if(e.name === 'SequelizeUniqueConstraintError') {
