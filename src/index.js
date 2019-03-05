@@ -54,7 +54,8 @@ const init = async () => {
       ? root.substring(root.indexOf('commands\\') + 13) // Windows path finding
       : join(__dirname, root).substring(join(__dirname, root).indexOf('commands/') + 9); // Linux path finding
 
-    client.loadCommand(cmdPath, fileStats.name);
+    const response = client.loadCommand(cmdPath, fileStats.name);
+    if(response) client.logger.error(response);
     next();
   });
 
