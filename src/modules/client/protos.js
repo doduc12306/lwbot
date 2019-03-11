@@ -3,7 +3,7 @@ module.exports = () => {
 
   // EXTENDING NATIVE TYPES IS BAD PRACTICE. Why? Because if JavaScript adds this
   // later, this conflicts with native code. Also, if some other lib you use does
-  // this, a conflict also occurs. KNOWING THIS however, the following 2 methods
+  // this, a conflict also occurs. KNOWING THIS however, the following few methods
   // are, we feel, very useful in code.
 
   // <String>.toProperCase() returns a proper-cased string such as:
@@ -22,5 +22,13 @@ module.exports = () => {
   // [1, 2, 3, 4, 5].random() can return 1, 2, 3, 4 or 5.
   Array.prototype.randomElement = function () {
     return this[Math.floor(Math.random() * this.length)];
+  };
+
+  // <Number>.isEven()/.isOdd() returns a boolean if it's even or odd, respectively
+  Number.prototype.isEven = function(n) {
+    return (this || n) % 2 == 0;
+  };
+  Number.prototype.isOdd = function(n) {
+    return Math.abs((this || n) % 2) == 1;
   };
 };
