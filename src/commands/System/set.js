@@ -59,7 +59,7 @@ exports.run = async (client, message, [action, key, ...value]) => {
       if(!key) return message.send('❌ `|` ⚙️ **You didn\'t provide a key to delete!**');
       message.guild.settings.get(key)
         .then(async () => {
-          const response = await client.awaitReply(message, `:warning: \`|\` ⚙️ **Are you** __***SURE***__ **you want to delete** \`${key}\`**? This CANNOT be undone!** (y/n)`);
+          const response = await client.awaitReply(message, `⚠️ \`|\` ⚙️ **Are you** __***SURE***__ **you want to delete** \`${key}\`**? This CANNOT be undone!** (y/n)`);
           if (['yes', 'y'].includes(response)) {
             message.guild.settings.delete(key);
             delete client.settings.get(message.guild.id)[key];
@@ -73,7 +73,7 @@ exports.run = async (client, message, [action, key, ...value]) => {
       if (!key) return message.send('❌ `|` ⚙️ **You didn\'t provide a key to reset!**');
       message.guild.settings.get(key)
         .then(async () => {
-          const response = await client.awaitReply(message, `:warning: \`|\` ⚙️ **Are you** __***SURE***__ **you want to reset** \`${key}\`**? This CANNOT be undone!** (y/n)`);
+          const response = await client.awaitReply(message, `⚠️ \`|\` ⚙️ **Are you** __***SURE***__ **you want to reset** \`${key}\`**? This CANNOT be undone!** (y/n)`);
           if (['yes', 'y'].includes(response)) {
             message.guild.settings.edit(key, client.config.defaultSettings[key]);
             client.settings.get(message.guild.id)[key] = client.config.defaultSettings[key];

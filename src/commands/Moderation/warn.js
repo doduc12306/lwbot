@@ -4,14 +4,14 @@ module.exports.run = async (client, message, args) => {
   const toWarn = message.mentions.users.first();
   const reason = args.slice(1).join(' ');
 
-  if(!toWarn) return message.send('❌ `|` :warning: **You didn\'t mention someone to warn!**');
+  if(!toWarn) return message.send('❌ `|` ⚠️ **You didn\'t mention someone to warn!**');
 
   await message.guild.modbase.create({
     victim: toWarn.id,
     moderator: message.author.id,
     type: 'warn'
   }).then(async info => {
-    let dmMsg = `:warning: **You were warned in** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `⚠️ **You were warned in** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     const modEmbed = new Discord.RichEmbed()
       .setThumbnail(toWarn.avatarURL)
@@ -26,12 +26,12 @@ module.exports.run = async (client, message, args) => {
     await message.guild.settings.get('modLogChannel')
       .then(async modLogChannel => {
         modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
-        if (!modLogChannel) return message.send(`:warning: **Warning completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
+        if (!modLogChannel) return message.send(`⚠️ **Warning completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
         if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
-          modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`:warning: **Warn completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
+          modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Warn completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);
-        await message.send(`✅ \`|\` :warning: **Warned user \`${toWarn.tag}\`**`);
+        await message.send(`✅ \`|\` ⚠️ **Warned user \`${toWarn.tag}\`**`);
       })
       .catch(async e => message.send(`❌ **There was an error finding the mod log channel:** \`${e.stack}\``));
   });
