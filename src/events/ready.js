@@ -2,6 +2,7 @@ const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
 const Sequelize = require('sequelize');
 const Discord = require('discord.js');
+const moment = require('moment');
 
 module.exports = async client => {
   if(!client.user.bot) {
@@ -26,7 +27,7 @@ module.exports = async client => {
   await Promise.all(servers.map(async server => {
     const serverId = server.split('.sqlite')[0];
     const db = new Sequelize('database', 'username', 'password', {logging: false, host: 'localhost', storage: `databases/servers/${server}`, dialect: 'sqlite'});
-    client.verbose(`Opened server ${server}`);
+    client.logger.sqLog(`Opened server ${server}`);
     if(!server.endsWith('.sqlite')) return client.logger.error('Non-sqlite file found in databases/servers! File: ' + server);
     if(!/\d+/g.test(server)) client.logger.warn('Non-server file found in databases/servers! File: ' + server);
     const [data] = await db.query('SELECT * FROM \'settings\'');
@@ -35,7 +36,7 @@ module.exports = async client => {
       settings[key] = value;
     });
     client.settings.set(serverId, settings);
-    client.verbose(`Mapped settings for ${server}`);
+    client.logger.sqLog(`Mapped settings for ${server}`);
   }));
 
   const after = new Date();

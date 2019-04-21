@@ -13,6 +13,7 @@ const config = {
 
   'debugMode': process.argv.includes('-d') || process.argv.includes('--debug'),
   'verboseMode': process.argv.includes('-v') || process.argv.includes('--verbose'),
+  'sqLogMode': process.argv.includes('-s') || process.argv.includes('--sqLog'),
 
   // Default per-server settings. New guilds have these settings.
 

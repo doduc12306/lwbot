@@ -26,6 +26,10 @@ exports.log = (content, type = 'log') => {
       if(config.verboseMode) return console.log(`${timestamp} ${chalk.white.bgBlack(type.toUpperCase())} ${chalk.gray(content)} `);
       break;
     }
+    case 'sqLog': {
+      if(config.sqLogMode) return console.log(`${timestamp} ${chalk.white.bgBlack(type.toUpperCase())} ${chalk.gray(content)} `);
+      break;
+    }
     case 'cmd': {
       return console.log(`${timestamp} ${chalk.black.bgWhite(type.toUpperCase())} ${content}`);
     }
@@ -56,3 +60,5 @@ exports.cmd = (...args) => this.log(...args, 'cmd');
 exports.debug = (...args) => this.log(...args, 'debug');
 
 exports.verbose = (...args) => this.log(...args, 'verbose');
+
+exports.sqLog = (...args) => this.log(...args, 'sqLog');
