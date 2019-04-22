@@ -6,7 +6,10 @@ module.exports = async (client, message) => {
   // Message send function, pretty much extends message.channel.send/message.edit in that it allows the user to edit their command message and it runs that instead
   message.send = (content, options) => {
     return new Promise(async (resolve, reject) => {
-      if(!content) return reject(new Error('Cannot send an empty message'));
+      if(!content) {
+        content = '[Empty Message]';
+        reject(new Error('Empty message detected!'));
+      }
 
       if (message.edited) return message.channel.fetchMessage(client.msgCmdHistory[message.id])
         .then(async msg => {
