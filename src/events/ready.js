@@ -42,18 +42,6 @@ module.exports = async client => {
   const after = new Date();
   client.startup = after - client.before;
   client.tags.sync();
-  client.logger.log(`
-
-  ${'⎻'.repeat(client.user.tag.length + client.user.id.length + 5)}
-   ${client.user.tag} (${client.user.id})
-  ${'⎼'.repeat(client.user.tag.length + client.user.id.length + 5)}
-  • Users:     ${client.users.size}
-  • Guilds:    ${client.guilds.size}
-  • Channels:  ${client.channels.size}
-  • Took:      ${client.startup}ms to start up
-  `, 'ready');
-  if(client.config.debugMode) client.logger.warn('Debug mode enabled');
-  if(client.config.verboseMode) client.logger.warn('Verbose mode enabled');
 
   client.verbose(`
 
@@ -80,7 +68,21 @@ module.exports = async client => {
       client.logger.log('Error log reported, now deleted.');
     });
   } catch (e) {
-    if (e.code === 'MODULE_NOT_FOUND') return client.logger.debug('No error log found.');
+    if (e.code === 'MODULE_NOT_FOUND') client.logger.debug('No error log found.');
     else client.logger.error(e.stack);
   }
+
+  client.logger.log(`
+
+  ${'⎻'.repeat(client.user.tag.length + client.user.id.length + 5)}
+   ${client.user.tag} (${client.user.id})
+  ${'⎼'.repeat(client.user.tag.length + client.user.id.length + 5)}
+  • Users:     ${client.users.size}
+  • Guilds:    ${client.guilds.size}
+  • Channels:  ${client.channels.size}
+  • Took:      ${moment.duration(client.startup, 'milliseconds').format('[~]s [secs]')} to start up
+  `, 'ready');
+  if(client.config.debugMode) client.logger.debug('Debug mode enabled');
+  if(client.config.verboseMode) client.logger.verbose('Verbose mode enabled');
+  if(client.config.sqLogMode) client.logger.sqLog('SQLog mode enabled');
 };
