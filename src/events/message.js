@@ -1,39 +1,47 @@
 // The MESSAGE event runs anytime a message is received
 // Note that due to the binding of client to every event, every event
 // goes `client, other, args` when this function is run.
+/* eslint-disable */
 
 module.exports = async (client, message) => {
   const a = new Date();
   if (message.author.bot) return;
   message.benchmarks = {};
 
-  if (message.channel.type !== 'dm') require('../modules/message/settings.js')(client, message);
   require('../modules/message/xp.js')(client, message);
   require('../modules/message/misc.js')(client, message);
   if (message.channel.type !== 'dm') require('../modules/message/commands.js')(client, message);
+
+  let settingsFunctions;
+  let settingsSchema;
+  if(message.channel.type !== 'dm') {
+    settingsFunctions = require('../modules/message/settings').functions;
+    settingsSchema = settingsFunctions.settingsSchema(message.guild.id);
+  }
+
   message.benchmarks['RequireBenchmark'] = new Date() - a;
 
   let capsWarnEnabled = client.config.defaultSettings.capsWarnEnabled;
   if (!message.guild) capsWarnEnabled = client.config.defaultSettings.capsWarnEnabled;
   else {
-    await message.guild.settings.findOrCreate({ where: { key: 'capsWarnEnabled' }, defaults: { value: 'false' } });
-    capsWarnEnabled = await message.guild.settings.get('capsWarnEnabled');
+    await settingsSchema.findOrCreate({ where: { key: 'capsWarnEnabled' }, defaults: { value: 'false' } });
+    capsWarnEnabled = await settingsFunctions.get(message.guild.id, 'capsWarnEnabled');
   }
   message.benchmarks['CapsWarnEnabledBenchmark'] = new Date() - a;
 
   let capsThreshold = client.config.defaultSettings.capsThreshold;
   if (!message.guild) capsThreshold = client.config.defaultSettings.capsThreshold;
   else {
-    await message.guild.settings.findOrCreate({ where: { key: 'capsThreshold' }, defaults: { value: '70' } });
-    capsThreshold = await message.guild.settings.get('capsThreshold');
+    await settingsSchema.findOrCreate({ where: { key: 'capsThreshold' }, defaults: { value: '70' } });
+    capsThreshold = await settingsFunctions.get(message.guild.id, 'capsThreshold');
   }
   message.benchmarks['CapsThresholdBenchmark'] = new Date() - a;
 
   let staffBypassesLimits = client.config.defaultSettings.staffBypassesLimits;
   if (!message.guild) staffBypassesLimits = client.config.defaultSettings.staffBypassesLimits;
   else {
-    await message.guild.settings.findOrCreate({ where: { key: 'staffBypassesLimits' }, defaults: { value: 'true' } });
-    staffBypassesLimits = await message.guild.settings.get('staffBypassesLimits');
+    await settingsSchema.findOrCreate({ where: { key: 'staffBypassesLimits' }, defaults: { value: 'true' } });
+    staffBypassesLimits = await settingsFunctions.get(message.guild.id, 'staffBypassesLimits');
   }
   message.benchmarks['StaffBypassesLimitsBenchmark'] = new Date() - a;
 
@@ -128,26 +136,13 @@ module.exports = async (client, message) => {
 
   // Other server database checks
   if (message.guild) {
-    message.guild.settings.findOrCreate({ where: { key: 'modLogChannel' }, defaults: { value: 'mod_logs' } });
-    message.guild.settings.findOrCreate({ where: { key: 'modRole' }, defaults: { value: 'Mods' } });
-    message.guild.settings.findOrCreate({ where: { key: 'adminRole' }, defaults: { value: 'Admins' } });
-    message.guild.settings.findOrCreate({ where: { key: 'botCommanderRole' }, defaults: { value: 'Bot Commander' } });
-    message.guild.settings.findOrCreate({ where: { key: 'ownerRole' }, defaults: { value: 'Owners' } });
+    for (const setting of client.config.defaultSettings) {
+      const key = setting[0];
+      const value = setting[1];
 
-    message.guild.settings.findOrCreate({ where: { key: 'welcomeEnabled' }, defaults: { value: 'true' } });
-    message.guild.settings.findOrCreate({ where: { key: 'welcomeChannel' }, defaults: { value: 'welcome' } });
-    message.guild.settings.findOrCreate({ where: { key: 'welcomeMessage' }, defaults: { value: 'Welcome to the server, {{user}}!' } });
-
-    message.guild.settings.findOrCreate({ where: { key: 'announcementChannel' }, defaults: { value: 'announcements' } });
-
-    message.guild.settings.findOrCreate({ where: { key: 'capsWarnEnabled' }, defaults: { value: 'false' } });
-    message.guild.settings.findOrCreate({ where: { key: 'capsThreshold' }, defaults: { value: '70' } });
-
-    message.guild.settings.findOrCreate({ where: { key: 'staffBypassesLimits' }, defaults: { value: 'true' } });
-
-    message.guild.settings.findOrCreate({ where: { key: 'owoMode' }, defaults: { value: 'false' } });
-
-    message.guild.settings.sync();
+      settingsSchema.findOrCreate({ where: { key: key }, defaults: { value: value }})
+    }
+    settingsSchema.sync();
 
     for (const command of client.commands.filter(g => g.conf.enabled)) {
       const folder = client.folder.get(command[0]);
