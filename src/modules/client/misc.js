@@ -83,6 +83,24 @@ module.exports = (client) => {
       if (props.init) {
         props.init(client);
       }
+
+      /* Checks galore. */
+      if(!props.run) return `${folder}/${commandName} does not have a run export`;
+
+      if(!props.conf) return `${folder}/${commandName} does not have a conf export`;
+      if(props.conf.enabled === undefined) return `${folder}/${commandName} does not have conf.enabled`; // undef because boolean (can be false)
+      if(!props.conf.aliases) return `${folder}/${commandName} does not have conf.aliases`;
+      if(props.conf.permlevel) return `${folder}/${commandName} has the wrong casing for permLevel (was "permlevel")`;
+      if(!props.conf.permLevel) return `${folder}/${commandName} does not have conf.permLevel`;
+      if(props.conf.guildOnly === undefined) return `${folder}/${commandName} does not have conf.guildOnly`; // undef because boolean (can be false)
+
+      if(!props.help) return `${folder}/${commandName} does not have a help export`;
+      if(!props.help.name) return `${folder}/${commandName} does not have help.name`;
+      if(!props.help.description) return `${folder}/${commandName} does not have help.description`;
+      if(!props.help.usage) return `${folder}/${commandName} does not have help.usage`;
+      if(!props.help.category) return `${folder}/${commandName} does not have help.category`;
+      /* // */
+
       client.commands.set(props.help.name, props);
       client.folder.set(props.help.name, folder);
       props.conf.aliases.forEach(alias => {
