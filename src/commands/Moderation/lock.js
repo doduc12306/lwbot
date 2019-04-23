@@ -12,6 +12,8 @@ module.exports.run = (client, message, args) => {
 
   const crgx = /<#([0-9]+)>/g;
 
+  let forcemode = false;
+
   /* Logic of how the arguments are parsed */
   try { // try catch because .parseChannel throws errors instead of rejecting.
 
@@ -44,6 +46,9 @@ module.exports.run = (client, message, args) => {
   }
   /* End logic */
 
+  if(reason && reason.endsWith('-f')) { forcemode = true; reason = reason.split(/-f$/gi)[0]; }
+  if(!channel.permissionsFor(message.guild.id).has('SEND_MESSAGES') && !forcemode) return message.send(':x: `|` :lock: **This channel is already locked.**\nIf you believe this is an error, edit your command and put `-f` (force mode) at the end.');
+
   channel.permissionOverwrites.forEach(overwrite => {
     channel.overwritePermissions(overwrite.id, { SEND_MESSAGES: false }, reason ? `Channel lock | ${reason}` : 'Channel lock');
   });
@@ -51,15 +56,19 @@ module.exports.run = (client, message, args) => {
 
   const modEmbed = new RichEmbed()
     .setColor(client.config.colors.red)
-    .addField('Lock Channel', `${channel.toString()} (#${channel.name})`, true)
-    .addField('Moderator', `${message.author.toString()} (${message.author.tag})`, true)
+    .addField('Lock Channel', `${channel.toString()} (#${channel.name})`)
+    .addField('Moderator', `${message.author.toString()} (${message.author.tag})`)
     .setThumbnail(message.author.avatarURL);
 
-  const durationMs = parse(duration);
-  const durationHR = moment.duration(durationMs).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]'); // HR = "Human Readable"
+  let durationMs;
+  let durationHR;
+  if(duration) {
+    durationMs = parse(duration);
+    durationHR = moment.duration(durationMs).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]'); // HR = "Human Readable"
+    modEmbed.addField('Duration', durationHR);
+  }
 
-  if (duration) modEmbed.addField('Duration', durationHR, true);
-  if (reason) modEmbed.addField('Reason', reason, true);
+  if (reason) modEmbed.addField('Reason', reason);
 
   message.guild.settings.get('modLogChannel')
     .then(async modLogChannel => {
