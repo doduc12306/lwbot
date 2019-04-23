@@ -1,31 +1,45 @@
 const Sequelize = require('sequelize');
+const { Client } = require('discord.js'); // eslint-disable-line no-unused-vars
 
-module.exports = (client, message) => {
-  if (message.channel.type === 'dm') return;
-
-  const guildTable = new Sequelize('database', 'user', 'password', {
+module.exports.table = (guildID) => {
+  if (!guildID) throw new Error('guildID parameter is undefined');
+  return new Sequelize('database', 'user', 'password', {
     host: 'localhost',
     dialect: 'sqlite',
     logging: false,
-    storage: `databases/servers/${message.guild.id}.sqlite`
+    storage: `databases/servers/${guildID}.sqlite`
   });
+};
 
-  // Guild settings support
-  message.guild.settings = guildTable.define('settings', {
+module.exports.settingsSchema = (table) => {
+  if (!table) throw new Error('table parameter is undefined');
+  return table.define('settings', {
     key: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
     value: Sequelize.STRING
   }, { timestamps: false });
-  guildTable.sync();
+};
+
+module.exports.functions = {
 
   /**
-   *
+   * The schema used to create database#settings
+   * @readonly
+   * @param {String} guildID The ID used to get the database, which is then passed into the schema
+   */
+  settingsSchema: (guildID) => this.settingsSchema(this.table(guildID)),
+
+  /**
+   * Adds a setting to the database
+   * @param {Client} client The client used to initiate the discord connection
+   * @param {String} guildID The ID of a guild to use to access/create a database
    * @param {String} key The name of the setting to add
    * @param {String} value The value of the setting
    */
-  message.guild.settings.add = (key, value) => {
+  add: (client, guildID, key, value) => {
     return new Promise((resolve, reject) => {
       if (!key) return reject(new Error('Missing key to add'));
       if (!value) return reject(new Error('Missing value to add'));
@@ -33,70 +47,73 @@ module.exports = (client, message) => {
       if (typeof value !== 'string') return reject(new TypeError(`"${value}" is not a string`));
       if (key.includes(' ')) return reject(new Error(`"${key}" must be one word`));
 
-      message.guild.settings.create({ key: key, value: value })
+      this.functions.settingsSchema(guildID).create({ key: key, value: value })
         .then(() => {
-          client.settings.get(message.guild.id)[key] = value;
+          client.settings.get(guildID)[key] = value;
           return resolve(true);
         })
         .catch(e => {
           return reject(new Error(e));
         });
     });
-  };
+  },
 
   /**
-   *
+   * Deletes a setting from the database
+   * @param {Client} client The client used to initiate the discord connection
+   * @param {String} guildID The ID of a guild to use to access/create a database
    * @param {String} key The name of the setting to delete
    */
-  message.guild.settings.delete = key => {
+  delete: (client, guildID, key) => {
     return new Promise((resolve, reject) => {
       if (!key) return reject(new Error('Missing key to delete'));
       if (typeof key !== 'string') return reject(new TypeError(`"${key}" is not a string`));
-      message.guild.settings.findOne({ where: { key: key } }).then(data => {
+      this.functions.settingsSchema(guildID).findOne({ where: { key: key } }).then(data => {
         if (!data) return reject(new Error(`The key "${key}" does not exist to delete`));
-        delete client.settings.get(message.guild.id)[key];
-        message.guild.settings.destroy({ where: { key: key } });
+        delete client.settings.get(guildID)[key];
+        this.functions.settingsSchema(guildID).destroy({ where: { key: key } });
         return resolve(true);
       });
     });
-  };
-  message.guild.settings.remove = key => message.guild.settings.delete(key);
+  },
 
   /**
-   *
+   * Edits a setting in the database
+   * @param {Client} client The client used to initiate the discord connection
+   * @param {String} guildID The ID of a guild to use to access/create a database
    * @param {String} key The name of the setting to edit
-   * @param {String} newValue The new value of the setting
+   * @param {String} newValue The value of the setting
    */
-  message.guild.settings.edit = (key, newValue) => {
+  edit: (client, guildID, key, newValue) => {
     return new Promise((resolve, reject) => {
       if (!key) return reject(new Error('Missing key to edit'));
       if (!newValue) return reject(new Error('Missing value to edit'));
       if (typeof key !== 'string') return reject(new TypeError(`"${key}" is not a string`));
       if (typeof newValue !== 'string') return reject(new TypeError(`"${newValue}" is not a string`));
 
-      message.guild.settings.findOne({ where: { key: key } }).then(data => {
+      this.functions.settingsSchema(guildID).findOne({ where: { key: key } }).then(data => {
         if (!data) return reject(new Error(`The key "${key}" does not exist to edit`));
-        client.settings.get(message.guild.id)[key] = newValue;
-        message.guild.settings.update({ value: newValue }, { where: { key: key } });
+        client.settings.get(guildID)[key] = newValue;
+        this.functions.settingsSchema(guildID).update({ value: newValue }, { where: { key: key } });
         return resolve(true);
       });
     });
-  };
-  message.guild.settings.set = (key, newValue) => message.guild.settings.edit(key, newValue);
+  },
 
   /**
-   *
-   * @param {String} key The name of the key to get
+   * Gets a setting from the database
+   * @param {String} guildID The ID of a guild to use to access/create a database
+   * @param {String} key The name of the setting to get
    */
-  message.guild.settings.get = key => {
+  get: (guildID, key) => {
     return new Promise((resolve, reject) => {
       if (!key) return reject(new Error('Missing key to get'));
       if (typeof key !== 'string') return reject(new TypeError(`"${key}" is not a string`));
 
-      message.guild.settings.findOne({ where: { key: key } }).then(data => {
+      this.functions.settingsSchema(guildID).findOne({ where: { key: key } }).then(data => {
         if (!data) return reject(new Error(`"${key}" does not exist to get`));
         return resolve(data.value);
       });
     });
-  };
+  }
 };
