@@ -1,7 +1,6 @@
 const { RichEmbed } = require('discord.js');
 /* eslint-disable */
 module.exports = async (client, message) => {
-  require('./settings.js')(client, message);
 
   // Message send function, pretty much extends message.channel.send/message.edit in that it allows the user to edit their command message and it runs that instead
   message.send = (content, options) => {
@@ -46,8 +45,6 @@ module.exports = async (client, message) => {
         });
 
       await client.settings.get(message.guild.id)['owoMode'];
-
-      await content instanceof RichEmbed;
 
       if(client.settings.get(message.guild.id)['owoMode'] === 'true' && !(content instanceof RichEmbed)) {
         content = content
