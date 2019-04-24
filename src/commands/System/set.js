@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const settingsFunctions = require('../../modules/message/settings').functions;
 
 // Note the **destructuring** here. instead of `args` we have :
 // [action, key, ...value]
@@ -7,10 +8,12 @@ const Discord = require('discord.js');
 // OR the same as:
 // const [action, key, ...value] = args;
 exports.run = async (client, message, [action, key, ...value]) => {
-  message.guild.settings.findAll().then(data => {
+  const settingsSchema = require('../../modules/message/settings').functions.settingsSchema(message.guild.id);
+
+  settingsSchema.findAll().then(data => {
     if(action === 'view') {
       if(key) {
-        message.guild.settings.get(key)
+        settingsFunctions.get(message.guild.id, key)
           .then(() => {
             data = data.filter(g => g.key === key)[0].dataValues;
             message.send(`:information_source: \`|\` ⚙️ **The value of** \`${key}\` **is** \`${data.value}\`**.**`);
@@ -33,10 +36,10 @@ exports.run = async (client, message, [action, key, ...value]) => {
 
     if(action === 'edit') {
       if(!key) return message.send('❌ `|` ⚙️ **You didn\'t provide a key to edit!**');
-      message.guild.settings.get(key)
+      settingsFunctions.get(message.guild.id, key)
         .then(() => {
           if(value.length < 1) return message.send('❌ `|` ⚙️ **Please provide a new value.**');
-          message.guild.settings.edit(key, value.join(' '));
+          settingsFunctions.edit(client, message.guild.id, key, value.join(' '));
           client.settings.get(message.guild.id)[key] = value.join(' ');
           message.send(`✅ \`|\` ⚙️ \`${key}\` **was successfully edited to** \`${value.join(' ')}\`**.**`);
         })
@@ -45,11 +48,11 @@ exports.run = async (client, message, [action, key, ...value]) => {
 
     if (action === 'add' || action === 'create') {
       if (!key) return message.send('❌ `|` ⚙️ **You didn\'t provide a key to add!**');
-      message.guild.settings.get(key)
+      settingsFunctions.get(message.guild.id, key)
         .then(() => message.send(`❌ \`|\` ⚙️ \`${key}\` **already exists!**`))
         .catch(() => {
           if (value.length < 1) return message.send('❌ `|` ⚙️ **Please provide a value.**');
-          message.guild.settings.add(key, value.join(' '));
+          settingsFunctions.add(client, message.guild.id, key, value.join(' '));
           client.settings.get(message.guild.id)[key] = value.join(' ');
           message.send(`✅ \`|\` ⚙️ \`${key}\` **was successfully added with value** \`${value.join(' ')}\`**.**`);
         });
@@ -57,11 +60,11 @@ exports.run = async (client, message, [action, key, ...value]) => {
 
     if (action === 'del' || action === 'delete') {
       if(!key) return message.send('❌ `|` ⚙️ **You didn\'t provide a key to delete!**');
-      message.guild.settings.get(key)
+      settingsFunctions.get(message.guild.id, key)
         .then(async () => {
           const response = await client.awaitReply(message, `⚠️ \`|\` ⚙️ **Are you** __***SURE***__ **you want to delete** \`${key}\`**? This CANNOT be undone!** (y/n)`);
           if (['yes', 'y'].includes(response)) {
-            message.guild.settings.delete(key);
+            settingsFunctions.delete(client, message.guild.id, key);
             delete client.settings.get(message.guild.id)[key];
             message.send(`✅ \`|\` ⚙️ **Successfully deleted** \`${key}\`**.**`);
           } else if (['no', 'n'].includes(response)) return message.send('✅ `|` ⚙️ **Action cancelled.**');
@@ -71,11 +74,11 @@ exports.run = async (client, message, [action, key, ...value]) => {
 
     if(action === 'reset') {
       if (!key) return message.send('❌ `|` ⚙️ **You didn\'t provide a key to reset!**');
-      message.guild.settings.get(key)
+      settingsFunctions.get(message.guild.id, key)
         .then(async () => {
           const response = await client.awaitReply(message, `⚠️ \`|\` ⚙️ **Are you** __***SURE***__ **you want to reset** \`${key}\`**? This CANNOT be undone!** (y/n)`);
           if (['yes', 'y'].includes(response)) {
-            message.guild.settings.edit(key, client.config.defaultSettings[key]);
+            settingsFunctions.edit(client, message.guild.id, key, client.config.defaultSettings[key]);
             client.settings.get(message.guild.id)[key] = client.config.defaultSettings[key];
             message.send(`✅ \`|\` ⚙️ **Successfully reset** \`${key}\` **to** \`${client.config.defaultSettings[key]}\`**.**`);
           } else if (['no', 'n'].includes(response)) return message.send('✅ `|` ⚙️ **Action cancelled.**');
