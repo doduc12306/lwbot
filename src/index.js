@@ -83,18 +83,21 @@ client.on('reconnecting', () => client.logger.log('Reconnecting...', 'reconnecti
 client.on('resume', replayed => client.logger.log(`Client resumed! Replayed ${replayed} events`, 'resume'));
 client.on('warn', info => client.logger.warn(`Warning: "${info}"`));
 
-client.logger.sqLog('Starting database cleanup service...');
-
-
 // These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', async (err) => {
   if (err.stack.trim().includes('at WebSocketConnection.onError')) {
     client.logger.log('Disconnected! Lost connection to websocket', 'disconnect');
-    if (client.config.debugMode) return process.exit(1);
-    writeFileSync('./e', 'lost connection to websocket', e => {
-      if (e) console.error(e);
-      else client.logger.debug('Wrote error log');
-    });
+    client.logger.log('Attempting reconnect...', 'reconnecting');
+    await client.login(client.config.debugMode ? process.env.DEBUG_TOKEN : process.env.TOKEN)
+      .then(() => { return client.logger.log('Client reconnected!', 'resume'); })
+      .catch(() => {
+        client.logger.log('Disconnected!', 'disconnect');
+        if (client.config.debugMode) return process.exit(1);
+        writeFileSync('./e', 'lost connection to websocket', e => {
+          if (e) console.error(e);
+          else client.logger.debug('Wrote error log');
+        });
+      });
   } else {
     client.logger.error(`Uncaught Exception: ${err}`);
     if (client.config.debugMode) return process.exit(1);
