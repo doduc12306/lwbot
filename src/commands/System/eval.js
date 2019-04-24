@@ -5,6 +5,7 @@ const Discord = require('discord.js');
 const Sequelize = require('sequelize');
 const moment = require('moment');
 const parse = require('parse-duration');
+const settings = require('../../modules/message/settings');
 require('moment-duration-format');
 
 exports.run = async (client, message, args) => {
@@ -15,7 +16,6 @@ exports.run = async (client, message, args) => {
   require('../../modules/message/commands')(client, message);
   require('../../modules/message/misc')(client, message);
   require('../../modules/message/modbase')(client, message);
-  require('../../modules/message/settings')(client, message);
   require('../../modules/message/xp')(client, message);
 
   const code = args.join(' ');
@@ -40,8 +40,7 @@ exports.run = async (client, message, args) => {
     }
   } catch (error) {
     error = error.stack.split('\n'); // eslint-disable-line no-ex-assign
-    if (error[1].trim() === 'at Object.exports.run (/Users/akii/Documents/bots/lwbot-rewrite/src/commands/System/eval.js)'
-    || error[1].trim() === 'at Object.exports.run (/root/lwbot-rewrite/src/commands/System/eval.js)') return message.send(`:x: **An error occurred:** \`${error[0]}\``);
+    if (error[1].trim().includes('at Object.exports.run (/Users/akii/Documents/bots/lwbot-rewrite/src/commands/System/eval.js') || error[1].trim().includes('at Object.exports.run (/root/lwbot-rewrite/src/commands/System/eval.js')) return message.send(`:x: **An error occurred:** \`${error[0]}\``);
     message.send(`:x: **An error occurred:** \`${error[0]}\`\n\`\`\`\n${error[1].trim()}\n\`\`\``);
   }
 
