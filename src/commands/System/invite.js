@@ -1,5 +1,11 @@
-const Discord = require('discord.js');
-module.exports.run = (client) => client.users.get(client.config.ownerID).send(new Discord.RichEmbed().setTitle('Invite me to another server!').setDescription(`https://discordapp.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=1610083703&scope=bot`).setColor(client.config.colors.green));
+const { RichEmbed } = require('discord.js');
+module.exports.run = async (client, message) => {
+  message.author.send(new RichEmbed()
+    .setColor(client.config.colors.green)
+    .setTitle('Invite me to another server!')
+    .setDescription(`[${await client.generateInvite(['ADMINISTRATOR'])}](Click here!)`)
+  );
+}
 
 exports.conf = {
   enabled: true,

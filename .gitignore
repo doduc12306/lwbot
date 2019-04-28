@@ -1,10 +1,13 @@
 .DS_Store
-databases/
+
+*.sqlite
+
 .vscode/
 .vs/
 src/node_modules
 tests/
-src/e
+src/e 
+
 # Logs
 logs
 *.log

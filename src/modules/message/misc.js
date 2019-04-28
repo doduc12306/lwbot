@@ -1,12 +1,14 @@
 const { RichEmbed } = require('discord.js');
 /* eslint-disable */
 module.exports = async (client, message) => {
-  require('./settings.js')(client, message);
 
   // Message send function, pretty much extends message.channel.send/message.edit in that it allows the user to edit their command message and it runs that instead
   message.send = (content, options) => {
     return new Promise(async (resolve, reject) => {
-      if(!content) return reject(new Error('Cannot send an empty message'));
+      if(!content) {
+        content = '[Empty Message]';
+        reject(new Error('Empty message detected!'));
+      }
 
       if (message.edited) return message.channel.fetchMessage(client.msgCmdHistory[message.id])
         .then(async msg => {
@@ -43,8 +45,6 @@ module.exports = async (client, message) => {
         });
 
       await client.settings.get(message.guild.id)['owoMode'];
-
-      await content instanceof RichEmbed;
 
       if(client.settings.get(message.guild.id)['owoMode'] === 'true' && !(content instanceof RichEmbed)) {
         content = content
@@ -119,17 +119,21 @@ module.exports = async (client, message) => {
     },
     parseChannel: data => {
       if (message.channel.type !== 'text') throw new Error('I can\'t find a channel if I\'m not in a guild!');
-      if (!data) throw new Error('You didn\'t give me anything to find a channel from!');
-      if(message.mentions.channels.size === 0) {
-        let channel = message.guild.channels.get(data);
-        if(channel === undefined) {
-          if(data.startsWith('#')) data = data.split('#')[1];
-          channel = message.guild.channels.find(r => r.name.includes(data));
-          if (!channel) throw new Error('I couldn\'t find that channel!');
-          else return channel;
-        } else return channel;
-      } else {
-        const channel = message.mentions.channels.first();
+      if (!data) return undefined;
+      if(data.startsWith('<#') && data.endsWith('>')) { // data === <#ID>
+        const channel = message.guild.channels.get(data.substring(2, data.length -1));
+        if(!channel) throw new Error('Channel does not exist');
+        return channel;
+      }
+      else if(data.startsWith('#')) { // data === #channel
+        data = data.substring(1);
+        const channel = message.guild.channels.find(g => g.name.includes(data));
+        if(!channel) throw new Error('Channel does not exist');
+        return channel;
+      }
+      else { // data === ID
+        const channel = message.guild.channels.get(data);
+        if(!channel) throw new Error('Channel does not exist');
         return channel;
       }
     }
