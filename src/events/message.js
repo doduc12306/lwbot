@@ -1,14 +1,12 @@
 // The MESSAGE event runs anytime a message is received
 // Note that due to the binding of client to every event, every event
 // goes `client, other, args` when this function is run.
-/* eslint-disable */
 
 module.exports = async (client, message) => {
   const a = new Date();
   if (message.author.bot) return;
   message.benchmarks = {};
 
-  require('../modules/message/xp.js')(client, message);
   require('../modules/message/misc.js')(client, message);
   if (message.channel.type !== 'dm') require('../modules/message/commands.js')(client, message);
 
@@ -48,7 +46,8 @@ module.exports = async (client, message) => {
   const exceedsCapsThreshold = message.content.match(/[A-Z]+/g) !== null &&
     message.content.length >= 15 &&
     capsWarnEnabled === 'true' &&
-    (message.content.match(/[A-Z]+/g).join(' ').replaceAll(' ', '').split('').length / message.content.length) * 100 >= capsThreshold; // ok so this mess of code checks to see if the message has more than ${capsThreshold}% caps. To break it down, it matches all of the capital letters in the message. Then joins the array that spits out. Then it replaces all of the spaces with an empty string, so they looklikethisinsteadofspaced, then it splits it from each character. It takes the length of this array and divides it by the length of the message itself. It then multiplies that number by 100 to give the percentage, then it checks that number against ${capsThreshold}.
+    (message.content.match(/[A-Z]+/g).join(' ').replaceAll(' ', '').split('').length / message.content.length) * 100 >= capsThreshold;
+    /* ok so this mess of code checks to see if the message has more than ${capsThreshold}% caps. To break it down, it matches all of the capital letters in the message. Then joins the array that spits out. Then it replaces all of the spaces with an empty string, so they looklikethisinsteadofspaced, then it splits it from each character. It takes the length of this array and divides it by the length of the message itself. It then multiplies that number by 100 to give the percentage, then it checks that number against ${capsThreshold}. */
   message.benchmarks['ExceedsCapsThreshold'] = new Date() - a;
 
   const emsg = `⚠️ \`|\` ${message.author}**, your message is more than ${capsThreshold}% caps.** Please do not spam caps.`;
@@ -60,13 +59,38 @@ module.exports = async (client, message) => {
   }
 
   if (message.channel.type !== 'dm') {
+    const { functions } = require('../modules/message/xp.js');
+
+    let xpLevelUpMessage = client.config.defaultSettings.xpLevelUpMessage;
+    if (!message.guild) xpLevelUpMessage = client.config.defaultSettings.xpLevelUpMessage;
+    else {
+      await settingsSchema.findOrCreate({ where: { key: 'xpLevelUpMessage' }, defaults: { value: ':arrow_up: **{{user}} just advanced to level {{level}}!**' } });
+      xpLevelUpMessage = await settingsFunctions.get(message.guild.id, 'xpLevelUpMessage');
+    }
+    message.benchmarks['XpLevelUpMessageBenchmark'] = new Date() - a;
+
+    // Adds XP
     if (!client.xpLockSet.has(message.author.id)) {
-      message.guild.xp.add(message.author.id, Math.floor(Math.random() * (Math.floor(2) - Math.ceil(1) + 1)) + Math.ceil(1)); // Adds either 1 or 2 xp ...
+      const randomXP = Math.floor(Math.random() * (Math.floor(2) - Math.ceil(1) + 1)) + Math.ceil(1);
+      functions.add(message.guild.id, message.author.id, randomXP); // Adds either 1 or 2 xp ...
       client.xpLockSet.add(message.author.id);
       setTimeout(() => client.xpLockSet.delete(message.author.id), 60000); // ... per minute.
     }
+
+    // Checks if level up is possible
+    functions.xpSchema(message.guild.id).findOne({ where: { user: message.author.id }})
+      .then(user => {
+        if (xpNeededToLevelUp(user.dataValues.level) < user.dataValues.xp) {
+          message.channel.send(xpLevelUpMessage.replaceAll('{{user}}', message.author.toString()).replaceAll('{{level}}', user.dataValues.level +1));
+          user.increment('level');
+        }
+
+        function xpNeededToLevelUp(x) {
+          return 5 * (10 ** -4) * ((x*100) ** 2) + (0.5 * (x*100)) + 100;
+        }
+      });
   }
-  message.benchmarks['XpAdditionBenchmark'] = new Date() - a;
+  message.benchmarks['XpAdditionAndLevelCheckBenchmark'] = new Date() - a;
 
   const prefix = message.guild
     ? client.settings.get(message.guild.id)['prefix']
@@ -140,7 +164,7 @@ module.exports = async (client, message) => {
       const key = setting[0];
       const value = setting[1];
 
-      settingsSchema.findOrCreate({ where: { key: key }, defaults: { value: value }})
+      settingsSchema.findOrCreate({ where: { key: key }, defaults: { value: value }});
     }
     settingsSchema.sync();
 
