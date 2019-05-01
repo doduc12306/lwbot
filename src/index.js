@@ -111,6 +111,15 @@ process.on('uncaughtException', async (err) => {
 });
 
 process.on('unhandledRejection', err => {
+  if(err.message === 'Please install sqlite3 package manually') {
+    client.logger.error('sqlite3 package needs to be reinstalled.');
+    client.logger.log('Installing package...');
+    require('child_process').exec('yarn add sqlite3', async (e, out, err) => {
+      if(e || err) client.logger.error(`Error installing sqlite3 package: ${e || err}`);
+      client.logger.log(await out);
+      await process.exit();
+    });
+  }
   client.logger.error(`Unhandled rejection: ${err.stack}`);
 });
 
