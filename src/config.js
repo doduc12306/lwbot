@@ -30,7 +30,8 @@ const config = {
     'botCommanderRole': 'Bot Commander',
     'ownerRole': 'Owners',
     'capsThreshold': '70', // (70%), not 70 or more characters.
-    'staffBypassesLimits': 'true'
+    'staffBypassesLimits': 'true',
+    'xpLevelUpMessage': ':arrow_up: **{{user}} just advanced to level {{level}}!**'
   },
 
   // COLORS
