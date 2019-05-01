@@ -1,12 +1,13 @@
 .DS_Store
 
 *.sqlite
+*.sqlite-journal
 
 .vscode/
 .vs/
 src/node_modules
 tests/
-src/e 
+src/e
 
 # Logs
 logs
@@ -17,7 +18,6 @@ yarn-error.log*
 data/
 test.js
 *.temp
-src/commands/Misc/rules.js
 
 # Runtime data
 pids
