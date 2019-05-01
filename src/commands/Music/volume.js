@@ -7,8 +7,8 @@ module.exports.run = (client, message, [ volume ]) => {
 
   if(!volume) return message.send('❌ `|` **Missing a volume to change to!**');
   if (isNaN(volume)) return message.send(`❌ \`|\` \`${volume}\` **is not a number!**`);
-  if(parseInt(volume) > 10 && message.author.id !== client.config.ownerID) return message.send('❌ `|` 🎵 **The volume must be 1 through 10!**');
-  if(parseInt(volume) === music.volume) return message.send(`❌ \`|\` \`${volume}\` **is the volume right now!**`);
+  if(+volume > 10 && message.author.id !== client.config.ownerID) return message.send('❌ `|` 🎵 **The volume must be 1 through 10!**');
+  if(+volume === music.volume) return message.send(`❌ \`|\` \`${volume}\` **is the volume right now!**`);
 
   music.connection.dispatcher.setVolumeLogarithmic(volume / 10);
   music.volume = volume;

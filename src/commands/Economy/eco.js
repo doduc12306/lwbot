@@ -9,7 +9,7 @@ module.exports.run = async (client, message, args) => {
 
   if(type === 'add') {
     if(isNaN(amount)) return message.send(`❌ \`|\` :bank: \`${amount}\` **is not a number!**`);
-    amount = parseInt(amount);
+    amount = +amount;
 
     client.bank.add(user.id, amount);
     await client.bank.sync();
@@ -18,7 +18,7 @@ module.exports.run = async (client, message, args) => {
 
   if(type === 'subtract') {
     if(isNaN(amount)) return message.send(`❌ \`|\` :bank: \`${amount}\` **is not a number!**`);
-    amount = parseInt(amount);
+    amount = +amount;
 
     client.bank.subtract(user.id, amount);
     await client.bank.sync();
@@ -27,7 +27,7 @@ module.exports.run = async (client, message, args) => {
 
   if(type === 'set') {
     if(isNaN(amount)) return message.send(`❌ \`|\` :bank: \`${amount}\` **is not a number!**`);
-    amount = parseInt(amount);
+    amount = +amount;
 
     client.bank.set(user.id, amount);
     await client.bank.sync();

@@ -49,7 +49,7 @@ module.exports.run = async (client, message, args) => {
         } catch (err) {
           return message.send('❌ `|` 🎵 **Invalid selection.** Cancelling search.');
         }
-        const videoIndex = parseInt(response);
+        const videoIndex = +response;
         video = await youtube.getVideoByID(videos[videoIndex - 1].id);
       } catch (err) {
         return message.send(`❌ \`|\` 🎵 \`${searchString}\` **did not match any results.**`);

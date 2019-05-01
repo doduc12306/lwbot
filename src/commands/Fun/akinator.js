@@ -41,7 +41,7 @@ module.exports.run = async (client, message, args) => {
                 console.log(res.progress);
                 console.log(`Region: ${region}\nSession: ${session}\nSignature: ${signature}\n0\nStep: ${step}`);
                 //if (error) { message.send(':x: **There was an error.** Game ended.'); client.logger.error(error); return collector.emit('end'); }
-                if (parseInt(res.progress) >= 98) {
+                if (+res.progress >= 98) {
                   return aki.win(region, session, signature, step, (resolve, e) => {
                     console.log(resolve);
                     //if (e) { message.send(':x: **There was an error.** Game ended.'); client.logger.error(error); return collector.emit('end'); }

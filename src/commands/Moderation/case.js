@@ -39,7 +39,7 @@ module.exports.run = async (client, message, args) => {
     case 'tempmute unmute': { embed.setColor(client.config.colors.green); break; }
   }
 
-  if (log.dataValues.duration !== null) embed.addField('Duration', moment.duration(parseInt(log.dataValues.duration)).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]'));
+  if (log.dataValues.duration !== null) embed.addField('Duration', moment.duration(+log.dataValues.duration).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]'));
 
   message.send(embed);
 };
