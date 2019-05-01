@@ -17,15 +17,17 @@
     "moment-duration-format": "^2.2.2",
     "parse-duration": "^0.1.1",
     "sequelize": "^4.43.0",
+    "simple-youtube-api": "^5.1.1",
     "sqlite3": "^4.0.6",
     "uws": "^100.0.1",
-    "walk": "^2.3.14"
+    "walk": "^2.3.14",
+    "ytdl-core": "^0.29.1"
   },
   "devDependencies": {
-    "terminal-kit": "^1.27.0",
     "eslint": "^5.16.0",
+    "express": "^4.16.4",
     "pm2": "^3.5.0",
-    "express": "^4.16.4"
+    "terminal-kit": "^1.27.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
