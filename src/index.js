@@ -1,4 +1,5 @@
-if (process.version.slice(1).split('.')[0] < 8) throw new Error('Node 8.0.0 or higher is required. Update Node on your system.');
+if (process.version.slice(1).split('.')[0] < 8) throw new Error('Node 8.x or higher is required. Update Node on your system.');
+if (process.version.slice(1).split('.')[0] > 11) throw new Error('Node 11.x or lower is required. Downgrade Node on your system.');
 
 for (const arg of process.argv) {
   if (arg.startsWith('-') && !['d', 'v', 's', '-debug', '-verbose', '-sqLog'].includes(arg.substring(1))) {
@@ -114,7 +115,7 @@ process.on('unhandledRejection', err => {
   if(err.message === 'Please install sqlite3 package manually') {
     client.logger.error('sqlite3 package needs to be reinstalled.');
     client.logger.log('Installing package...');
-    require('child_process').exec('yarn add sqlite3', async (e, out, err) => {
+    return require('child_process').exec('yarn add sqlite3', async (e, out, err) => {
       if(e || err) client.logger.error(`Error installing sqlite3 package: ${e || err}`);
       client.logger.log(await out);
       await process.exit();
