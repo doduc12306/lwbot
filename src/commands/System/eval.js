@@ -29,7 +29,7 @@ exports.run = async (client, message, args) => {
     output = output.replace(filter, 'FILTERED TOKEN');
     output = clean(output);
     if (output.length < 1950) {
-      message.send(output, {code: 'js'});
+      message.send(output, { code: 'js' });
     } else {
       try {
         const { body } = await post('https://www.hastebin.com/documents').send(output);
@@ -44,7 +44,7 @@ exports.run = async (client, message, args) => {
     message.send(`:x: **An error occurred:** \`${error[0]}\`\n\`\`\`\n${error[1].trim()}\n\`\`\``);
   }
 
-  function clean(text)  {
+  function clean(text) {
     return text
       .replace(/`/g, '`' + String.fromCharCode(8203))
       .replace(/@/g, '@' + String.fromCharCode(8203));
