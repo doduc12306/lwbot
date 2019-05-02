@@ -56,7 +56,6 @@ module.exports = async (client, message) => {
 
         content += ` ${[`${ous.randomElement()}${ws.randomElement()}${ous.randomElement()}`, ':3c'].randomElement()}`;
       }
-      await client.msgCmdHistory.has(message.id);
 
       if(!client.msgCmdHistory.has(message.id)) {
         if (options) return message.channel.send(content, options).then(msg => {

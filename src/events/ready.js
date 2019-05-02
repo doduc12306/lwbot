@@ -1,7 +1,7 @@
 const { promisify } = require('util');
 const readdir = promisify(require('fs').readdir);
 const Sequelize = require('sequelize');
-const Discord = require('discord.js');
+const { Collection } = require('discord.js');
 const moment = require('moment');
 
 module.exports = async client => {
@@ -23,7 +23,7 @@ module.exports = async client => {
   }, 60000);
 
   const servers = await readdir('databases/servers/');
-  client.settings = new Discord.Collection();
+  client.settings = new Collection();
   await Promise.all(servers.map(async server => {
     const serverId = server.split('.sqlite')[0];
     const db = new Sequelize('database', 'username', 'password', {logging: false, host: 'localhost', storage: `databases/servers/${server}`, dialect: 'sqlite'});
@@ -71,6 +71,11 @@ module.exports = async client => {
     if (e.code === 'MODULE_NOT_FOUND') client.logger.debug('No error log found.');
     else client.logger.error(e.stack);
   }
+
+
+  client.xpLockSet = new Set();
+
+  client.msgCmdHistory = new Collection();
 
   client.logger.log(`
 

@@ -1,5 +1,3 @@
-const { Collection } = require('discord.js');
-
 module.exports = (client) => {
 
   /*
@@ -142,7 +140,4 @@ module.exports = (client) => {
   // `await client.wait(1000);` to "pause" for 1 second.
   client.wait = require('util').promisify(setTimeout);
 
-  client.xpLockSet = new Set();
-
-  client.msgCmdHistory = new Collection();
 };
