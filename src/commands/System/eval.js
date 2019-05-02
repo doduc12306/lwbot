@@ -16,7 +16,8 @@ exports.run = async (client, message, args) => {
   require('../../modules/message/commands')(client, message);
   require('../../modules/message/misc')(client, message);
   require('../../modules/message/modbase')(client, message);
-  require('../../modules/message/xp')(client, message);
+  const xp = require('../../modules/message/xp');
+  const settings = require('../../modules/message/settings');
 
   const code = args.join(' ');
   const token = client.token.split('').join('[^]{0,2}');
