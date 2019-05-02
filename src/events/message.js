@@ -152,15 +152,17 @@ module.exports = async (client, message) => {
     return message.send('❌ **This command requires `Embed Links`, which I don\'t have!**');
   message.benchmarks['EmbedCheckBenchmark'] = new Date() - a;
 
-  // If the command exists, **AND** the user has permission, run it.
+  /* -------------------- RUNS THE COMMAND -------------------- */
   client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name} ${message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs'}`);
   await cmd.run(client, message, args, level);
+  /* -------------------- RUNS THE COMMAND -------------------- */
+
   message.benchmarks['CmdRunBenchmark'] = new Date() - a;
   message.benchmarks['TOTAL_BENCHMARK'] = new Date() - a;
 
   // Other server database checks
   if (message.guild) {
-    for (const setting of client.config.defaultSettings) {
+    for (const setting of Object.entries(client.config.defaultSettings)) {
       const key = setting[0];
       const value = setting[1];
 
