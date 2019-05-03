@@ -77,6 +77,8 @@ module.exports = async client => {
 
   client.msgCmdHistory = new Collection();
 
+  require('../util/sqWatchdog')(client);
+
   client.logger.log(`
 
   ${'⎻'.repeat(client.user.tag.length + client.user.id.length + 5)}
