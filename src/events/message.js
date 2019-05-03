@@ -8,7 +8,9 @@ module.exports = async (client, message) => {
   message.benchmarks = {};
 
   require('../modules/message/misc.js')(client, message);
-  if (message.channel.type !== 'dm') require('../modules/message/commands.js')(client, message);
+  
+  let commandsTable;
+  if (message.channel.type !== 'dm') commandsTable = require('../modules/message/commands').functions.commandsSchema(message.guild.id);
 
   let settingsFunctions;
   let settingsSchema;
@@ -114,7 +116,7 @@ module.exports = async (client, message) => {
 
   let cmdInDb;
   if (message.guild) {
-    await message.guild.commands.findOne({ where: { command: cmd.help.name } }).then(data => {
+    await commandsTable.findOne({ where: { command: cmd.help.name } }).then(data => {
       if(!data) cmdInDb === null;
       else cmdInDb = data.dataValues;
     });
@@ -175,16 +177,16 @@ module.exports = async (client, message) => {
       const enabled = command[1].conf.enabled;
       const permLevel = command[1].conf.permLevel;
 
-      await message.guild.commands.findOrCreate({ where: { command: command[0], permLevel: permLevel }, defaults: { folder: folder, enabled: enabled } })
+      await commandsTable.findOrCreate({ where: { command: command[0], permLevel: permLevel }, defaults: { folder: folder, enabled: enabled } })
         .catch(async e => {
           if(e.name === 'SequelizeUniqueConstraintError') {
-            await message.guild.commands.destroy({ where: { command: command[0] }});
-            await message.guild.commands.create({ command: command[0], permLevel: permLevel, folder: folder, enabled: enabled });
-            message.guild.commands.sync();
+            await commandsTable.destroy({ where: { command: command[0] }});
+            await commandsTable.create({ command: command[0], permLevel: permLevel, folder: folder, enabled: enabled });
+            commandsTable.sync();
           }
           else client.logger.error(e);
         });
     }
-    message.guild.commands.sync();
+    commandsTable.sync();
   }
 };

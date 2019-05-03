@@ -1,5 +1,5 @@
 module.exports.run = async (client, message, [option, command, ...permlevel]) => {
-  require('../../modules/message/commands.js')(client, message);
+  const commandsTable = require('../../modules/message/commands').functions.commandsSchema(message.guild.id);
 
   if (!option || !['enable', 'disable', 'setperm'].includes(option)) return message.send('❌ `|` ⚙️ **Invalid option!** Accepted values: `enable`, `disable`, or `setperm`');
   if (!command) return message.send('❌ `|` ⚙️ **You didn\'t give a command to edit!**');
@@ -14,7 +14,7 @@ module.exports.run = async (client, message, [option, command, ...permlevel]) =>
 
   let cmdInDb;
   if (message.guild) {
-    await message.guild.commands.findOne({ where: { command: command } }).then(data => {
+    await commandsTable.findOne({ where: { command: command } }).then(data => {
       if (!data) return message.send(`❌ \`|\` ⚙️ \`${command}\` **has been disabled globally by the developer!**`);
       else cmdInDb = data.dataValues;
     });
@@ -25,7 +25,7 @@ module.exports.run = async (client, message, [option, command, ...permlevel]) =>
   switch (option.toLowerCase()) {
     case 'enable': {
       if (cmdInDb.enabled) return message.send(`❌ \`|\` ⚙️ \`${command}\` **is already enabled!**`);
-      message.guild.commands.update({ enabled: true }, { where: { command: command } })
+      commandsTable.update({ enabled: true }, { where: { command: command } })
         .then(() => message.send(`✅ \`|\` ⚙️ \`${command}\` **is now enabled!**`))
         .catch(e => {
           message.send(`❌ \`|\` ⚙️ \`${command}\` **could not be enabled!** Please try again later.`);
@@ -35,7 +35,7 @@ module.exports.run = async (client, message, [option, command, ...permlevel]) =>
     }
     case 'disable': {
       if (!cmdInDb.enabled) return message.send(`❌ \`|\` ⚙️ \`${command}\` **is already disabled!**`);
-      message.guild.commands.update({ enabled: false }, { where: { command: command } })
+      commandsTable.update({ enabled: false }, { where: { command: command } })
         .then(() => message.send(`✅ \`|\` ⚙️ \`${command}\` **is now disabled!**`))
         .catch(e => {
           message.send(`❌ \`|\` ⚙️ \`${command}\` **could not be disabled!** Please try again later.`);
@@ -49,7 +49,7 @@ module.exports.run = async (client, message, [option, command, ...permlevel]) =>
       if(![0, 1, 2, 3, 4, 5, 8, 9, 10].includes(client.levelCache[permlevel])) return message.send(`❌ \`|\` ⚙️ \`${permlevel}\` **is not recognized as a valid permission level!**`);
       if(client.levelCache[permlevel] > client.permlevel(message.member)) return message.send(`❌ \`|\` ⚙️ **You cannot set** \`${command}\` **to** \`${permlevel}\`**!** Doing so would remove your access.`);
 
-      message.guild.commands.update({ permLevel: permlevel }, { where: { command: command } })
+      commandsTable.update({ permLevel: permlevel }, { where: { command: command } })
         .then(() => message.send(`✅ \`|\` ⚙️ \`${command}\`**'s permission level has been updated to** \`${permlevel}\`**.**`))
         .catch(e => {
           message.send(`❌ \`|\` ⚙️ \`${command}\`**'s permission level could not be changed.** Please try again later.`);

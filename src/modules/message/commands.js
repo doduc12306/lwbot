@@ -1,13 +1,18 @@
 const Sequelize = require('sequelize');
-module.exports = (client, message) => {
-  const guildTable = new Sequelize('database', 'user', 'password', {
+
+module.exports.table = (guildID) => {
+  if(!guildID) throw new Error('guildID parameter is undefined');
+  return new Sequelize('database', 'user', 'password', {
     host: 'localhost',
     dialect: 'sqlite',
     logging: false,
-    storage: `databases/servers/${message.guild.id}.sqlite`
+    storage: `databases/servers/${guildID}.sqlite`
   });
+};
 
-  message.guild.commands = guildTable.define('commands', {
+module.exports.commandsSchema = (table) => {
+  if(!table) throw new Error('table parameter is undefined');
+  return table.define('commands', {
     command: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -27,3 +32,10 @@ module.exports = (client, message) => {
     }
   }, { timestamps: false });
 };
+
+module.exports.functions = {
+
+  commandsSchema: (guildID) => this.commandsSchema(this.table(guildID))
+
+};
+
