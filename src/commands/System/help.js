@@ -31,8 +31,8 @@ exports.run = async (client, message, args) => {
   } else {
     // Show individual command's help.
     let command = args[0];
-    if (client.commands.has(command)) {
-      command = client.commands.get(command);
+    if (client.commands.has(command) || client.commands.has(client.aliases.get(command))) {
+      command = client.commands.get(command) || client.commands.get(client.aliases.get(command));
       let desc = `**Description:** ${command.help.description}\n**Usage:** ${command.help.usage}\n**Required Perm:** ${command.conf.permLevel}\n**Category:** ${command.help.category}`;
 
       if (command.conf.aliases.join(', ')) desc += `\n**Aliases:** ${command.conf.aliases.join(', ')}`;
