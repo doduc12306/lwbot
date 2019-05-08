@@ -13,9 +13,9 @@ exports.run = async (client, message, args) => {
   require('../../modules/client/misc')(client);
   require('../../modules/client/protos')(client);
   require('../../modules/client/tags')(client);
-  require('../../modules/message/commands')(client, message);
   require('../../modules/message/misc')(client, message);
   require('../../modules/message/modbase')(client, message);
+  const commands = require('../../modules/message/commands');
   const xp = require('../../modules/message/xp');
   const settings = require('../../modules/message/settings');
 
