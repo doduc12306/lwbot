@@ -6,6 +6,8 @@ const config = require('../config');
 module.exports = async (client) => {
   logger.log('Watchdog started');
 
+  const time = config.debugMode ? 10000 : 600000; // If debug mode is on, refresh every 10 seconds. Else, 10 minutes.
+
   setInterval(async () => {
     const start = new Date();
     logger.sqLog('Started process...');
@@ -80,7 +82,7 @@ module.exports = async (client) => {
     }));
 
     logger.sqLog(`Ended process! ${new Date() - start}ms`);
-  }, 600000); // Every 10 minutes
+  }, time); // Every 10 minutes
 
 
 };
