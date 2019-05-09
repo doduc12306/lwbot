@@ -5,8 +5,8 @@ const { Util } = require('discord.js');
 const parse = require('parse-duration');
 
 module.exports.run = async (client, message, args) => {
-  require('../../modules/client/misc.js')(client); // For awaitReply function
-  require('../../modules/message/misc.js')(client, message);
+  require('../../dbFunctions/client/misc.js')(client); // For awaitReply function
+  require('../../dbFunctions/message/misc.js')(client, message);
 
   const { voiceChannel } = message.member;
   if (!voiceChannel) return message.send('❌ `|` 🎵 **You aren\'t in a voice channel!**');

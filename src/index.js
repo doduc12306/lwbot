@@ -34,8 +34,8 @@ const client = new Discord.Client({
 
 client.config = require('./config.js');
 client.logger = require('./util/Logger');
-require('./modules/client/misc.js')(client);
-require('./modules/client/protos.js')(client);
+require('./dbFunctions/client/misc.js')(client);
+require('./dbFunctions/client/protos.js')(client);
 
 client.commands = new Enmap();
 client.aliases = new Enmap();

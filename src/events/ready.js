@@ -13,8 +13,8 @@ module.exports = async client => {
     process.exit(1);
   }
 
-  require('../modules/client/tags.js')(client);
-  require('../modules/client/protos.js')(client);
+  require('../dbFunctions/client/tags.js')(client);
+  require('../dbFunctions/client/protos.js')(client);
 
   const statuses = require('../util/statuses')(client);
   setInterval(() => {

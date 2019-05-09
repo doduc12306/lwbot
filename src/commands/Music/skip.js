@@ -1,5 +1,5 @@
 module.exports.run = (client, message) => {
-  require('../../modules/client/protos.js')(client);
+  require('../../dbFunctions/client/protos.js')(client);
   const { voiceChannel } = message.member;
   if(!voiceChannel) return message.send(':x: `|` 🎵 **You aren\'t in a voice channel!**');
 

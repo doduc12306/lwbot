@@ -1,4 +1,4 @@
-//var { bank } = require('../modules/functions');
+//var { bank } = require('../dbFunctions/functions');
 
 module.exports.run = async (client, message, args) => {
   const type = args[0];

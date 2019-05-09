@@ -1,5 +1,5 @@
 module.exports.run = async (client, message, [option, command, ...permlevel]) => {
-  const commandsTable = require('../../modules/message/commands').functions.commandsSchema(message.guild.id);
+  const commandsTable = require('../../dbFunctions/message/commands').functions.commandsSchema(message.guild.id);
 
   if (!option || !['enable', 'disable', 'setperm'].includes(option)) return message.send('❌ `|` ⚙️ **Invalid option!** Accepted values: `enable`, `disable`, or `setperm`');
   if (!command) return message.send('❌ `|` ⚙️ **You didn\'t give a command to edit!**');

@@ -21,7 +21,7 @@ module.exports = async (client) => {
       if (!/\d+/g.test(server)) logger.warn('Non-server file found in databases/servers! File: ' + server);
 
       /* SETTINGS CLEANUP */
-      const settingsTable = require('../modules/message/settings').functions.settingsSchema(serverID);
+      const settingsTable = require('../dbFunctions/message/settings').functions.settingsSchema(serverID);
 
       for (const setting of Object.entries(config.defaultSettings)) {
         const key = setting[0];
@@ -34,7 +34,7 @@ module.exports = async (client) => {
 
 
       /* COMMANDS CLEANUP */
-      const commandsTable = require('../modules/message/commands').functions.commandsSchema(serverID);
+      const commandsTable = require('../dbFunctions/message/commands').functions.commandsSchema(serverID);
       for (const command of client.commands.filter(g => g.conf.enabled)) {
         const folder = client.folder.get(command[0]);
         const enabled = command[1].conf.enabled;
@@ -54,7 +54,7 @@ module.exports = async (client) => {
       logger.sqLog('Finished commands cleanup');
 
       /* XP CLEANUP */
-      const xpTable = require('../modules/message/xp').functions.xpSchema(serverID);
+      const xpTable = require('../dbFunctions/message/xp').functions.xpSchema(serverID);
 
       xpTable.findAll().then(data => {
         for (const dataPoint of data) {

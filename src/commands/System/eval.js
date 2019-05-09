@@ -5,19 +5,18 @@ const Discord = require('discord.js');
 const Sequelize = require('sequelize');
 const moment = require('moment');
 const parse = require('parse-duration');
-const settings = require('../../modules/message/settings');
+const settings = require('../../dbFunctions/message/settings');
 require('moment-duration-format');
 
 exports.run = async (client, message, args) => {
-  require('../../modules/client/bank')(client);
-  require('../../modules/client/misc')(client);
-  require('../../modules/client/protos')(client);
-  require('../../modules/client/tags')(client);
-  require('../../modules/message/misc')(client, message);
-  require('../../modules/message/modbase')(client, message);
-  const commands = require('../../modules/message/commands');
-  const xp = require('../../modules/message/xp');
-  const settings = require('../../modules/message/settings');
+  require('../../dbFunctions/client/misc')(client);
+  require('../../dbFunctions/client/protos')(client);
+  require('../../dbFunctions/client/tags')(client);
+  require('../../dbFunctions/message/misc')(client, message);
+  require('../../dbFunctions/message/modbase')(client, message);
+  const commands = require('../../dbFunctions/message/commands');
+  const xp = require('../../dbFunctions/message/xp');
+  const settings = require('../../dbFunctions/message/settings');
 
   const code = args.join(' ');
   const token = client.token.split('').join('[^]{0,2}');

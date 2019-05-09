@@ -7,15 +7,15 @@ module.exports = async (client, message) => {
   if (message.author.bot) return;
   message.benchmarks = {};
 
-  require('../modules/message/misc.js')(client, message);
-  
+  require('../dbFunctions/message/misc.js')(client, message);
+
   let commandsTable;
-  if (message.channel.type !== 'dm') commandsTable = require('../modules/message/commands').functions.commandsSchema(message.guild.id);
+  if (message.channel.type !== 'dm') commandsTable = require('../dbFunctions/message/commands').functions.commandsSchema(message.guild.id);
 
   let settingsFunctions;
   let settingsSchema;
   if(message.channel.type !== 'dm') {
-    settingsFunctions = require('../modules/message/settings').functions;
+    settingsFunctions = require('../dbFunctions/message/settings').functions;
     settingsSchema = settingsFunctions.settingsSchema(message.guild.id);
   }
 
@@ -61,7 +61,7 @@ module.exports = async (client, message) => {
   }
 
   if (message.channel.type !== 'dm') {
-    const { functions } = require('../modules/message/xp.js');
+    const { functions } = require('../dbFunctions/message/xp.js');
 
     let xpLevelUpMessage = client.config.defaultSettings.xpLevelUpMessage;
     if (!message.guild) xpLevelUpMessage = client.config.defaultSettings.xpLevelUpMessage;

@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const settingsFunctions = require('../../modules/message/settings').functions;
+const settingsFunctions = require('../../dbFunctions/message/settings').functions;
 
 // Note the **destructuring** here. instead of `args` we have :
 // [action, key, ...value]
@@ -8,7 +8,7 @@ const settingsFunctions = require('../../modules/message/settings').functions;
 // OR the same as:
 // const [action, key, ...value] = args;
 exports.run = async (client, message, [action, key, ...value]) => {
-  const settingsSchema = require('../../modules/message/settings').functions.settingsSchema(message.guild.id);
+  const settingsSchema = require('../../dbFunctions/message/settings').functions.settingsSchema(message.guild.id);
 
   settingsSchema.findAll().then(data => {
     if(action === 'view') {

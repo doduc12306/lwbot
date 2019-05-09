@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 module.exports.run = async (client, message) => {
-  require('../../modules/message/settings.js')(client, message);
-  require('../../modules/client/misc.js')(client);
+  require('../../dbFunctions/message/settings.js')(client, message);
+  require('../../dbFunctions/client/misc.js')(client);
 
   message.send('<a:loading:536942274643361794> **Gathering information...**').then(msg => {
     const embed = new Discord.RichEmbed()
