@@ -47,7 +47,7 @@ const config = {
   // PERMISSION LEVEL DEFINITIONS.
 
   permLevels: [
-    // This is the lowest permisison level, this is for non-roled users.
+    // This is the lowest permissison level, this is for non-roled users.
     { level: 0,
       name: 'User',
       // Don't bother checking, just return true which allows them to execute any command their
