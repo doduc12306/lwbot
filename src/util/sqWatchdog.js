@@ -27,9 +27,9 @@ module.exports = async (client) => {
         const key = setting[0];
         const value = setting[1];
 
-        settingsTable.findOrCreate({ where: { key: key }, defaults: { value: value } });
+        await settingsTable.findOrCreate({ where: { key: key }, defaults: { value: value } });
       }
-      settingsTable.sync();
+      await settingsTable.sync();
       logger.sqLog('Finished settings cleanup');
 
 
@@ -45,26 +45,26 @@ module.exports = async (client) => {
             if (e.name === 'SequelizeUniqueConstraintError') {
               await commandsTable.destroy({ where: { command: command[0] } });
               await commandsTable.create({ command: command[0], permLevel: permLevel, folder: folder, enabled: enabled });
-              commandsTable.sync();
+              await commandsTable.sync();
             }
             else logger.error(e);
           });
       }
-      commandsTable.sync();
+      await commandsTable.sync();
       logger.sqLog('Finished commands cleanup');
 
       /* XP CLEANUP */
       const xpTable = require('../dbFunctions/message/xp').functions.xpSchema(serverID);
 
-      xpTable.findAll().then(data => {
+      await xpTable.findAll().then(data => {
         for (const dataPoint of data) {
 
           // eslint disabled to prevent it from picking up on this increment function here
           // eslint-disable-next-line no-inner-declarations
-          function increment() {
-            xpTable.findOne({ where: { user: dataPoint.dataValues.user } })
-              .then(user => {
-                if (xpNeededToLevelUp(user.dataValues.level) < user.dataValues.xp) { user.increment('level'); increment(); return true; }
+          async function increment() {
+            await xpTable.findOne({ where: { user: dataPoint.dataValues.user } })
+              .then(async user => {
+                if (xpNeededToLevelUp(user.dataValues.level) < user.dataValues.xp) { await user.increment('level'); increment(); return true; }
                 else return false;
 
                 function xpNeededToLevelUp(x) {
