@@ -77,7 +77,8 @@ module.exports = async client => {
 
   client.msgCmdHistory = new Collection();
 
-  require('../util/sqWatchdog')(client);
+  if(require('os').platform() !== 'win32') require('../util/sqWatchdog')(client);
+  else client.logger.warn('Database watchdog not enabled because bot ran on windows.');
 
   client.logger.log(`
 
