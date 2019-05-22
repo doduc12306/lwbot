@@ -1,16 +1,25 @@
 if (process.version.slice(1).split('.')[0] < 8) throw new Error('Node 8.x or higher is required. Update Node on your system.');
 if (process.version.slice(1).split('.')[0] > 11) throw new Error('Node 11.x or lower is required. Downgrade Node on your system.');
 
-for (const arg of process.argv) {
-  if (arg.startsWith('-') && !['d', 'v', 's', '-debug', '-verbose', '-sqLog'].includes(arg.substring(1))) {
-    console.error('Invalid flag: "' + arg + '"');
-    console.error('Valid flags:');
-    console.error('   -d OR --debug   : Login as Debug Bot');
-    console.error('   -v OR --verbose : Advanced logging');
-    console.error('   -s OR --sqLog   : Sqlite logging');
-    process.exit(1);
-  }
-}
+const commandLineArgs = require('commandLineArgs');
+const options = commandLineArgs([
+  // Modes
+  { name: 'debug', alias: 'd', type: Boolean },
+  { name: 'verbose', alias: 'v', type: Boolean },
+  { name: 'sqLog', alias: 's', type: Boolean },
+  { name: 'ciMode', type: Boolean },
+
+  // Tokens
+  { name: 'token', type: String },
+  { name: 'debugToken', type: String }
+]);
+
+if(options.debug) client.config.debugMode = true;
+if(options.verbose) client.config.verboseMode = true;
+if(options.sqLog) client.config.sqLog = true;
+if(options.ciMode) client.config.ciMode = true;
+if(options.token) process.env.TOKEN = options.token;
+if(options.debugToken) process.env.DEBUG_TOKEN = options.debugToken;
 
 const Discord = require('discord.js');
 
