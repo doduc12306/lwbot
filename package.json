@@ -11,7 +11,6 @@
     "discord.js": "11.5.0",
     "dotenv": "^7.0.0",
     "enmap": "^4.8.1",
-    "enmap-level": "^2.1.0",
     "giphy-api": "^2.0.1",
     "google": "^2.1.0",
     "moment": "^2.24.0",
@@ -26,11 +25,11 @@
     "ytdl-core": "^0.29.1"
   },
   "devDependencies": {
+    "command-line-args": "^5.1.1",
     "eslint": "^5.16.0",
     "express": "^4.16.4",
     "pm2": "^3.5.0",
-    "terminal-kit": "^1.27.0",
-    "command-line-args": "^5.1.1"
+    "terminal-kit": "^1.27.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
