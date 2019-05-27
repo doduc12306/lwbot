@@ -1,5 +1,5 @@
-if (process.version.slice(1).split('.')[0] < 8) throw new Error('Node 8.x or higher is required. Update Node on your system.');
-if (process.version.slice(1).split('.')[0] > 11) throw new Error('Node 11.x or lower is required. Downgrade Node on your system.');
+if (process.version.slice(1).split('.')[0] < 8 || process.version.slice(1).split('.')[0] > 11) 
+  return console.error('Invalid node.js version. Please choose a version from 8 to 11.'); 
 
 const commandLineArgs = require('command-line-args');
 const options = commandLineArgs([
@@ -14,15 +14,6 @@ const options = commandLineArgs([
   { name: 'debugToken', type: String }
 ]);
 
-if(options.debug) client.config.debugMode = true;
-if(options.verbose) client.config.verboseMode = true;
-if(options.sqLog) client.config.sqLog = true;
-if(options.ciMode) client.config.ciMode = true;
-if(options.token) process.env.TOKEN = options.token;
-if(options.debugToken) process.env.DEBUG_TOKEN = options.debugToken;
-
-const Discord = require('discord.js');
-
 const { promisify } = require('util');
 let { readdir, writeFileSync } = require('fs');
 readdir = promisify(readdir);
@@ -35,22 +26,31 @@ const Enmap = require('enmap');
 const { join } = require('path');
 require('dotenv').config({ path: join(__dirname, '../.env') });
 
+const Discord = require('discord.js');
 const client = new Discord.Client({
   fetchAllMembers: true,
   disabledEvents: ['TYPING_START', 'USER_NOTE_UPDATE', 'RELATIONSHIP_ADD', 'RELATIONSHIP_REMOVE'],
   ws: { large_threshold: 1000 }
 });
-
 client.config = require('./config.js');
-client.logger = require('./util/Logger');
-require('./dbFunctions/client/misc.js')(client);
-require('./dbFunctions/client/protos.js')(client);
-
 client.commands = new Enmap();
 client.aliases = new Enmap();
 client.folder = new Enmap();
 
 client.before = new Date();
+
+// This is down here because client isn't defined by the time cli args are.
+if(options.debug) client.config.debugMode = true;
+if(options.verbose) client.config.verboseMode = true;
+if(options.sqLog) client.config.sqLog = true;
+if(options.ciMode) client.config.ciMode = true;
+if(options.token) process.env.TOKEN = options.token;
+if(options.debugToken) process.env.DEBUG_TOKEN = options.debugToken;
+
+client.logger = require('./util/Logger');
+require('./dbFunctions/client/misc.js')(client);
+require('./dbFunctions/client/protos.js')(client);
+
 // Here we load commands into memory, as a collection, so they're accessible
 // here and everywhere else.
 const cmdFiles = walk.walk('./commands/', { followLinks: false, filters: ['Temp', '_Temp'] });
