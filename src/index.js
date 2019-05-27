@@ -1,7 +1,7 @@
 if (process.version.slice(1).split('.')[0] < 8) throw new Error('Node 8.x or higher is required. Update Node on your system.');
 if (process.version.slice(1).split('.')[0] > 11) throw new Error('Node 11.x or lower is required. Downgrade Node on your system.');
 
-const commandLineArgs = require('commandLineArgs');
+const commandLineArgs = require('command-line-args');
 const options = commandLineArgs([
   // Modes
   { name: 'debug', alias: 'd', type: Boolean },
