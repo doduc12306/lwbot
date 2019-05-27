@@ -16,15 +16,10 @@ module.exports = async client => {
   require('../dbFunctions/client/tags.js')(client);
   require('../dbFunctions/client/protos.js')(client);
 
-  const statuses = require('../util/statuses')(client);
-  setInterval(() => {
-    const randomPl = statuses.randomElement();
-    client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
-  }, 60000);
-
   const servers = await readdir('databases/servers/');
   client.settings = new Collection();
   await Promise.all(servers.map(async server => {
+    if(server === 'x.txt') return client.logger.sqLog('Found x.txt - Placeholder file. Ignored, continuing.');
     const serverId = server.split('.sqlite')[0];
     const db = new Sequelize('database', 'username', 'password', {logging: false, host: 'localhost', storage: `databases/servers/${server}`, dialect: 'sqlite'});
     client.logger.sqLog(`Opened server ${server}`);
@@ -39,8 +34,6 @@ module.exports = async client => {
     client.logger.sqLog(`Mapped settings for ${server}`);
   }));
 
-  const after = new Date();
-  client.startup = after - client.before;
   client.tags.sync();
 
   client.verbose(`
@@ -55,30 +48,40 @@ module.exports = async client => {
 
   `);
 
-  // Finds if there was an error generated on uncaughtException the last time the bot started up.
-  // This is achieved by writing a new file on error, exiting, then on restart, reading the file
-  // then sending the contents to me.
-  try {
-    const fs = require('fs');
-    let e = require.resolve('../e');
-    e = await fs.readFileSync('e', 'utf8');
-    await client.users.get(client.config.ownerID).send(`**I restarted! There was an error before I restarted:**\n\`\`\`${e}\`\`\``);
-    await fs.unlink('e', (err) => {
-      if(err) throw err;
-      client.logger.log('Error log reported, now deleted.');
-    });
-  } catch (e) {
-    if (e.code === 'MODULE_NOT_FOUND') client.logger.debug('No error log found.');
-    else client.logger.error(e.stack);
+  const statuses = require('../util/statuses')(client);
+  setInterval(() => {
+    const randomPl = statuses.randomElement();
+    client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
+  }, 60000);
+
+  if(!client.config.ciMode) {
+    // Finds if there was an error generated on uncaughtException the last time the bot started up.
+    // This is achieved by writing a new file on error, exiting, then on restart, reading the file
+    // then sending the contents to me.
+    try {
+      const fs = require('fs');
+      let e = require.resolve('../e');
+      e = await fs.readFileSync('e', 'utf8');
+      await client.users.get(client.config.ownerID).send(`**I restarted! There was an error before I restarted:**\n\`\`\`${e}\`\`\``);
+      await fs.unlink('e', (err) => {
+        if(err) throw err;
+        client.logger.log('Error log reported, now deleted.');
+      });
+    } catch (e) {
+      if (e.code === 'MODULE_NOT_FOUND') client.logger.debug('No error log found.');
+      else client.logger.error(e.stack);
+    }
+
+    client.xpLockSet = new Set();
+
+    client.msgCmdHistory = new Collection();
   }
 
+  // require('../util/sqWatchdog')(client);
+  // Disabled because v8 does not like this for whatever reason.
 
-  client.xpLockSet = new Set();
-
-  client.msgCmdHistory = new Collection();
-
-  if(require('os').platform() !== 'win32') require('../util/sqWatchdog')(client);
-  else client.logger.warn('Database watchdog not enabled because bot ran on windows.');
+  const after = new Date();
+  client.startup = after - client.before;
 
   client.logger.log(`
 
