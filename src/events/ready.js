@@ -96,4 +96,6 @@ module.exports = async client => {
   if(client.config.debugMode) client.logger.debug('Debug mode enabled');
   if(client.config.verboseMode) client.logger.verbose('Verbose mode enabled');
   if(client.config.sqLogMode) client.logger.sqLog('SQLog mode enabled');
+
+  if(client.config.ciMode) client.emit('ciStep1');
 };
