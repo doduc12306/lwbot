@@ -48,15 +48,17 @@ if(options.debugToken) process.env.DEBUG_TOKEN = options.debugToken;
 
 client.logger = require('./util/Logger');
 
-if(options.ciMode) {
-  client.config.ciMode = true;
-  client.logger.debug('CI MODE ENABLED - RUNNING TESTS AND EXITING');
-
-  return require('./util/ci')(client);
-}
-
 require('./dbFunctions/client/misc.js')(client);
 require('./dbFunctions/client/protos.js')(client);
+
+if(options.ciMode) {
+  client.config.ciMode = true;
+  client.config.debugMode = true;
+  client.config.verboseMode = true;
+
+  client.logger.debug('CI MODE ENABLED - RUNNING TESTS AND EXITING');
+  return require('./util/ci')(client);
+}
 
 // Here we load commands into memory, as a collection, so they're accessible
 // here and everywhere else.

@@ -95,4 +95,6 @@ module.exports = async (client, guild) => {
 
     await guild.commands.findOrCreate({ where: { command: command[0] }, defaults: { folder: folder, enabled: enabled, permLevel: permLevel } });
   }
+
+  if(client.config.ciMode) client.emit('ciStepChannelCreate');
 };

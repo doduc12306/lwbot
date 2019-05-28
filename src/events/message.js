@@ -4,7 +4,7 @@
 
 module.exports = async (client, message) => {
   const a = new Date();
-  if (message.author.bot) return;
+  if (message.author.bot && !client.config.ciMode) return;
   message.benchmarks = {};
 
   require('../dbFunctions/message/misc.js')(client, message);
@@ -189,4 +189,6 @@ module.exports = async (client, message) => {
     }
     commandsTable.sync();
   }
+
+  if(client.config.ciMode) client.emit('ciStepFinish', message.benchmarks);
 };

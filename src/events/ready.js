@@ -71,11 +71,11 @@ module.exports = async client => {
       if (e.code === 'MODULE_NOT_FOUND') client.logger.debug('No error log found.');
       else client.logger.error(e.stack);
     }
-
-    client.xpLockSet = new Set();
-
-    client.msgCmdHistory = new Collection();
   }
+
+  client.xpLockSet = new Set();
+
+  client.msgCmdHistory = new Collection();
 
   // require('../util/sqWatchdog')(client);
   // Disabled because v8 does not like this for whatever reason.
@@ -97,5 +97,5 @@ module.exports = async client => {
   if(client.config.verboseMode) client.logger.verbose('Verbose mode enabled');
   if(client.config.sqLogMode) client.logger.sqLog('SQLog mode enabled');
 
-  if(client.config.ciMode) client.emit('ciStep1');
+  if(client.config.ciMode) client.emit('ciStepGuildCreate');
 };
