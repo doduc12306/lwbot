@@ -5,4 +5,4 @@ test:
     - npm i
   script:
     - cd src
-    - node index.js --ciMode --debugToken=$DEBUG_TOKEN
+    - node index.js --ciMode --debugToken=$DEBUG_TOKEN --googleAPIKey=$GOOGLE_API_KEY

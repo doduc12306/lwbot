@@ -11,7 +11,8 @@ const options = commandLineArgs([
 
   // Tokens
   { name: 'token', type: String },
-  { name: 'debugToken', type: String }
+  { name: 'debugToken', type: String },
+  { name: 'googleAPIKey', type: String }
 ]);
 
 const { promisify } = require('util');
@@ -45,6 +46,7 @@ if(options.verbose) client.config.verboseMode = true;
 if(options.sqLog) client.config.sqLog = true;
 if(options.token) process.env.TOKEN = options.token;
 if(options.debugToken) process.env.DEBUG_TOKEN = options.debugToken;
+if(options.googleAPIKey) process.env.GOOGLE_API_KEY = options.googleAPIKey;
 
 client.logger = require('./util/Logger');
 

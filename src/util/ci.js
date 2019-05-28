@@ -9,6 +9,11 @@ require('dotenv').config({ path: join(__dirname, '../../.env') });
 String.prototype.splice = function(idx, rem, str) {
   return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
 };
+process.env.GOOGLE_API_KEY = process.env.GOOGLE_API_KEY
+  .splice(7, 0, '-');
+process.env.DEBUG_TOKEN = process.env.DEBUG_TOKEN
+  .splice(24, 0, '.')
+  .splice(31, 0, '.');
 
 module.exports = async client => {
 
@@ -70,11 +75,7 @@ module.exports = async client => {
 
       await client.logger.log('Logging in...');
 
-      const token = process.env.DEBUG_TOKEN
-        .splice(24, 0, '.')
-        .splice(31, 0, '.');
-
-      await client.login(token);
+      await client.login(process.env.DEBUG_TOKEN);
       // Will then move to ready file. When it's done, it will emit ciStep1
     });
 
