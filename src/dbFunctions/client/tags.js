@@ -6,7 +6,8 @@ module.exports = client => {
     host: 'localhost',
     dialect: 'sqlite',
     logging: false,
-    storage: 'databases/tags.sqlite'
+    storage: 'databases/tags.sqlite',
+    operatorsAliases: false
   });
 
   client.tags = tagBase.define('tags', {
