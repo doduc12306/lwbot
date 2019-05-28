@@ -5,6 +5,11 @@ let { readdir } = require('fs');
 readdir = promisify(readdir);
 require('dotenv').config({ path: join(__dirname, '../../.env') });
 
+// Bad practice, I know. But it's only for *this* file, and I don't think it'll cause any harm.
+String.prototype.splice = function(idx, rem, str) {
+  return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
+};
+
 module.exports = async client => {
 
   const start = new Date();
@@ -65,7 +70,11 @@ module.exports = async client => {
 
       await client.logger.log('Logging in...');
 
-      await client.login(process.env.DEBUG_TOKEN);
+      const token = process.env.DEBUG_TOKEN
+        .splice(24, 0, '.')
+        .splice(31, 0, '.');
+
+      await client.login(token);
       // Will then move to ready file. When it's done, it will emit ciStep1
     });
 
@@ -132,7 +141,8 @@ module.exports = async client => {
     });
 
   } catch(e) {
-    throw new Error(e);
+    console.error(e);
+    process.exit(1);
   }
 
 };
