@@ -155,7 +155,7 @@ module.exports = async (client, message) => {
   message.benchmarks['EmbedCheckBenchmark'] = new Date() - a;
 
   /* -------------------- RUNS THE COMMAND -------------------- */
-  client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name} ${message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs'}`);
+  client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name}${message.edited ? ' (edited) ' : ' '}${message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs'}`);
   await cmd.run(client, message, args, level);
   /* -------------------- RUNS THE COMMAND -------------------- */
 
