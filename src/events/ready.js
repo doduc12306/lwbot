@@ -48,10 +48,11 @@ module.exports = async client => {
 
   `);
 
-  const statuses = require('../util/statuses')(client);
-  setInterval(() => {
-    const randomPl = statuses.randomElement();
-    client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
+  client.statusRotationInterval = setInterval(() => {
+    const { statuses, enabled } = require('../util/statuses');
+    if(!enabled) return false;
+    const randomPl = statuses(client).randomElement();
+    return client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
   }, 60000);
 
   if(!client.config.ciMode) {
