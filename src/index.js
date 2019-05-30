@@ -1,5 +1,16 @@
-if (process.version.slice(1).split('.')[0] < 8 || process.version.slice(1).split('.')[0] > 11) 
-  return console.error('Invalid node.js version. Please choose a version from 8 to 11.'); 
+if (process.version.slice(1).split('.')[0] < 8 || process.version.slice(1).split('.')[0] > 11)
+  return console.error('Invalid node.js version. Please choose a version from 8 to 11.');
+
+// .env checks. Inevitably, when I change computers, I will always forget to fill out a new .env
+const { access, constants } = require('fs');
+access('../.env', constants.F_OK, err => {
+  if (err) return console.error('You don\'t have a .env file.');
+});
+const { join } = require('path');
+require('dotenv').config({ path: join(__dirname, '../.env') });
+if (!process.env.TOKEN) return console.error('.env: No token provided.');
+if (!process.env.DEBUG_TOKEN) return console.error('.env: No debug token provided.');
+if (!process.env.GOOGLE_API_KEY) return console.error('.env: No google api key provided.');
 
 const commandLineArgs = require('command-line-args');
 const options = commandLineArgs([
@@ -24,9 +35,6 @@ const walk = require('walk');
 
 const Enmap = require('enmap');
 
-const { join } = require('path');
-require('dotenv').config({ path: join(__dirname, '../.env') });
-
 const Discord = require('discord.js');
 const client = new Discord.Client({
   fetchAllMembers: true,
@@ -41,19 +49,19 @@ client.folder = new Enmap();
 client.before = new Date();
 
 // This is down here because client isn't defined by the time cli args are.
-if(options.debug) client.config.debugMode = true;
-if(options.verbose) client.config.verboseMode = true;
-if(options.sqLog) client.config.sqLogMode = true;
-if(options.token) process.env.TOKEN = options.token;
-if(options.debugToken) process.env.DEBUG_TOKEN = options.debugToken;
-if(options.googleAPIKey) process.env.GOOGLE_API_KEY = options.googleAPIKey;
+if (options.debug) client.config.debugMode = true;
+if (options.verbose) client.config.verboseMode = true;
+if (options.sqLog) client.config.sqLogMode = true;
+if (options.token) process.env.TOKEN = options.token;
+if (options.debugToken) process.env.DEBUG_TOKEN = options.debugToken;
+if (options.googleAPIKey) process.env.GOOGLE_API_KEY = options.googleAPIKey;
 
 client.logger = require('./util/Logger');
 
 require('./dbFunctions/client/misc.js')(client);
 require('./dbFunctions/client/protos.js')(client);
 
-if(options.ciMode) {
+if (options.ciMode) {
   client.config.ciMode = true;
   client.config.debugMode = true;
   client.config.verboseMode = true;
@@ -132,11 +140,11 @@ process.on('uncaughtException', async (err) => {
 });
 
 process.on('unhandledRejection', err => {
-  if(err.message === 'Please install sqlite3 package manually') {
+  if (err.message === 'Please install sqlite3 package manually') {
     client.logger.error('sqlite3 package needs to be reinstalled.');
     client.logger.log('Installing package...');
     return require('child_process').exec('yarn add sqlite3', async (e, out, err) => {
-      if(e || err) client.logger.error(`Error installing sqlite3 package: ${e || err}`);
+      if (e || err) client.logger.error(`Error installing sqlite3 package: ${e || err}`);
       client.logger.log(await out);
       await process.exit();
     });
