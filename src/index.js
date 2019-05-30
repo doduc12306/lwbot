@@ -43,7 +43,7 @@ client.before = new Date();
 // This is down here because client isn't defined by the time cli args are.
 if(options.debug) client.config.debugMode = true;
 if(options.verbose) client.config.verboseMode = true;
-if(options.sqLog) client.config.sqLog = true;
+if(options.sqLog) client.config.sqLogMode = true;
 if(options.token) process.env.TOKEN = options.token;
 if(options.debugToken) process.env.DEBUG_TOKEN = options.debugToken;
 if(options.googleAPIKey) process.env.GOOGLE_API_KEY = options.googleAPIKey;
