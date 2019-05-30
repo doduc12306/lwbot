@@ -77,8 +77,7 @@ module.exports = async client => {
 
   client.msgCmdHistory = new Collection();
 
-  // require('../util/sqWatchdog')(client);
-  // Disabled because v8 does not like this for whatever reason.
+  require('../util/sqWatchdog')(client);
 
   const after = new Date();
   client.startup = after - client.before;

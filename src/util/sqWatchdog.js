@@ -15,6 +15,7 @@ module.exports = async (client) => {
     const servers = await readdir('databases/servers/');
     await Promise.all(servers.map(async server => {
       const serverID = server.split('.sqlite')[0];
+      if(server === 'x.txt') return logger.sqLog('Found x.txt - Placeholder file. Ignored, continuing.');
 
       logger.sqLog(`Opened server ${server}`);
       if (!server.endsWith('.sqlite')) return logger.error('Non-sqlite file found in databases/servers! File: ' + server);
@@ -22,6 +23,7 @@ module.exports = async (client) => {
 
       /* SETTINGS CLEANUP */
       const settingsTable = require('../dbFunctions/message/settings').functions.settingsSchema(serverID);
+      await settingsTable.sync();
 
       for (const setting of Object.entries(config.defaultSettings)) {
         const key = setting[0];
@@ -35,6 +37,7 @@ module.exports = async (client) => {
 
       /* COMMANDS CLEANUP */
       const commandsTable = require('../dbFunctions/message/commands').functions.commandsSchema(serverID);
+      await commandsTable.sync();
       for (const command of client.commands.filter(g => g.conf.enabled)) {
         const folder = client.folder.get(command[0]);
         const enabled = command[1].conf.enabled;
@@ -55,8 +58,9 @@ module.exports = async (client) => {
 
       /* XP CLEANUP */
       const xpTable = require('../dbFunctions/message/xp').functions.xpSchema(serverID);
+      await xpTable.sync();
 
-      await xpTable.findAll().then(data => {
+      /* await xpTable.findAll().then(data => {
         for (const dataPoint of data) {
 
           // eslint disabled to prevent it from picking up on this increment function here
@@ -64,7 +68,7 @@ module.exports = async (client) => {
           async function increment() {
             await xpTable.findOne({ where: { user: dataPoint.dataValues.user } })
               .then(async user => {
-                if (xpNeededToLevelUp(user.dataValues.level) < user.dataValues.xp) { await user.increment('level'); increment(); return true; }
+                if (xpNeededToLevelUp(user.dataValues.level) < user.dataValues.xp) { await user.increment('level'); await increment(); return true; }
                 else return false;
 
                 function xpNeededToLevelUp(x) {
@@ -76,7 +80,7 @@ module.exports = async (client) => {
 
         }
 
-      });
+      }); */ // Disabled because increment function is moving too fast. https://gitlab.com/akii0008/lwbot-rewrite/issues/3
       logger.sqLog('Finished xp cleanup');
 
     }));
