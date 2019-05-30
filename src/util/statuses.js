@@ -1,4 +1,4 @@
-module.exports = client => [
+module.exports.statuses = client => [
   /* Playing */
   ['with Shin-Ae', { type: 'PLAYING' }],
   ['with James', { type: 'PLAYING' }],
