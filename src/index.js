@@ -101,8 +101,6 @@ cmdFiles.on('end', async () => {
     client.levelCache[thisLevel.name] = thisLevel.level;
   }
 
-  console.log(process.env.DEBUG_TOKEN);
-
   client.login(client.config.debugMode ? process.env.DEBUG_TOKEN : process.env.TOKEN);
 });
 
