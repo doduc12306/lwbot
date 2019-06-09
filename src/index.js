@@ -1,17 +1,6 @@
 if (process.version.slice(1).split('.')[0] < 8 || process.version.slice(1).split('.')[0] > 11)
   return console.error('Invalid node.js version. Please choose a version from 8 to 11.');
 
-// .env checks. Inevitably, when I change computers, I will always forget to fill out a new .env
-const { access, constants } = require('fs');
-access('../.env', constants.F_OK, err => {
-  if (err) return console.error('You don\'t have a .env file.');
-});
-const { join } = require('path');
-require('dotenv').config({ path: join(__dirname, '../.env') });
-if (!process.env.TOKEN) return console.error('.env: No token provided.');
-if (!process.env.DEBUG_TOKEN) return console.error('.env: No debug token provided.');
-if (!process.env.GOOGLE_API_KEY) return console.error('.env: No google api key provided.');
-
 const commandLineArgs = require('command-line-args');
 const options = commandLineArgs([
   // Modes
@@ -42,9 +31,11 @@ const client = new Discord.Client({
   ws: { large_threshold: 1000 }
 });
 client.config = require('./config.js');
+
 client.commands = new Enmap();
 client.aliases = new Enmap();
 client.folder = new Enmap();
+client.cooldowns = new Enmap();
 
 client.before = new Date();
 
