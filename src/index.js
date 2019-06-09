@@ -4,6 +4,8 @@ if (process.version.slice(1).split('.')[0] < 8 || process.version.slice(1).split
 const Sentry = require('@sentry/node');
 Sentry.init({ dsn: 'https://71bbdad33abf4bc89a5c47092522edaa@sentry.io/1478164' });
 
+require('dotenv').config({ path: join(__dirname, '../.env') });
+
 const commandLineArgs = require('command-line-args');
 const options = commandLineArgs([
   // Modes
@@ -99,6 +101,8 @@ cmdFiles.on('end', async () => {
     const thisLevel = client.config.permLevels[i];
     client.levelCache[thisLevel.name] = thisLevel.level;
   }
+
+  console.log(process.env.DEBUG_TOKEN);
 
   client.login(client.config.debugMode ? process.env.DEBUG_TOKEN : process.env.TOKEN);
 });
