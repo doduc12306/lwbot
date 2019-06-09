@@ -61,6 +61,8 @@ if (options.ciMode) {
   return require('./util/ci')(client);
 }
 
+const { join } = require('path');
+
 // Here we load commands into memory, as a collection, so they're accessible
 // here and everywhere else.
 const cmdFiles = walk.walk('./commands/', { followLinks: false, filters: ['Temp', '_Temp'] });
