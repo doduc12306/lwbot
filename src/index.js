@@ -4,6 +4,7 @@ if (process.version.slice(1).split('.')[0] < 8 || process.version.slice(1).split
 const Sentry = require('@sentry/node');
 Sentry.init({ dsn: 'https://71bbdad33abf4bc89a5c47092522edaa@sentry.io/1478164' });
 
+const { join } = require('path');
 require('dotenv').config({ path: join(__dirname, '../.env') });
 
 const commandLineArgs = require('command-line-args');
@@ -65,8 +66,6 @@ if (options.ciMode) {
   client.logger.debug('CI MODE ENABLED - RUNNING TESTS AND EXITING');
   return require('./util/ci')(client);
 }
-
-const { join } = require('path');
 
 // Here we load commands into memory, as a collection, so they're accessible
 // here and everywhere else.
