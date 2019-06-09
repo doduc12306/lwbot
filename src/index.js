@@ -1,6 +1,9 @@
 if (process.version.slice(1).split('.')[0] < 8 || process.version.slice(1).split('.')[0] > 11)
   return console.error('Invalid node.js version. Please choose a version from 8 to 11.');
 
+const Sentry = require('@sentry/node');
+Sentry.init({ dsn: 'https://71bbdad33abf4bc89a5c47092522edaa@sentry.io/1478164' });
+
 const commandLineArgs = require('command-line-args');
 const options = commandLineArgs([
   // Modes
