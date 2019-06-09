@@ -122,6 +122,7 @@ process.on('uncaughtException', async (err) => {
           if (e) console.error(e);
           else client.logger.debug('Wrote error log');
         });
+        process.exit(1);
       });
   } else {
     client.logger.error(`Uncaught Exception: ${err}`);
@@ -130,9 +131,10 @@ process.on('uncaughtException', async (err) => {
       if (e) console.error(e);
       else client.logger.debug('Wrote error log');
     });
+    process.exit(1);
   }
 
-  process.exit(1);
+  process.exit(1); // Even if the previous don't run for whatever reason, this will.
 });
 
 process.on('unhandledRejection', err => {
