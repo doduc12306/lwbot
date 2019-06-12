@@ -38,7 +38,7 @@ const config = {
   // COLORS
   colors: {
     'red': '0xFF0000',
-    'green': '0x59D851',
+    'green': '0x00d564',
     'yellow': '0xFFFF00',
     'blurple': '0x7289DA',
     'purple': '0x821ABA',
