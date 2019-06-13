@@ -43,9 +43,9 @@ module.exports.run = async (client, message, args) => {
       try {
         const videos = await youtube.searchVideos(searchString, 5);
         let index = 0;
-        if(videos.length === 0) return message.send(`:x: \`|\` **Your search** \`${searchString}\` **did not return any results.**`);
+        if(videos.length === 0) return message.send(`❌ \`|\` **Your search** \`${searchString}\` **did not return any results.**`);
         try {
-          response = await client.awaitReply(message, `:mag: \`|\` 🎵 **Please select a song**\n\n${videos.map(video2 => `**${++index}** \`-\` __${video2.title}__`).join('\n')}`);
+          response = await client.awaitReply(message, `🔍 \`|\` 🎵 **Please select a song**\n\n${videos.map(video2 => `**${++index}** \`-\` __${video2.title}__`).join('\n')}`);
         } catch (err) {
           return message.send('❌ `|` 🎵 **Invalid selection.** Cancelling search.');
         }
@@ -109,7 +109,7 @@ module.exports.run = async (client, message, args) => {
     const serverQueue = client.musicQueue.get(guild.id);
 
     if (!song) {
-      message.send(':musical_note: **Queue is empty! Leaving...**');
+      message.send('🎵 **Queue is empty! Leaving...**');
       serverQueue.voiceChannel.leave();
       client.musicQueue.delete(guild.id);
       clearInterval(serverQueue.playing.interval);
@@ -130,7 +130,7 @@ module.exports.run = async (client, message, args) => {
         serverQueue.playing.duration = 0;
         await play(guild, serverQueue.songs[0]);
       })
-      .on('error', error => {client.logger.error(error); return message.send(`:x: \`|\` 🎵 **There was an error:** \`${error}\``);});
+      .on('error', error => {client.logger.error(error); return message.send(`❌ \`|\` 🎵 **There was an error:** \`${error}\``);});
 
     if(serverQueue.playing.interval) clearInterval(serverQueue.playing.interval);
     serverQueue.playing.interval = setInterval(() => serverQueue.playing.duration++, 1000);

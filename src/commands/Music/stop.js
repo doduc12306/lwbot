@@ -9,7 +9,7 @@ module.exports.run = async (client, message) => {
   music.playing.duration = await 0;
   await clearInterval(music.playing.interval);
   if(music.pauseTimeout) clearTimeout(music.pauseTimeout);
-  music.connection.dispatcher.end(':stop_button: `|` 🎵 **Stopped.**');
+  music.connection.dispatcher.end('⏹ `|` 🎵 **Stopped.**');
 };
 
 exports.conf = {

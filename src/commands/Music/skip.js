@@ -1,10 +1,10 @@
 module.exports.run = (client, message) => {
   require('../../dbFunctions/client/protos.js')(client);
   const { voiceChannel } = message.member;
-  if(!voiceChannel) return message.send(':x: `|` 🎵 **You aren\'t in a voice channel!**');
+  if(!voiceChannel) return message.send('❌ `|` 🎵 **You aren\'t in a voice channel!**');
 
   const music = client.musicQueue.get(message.guild.id);
-  if(!music) return message.send(':x: `|` 🎵 **There isn\'t anything playing!**');
+  if(!music) return message.send('❌ `|` 🎵 **There isn\'t anything playing!**');
 
   const vcMembers = voiceChannel.members.filter(g => !g.user.bot);
   if(vcMembers.size === 1 || client.permlevel(message.member) >= 2) {
@@ -15,7 +15,7 @@ module.exports.run = (client, message) => {
       ? () => { return vcMembers.size / 2 + 1; } // If it's even, return the majority of the users. Ex: 10. 10 / 2 + 1 = 6
       : () => { return Math.ceil(vcMembers.size / 2); };
     let skipsGathered = 0;
-    message.send(`⚠️ \`|\` :musical_note: **${skipsNeeded} skip reactions are needed to skip this song.** (Expires in 30 seconds)`).then(msg => {
+    message.send(`⚠️ \`|\` 🎵 **${skipsNeeded} skip reactions are needed to skip this song.** (Expires in 30 seconds)`).then(msg => {
 
       msg.react('⏭');
 

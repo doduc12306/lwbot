@@ -27,7 +27,7 @@ module.exports.run = async (client, message, args) => {
     type: 'tempban',
     duration: durationMs
   }).then(async info => {
-    let dmMsg = `${bhEmote} **You were tempbanned from** \`${message.guild.name}\` ***for*** \`${durationHR}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `${bhEmote} **You were tempbanned from** \`${message.guild.name}\` ***for*** \`${durationHR}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     let modEmbed = new Discord.RichEmbed()
       .setThumbnail(toBan.avatarURL)

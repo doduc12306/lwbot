@@ -5,20 +5,20 @@ module.exports.run = async (client, message, args) => {
   const toKickM = message.mentions.members.first();
   const reason = args.slice(1).join(' ');
 
-  if(!message.guild.me.permissions.has('MOVE_MEMBERS')) return message.send('❌ `|` :boot: **I am missing permissions:** `Move Members`');
-  if(!message.guild.me.permissions.has('MANAGE_CHANNELS')) return message.send('❌ `|` :boot: **I am missing permissions:** `Manage Channels` ');
-  if(!message.member.permissions.has('KICK_MEMBERS')) return message.send('❌ `|` :boot: **You are missing permissions:** `Kick Members`');
-  if(!toKick) return message.send('❌ `|` :boot: **You didn\'t mention someone to voicekick!**');
-  if(!message.member.voiceChannel) return message.send('❌ `|` :boot: **You are not in the voice channel!**');
-  if(!toKickM.voiceChannel) return message.send(`❌ \`|\` :boot: ${toKick.toString()} **isn't in a voice channel!**`);
-  if(!toKickM.voiceChannel === message.member.voiceChannel) return message.send(`❌ \`|\` :boot: **You must be in the same voice channel as** ${toKick.toString()}`);
+  if(!message.guild.me.permissions.has('MOVE_MEMBERS')) return message.send('❌ `|` 👢 **I am missing permissions:** `Move Members`');
+  if(!message.guild.me.permissions.has('MANAGE_CHANNELS')) return message.send('❌ `|` 👢 **I am missing permissions:** `Manage Channels` ');
+  if(!message.member.permissions.has('KICK_MEMBERS')) return message.send('❌ `|` 👢 **You are missing permissions:** `Kick Members`');
+  if(!toKick) return message.send('❌ `|` 👢 **You didn\'t mention someone to voicekick!**');
+  if(!message.member.voiceChannel) return message.send('❌ `|` 👢 **You are not in the voice channel!**');
+  if(!toKickM.voiceChannel) return message.send(`❌ \`|\` 👢 ${toKick.toString()} **isn't in a voice channel!**`);
+  if(!toKickM.voiceChannel === message.member.voiceChannel) return message.send(`❌ \`|\` 👢 **You must be in the same voice channel as** ${toKick.toString()}`);
 
   await message.guild.modbase.create({
     victim: toKick.id,
     moderator: message.author.id,
     type: 'voicekick'
   }).then(async info => {
-    let dmMsg = `:boot: **You were voicekicked from** \`${message.member.voiceChannel.name}\`, **in** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `👢 **You were voicekicked from** \`${message.member.voiceChannel.name}\`, **in** \`${message.guild.name}\` \`|\` 👢 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     const modEmbed = new Discord.RichEmbed()
       .setThumbnail(toKick.avatarURL)
@@ -42,7 +42,7 @@ module.exports.run = async (client, message, args) => {
           modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Ban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);
-        await message.send(`✅ \`|\` :boot: **Voicekicked user \`${toKick.tag}\`**`);
+        await message.send(`✅ \`|\` 👢 **Voicekicked user \`${toKick.tag}\`**`);
       })
       .catch(async e => message.send(`❌ **There was an error finding the mod log channel:** \`${e.stack}\``));
   });

@@ -1,7 +1,7 @@
 const User = require('../../dbFunctions/client/user');
 module.exports.run = (client, message) => {
   new User(message.author.id).changeBalance('add', 200);
-  message.send(':white_check_mark: `|` :bank: **Added** `200` **Kowoks to your account!**');
+  message.send('✅ `|` 🏦 **Added** `200` **Kowoks to your account!**');
 };
 
 exports.conf = {

@@ -4,10 +4,10 @@ const { RichEmbed } = require('discord.js');
 const { shuffle } = require('lodash');
 module.exports.run = async (client, message, args) => {
   const { voiceChannel } = message.member;
-  if (!voiceChannel) return message.send(':x: `|` :musical_note: **You aren\'t in a voice channel!**');
+  if (!voiceChannel) return message.send('❌ `|` 🎵 **You aren\'t in a voice channel!**');
 
   const music = client.musicQueue.get(message.guild.id);
-  if (!music) return message.send(':x: `|` :musical_note: **There is nothing playing!**');
+  if (!music) return message.send('❌ `|` 🎵 **There is nothing playing!**');
 
   switch (args[0]) {
     case 'list': {
@@ -16,12 +16,12 @@ module.exports.run = async (client, message, args) => {
     }
     case 'remove': {
       const toRemove = args[1];
-      if (!toRemove) return message.send(':x: `|` :musical_note: **You didn\'t give me a number to remove!**');
-      if (isNaN(toRemove)) return message.send(`:x: \`|\` :musical_note: \`${toRemove}\` **is not a number!**`);
-      if (!music.songs[toRemove]) return message.send(`:x: \`|\` :muscal_note; \`${toRemove}\` **does not exist!**`);
+      if (!toRemove) return message.send('❌ `|` 🎵 **You didn\'t give me a number to remove!**');
+      if (isNaN(toRemove)) return message.send(`❌ \`|\` 🎵 \`${toRemove}\` **is not a number!**`);
+      if (!music.songs[toRemove]) return message.send(`❌ \`|\` :muscal_note; \`${toRemove}\` **does not exist!**`);
 
       const removed = music.songs.splice(toRemove, 1);
-      message.send(`:white_check_mark: \`|\` :musical_note: \`${removed.title}\` **was removed.**`);
+      message.send(`✅ \`|\` 🎵 \`${removed.title}\` **was removed.**`);
       break;
     }
     case 'add': {
@@ -32,10 +32,10 @@ module.exports.run = async (client, message, args) => {
     case 'loop': {
       if (music.loop) {
         music.loop = false;
-        message.send(':white_check_mark: `|` 🔁 **Queue will no longer loop!**');
+        message.send('✅ `|` 🔁 **Queue will no longer loop!**');
       } else {
         music.loop = true;
-        message.send(':white_check_mark: `|` 🔁 **Queue will now loop!**');
+        message.send('✅ `|` 🔁 **Queue will now loop!**');
       }
       break;
     }
@@ -44,14 +44,14 @@ module.exports.run = async (client, message, args) => {
       music.songs = await _.shuffle(music.songs);
       await music.songs.unshift(firstSong);
 
-      message.send(':white_check_mark: `|` 🔀 **Shuffled!**');
+      message.send('✅ `|` 🔀 **Shuffled!**');
       break;
     }
     case 'clear': {
       const curSong = music.songs[0].title;
       music.songs.forEach(song => { if (song.title !== curSong) music.songs.splice(music.songs.indexOf(song), 1); });
       client.logger.verbose(music.songs);
-      message.send(':white_check_mark: `|` :musical_note: **Cleared queue.**');
+      message.send('✅ `|` 🎵 **Cleared queue.**');
       break;
     }
     default: {

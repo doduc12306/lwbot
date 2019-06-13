@@ -5,9 +5,9 @@ module.exports = {
     let fromUnit = args[1];
     let toUnit = args[2];
 
-    if (!value) return message.send(':x: `|` 🔃 **Missing value to convert from!**');
-    if (!fromUnit) return message.send(':x: `|` 🔃 **Missing unit to convert from!**');
-    if (!toUnit) return message.send(':x: `|` 🔃 **Missing unit to convert to!**');
+    if (!value) return message.send('❌ `|` 🔃 **Missing value to convert from!**');
+    if (!fromUnit) return message.send('❌ `|` 🔃 **Missing unit to convert from!**');
+    if (!toUnit) return message.send('❌ `|` 🔃 **Missing unit to convert to!**');
 
     // Since the library I'm using is a fucking idiot, I have to write this myself. Angry 23:03 me writing this.
     function correctCapitalization(x) {
@@ -69,9 +69,9 @@ module.exports = {
     toUnit = correctCapitalization(toUnit);
 
     try { message.send(`🔃 **\`${convert(value).from(fromUnit).to(toUnit)} ${toUnit}\`**`); } catch (e) {
-      if (e.message.startsWith('Unsupported unit')) return message.send(':x: `|` 🔃 **One of your units was not supported.** Please try another one.');
-      else if (e.message.startsWith('Cannot convert incompatible')) return message.send(':x: `|` 🔃 **Your units cannot be converted from one to the other.** Please try a different combination.');
-      else message.send(`:x: **You should not be seeing this.** Error:\n\`\`\`${e.stack}\`\`\``);
+      if (e.message.startsWith('Unsupported unit')) return message.send('❌ `|` 🔃 **One of your units was not supported.** Please try another one.');
+      else if (e.message.startsWith('Cannot convert incompatible')) return message.send('❌ `|` 🔃 **Your units cannot be converted from one to the other.** Please try a different combination.');
+      else message.send(`❌ **You should not be seeing this.** Error:\n\`\`\`${e.stack}\`\`\``);
     }
   },
 

@@ -13,8 +13,8 @@ exports.run = (client, message) => {
 
   const CU = moment.duration(client.uptime).format('M [months] W [weeks] D [days], H [hours], m [mins], s [seconds]'); // CU = client uptime
 
-  if(require('os').platform() === 'darwin') embed.addField('Uptime', `:robot: : ${CU} | :desktop: : ${require('child_process').execSync('uptime').toString().split('load averages')[0]}`, true);
-  else embed.addField('Uptime:', `:robot: : ${CU} | :desktop: : ${require('child_process').execSync('uptime -p').toString().split('up')[1]}`, true);
+  if(require('os').platform() === 'darwin') embed.addField('Uptime', `🤖 : ${CU} | 🖥 : ${require('child_process').execSync('uptime').toString().split('load averages')[0]}`, true);
+  else embed.addField('Uptime:', `🤖 : ${CU} | 🖥 : ${require('child_process').execSync('uptime -p').toString().split('up')[1]}`, true);
 
   if(client.config.verboseMode) embed.addField('Verbose Benchmarks', JSON.stringify(message.benchmarks));
 

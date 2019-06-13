@@ -3,7 +3,7 @@ const aki = require('aki-api');
 const { RichEmbed } = require('discord.js');
 module.exports.run = async (client, message, args) => {
   aki.start('en', (resolve, err) => {
-    if (err) { message.send(`:x: **Sorry!** There was some error when starting the game. Please try again later.`); client.logger.error(err); }
+    if (err) { message.send(`❌ **Sorry!** There was some error when starting the game. Please try again later.`); client.logger.error(err); }
     else {
       // START THE GAME
 
@@ -23,7 +23,7 @@ module.exports.run = async (client, message, args) => {
       message.send(new RichEmbed()
         .setColor(client.config.colors.green)
         .setTitle(resolve.question)
-        .setDescription(':white_check_mark: **Yes** | :x: **No** | :shrug: **Don\'t Know** | :thumbsup: **Probably** | :thumbsdown: **Probably Not**')
+        .setDescription('✅ **Yes** | ❌ **No** | 🤷 **Don\'t Know** | 👍 **Probably** | 👎 **Probably Not**')
         .setFooter('React with 🛑 to stop')
       ).then(async msg => {
 
@@ -40,11 +40,11 @@ module.exports.run = async (client, message, args) => {
               aki.step(region, session, signature, reactionsObject[g._emoji.name], step, (res, error) => {
                 console.log(res.progress);
                 console.log(`Region: ${region}\nSession: ${session}\nSignature: ${signature}\n0\nStep: ${step}`);
-                //if (error) { message.send(':x: **There was an error.** Game ended.'); client.logger.error(error); return collector.emit('end'); }
+                //if (error) { message.send('❌ **There was an error.** Game ended.'); client.logger.error(error); return collector.emit('end'); }
                 if (+res.progress >= 98) {
                   return aki.win(region, session, signature, step, (resolve, e) => {
                     console.log(resolve);
-                    //if (e) { message.send(':x: **There was an error.** Game ended.'); client.logger.error(error); return collector.emit('end'); }
+                    //if (e) { message.send('❌ **There was an error.** Game ended.'); client.logger.error(error); return collector.emit('end'); }
                     msg.edit(new RichEmbed()
                       .setColor(client.config.colors.green)
                       .addField('I guess...', `**${resolve.answers[0].name}!** | ${resolve.answers[0].description}`)
@@ -56,7 +56,7 @@ module.exports.run = async (client, message, args) => {
                 msg.edit(new RichEmbed()
                   .setColor(client.config.colors.green)
                   .setTitle(res.nextQuestion)
-                  .setDescription(':white_check_mark: **Yes** | :x: **No** | :shrug: **Don\'t Know** | :thumbsup: **Probably** | :thumbsdown: **Probably Not**')
+                  .setDescription('✅ **Yes** | ❌ **No** | 🤷 **Don\'t Know** | 👍 **Probably** | 👎 **Probably Not**')
                   .setFooter('React with 🛑 to stop')
                 );
               });

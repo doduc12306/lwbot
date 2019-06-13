@@ -7,14 +7,14 @@ module.exports.run = (client, message) => {
 
   if(!user) return message.send(`${message.author} is fighting no one${str}`);
   if(user === message.author) return message.send(`${user} is fighting themselves${str}`);
-  if(user === client.user) return message.send(`${user} is fighting me${str}`).then(msg => setTimeout(() => msg.edit(':trophy: **I WON!**'), 2000));
+  if(user === client.user) return message.send(`${user} is fighting me${str}`).then(msg => setTimeout(() => msg.edit('🏆 **I WON!**'), 2000));
 
   message.send(`${message.author} is fighting ${user}${str}`)
     .then(msg => {
       const n = Math.floor(Math.random()*2);
       setTimeout(() => {
-        if(n === 0) return msg.edit(`:trophy: **${message.author} WON!**`);
-        if(n === 1) return msg.edit(`:trophy: **${user} WON!**`);
+        if(n === 0) return msg.edit(`🏆 **${message.author} WON!**`);
+        if(n === 1) return msg.edit(`🏆 **${user} WON!**`);
       }, 2000);
     });
 

@@ -66,7 +66,7 @@ module.exports = async (client, message) => {
     let xpLevelUpMessage = client.config.defaultSettings.xpLevelUpMessage;
     if (!message.guild) xpLevelUpMessage = client.config.defaultSettings.xpLevelUpMessage;
     else {
-      await settingsSchema.findOrCreate({ where: { key: 'xpLevelUpMessage' }, defaults: { value: ':arrow_up: **{{user}} just advanced to level {{level}}!**' } });
+      await settingsSchema.findOrCreate({ where: { key: 'xpLevelUpMessage' }, defaults: { value: '⬆ **{{user}} just advanced to level {{level}}!**' } });
       xpLevelUpMessage = await settingsFunctions.get(message.guild.id, 'xpLevelUpMessage');
     }
     message.benchmarks['XpLevelUpMessageBenchmark'] = new Date() - a;
@@ -172,7 +172,7 @@ module.exports = async (client, message) => {
       timeLeft.setMilliseconds(new Date().getMilliseconds() + timeLeftMs);
       timeLeft = moment(timeLeft).fromNow(); // Time / date / milliseconds shenanegins.
 
-      return message.send(`:x: \`|\` :stopwatch: **Cooldown! Try again ${timeLeft}**`).then(msg => msg.delete(7000));
+      return message.send(`❌ \`|\` ⏱ **Cooldown! Try again ${timeLeft}**`).then(msg => msg.delete(7000));
     }
   }
 

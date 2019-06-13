@@ -5,15 +5,15 @@ module.exports.run = (client, message, args) => {
   let mode;
   if (!['featured', 'discover', 'discovery'].includes(args[0])) mode = 'featured';
 
-  if (!args[0]) return message.send(':x: `|` :mag_right: **You didn\'t specify featured or discover, or a webtoon to search!**');
+  if (!args[0]) return message.send('❌ `|` 🔎 **You didn\'t specify featured or discover, or a webtoon to search!**');
   if (args[0] === 'featured') mode = 'featured';
   else if (['discover', 'discovery'].includes(args[0])) mode = 'discover';
-  if (['featured', 'discover', 'discovery'].includes(args[0]) && !args[1]) return message.send(':x: `|` :mag_right: **You didn\'t give me anything to search!**');
+  if (['featured', 'discover', 'discovery'].includes(args[0]) && !args[1]) return message.send('❌ `|` 🔎 **You didn\'t give me anything to search!**');
 
   const search = ['featured', 'discover', 'discovery'].includes(args[0]) ? args.slice(1).join(' ') : args.slice(0).join(' ');
 
   message.send(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(0 / 5)\``).then(async msg => {
-    const errorTimer = setTimeout(() => { return msg.edit(':x: `|` :mag_right: **Something took too long! Please try again later.**'); }, 10000); // Ten second error timeout
+    const errorTimer = setTimeout(() => { return msg.edit('❌ `|` 🔎 **Something took too long! Please try again later.**'); }, 10000); // Ten second error timeout
     try {
       // Initialize browser
       const browser = await puppeteer.launch();
@@ -26,7 +26,7 @@ module.exports.run = (client, message, args) => {
       await page.screenshot({ path: 'searchPage.png' });
 
       if (await page.$('div.card_nodata')) { // If the search result returned empty
-        msg.edit(':x: `|` :mag_right: **I couldn\'t find a webtoon by that name!**');
+        msg.edit('❌ `|` 🔎 **I couldn\'t find a webtoon by that name!**');
         clearTimeout(errorTimer);
         return browser.close();
       }
@@ -98,7 +98,7 @@ module.exports.run = (client, message, args) => {
       }
 
     } catch (e) {
-      msg.edit(':x: `|` :mag_right: **Something went wrong! Please try again later.**');
+      msg.edit('❌ `|` 🔎 **Something went wrong! Please try again later.**');
       client.logger.error(e);
     }
 

@@ -33,13 +33,13 @@ exports.run = async (client, message, args) => {
     if (output.length < 1950) {
       message.send(output, { code: 'js' });
     } else {
-      message.send(':x: **Output was too long. Check the console.**');
+      message.send('❌ **Output was too long. Check the console.**');
       client.logger.log(output);
     }
   } catch (error) {
     error = error.stack.split('\n'); // eslint-disable-line no-ex-assign
-    if (error[1].trim().includes('at Object.exports.run (/Users/akii/Documents/bots/lwbot-rewrite/src/commands/System/eval.js') || error[1].trim().includes('at Object.exports.run (/root/lwbot-rewrite/src/commands/System/eval.js')) return message.send(`:x: **An error occurred:** \`${error[0]}\``);
-    message.send(`:x: **An error occurred:** \`${error[0]}\`\n\`\`\`\n${error[1].trim()}\n\`\`\``);
+    if (error[1].trim().includes('at Object.exports.run (/Users/akii/Documents/bots/lwbot-rewrite/src/commands/System/eval.js') || error[1].trim().includes('at Object.exports.run (/root/lwbot-rewrite/src/commands/System/eval.js')) return message.send(`❌ **An error occurred:** \`${error[0]}\``);
+    message.send(`❌ **An error occurred:** \`${error[0]}\`\n\`\`\`\n${error[1].trim()}\n\`\`\``);
   }
 
   function clean(text) {

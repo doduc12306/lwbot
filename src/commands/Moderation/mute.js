@@ -17,7 +17,7 @@ module.exports.run = async (client, message, args) => {
     moderator: message.author.id,
     type: 'mute'
   }).then(async info => {
-    let dmMsg = `${mutedEmote} **You were muted in** \`${message.guild.name}\` \`|\` :busts_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `${mutedEmote} **You were muted in** \`${message.guild.name}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     const modEmbed = new Discord.RichEmbed()
       .setThumbnail(toMute.user.avatarURL)

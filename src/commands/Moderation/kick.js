@@ -5,17 +5,17 @@ module.exports.run = async (client, message, args) => {
   const toKickM = message.mentions.members.first();
   const reason = args.slice(1).join(' ');
 
-  if(!message.guild.me.permissions.has('KICK_MEMBERS')) return message.send('❌ `|` :boot: **I am missing permissions:** `Kick Members`');
-  if(!message.member.permissions.has('KICK_MEMBERS')) return message.send('❌ `|` :boot: **You are missing permissions:** `Kick Members`');
-  if(!toKick) return message.send('❌ `|` :boot: **You didn\'t mention someone to kick!**');
-  if(!toKickM.kickable) return message.send('❌ `|` :boot: **This member could not be kicked!**');
+  if(!message.guild.me.permissions.has('KICK_MEMBERS')) return message.send('❌ `|` 👢 **I am missing permissions:** `Kick Members`');
+  if(!message.member.permissions.has('KICK_MEMBERS')) return message.send('❌ `|` 👢 **You are missing permissions:** `Kick Members`');
+  if(!toKick) return message.send('❌ `|` 👢 **You didn\'t mention someone to kick!**');
+  if(!toKickM.kickable) return message.send('❌ `|` 👢 **This member could not be kicked!**');
 
   await message.guild.modbase.create({
     victim: toKick.id,
     moderator: message.author.id,
     type: 'kick'
   }).then(async info => {
-    let dmMsg = `:boot: **You were kicked from** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `👢 **You were kicked from** \`${message.guild.name}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     const modEmbed = new Discord.RichEmbed()
       .setThumbnail(toKick.avatarURL)
@@ -36,7 +36,7 @@ module.exports.run = async (client, message, args) => {
           modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Kick completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);
-        await message.send(`✅ \`|\` :boot: **Kicked user \`${toKick.tag}\`**`);
+        await message.send(`✅ \`|\` 👢 **Kicked user \`${toKick.tag}\`**`);
       })
       .catch(async e => message.send(`❌ **There was an error finding the mod log channel:** \`${e.stack}\``));
   });

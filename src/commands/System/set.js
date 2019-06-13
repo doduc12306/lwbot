@@ -16,7 +16,7 @@ exports.run = async (client, message, [action, key, ...value]) => {
         settingsFunctions.get(message.guild.id, key)
           .then(() => {
             data = data.filter(g => g.key === key)[0].dataValues;
-            message.send(`:information_source: \`|\` ⚙️ **The value of** \`${key}\` **is** \`${data.value}\`**.**`);
+            message.send(`ℹ \`|\` ⚙️ **The value of** \`${key}\` **is** \`${data.value}\`**.**`);
           })
           .catch(() => message.send(`❌ \`|\` ⚙️ \`${key}\` **does not exist!** `));
       } else {

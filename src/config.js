@@ -32,7 +32,7 @@ const config = {
     'ownerRole': 'Owners',
     'capsThreshold': '70', // (70%), not 70 or more characters.
     'staffBypassesLimits': 'true',
-    'xpLevelUpMessage': ':arrow_up: **{{user}} just advanced to level {{level}}!**'
+    'xpLevelUpMessage': '⬆ **{{user}} just advanced to level {{level}}!**'
   },
 
   // COLORS

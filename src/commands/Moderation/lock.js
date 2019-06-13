@@ -2,9 +2,9 @@ const parse = require('parse-duration');
 const { RichEmbed } = require('discord.js');
 const moment = require('moment');
 module.exports.run = (client, message, args) => {
-  if (!message.guild.me.permissionsIn(message.channel).serialize()['MANAGE_ROLES']) return message.send(':x: `|` :lock: **I am missing permissions!** `Manage Roles`'); // Manage roles, oddly enough, lets the bot edit channel perms.
+  if (!message.guild.me.permissionsIn(message.channel).serialize()['MANAGE_ROLES']) return message.send('❌ `|` 🔒 **I am missing permissions!** `Manage Roles`'); // Manage roles, oddly enough, lets the bot edit channel perms.
   if (!message.member.permissionsIn(message.channel).serialize()['MANAGE_CHANNELS'] ||
-    !message.member.permissionsIn(message.channel).serialize()['MANAGE_MESSAGES']) return message.send(':x: `|` :lock: **You are missing permissions!** `Manage Channels` or `Manage Messages`');
+    !message.member.permissionsIn(message.channel).serialize()['MANAGE_MESSAGES']) return message.send('❌ `|` 🔒 **You are missing permissions!** `Manage Channels` or `Manage Messages`');
 
   let channel = undefined;
   let duration = undefined;
@@ -40,14 +40,14 @@ module.exports.run = (client, message, args) => {
     }
 
   } catch (e) {
-    if (e.message === 'Channel does not exist') return message.send(':x: `|` :lock: **Channel does not exist.**');
+    if (e.message === 'Channel does not exist') return message.send('❌ `|` 🔒 **Channel does not exist.**');
     else if (e.message === 'You didn\'t give me anything to find a channel from!') { /* Ignore error */ }
     else return client.logger.error(e);
   }
   /* End logic */
 
   if(reason && reason.endsWith('-f')) { forcemode = true; reason = reason.split(/-f$/gi)[0]; }
-  if(!channel.permissionsFor(message.guild.id).has('SEND_MESSAGES') && !forcemode) return message.send(':x: `|` :lock: **This channel is already locked.**\nIf you believe this is an error, edit your command and put `-f` (force mode) at the end.');
+  if(!channel.permissionsFor(message.guild.id).has('SEND_MESSAGES') && !forcemode) return message.send('❌ `|` 🔒 **This channel is already locked.**\nIf you believe this is an error, edit your command and put `-f` (force mode) at the end.');
 
   channel.permissionOverwrites.forEach(overwrite => {
     channel.overwritePermissions(overwrite.id, { SEND_MESSAGES: false }, reason ? `Channel lock | ${reason}` : 'Channel lock');
@@ -78,7 +78,7 @@ module.exports.run = (client, message, args) => {
         modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Lock completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
       }
       await modLogChannel.send(modEmbed);
-      await message.send('✅ `|` :lock: **Locked channel**');
+      await message.send('✅ `|` 🔒 **Locked channel**');
     })
     .catch(async e => message.send(`❌ **There was an error finding the mod log channel:** \`${e.stack}\``));
 
@@ -107,7 +107,7 @@ module.exports.run = (client, message, args) => {
             modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Channel lock completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
           }
           await modLogChannel.send(modEmbedTO);
-          await message.send('✅ `|` :unlock: **Unlocked channel.** [Timeout]');
+          await message.send('✅ `|` 🔓 **Unlocked channel.** [Timeout]');
         })
         .catch(async e => message.send(`❌ **Channel unlocked, but I couldn't send to the modlog channel:** \`${e.stack}\``));
 

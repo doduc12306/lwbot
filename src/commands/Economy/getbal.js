@@ -1,4 +1,4 @@
-module.exports.run = (client, message) => client.bank.get(message.author.id || message.mentions.users.first().id).then(bal => message.send(`:information_source: \`|\` ${message.author.tag || message.mentions.users.first().tag}**'s balance is** \`${bal}\`**.**`));
+module.exports.run = (client, message) => client.bank.get(message.author.id || message.mentions.users.first().id).then(bal => message.send(`ℹ \`|\` ${message.author.tag || message.mentions.users.first().tag}**'s balance is** \`${bal}\`**.**`));
 
 exports.conf = {
   enabled: false,

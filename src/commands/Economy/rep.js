@@ -3,11 +3,11 @@ module.exports = {
   run: (client, message) => {
     const user = message.mentions.users.first();
 
-    if(!user) message.send(':x: `|` :arrow_up: **You didn\'t mention a user to add reputation to.**');
-    if(user.id === message.author.id) message.send(':x: `|` :arrow_up: **You can\'t add reputation to yourself.**');
+    if(!user) message.send('❌ `|` ⬆ **You didn\'t mention a user to add reputation to.**');
+    if(user.id === message.author.id) message.send('❌ `|` ⬆ **You can\'t add reputation to yourself.**');
 
     const addRep = new User(user.id).changeReputation('add', 1);
-    message.send(`:arrow_up: **+1 reputation to** ${user}**!** Total: \`${addRep}\``);
+    message.send(`⬆ **+1 reputation to** ${user}**!** Total: \`${addRep}\``);
   },
 
   conf: {

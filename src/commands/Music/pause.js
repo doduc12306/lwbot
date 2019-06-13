@@ -8,13 +8,13 @@ module.exports.run = (client, message) => {
   if(music.connection.dispatcher.paused) return message.send('❌ `|` 🎵 **Already paused!**');
   music.connection.dispatcher.pause();
   clearInterval(music.playing.interval);
-  message.send(':pause_button: `|` 🎵 **Paused.**');
+  message.send('⏸ `|` 🎵 **Paused.**');
 
   music.pauseTimeout = setTimeout(async () => {
     music.songs = await [];
     music.playing.duration = await 0;
     await clearInterval(music.playing.interval);
-    music.connection.dispatcher.end('⏱ `|` :musical_note: **I left because I was paused for more than 5 minutes.**');
+    music.connection.dispatcher.end('⏱ `|` 🎵 **I left because I was paused for more than 5 minutes.**');
   }, 300000); // 5 minutes
 };
 

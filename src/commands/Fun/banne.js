@@ -1,6 +1,6 @@
 module.exports.run = async (client, message) => {
-  if (message.mentions.users.size === 0) return message.send(`${client.emojis.get('383800708841078785')} **u didnt menshin sum1!!~** :triumph: :triumph:`);
-  message.send(`${client.emojis.get('383763992981667855')} ${message.mentions.users.first()} **has bee banne~!!1!** :sparkles:`);
+  if (message.mentions.users.size === 0) return message.send(`${client.emojis.get('383800708841078785')} **u didnt menshin sum1!!~** 😤 😤`);
+  message.send(`${client.emojis.get('383763992981667855')} ${message.mentions.users.first()} **has bee banne~!!1!** ✨`);
 };
 
 exports.conf = {
@@ -12,7 +12,7 @@ exports.conf = {
 
 exports.help = {
   name: 'banne',
-  description: 'banne a somone~! :sparkles:',
+  description: 'banne a somone~! ✨',
   usage: 'banne <@user>',
   category: 'Fun'
 };

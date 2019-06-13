@@ -25,7 +25,7 @@ module.exports.run = async (client, message, args) => {
     type: 'tempmute',
     duration: durationMs
   }).then(async info => {
-    let dmMsg = `${mutedEmote} **You were tempmuted in** \`${message.guild.name}\` **for** \`${durationHR}\` \`|\` :busts_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `${mutedEmote} **You were tempmuted in** \`${message.guild.name}\` **for** \`${durationHR}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     let modEmbed = new Discord.RichEmbed()
       .setThumbnail(toMute.user.avatarURL)

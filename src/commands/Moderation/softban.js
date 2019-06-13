@@ -16,7 +16,7 @@ module.exports.run = async (client, message, args) => {
     moderator: message.author.id,
     type: 'softban'
   }).then(async info => {
-    let dmMsg = `${bhEmote} **You were softbanned from** \`${message.guild.name}\` \`|\` :bust_in_silhouette: **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `${bhEmote} **You were softbanned from** \`${message.guild.name}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     const modEmbed = new Discord.RichEmbed()
       .setThumbnail(toBan.avatarURL)
