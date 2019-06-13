@@ -1,5 +1,54 @@
 # Changelog
 
+## v1.5.4 [6/13/2019]
+### Commands
+* Added Economy/rep command - Adds a reputation point to a user
+* Added Misc/convert - Converts a unit to another unit
+* Added Misc/wolfram - Polls data from the wolfram API. Currently limited to a few thousand queries per month
+* Server/levels: Added in user level from db
+* System/eval: Changed around some requires, got rid of hastebin posting because it was returning 503.. aka not my problem.
+* System/help: Finds individual help from alias as well as normal command
+* **Webtoons/search**: Searches a webtoon comic. This is what I've been trying to do since the beginning of this huge project.
+
+### Events
+* channelCreate: I think I fixed the spam-role-create bug.
+* Added guildMemberUpdate but it's literally just to check if the owner is streaming, and to set the bot's own status as streaming to owner's stream url.
+* message: Added cooldown support - cooldowns are assigned to the d.js User object.
+* ready: Added support for guildMemberUpdate reasoning
+
+### Backend
+* Changed the name of the modules path: modules => dbFunctions
+* Some emoji changes
+* A cooldown system! Tacked onto the d.js User object, and the cooldowns are customized per command.
+* config: Modes are now booleans instead of flags. They're now controlled by command-line-arguments
+* Added my own personal User class to help with balance and rep and such. I plan on adding in a whole profile system with moods, badges, and reputation
+* Removed bank file in favor of the custom User class
+* Had to disable a feature of the database watchdog, see issue #3 https://gitlab.com/akii0008/lwbot-rewrite/issues/3
+
+### Modules
+* Deleted emojiLog
+* Deleted roleAssign
+* Deleted wtc
+
+### Misc
+* index:
+  * Simplified wrong-node error message
+  * Added sentry.io support.. I'm finding I'm not really using it all that much although it seemed cool. Will probably remove it.
+  * Added command-line-arguments instead of my own makeshift cli parsing technique.
+  * Added support for CI
+* Added some variables to .env.default
+* Added a CI, finally
+* Separated out the webhook data and web panel into their own repos, then submodule'd them here
+* Changed around the README
+* Updated / added some packages
+  * discord.js v11.4.2 => v11.5.0
+  * Added convert-units@2.3.4
+  * Added node-fetch@2.5.0
+  * Added @sentry/node@5.4.0
+  * Added command-line-args@5.1.1
+  * Added puppeteer@1.17.0
+* Switched to yarnpkg
+
 ## v1.5.3 [5/2/2019]
 Wow it has been a few months since the last one of these. From the last release to now, there have been 133 commits. 104 files were changed.
 I've also skipped a TON of versions. Because so much has happened between now and the last release.
