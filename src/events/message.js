@@ -2,6 +2,8 @@
 // Note that due to the binding of client to every event, every event
 // goes `client, other, args` when this function is run.
 
+const moment = require('moment');
+
 module.exports = async (client, message) => {
   const a = new Date();
   if (message.author.bot && !client.config.ciMode) return;
@@ -18,8 +20,6 @@ module.exports = async (client, message) => {
     settingsFunctions = require('../dbFunctions/message/settings').functions;
     settingsSchema = settingsFunctions.settingsSchema(message.guild.id);
   }
-
-  message.benchmarks['RequireBenchmark'] = new Date() - a;
 
   let capsWarnEnabled = client.config.defaultSettings.capsWarnEnabled;
   if (!message.guild) capsWarnEnabled = client.config.defaultSettings.capsWarnEnabled;
@@ -83,7 +83,7 @@ module.exports = async (client, message) => {
     functions.xpSchema(message.guild.id).findOne({ where: { user: message.author.id }})
       .then(user => {
         if (xpNeededToLevelUp(user.dataValues.level) < user.dataValues.xp) {
-          message.channel.send(xpLevelUpMessage.replaceAll('{{user}}', message.author.toString()).replaceAll('{{level}}', user.dataValues.level +1));
+          message.channel.send(xpLevelUpMessage.replaceAll('{{user}}', message.author.toString()).replaceAll('{{level}}', user.dataValues.level +1)).then(msg => msg.delete(10000));
           user.increment('level');
         }
 
@@ -94,6 +94,7 @@ module.exports = async (client, message) => {
   }
   message.benchmarks['XpAdditionAndLevelCheckBenchmark'] = new Date() - a;
 
+  // prefix creator
   const prefix = message.guild
     ? client.settings.get(message.guild.id)['prefix']
     : client.config.defaultSettings.prefix;
@@ -126,11 +127,13 @@ module.exports = async (client, message) => {
   };
   message.benchmarks['CmdInDbGetterBenchmark'] = new Date() - a;
 
+  // systemNotice creator
   const systemNotice = message.guild
     ? client.settings.get(message.guild.id)['systemNotice']
     : client.config.defaultSettings.systemNotice;
   message.benchmarks['SystemNoticeBenchmark'] = new Date() - a;
 
+  // Command status check
   if ((!cmdInDb || !cmd.conf.enabled) && message.author.id !== client.config.ownerID) return message.send('❌ **That command is disabled globally by the developer!**');
   else {
     if(!cmdInDb.enabled) {
@@ -150,9 +153,28 @@ module.exports = async (client, message) => {
   }
   message.benchmarks['DbPermCheckBenchmark'] = new Date() - a;
 
+  // Embed check
   if (cmd.conf.requiresEmbed && message.guild && !message.guild.me.permissionsIn(message.channel).serialize()['EMBED_LINKS'])
     return message.send('❌ **This command requires `Embed Links`, which I don\'t have!**');
   message.benchmarks['EmbedCheckBenchmark'] = new Date() - a;
+
+  // Cooldown check
+  if(cmd.conf.cooldown) {
+    if(!message.author.cooldownSet) message.author.cooldownSet = new Set();
+    if(!message.author.cooldownTimers) message.author.cooldownTimers = new Map();
+
+    if(!message.author.cooldownSet.has(cmd.help.name)) {
+      message.author.cooldownSet.add(cmd.help.name);
+      message.author.cooldownTimers.set(cmd.help.name, new client.timer(() => message.author.cooldownSet.delete(cmd.help.name), cmd.conf.cooldown));
+    } else {
+      const timeLeftMs = message.author.cooldownTimers.get(cmd.help.name).getTimeLeft();
+      let timeLeft = new Date();
+      timeLeft.setMilliseconds(new Date().getMilliseconds() + timeLeftMs);
+      timeLeft = moment(timeLeft).fromNow(); // Time / date / milliseconds shenanegins.
+
+      return message.send(`:x: \`|\` :stopwatch: **Cooldown! Try again ${timeLeft}**`).then(msg => msg.delete(7000));
+    }
+  }
 
   /* -------------------- RUNS THE COMMAND -------------------- */
   client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name}${message.edited ? ' (edited) ' : ' '}${message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs'}`);
