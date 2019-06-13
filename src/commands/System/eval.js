@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 const { inspect } = require('util');
-const { post } = require('snekfetch');
+const snek = require('snekfetch');
 const Discord = require('discord.js');
 const Sequelize = require('sequelize');
 const moment = require('moment');
 const parse = require('parse-duration');
+const puppeteer = require('puppeteer');
 require('moment-duration-format');
 
 const commands = require('../../dbFunctions/message/commands');
@@ -32,12 +33,8 @@ exports.run = async (client, message, args) => {
     if (output.length < 1950) {
       message.send(output, { code: 'js' });
     } else {
-      try {
-        const { body } = await post('https://www.hastebin.com/documents').send(output);
-        message.send(`❌ **Output too long, uploaded to hastebin:** https://www.hastebin.com/${body.key}.js `);
-      } catch (error) {
-        message.send(`❌ **Hastebin upload error:** \`${error.name}\`\n\`\`\`\n${error.message}\n\`\`\``);
-      }
+      message.send(':x: **Output was too long. Check the console.**');
+      client.logger.log(output);
     }
   } catch (error) {
     error = error.stack.split('\n'); // eslint-disable-line no-ex-assign

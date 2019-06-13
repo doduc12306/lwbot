@@ -30,6 +30,7 @@
     "eslint": "^5.16.0",
     "express": "^4.16.4",
     "pm2": "^3.5.0",
+    "puppeteer": "^1.17.0",
     "terminal-kit": "^1.27.0"
   },
   "scripts": {
