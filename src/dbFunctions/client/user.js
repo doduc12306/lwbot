@@ -1,10 +1,19 @@
 const Sequelize = require('sequelize');
 
+/**
+ * Hub for interacting with user profile database
+ */
 class User {
+  /**
+   * @param {String} userID User ID of the user to create/modify
+   */
   constructor(userID) {
     this.userID = userID;
   }
 
+  /**
+   * The table of the profile
+   */
   table() {
     if (!this.userID) throw new Error('userID parameter is undefined');
     return new Sequelize('database', 'user', 'password', {
@@ -15,6 +24,9 @@ class User {
     });
   }
 
+  /**
+   * The schema used to poll the database table
+   */
   userSchema() {
     return this.table().define('profile', {
       key: { type: Sequelize.STRING, allowNull: false },
@@ -22,6 +34,9 @@ class User {
     }, { timestamps: false });
   }
 
+  /**
+   * Simple shortcut to the table using the user ID provided earlier
+   */
   shortcut() {
     this.table().sync();
     this.userSchema().sync();
@@ -29,6 +44,11 @@ class User {
     return this.userSchema(this.table(this.userID));
   }
 
+  /**
+   * Balance of the user
+   * @returns {Number}
+   * @readonly
+   */
   get balance() {
     return this.shortcut().findOrCreate({ where: { key: 'balance' }, defaults: { value: '0' } })
       .then(res => {
@@ -36,6 +56,14 @@ class User {
       });
   }
 
+  /**
+   * Changes the balance of the user
+   * @param {'add' | 'subtract' | 'set'} operation Operation to perform on balance of user
+   * @param {Number} amount Amount to add/subtract/set
+   * @returns {Number}
+   * @example
+   * <User>.changeBalance('add', 10); // 0 => 10
+   */
   changeBalance(operation, amount) {
     if (!amount) throw new Error('Missing amount parameter');
     switch (operation) {
@@ -70,6 +98,11 @@ class User {
     }
   }
 
+  /**
+   * Gets the mood of the user
+   * @returns {String}
+   * @readonly
+   */
   get mood() {
     return this.shortcut().findOrCreate({ where: { key: 'mood' }, defaults: { value: 'Great day to set your mood!' } })
       .then(res => {
@@ -78,6 +111,13 @@ class User {
       });
   }
 
+  /**
+   * Change the mood of the user
+   * @param {String} newMood New mood to set
+   * @returns {String<newMood>}
+   * @example
+   * <User>.changeMood('Hello new mood!'); // => 'Hello new mood!'  
+   */
   changeMood(newMood) {
     if (!newMood) throw new Error('Missing mood parameter');
     return this.shortcut().findOrCreate({ where: { key: 'mood' }, defaults: { value: 'Great day to set your mood!' } })
@@ -87,14 +127,27 @@ class User {
       }).catch(e => { throw new Error(e); });
   }
 
+  /**
+   * Get the badges of the user
+   * @returns {Array<String>}
+   * @readonly
+   */
   get badges() {
     return this.shortcut().findOrCreate({ where: { key: 'badges' }, defaults: { value: '' } })
       .then(res => {
-        res = res[0].dataValues.value;
-        return res;
+        return res[0].get('value').split(' ');
       }).catch(e => { throw new Error(e); });
   }
 
+  /**
+   * Add/remove a badge from the user's profile
+   * @param {'add' | 'remove'} operation Operation to perform on badges
+   * @param {String} badgeName Add/remove badgeName
+   * @returns {Array<String>}
+   * @example
+   * <User>.changeBadges('add', ':wave:');    // => [':wave:', ...badges]
+   * <User>.changeBadges('remove', ':wave:'); // => [...badges]
+   */
   changeBadges(operation, badgeName) {
     switch (operation) {
       case 'add': {
@@ -123,14 +176,26 @@ class User {
     }
   }
 
+  /**
+   * Get the amount of reputation points this user has
+   * @returns {Number}
+   */
   get reputation() {
     return this.shortcut().findOrCreate({ where: { key: 'reputation' }, defaults: { value: '0' } })
       .then(res => {
-        res = res[0].dataValues.value;
-        return +res;
+        return +res[0].get('value');
       });
   }
 
+  /**
+   * Change the reputation of the user
+   * @param {'add' | 'subtract' | 'set'} operation Operation to perform on the user's reputation
+   * @param {Number} amount Amount to add/subtract/set
+   * @returns {Number} The new reputation of the user
+   * @example
+   * <User>.changeReputation('add', 1); // 0 => 1
+   * <User>.changeReputation('remove', 10); // 200 => 190
+   */
   changeReputation(operation, amount) {
     if (!operation) throw new Error('Missing operation parameter');
     if (!amount) throw new Error('Missing amount parameter');
