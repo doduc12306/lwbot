@@ -6,7 +6,7 @@ const config = {
   'admins': [],
 
   // Bot Support, level 8 by default. Array of user ID strings
-  'support': ['158272711146209281'],
+  'support': ['158272711146209281', '235920655823011840'], // [Gallium, Nen]
 
   // [ 2018.10.28 ] TOKENS REMOVED - ADDED TO .env FILE
   // [ 2018.10.28 ] TOKENS REGENERATED - don't even try, commit lurkers
