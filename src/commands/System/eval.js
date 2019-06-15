@@ -6,6 +6,9 @@ const Sequelize = require('sequelize');
 const moment = require('moment');
 const parse = require('parse-duration');
 const puppeteer = require('puppeteer');
+const YouTube = require('simple-youtube-api');
+const youtube = new YouTube(process.env.GOOGLE_API_KEY);
+const ytdl = require('ytdl-core-discord');
 require('moment-duration-format');
 
 const commands = require('../../dbFunctions/message/commands');
@@ -37,9 +40,7 @@ exports.run = async (client, message, args) => {
       client.logger.log(output);
     }
   } catch (error) {
-    error = error.stack.split('\n'); // eslint-disable-line no-ex-assign
-    if (error[1].trim().includes('at Object.exports.run (/Users/akii/Documents/bots/lwbot-rewrite/src/commands/System/eval.js') || error[1].trim().includes('at Object.exports.run (/root/lwbot-rewrite/src/commands/System/eval.js')) return message.send(`❌ **An error occurred:** \`${error[0]}\``);
-    message.send(`❌ **An error occurred:** \`${error[0]}\`\n\`\`\`\n${error[1].trim()}\n\`\`\``);
+    message.send(error);
   }
 
   function clean(text) {
