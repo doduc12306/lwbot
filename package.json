@@ -11,18 +11,22 @@
     "discord.js": "11.5.0",
     "dotenv": "^7.0.0",
     "enmap": "^4.8.1",
+    "ffmpeg-binaries": "^4.0.0",
     "giphy-api": "^2.0.1",
     "google": "^2.1.0",
     "moment": "^2.24.0",
     "moment-duration-format": "^2.2.2",
     "node-fetch": "^2.5.0",
+    "node-opus": "^0.3.2",
     "parse-duration": "^0.1.1",
+    "puppeteer": "^1.17.0",
     "sequelize": "^4.43.0",
     "simple-youtube-api": "^5.1.1",
     "sqlite3": "^4.0.6",
     "uws": "^100.0.1",
     "walk": "^2.3.14",
-    "ytdl-core": "^0.29.1"
+    "ytdl-core": "^0.29.2",
+    "ytdl-core-discord": "^1.0.3"
   },
   "devDependencies": {
     "@sentry/node": "5.4.0",
@@ -30,7 +34,6 @@
     "eslint": "^5.16.0",
     "express": "^4.16.4",
     "pm2": "^3.5.0",
-    "puppeteer": "^1.17.0",
     "terminal-kit": "^1.27.0"
   },
   "scripts": {

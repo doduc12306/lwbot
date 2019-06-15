@@ -1,8 +1,9 @@
 const YouTube = require('simple-youtube-api');
 const youtube = new YouTube(process.env.GOOGLE_API_KEY);
-const ytdl = require('ytdl-core');
+const ytdl = require('ytdl-core-discord');
 const { Util } = require('discord.js');
 const parse = require('parse-duration');
+const User = require('../../dbFunctions/client/user');
 
 module.exports.run = async (client, message, args) => {
   require('../../dbFunctions/client/misc.js')(client); // For awaitReply function
@@ -67,9 +68,10 @@ module.exports.run = async (client, message, args) => {
       id: video.id,
       title: Util.escapeMarkdown(video.title),
       url: `https://www.youtube.com/watch?v=${video.id}`,
-      thumbnail: video.thumbnails.maxres.url ? video.thumbnails.maxres.url : 'http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c545.png',
+      thumbnail: video.thumbnails.standard.url ? video.thumbnails.standard.url : 'http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c545.png',
       duration: duration,
-      videoObject: video
+      videoObject: video,
+      queuedBy: message.author.id
     };
     if (!serverQueue) {
       const queueConstruct = {
@@ -84,7 +86,7 @@ module.exports.run = async (client, message, args) => {
         },
         loop: false
       };
-      queueConstruct.queue = queueConstruct.songs; // Alias queue -> songs (because i've already made that mistake)
+      queueConstruct.queue = queueConstruct.songs; // Alias queue -> songs (because I've already made that mistake)
       client.musicQueue.set(msg.guild.id, queueConstruct);
 
       queueConstruct.songs.push(song);
@@ -117,11 +119,14 @@ module.exports.run = async (client, message, args) => {
       return;
     }
 
-    const toPlay = await ytdl(song.url, { filter: 'audioonly', highWaterMark: Infinity, quality: 'highestaudio' });
+    const user = new User(song.queuedBy);
+    if(await user.balance - 1000 < 0) return message.send(':x: `|` 🎵 **You do not have the sufficient funds to play a song!**');
 
-    serverQueue.connection.playStream(toPlay)
+    const toPlay = await ytdl(song.url, { filter: 'audioonly' });
+
+    serverQueue.connection.playOpusStream(toPlay)
       .on('end', async reason => {
-        if (reason !== 'Stream is not generating quickly enough.') message.send(reason);
+        if (!['Stream is not generating quickly enough.', 'stream'].includes(reason)) message.send(reason);
         if(serverQueue.loop) {
           const songAt0 = serverQueue.songs.shift();
           serverQueue.songs.push(songAt0);
@@ -135,6 +140,9 @@ module.exports.run = async (client, message, args) => {
     if(serverQueue.playing.interval) clearInterval(serverQueue.playing.interval);
     serverQueue.playing.interval = setInterval(() => serverQueue.playing.duration++, 1000);
     serverQueue.textChannel.send(`🎵 **Started playing** \`${song.title}\``);
+    
+    await user.changeBalance('subtract', 1000);
+    await client.users.get(song.queuedBy).send(`🎵 **Started playing** \`${song.title}\` \n\`1000\` Kowoks deducted from your account. **Balance:** \`${await user.balance}\``);
 
   }
 };
@@ -148,7 +156,7 @@ exports.conf = {
 
 exports.help = {
   name: 'play',
-  description: 'Play a song',
+  description: 'Play a song | **COSTS 1,000 KOWOKS PER SONG**',
   usage: 'play <youtube url>',
   category: 'Music'
 };

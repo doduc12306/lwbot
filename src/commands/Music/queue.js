@@ -1,7 +1,26 @@
 /* eslint-disable */
 const moment = require('moment');
 const { RichEmbed } = require('discord.js');
-const { shuffle } = require('lodash');
+function shuffle(array, size) {
+  var index = -1,
+      length = array.length,
+      lastIndex = length - 1;
+
+  size = size === undefined ? length : size;
+  while (++index < size) {
+    var rand = baseRandom(index, lastIndex),
+        value = array[rand];
+
+    array[rand] = array[index];
+    array[index] = value;
+  }
+  array.length = size;
+  return array;
+}
+function baseRandom(lower, upper) {
+  return lower + Math.floor(Math.random() * (upper - lower + 1));
+}
+
 module.exports.run = async (client, message, args) => {
   const { voiceChannel } = message.member;
   if (!voiceChannel) return message.send('❌ `|` 🎵 **You aren\'t in a voice channel!**');
@@ -21,7 +40,7 @@ module.exports.run = async (client, message, args) => {
       if (!music.songs[toRemove]) return message.send(`❌ \`|\` :muscal_note; \`${toRemove}\` **does not exist!**`);
 
       const removed = music.songs.splice(toRemove, 1);
-      message.send(`✅ \`|\` 🎵 \`${removed.title}\` **was removed.**`);
+      message.send(`✅ \`|\` 🎵 \`${removed[0].title}\` **was removed.**`);
       break;
     }
     case 'add': {
@@ -39,10 +58,21 @@ module.exports.run = async (client, message, args) => {
       }
       break;
     }
+    case 'repeat': { // Just a clone of the loop case because I've made this mistake and wondered why it won't work.
+      if (music.loop) {
+        music.loop = false;
+        message.send('✅ `|` 🔁 **Queue will no longer loop!**');
+      } else {
+        music.loop = true;
+        message.send('✅ `|` 🔁 **Queue will now loop!**');
+      }
+      break;
+    }
     case 'shuffle': {
-      const firstSong = await music.songs.shift();
-      music.songs = await _.shuffle(music.songs);
-      await music.songs.unshift(firstSong);
+      const curSong = music.songs[0];
+      const curSongFromSplice = music.songs.splice(music.songs.indexOf(curSong), 1)[0];
+      music.songs = shuffle(music.songs);
+      music.songs.unshift(curSongFromSplice);
 
       message.send('✅ `|` 🔀 **Shuffled!**');
       break;
@@ -70,12 +100,13 @@ module.exports.run = async (client, message, args) => {
       const duration = moment.duration(song.duration, 'milliseconds').format('H[:]mm[:]ss');
 
       if (music.songs.indexOf(song) === 0) {
-        desc += `▶ CURRENT SONG\n> ${song.title}`
+        desc += `▶ CURRENT SONG\n> ${song.title} (${duration})`
       } else
 
         desc += `\n\n${music.songs.indexOf(song)}. ${song.title} (${duration})`
     }
-    desc += ''
+    if(music.loop) desc += '\n\n> Queue will loop'
+
     embed.setDescription(desc);
     message.send(desc, { code: 'markdown', split: true });
   }
@@ -92,6 +123,6 @@ exports.conf = {
 exports.help = {
   name: 'queue',
   description: 'The queue of the tracks in the guild',
-  usage: 'queue [list | remove | add | clear | repeat | shuffle] [# | url]',
+  usage: 'queue [list | remove <#> | add <name or url> | clear | repeat | loop | shuffle]',
   category: 'Music'
 };
