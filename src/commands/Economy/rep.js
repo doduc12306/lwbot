@@ -14,7 +14,8 @@ module.exports = {
     enabled: true,
     permLevel: 'User',
     aliases: ['reputation', 'addrep'],
-    guildOnly: true
+    guildOnly: true,
+    cooldown: 8.64e+7
   },
 
   help: {
