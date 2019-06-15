@@ -167,7 +167,7 @@ A TON HAPPENED HERE!
 Yes sir we have music again. Not finished, but it's mostly there. I need to integrate it with the currency system so that the server owner's balance gets depleted per minute of the song playing.
 * nowplaying: Shows currently playing song
 * pause: Pause current song
-* play: Plays and/or queues a song
+* play: Plays and/or queues a song - Made with code that I absolutely and with *no* regrets stole from [DevYukine](https://github.com/DevYukine/Music-Bot)
 * queue: Queue control (list, remove, add, loop, shuffle, clear)
 * resume: Resumes a paused song
 * skip: Skips current track (1 user, skips. More than one, needs a majority vote.)
