@@ -78,6 +78,8 @@ module.exports = async client => {
 
   client.msgCmdHistory = new Collection();
 
+  client.musicQueue = new Map();
+
   require('../util/sqWatchdog')(client);
 
   const after = new Date();
