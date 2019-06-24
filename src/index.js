@@ -19,9 +19,9 @@ const options = commandLineArgs([
 ]);
 
 const { promisify } = require('util');
-let { readdir, writeFileSync } = require('fs');
+let { readdir, writeFile } = require('fs');
 readdir = promisify(readdir);
-writeFileSync = promisify(writeFileSync);
+writeFile = promisify(writeFile);
 
 const walk = require('walk');
 
@@ -116,7 +116,7 @@ process.on('uncaughtException', async (err) => {
       .catch(() => {
         client.logger.log('Disconnected!', 'disconnect');
         if (client.config.debugMode) return process.exit(1);
-        writeFileSync('./e', 'lost connection to websocket', e => {
+        writeFile('./e', 'lost connection to websocket', e => {
           if (e) console.error(e);
           else client.logger.debug('Wrote error log');
         });
@@ -125,7 +125,7 @@ process.on('uncaughtException', async (err) => {
   } else {
     client.logger.error(`Uncaught Exception: ${err}`);
     if (client.config.debugMode) return process.exit(1);
-    writeFileSync('./e', err.stack, e => {
+    writeFile('./e', err.stack, e => {
       if (e) console.error(e);
       else client.logger.debug('Wrote error log');
     });
@@ -140,8 +140,11 @@ process.on('unhandledRejection', err => {
     client.logger.error('sqlite3 package needs to be reinstalled.');
     client.logger.log('Installing package...');
     return require('child_process').exec('yarn add sqlite3', async (e, out, err) => {
-      if (e || err) client.logger.error(`Error installing sqlite3 package: ${e || err}`);
+      if (e || err) client.logger.error(`Error installing sqlite3 package: ${await e || await err}`);
       client.logger.log(await out);
+      if(process.env._pm2_version) {
+        client.logger.log('PM2 detected! Restarting using PM2...');
+      } else client.logger.log('Please restart the bot.');
       await process.exit();
     });
   }
