@@ -7,7 +7,7 @@ module.exports.run = (client, message, args) => {
   if(message.mentions.members.size !== 0) {
     const member = message.mentions.members.first();
     message.send(new Discord.RichEmbed()
-      .setColor(member.displayColor === 0 ? client.config.colors.green : member.displayColor)
+      .setColor(member.displayColor === 0 ? client.config.colors.accentColor : member.displayColor)
       .setAuthor(member.user.tag, member.user.avatarURL)
       .addField('Message', member.lastMessage.content)
       .addField('Jump To Message', `https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${member.lastMessageID}`)
@@ -17,7 +17,7 @@ module.exports.run = (client, message, args) => {
     message.channel.fetchMessage(args[0])
       .then(msg => {
         message.send(new Discord.RichEmbed()
-          .setColor(msg.member.displayColor === 0 ? client.config.colors.green : msg.member.displayColor)
+          .setColor(msg.member.displayColor === 0 ? client.config.colors.accentColor : msg.member.displayColor)
           .setAuthor(msg.author.tag, msg.author.avatarURL)
           .addField('Message', msg.content)
           .addField('Jump To Message', `https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${msg.id}`)

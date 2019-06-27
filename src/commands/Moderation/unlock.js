@@ -33,7 +33,7 @@ module.exports.run = (client, message, args) => {
   }
 
   const modEmbed = new RichEmbed()
-    .setColor(client.config.colors.green)
+    .setColor(client.config.colors.accentColor)
     .addField('Unlock Channel', `${channel.toString()} (#${channel.name})`)
     .addField('Moderator', `${message.author.toString()} (${message.author.tag})`)
     .setThumbnail(message.author.avatarURL);

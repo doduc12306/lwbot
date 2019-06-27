@@ -21,7 +21,7 @@ exports.run = async (client, message, [action, key, ...value]) => {
           .catch(() => message.send(`❌ \`|\` ⚙️ \`${key}\` **does not exist!** `));
       } else {
         const embed = new Discord.RichEmbed()
-          .setColor(client.config.colors.green)
+          .setColor(client.config.colors.accentColor)
           .setTitle('Settings')
           .setFooter('Guild Settings');
 
@@ -86,7 +86,7 @@ exports.run = async (client, message, [action, key, ...value]) => {
         .catch(() => message.send(`❌ \`|\` ⚙️ \`${key}\` **does not exist!**`));
     } else {
       const embed = new Discord.RichEmbed()
-        .setColor(client.config.colors.green)
+        .setColor(client.config.colors.accentColor)
         .setTitle('Settings')
         .setFooter('Guild Settings');
 

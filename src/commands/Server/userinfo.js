@@ -16,7 +16,7 @@ module.exports.run = (client, message) => {
 
   if(member.nickname) embed.addField('Nickname', member.nickname, true);
 
-  embed.setColor(member.displayColor === 0 ? client.config.colors.green : member.displayColor);
+  embed.setColor(member.displayColor === 0 ? client.config.colors.accentColor : member.displayColor);
   embed.addField('Joined', moment(member.joinedAt).format('MMM Do YYYY, h:mm a'), true);
   embed.addField('Registered', moment(user.createdAt).format('MMM Do YYYY, h:mm a'), true);
 

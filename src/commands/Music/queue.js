@@ -92,7 +92,7 @@ module.exports.run = async (client, message, args) => {
 
   function listQueue() {
     const embed = new RichEmbed()
-      .setColor(client.config.colors.green)
+      .setColor(client.config.colors.accentColor)
       .setTimestamp();
 
     let desc = '\n';
