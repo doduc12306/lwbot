@@ -31,6 +31,7 @@ module.exports = async (client) => {
 
         await settingsTable.findOrCreate({ where: { key: key }, defaults: { value: value } });
       }
+      await settingsTable.findOrCreate({ where: { key: 'accentColor' }, defaults: { value: client.config.colors.accentColor } });
       await settingsTable.sync();
       logger.sqLog('Finished settings cleanup');
 

@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const package = require('../../../package.json');
 module.exports.run = (client, message) => {
   message.send(new Discord.RichEmbed()
-    .setColor(client.config.colors.accentColor)
+    .setColor(message.guild.accentColor)
     .setAuthor('LINE WEBTOON', client.user.avatarURL)
     .setThumbnail(client.user.avatarURL)
     .addField('Version', `v${package.version}`, true)

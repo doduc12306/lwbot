@@ -10,7 +10,7 @@ module.exports.run = async (client, message) => {
     ]
   }).then(data => {
     const embed = new Discord.RichEmbed()
-      .setColor(client.config.colors.accentColor);
+      .setColor(message.guild.accentColor);
     for (const values of data) {
       if (data.indexOf(values) === 0) {
         if (message.guild.members.get(values.dataValues.user) === undefined) embed.addField('👑 `[User Left]`', `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
