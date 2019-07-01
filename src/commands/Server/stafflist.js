@@ -5,7 +5,7 @@ module.exports.run = async (client, message) => {
 
   message.send('<a:loading:536942274643361794> **Gathering information...**').then(msg => {
     const embed = new Discord.RichEmbed()
-      .setColor(message.guild.owner.highestRole.color === 0 ? client.config.colors.green : message.guild.owner.highestRole.color)
+      .setColor(message.guild.owner.highestRole.color === 0 ? message.guild.accentColor : message.guild.owner.highestRole.color)
       .setAuthor(message.guild.name, message.guild.iconURL);
 
     const owners = message.guild.members.filter(g => (client.permlevel(g) === 5 || g === message.guild.owner)).map(g => g.toString());

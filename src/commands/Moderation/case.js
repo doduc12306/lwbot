@@ -30,13 +30,13 @@ module.exports.run = async (client, message, args) => {
     case 'softban': { embed.setColor('0x8C0F52'); break; }
     case 'tempban': { embed.setColor(client.config.colors.red); break; }
     case 'tempmute': { embed.setColor(client.config.colors.purple); break; }
-    case 'unban': { embed.setColor(client.config.colors.green); break; }
-    case 'unmute': { embed.setColor(client.config.colors.green); break; }
+    case 'unban': { embed.setColor(message.guild.accentColor); break; }
+    case 'unmute': { embed.setColor(message.guild.accentColor); break; }
     case 'voiceban': { embed.setColor('0xA80000'); break; }
     case 'voicekick': { embed.setColor('0xA80000'); break; }
     case 'warn': { embed.setColor(client.config.colors.yellow); break; }
-    case 'tempban unban': { embed.setColor(client.config.colors.green); break; }
-    case 'tempmute unmute': { embed.setColor(client.config.colors.green); break; }
+    case 'tempban unban': { embed.setColor(message.guild.accentColor); break; }
+    case 'tempmute unmute': { embed.setColor(message.guild.accentColor); break; }
   }
 
   if (log.dataValues.duration !== null) embed.addField('Duration', moment.duration(+log.dataValues.duration).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]'));

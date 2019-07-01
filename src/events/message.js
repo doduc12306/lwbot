@@ -157,6 +157,13 @@ module.exports = async (client, message) => {
   if (cmd.conf.requiresEmbed && message.guild && !message.guild.me.permissionsIn(message.channel).serialize()['EMBED_LINKS'])
     return message.send('❌ **This command requires `Embed Links`, which I don\'t have!**');
   message.benchmarks['EmbedCheckBenchmark'] = new Date() - a;
+  // if embed and no accent color, set it and send it.
+  message.guild.accentColor = client.config.colors.accentColor;
+  if (!message.guild) message.guild.accentColor = client.config.colors.accentColor;
+  else {
+    await settingsSchema.findOrCreate({ where: { key: 'accentColor' }, defaults: { value: client.config.colors.accentColor } });
+    message.guild.accentColor = await settingsFunctions.get(message.guild.id, 'accentColor');
+  }
 
   // Cooldown check
   if(cmd.conf.cooldown) {
@@ -192,6 +199,7 @@ module.exports = async (client, message) => {
 
       settingsSchema.findOrCreate({ where: { key: key }, defaults: { value: value }});
     }
+    await settingsSchema.findOrCreate({ where: { key: 'accentColor' }, defaults: { value: client.config.colors.accentColor } });
     settingsSchema.sync();
 
     for (const command of client.commands.filter(g => g.conf.enabled)) {

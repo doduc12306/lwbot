@@ -1,11 +1,11 @@
 const { RichEmbed } = require('discord.js');
 module.exports.run = async (client, message) => {
   message.author.send(new RichEmbed()
-    .setColor(client.config.colors.green)
+    .setColor(message.guild.accentColor)
     .setTitle('Invite me to another server!')
     .setDescription(`[${await client.generateInvite(['ADMINISTRATOR'])}](Click here!)`)
   );
-}
+};
 
 exports.conf = {
   enabled: true,

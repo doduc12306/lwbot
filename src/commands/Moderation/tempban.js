@@ -60,7 +60,7 @@ module.exports.run = async (client, message, args) => {
       }).then(async info => {
         modEmbed = new Discord.RichEmbed()
           .setThumbnail(toBan.avatarURL)
-          .setColor(client.config.colors.green)
+          .setColor(message.guild.accentColor)
           .setAuthor(`Unbanned ${toBan.tag} (${toBan.id})`)
           .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
           .addField('User', `${toBan.toString()} (${toBan.tag})`)

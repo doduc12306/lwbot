@@ -8,7 +8,7 @@ exports.run = (client, message) => {
     .addField('Guilds', client.guilds.size, true)
     .addField('Users', client.users.size, true)
     .addField('Memory Usage', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`, true)
-    .setColor(client.config.colors.green)
+    .setColor(message.guild.accentColor)
     .setTimestamp();
 
   const CU = moment.duration(client.uptime).format('M [months] W [weeks] D [days], H [hours], m [mins], s [seconds]'); // CU = client uptime

@@ -21,7 +21,7 @@ module.exports.run = async (client, message, args) => {
       }
 
       message.send(new RichEmbed()
-        .setColor(client.config.colors.green)
+        .setColor(message.guild.accentColor)
         .setTitle(resolve.question)
         .setDescription('✅ **Yes** | ❌ **No** | 🤷 **Don\'t Know** | 👍 **Probably** | 👎 **Probably Not**')
         .setFooter('React with 🛑 to stop')
@@ -46,7 +46,7 @@ module.exports.run = async (client, message, args) => {
                     console.log(resolve);
                     //if (e) { message.send('❌ **There was an error.** Game ended.'); client.logger.error(error); return collector.emit('end'); }
                     msg.edit(new RichEmbed()
-                      .setColor(client.config.colors.green)
+                      .setColor(message.guild.accentColor)
                       .addField('I guess...', `**${resolve.answers[0].name}!** | ${resolve.answers[0].description}`)
                       .setImage(resolve.answers[0].absolute_picture_path)
                     );
@@ -54,7 +54,7 @@ module.exports.run = async (client, message, args) => {
                 }
                 step++;
                 msg.edit(new RichEmbed()
-                  .setColor(client.config.colors.green)
+                  .setColor(message.guild.accentColor)
                   .setTitle(res.nextQuestion)
                   .setDescription('✅ **Yes** | ❌ **No** | 🤷 **Don\'t Know** | 👍 **Probably** | 👎 **Probably Not**')
                   .setFooter('React with 🛑 to stop')

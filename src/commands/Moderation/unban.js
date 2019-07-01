@@ -19,7 +19,7 @@ module.exports.run = async (client, message, args) => {
     }).then(async info => {
       const modEmbed = new Discord.RichEmbed()
         .setThumbnail(toUnban.avatarURL)
-        .setColor(client.config.colors.green)
+        .setColor(message.guild.accentColor)
         .setFooter(`ID: ${toUnban.id} | Case: ${info.id}`)
         .addField('Unbanned User', `${toUnban.toString()} (${toUnban.tag})`)
         .addField('Moderator', `${message.author.toString()} (${message.author.tag})`);

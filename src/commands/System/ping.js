@@ -11,7 +11,7 @@ module.exports.run = (client, message) => {
     thismessage.edit(new Discord.RichEmbed()
       .addField('🏓 Ping', `${Math.round(client.ping)}ms (${pings})`)
       .addField('↔ Latency', `${thismessage.createdAt-message.createdAt}ms`)
-      .setColor(client.config.colors.green)
+      .setColor(message.guild.accentColor)
     );
   });
 };
