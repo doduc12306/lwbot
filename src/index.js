@@ -19,9 +19,10 @@ const options = commandLineArgs([
 ]);
 
 const { promisify } = require('util');
-let { readdir, writeFile } = require('fs');
-readdir = promisify(readdir);
-writeFile = promisify(writeFile);
+const fs = require('fs');
+const readdir = promisify(fs.readdir);
+const writeFile = promisify(fs.writeFile);
+const mkdir = promisify(fs.mkdir);
 
 const walk = require('walk');
 
@@ -50,6 +51,8 @@ if (options.token) process.env.TOKEN = options.token;
 if (options.debugToken) process.env.DEBUG_TOKEN = options.debugToken;
 if (options.googleAPIKey) process.env.GOOGLE_API_KEY = options.googleAPIKey;
 
+const currentDayLog = new Date().toDateString().replace(/ +/g, '-'); // Gets current date
+mkdir(`logs/${currentDayLog}/`, { recursive: true }, e => { if(e) console.error(e); }); // Makes ../logs/ if it not already exist
 client.logger = require('./util/Logger');
 
 require('./dbFunctions/client/misc.js')(client);

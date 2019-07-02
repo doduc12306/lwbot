@@ -77,7 +77,7 @@ module.exports = (client) => {
   client.loadCommand = (folder, commandName) => {
     try {
       const props = require(`../../commands/${folder}/${commandName}`);
-      client.logger.log(`Loading Command: ${folder}/${props.help.name}`);
+      client.logger.log(`Loading Command: ${folder}/${props.help.name}.js`);
 
       /* Checks galore. */
       if(!props.run) return `${folder}/${commandName} does not have a run export`;
@@ -137,7 +137,7 @@ module.exports = (client) => {
   // `await client.wait(1000);` to "pause" for 1 second.
   client.wait = require('util').promisify(setTimeout);
 
-  client.timer = function clientTimer(callback, delay) { // This huge timer function is literally just for the cooldown.
+  client.timer = function clientTimer(callback, delay) { // This huge timer function is literally just for the command cooldown.
     let id, started, remaining = delay, running;
 
     this.start = function start() {
