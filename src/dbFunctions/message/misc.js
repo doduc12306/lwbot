@@ -32,14 +32,18 @@ module.exports = async (client, message) => {
 
           if(msg.reactions.size > 0) msg.clearReactions();
 
-          return resolve(msg.edit(embedC ? '' : content, options)); // If content === object, send (text) nothing. Else, send the content
+          return msg.edit(embedC ? '' : content, options) // If content === object, send (text) nothing. Else, send the content
+            .then(m => { return resolve(m); })
+            .catch(e => { return reject(e); });
         })
         .catch(e => {
           if (e.message === 'Unknown Message') {
-            message.channel.send(content, options ? options : null).then(msg => {
-              client.msgCmdHistory[message.id] = msg.id;
-              return resolve(msg);
-            });
+            message.channel.send(content, options ? options : null)
+              .then(msg => {
+                client.msgCmdHistory[message.id] = msg.id;
+                return resolve(msg);
+              })
+              .catch(e => { return reject(new Error(e)); });
           } else return reject(new Error(e));
         });
 
@@ -60,11 +64,11 @@ module.exports = async (client, message) => {
         if (options) return message.channel.send(content, options).then(msg => {
           client.msgCmdHistory[message.id] = msg.id;
           return resolve(msg);
-        });
+        }).catch(e => { return reject(new Error(e)); });
         else return message.channel.send(content).then(msg => {
           client.msgCmdHistory[message.id] = msg.id;
           return resolve(msg);
-        });
+        }).catch(e => { return reject(new Error(e)); });
       }
     });
   };
