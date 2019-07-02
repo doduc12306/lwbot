@@ -1,5 +1,4 @@
 const { RichEmbed } = require('discord.js');
-/* eslint-disable */
 module.exports = async (client, message) => {
 
   // Message send function, pretty much extends message.channel.send/message.edit in that it allows the user to edit their command message and it runs that instead
