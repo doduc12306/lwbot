@@ -34,13 +34,28 @@ exports.run = async (client, message, args) => {
     output = output.replace(filter, 'FILTERED TOKEN');
     output = clean(output);
     if (output.length < 1950) {
-      message.send(output, { code: 'js' });
+      message.send(output, { code: 'js' })
+        .catch(e => {
+          message.send(':x: **Error sending output, check the console.**');
+          client.logger.error('Eval output error:' + e);
+          client.logger.log('Initial eval output:' + output);
+        });
     } else {
       message.send('❌ **Output was too long. Check the console.**');
       client.logger.log(output);
     }
   } catch (error) {
-    message.send(error);
+    try {
+      message.send(error).catch(errorSendingError => {
+        message.send(':x: **Ironically, there was an error sending the error. Check the console.**');
+        client.logger.error('Error sending eval error: ' + errorSendingError);
+        client.logger.error('Initial eval error output: ' + error);
+      });
+    } catch (errorSendingError) {
+      message.send(':x: **Ironically, there was an error sending the error. Check the console.**');
+      client.logger.error('Error sending eval error: ' + errorSendingError);
+      client.logger.error('Initial eval error ouput: ' + error);
+    }
   }
 
   function clean(text) {
