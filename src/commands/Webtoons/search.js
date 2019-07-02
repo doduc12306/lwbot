@@ -13,7 +13,6 @@ module.exports.run = (client, message, args) => {
   const search = ['featured', 'discover', 'discovery'].includes(args[0]) ? args.slice(1).join(' ') : args.slice(0).join(' ');
 
   message.send(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(0 / 5)\``).then(async msg => {
-    const errorTimer = setTimeout(() => { return msg.edit('❌ `|` 🔎 **Something took too long! Please try again later.**'); }, 10000); // Ten second error timeout
     try {
       // Initialize browser
       const browser = await puppeteer.launch();
@@ -23,11 +22,8 @@ module.exports.run = (client, message, args) => {
       await page.goto(`https://www.webtoons.com/search?keyword=${search}`);
       await msg.edit(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(2 / 5)\``);
 
-      await page.screenshot({ path: 'searchPage.png' });
-
       if (await page.$('div.card_nodata')) { // If the search result returned empty
         msg.edit('❌ `|` 🔎 **I couldn\'t find a webtoon by that name!**');
-        clearTimeout(errorTimer);
         return browser.close();
       }
 
@@ -35,8 +31,6 @@ module.exports.run = (client, message, args) => {
 
         await page.click('ul.card_lst li a');
         msg.edit(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(3 / 5)\``);
-
-        await page.screenshot({ path: 'actualPage.png', fullPage: true });
 
         const title = await page.$eval('div.detail_header div.info h1.subj', async e => await e.innerHTML);
         const description = await page.$eval('div.detail_body div.aside.detail p.summary', async e => await e.innerHTML);
@@ -59,7 +53,6 @@ module.exports.run = (client, message, args) => {
           .setThumbnail(thumbnail)
           .addField(`Episode ${lastEpisode.number}`, `[${lastEpisode.title}](${lastEpisode.url})`)
         );
-        clearTimeout(errorTimer);
 
         await browser.close();
 
@@ -67,8 +60,6 @@ module.exports.run = (client, message, args) => {
 
         await page.click('div.challenge_lst ul li a');
         msg.edit(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(3 / 5)\``);
-
-        await page.screenshot({ path: 'actualPage.png', fullPage: true });
 
         const title = await page.$eval('div.detail_header div.info h3.subj', async e => await e.innerHTML.split('<')[0].trim());
         const description = await page.$eval('div.detail_body div.aside.detail p.summary', async e => await e.innerHTML);
@@ -91,7 +82,6 @@ module.exports.run = (client, message, args) => {
           .setThumbnail(thumbnail)
           .addField(`Episode ${lastEpisode.number}`, `[${lastEpisode.title}](${lastEpisode.url})`)
         );
-        clearTimeout(errorTimer);
 
         await browser.close();
 
