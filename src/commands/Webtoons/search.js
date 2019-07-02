@@ -3,14 +3,14 @@ const { RichEmbed } = require('discord.js');
 
 module.exports.run = (client, message, args) => {
   let mode;
-  if (!['featured', 'discover', 'discovery'].includes(args[0])) mode = 'featured';
+  if (!['featured', 'discover', 'discovery', 'canvas'].includes(args[0])) mode = 'featured';
 
   if (!args[0]) return message.send('❌ `|` 🔎 **You didn\'t specify featured or discover, or a webtoon to search!**');
   if (args[0] === 'featured') mode = 'featured';
-  else if (['discover', 'discovery'].includes(args[0])) mode = 'discover';
-  if (['featured', 'discover', 'discovery'].includes(args[0]) && !args[1]) return message.send('❌ `|` 🔎 **You didn\'t give me anything to search!**');
+  else if (['discover', 'discovery', 'canvas'].includes(args[0])) mode = 'discover';
+  if (['featured', 'discover', 'discovery', 'canvas'].includes(args[0]) && !args[1]) return message.send('❌ `|` 🔎 **You didn\'t give me anything to search!**');
 
-  const search = ['featured', 'discover', 'discovery'].includes(args[0]) ? args.slice(1).join(' ') : args.slice(0).join(' ');
+  const search = ['featured', 'discover', 'discovery', 'canvas'].includes(args[0]) ? args.slice(1).join(' ') : args.slice(0).join(' ');
 
   message.send(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(0 / 5)\``).then(async msg => {
     try {
@@ -105,6 +105,6 @@ exports.conf = {
 exports.help = {
   name: 'search',
   description: 'Find a webtoon!',
-  usage: 'search [featured (default) / discover] <title name>',
+  usage: 'search [featured (default) / canvas] <title name>',
   category: 'Webtoons'
 };
