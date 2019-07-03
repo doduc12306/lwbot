@@ -5,7 +5,7 @@ module.exports.run = (client, message, args) => {
   let mode;
   if (!['featured', 'discover', 'discovery', 'canvas'].includes(args[0])) mode = 'featured';
 
-  if (!args[0]) return message.send('❌ `|` 🔎 **You didn\'t specify featured or discover, or a webtoon to search!**');
+  if (!args[0]) return message.send('❌ `|` 🔎 **You didn\'t specify featured or canvas webtoon to search!**');
   if (args[0] === 'featured') mode = 'featured';
   else if (['discover', 'discovery', 'canvas'].includes(args[0])) mode = 'discover';
   if (['featured', 'discover', 'discovery', 'canvas'].includes(args[0]) && !args[1]) return message.send('❌ `|` 🔎 **You didn\'t give me anything to search!**');
@@ -32,7 +32,7 @@ module.exports.run = (client, message, args) => {
         await page.click('ul.card_lst li a');
         msg.edit(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(3 / 5)\``);
 
-        const title = await page.$eval('div.detail_header div.info h1.subj', async e => await e.innerHTML);
+        const title = await page.$eval('div.cont_box div.detail_header.type_white div.info h1.subj', async e => await e.innerHTML);
         const description = await page.$eval('div.detail_body div.aside.detail p.summary', async e => await e.innerHTML);
         const thumbnail = await page.$eval('div.detail_body', async e => await e.getAttribute('style').split('url(')[1].split(')')[0]);
         const url = page._target._targetInfo.url;
@@ -88,8 +88,7 @@ module.exports.run = (client, message, args) => {
       }
 
     } catch (e) {
-      msg.edit('❌ `|` 🔎 **Something went wrong! Please try again later.**');
-      client.logger.error(e);
+      msg.edit(`❌ \`|\` 🔎 **Something went wrong! Please try again later.**\n\`\`\`${e}\`\`\``);
     }
 
   });
