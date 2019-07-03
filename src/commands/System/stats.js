@@ -16,7 +16,7 @@ exports.run = (client, message) => {
   if(require('os').platform() === 'darwin') embed.addField('Uptime', `🤖 : ${CU} | 🖥 : ${require('child_process').execSync('uptime').toString().split('load averages')[0]}`, true);
   else embed.addField('Uptime:', `🤖 : ${CU} | 🖥 : ${require('child_process').execSync('uptime -p').toString().split('up')[1]}`, true);
 
-  if(client.config.verboseMode) embed.addField('Verbose Benchmarks', JSON.stringify(message.benchmarks));
+  if(message.content.endsWith('--benchmarks')) embed.addField('Verbose benchmarks', `\`\`\`js\n${JSON.stringify(message.benchmarks, null, 2)}\n\`\`\``);
 
   message.send(embed);
 };
@@ -24,7 +24,7 @@ exports.run = (client, message) => {
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: ['uptime'],
+  aliases: ['uptime', 'status'],
   permLevel: 'User',
   requiresEmbed: true
 };
