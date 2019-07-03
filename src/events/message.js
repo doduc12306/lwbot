@@ -185,7 +185,9 @@ module.exports = async (client, message) => {
 
   /* -------------------- RUNS THE COMMAND -------------------- */
   client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name}${message.edited ? ' (edited) ' : ' '}${message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs'}`);
-  await cmd.run(client, message, args, level);
+  try {
+    await cmd.run(client, message, args, level);
+  } catch(e) { message.send(`:x: **Something went wrong running the command:\n\`\`\`${e}\`\`\` `); }
   /* -------------------- RUNS THE COMMAND -------------------- */
 
   message.benchmarks['CmdRunBenchmark'] = new Date() - a;
