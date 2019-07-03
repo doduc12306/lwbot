@@ -5,13 +5,13 @@ module.exports.run = async (client, message, args) => {
   const toKickM = message.mentions.members.first();
   const reason = args.slice(1).join(' ');
 
-  if(!message.guild.me.permissions.has('MOVE_MEMBERS')) return message.send('❌ `|` 👢 **I am missing permissions:** `Move Members`');
-  if(!message.guild.me.permissions.has('MANAGE_CHANNELS')) return message.send('❌ `|` 👢 **I am missing permissions:** `Manage Channels` ');
-  if(!message.member.permissions.has('KICK_MEMBERS')) return message.send('❌ `|` 👢 **You are missing permissions:** `Kick Members`');
-  if(!toKick) return message.send('❌ `|` 👢 **You didn\'t mention someone to voicekick!**');
-  if(!message.member.voiceChannel) return message.send('❌ `|` 👢 **You are not in the voice channel!**');
-  if(!toKickM.voiceChannel) return message.send(`❌ \`|\` 👢 ${toKick.toString()} **isn't in a voice channel!**`);
-  if(!toKickM.voiceChannel === message.member.voiceChannel) return message.send(`❌ \`|\` 👢 **You must be in the same voice channel as** ${toKick.toString()}`);
+  if (!message.guild.me.permissions.has('MOVE_MEMBERS')) return message.send('❌ `|` 👢 **I am missing permissions:** `Move Members`');
+  if (!message.guild.me.permissions.has('MANAGE_CHANNELS')) return message.send('❌ `|` 👢 **I am missing permissions:** `Manage Channels` ');
+  if (!message.member.permissions.has('KICK_MEMBERS')) return message.send('❌ `|` 👢 **You are missing permissions:** `Kick Members`');
+  if (!toKick) return message.send('❌ `|` 👢 **You didn\'t mention someone to voicekick!**');
+  if (!message.member.voiceChannel) return message.send('❌ `|` 👢 **You are not in the voice channel!**');
+  if (!toKickM.voiceChannel) return message.send(`❌ \`|\` 👢 ${toKick.toString()} **isn't in a voice channel!**`);
+  if (!toKickM.voiceChannel === message.member.voiceChannel) return message.send(`❌ \`|\` 👢 **You must be in the same voice channel as** ${toKick.toString()}`);
 
   await message.guild.modbase.create({
     victim: toKick.id,
@@ -28,7 +28,7 @@ module.exports.run = async (client, message, args) => {
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`)
       .addField('Channel:', message.member.voiceChannel.name);
 
-    if(reason) {dmMsg += `\n\n⚙️ **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
+    if (reason) { dmMsg += `\n\n⚙️ **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: { id: info.id } }); }
 
     const vc = await message.guild.createChannel('Voice Kick', 'voice');
     await toKickM.setVoiceChannel(vc);

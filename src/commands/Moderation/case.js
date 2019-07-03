@@ -5,10 +5,10 @@ require('moment-duration-format');
 module.exports.run = async (client, message, args) => {
   const id = args[0];
 
-  if(!id) return message.send('❌ **You didn\'t give me the case number to look up!**');
+  if (!id) return message.send('❌ **You didn\'t give me the case number to look up!**');
 
-  const log = await message.guild.modbase.findOne({where: { id: id }});
-  if(!log) return message.send(`❌ **I couldn't find case** \`${id}\`!`);
+  const log = await message.guild.modbase.findOne({ where: { id: id } });
+  if (!log) return message.send(`❌ **I couldn't find case** \`${id}\`!`);
 
   const victim = client.users.get(log.dataValues.victim);
   const moderator = client.users.get(log.dataValues.moderator);
@@ -22,7 +22,7 @@ module.exports.run = async (client, message, args) => {
     .setThumbnail(victim.avatarURL)
     .setTimestamp(log.dataValues.updatedAt);
 
-  switch(log.dataValues.type) {
+  switch (log.dataValues.type) {
     case 'ban': { embed.setColor(client.config.colors.red); break; }
     case 'hackban': { embed.setColor(client.config.colors.black); break; }
     case 'kick': { embed.setColor('0xff8e2b'); break; }

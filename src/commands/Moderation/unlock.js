@@ -22,9 +22,9 @@ module.exports.run = (client, message, args) => {
     if (e.message === 'Channel does not exist') return message.send('❌ `|` 🔓 **Channel does not exist.**');
   }
 
-  if(reason && reason.endsWith('-f')) { forcemode = true; reason = reason.split(/-f$/gi)[0]; }
+  if (reason && reason.endsWith('-f')) { forcemode = true; reason = reason.split(/-f$/gi)[0]; }
 
-  if(channel.permissionsFor(message.guild.id).has('SEND_MESSAGES') && !forcemode) return message.send('❌ `|` 🔓 **This channel is already unlocked.**\nIf you believe this is an error, edit your command and put `-f` (force mode) at the end.');
+  if (channel.permissionsFor(message.guild.id).has('SEND_MESSAGES') && !forcemode) return message.send('❌ `|` 🔓 **This channel is already unlocked.**\nIf you believe this is an error, edit your command and put `-f` (force mode) at the end.');
 
   for (let overwrite of channel.permissionOverwrites) {
     overwrite = overwrite[1];

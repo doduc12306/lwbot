@@ -4,7 +4,7 @@ module.exports.run = async (client, message, args) => {
   const toWarn = message.mentions.users.first();
   const reason = args.slice(1).join(' ');
 
-  if(!toWarn) return message.send('❌ `|` ⚠️ **You didn\'t mention someone to warn!**');
+  if (!toWarn) return message.send('❌ `|` ⚠️ **You didn\'t mention someone to warn!**');
 
   await message.guild.modbase.create({
     victim: toWarn.id,
@@ -20,7 +20,7 @@ module.exports.run = async (client, message, args) => {
       .addField('Warned User', `${toWarn.toString()} (${toWarn.tag})`)
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`);
 
-    if(reason) {dmMsg += `\n\n⚙️ **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
+    if (reason) { dmMsg += `\n\n⚙️ **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: { id: info.id } }); }
 
     toWarn.send(dmMsg);
     await message.guild.settings.get('modLogChannel')

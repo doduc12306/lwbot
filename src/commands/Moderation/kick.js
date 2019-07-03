@@ -5,10 +5,10 @@ module.exports.run = async (client, message, args) => {
   const toKickM = message.mentions.members.first();
   const reason = args.slice(1).join(' ');
 
-  if(!message.guild.me.permissions.has('KICK_MEMBERS')) return message.send('❌ `|` 👢 **I am missing permissions:** `Kick Members`');
-  if(!message.member.permissions.has('KICK_MEMBERS')) return message.send('❌ `|` 👢 **You are missing permissions:** `Kick Members`');
-  if(!toKick) return message.send('❌ `|` 👢 **You didn\'t mention someone to kick!**');
-  if(!toKickM.kickable) return message.send('❌ `|` 👢 **This member could not be kicked!**');
+  if (!message.guild.me.permissions.has('KICK_MEMBERS')) return message.send('❌ `|` 👢 **I am missing permissions:** `Kick Members`');
+  if (!message.member.permissions.has('KICK_MEMBERS')) return message.send('❌ `|` 👢 **You are missing permissions:** `Kick Members`');
+  if (!toKick) return message.send('❌ `|` 👢 **You didn\'t mention someone to kick!**');
+  if (!toKickM.kickable) return message.send('❌ `|` 👢 **This member could not be kicked!**');
 
   await message.guild.modbase.create({
     victim: toKick.id,
@@ -24,7 +24,7 @@ module.exports.run = async (client, message, args) => {
       .addField('Kicked User', `${toKick.toString()} (${toKick.tag})`)
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`);
 
-    if(reason) {dmMsg += `\n\n⚙️ **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
+    if (reason) { dmMsg += `\n\n⚙️ **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: { id: info.id } }); }
 
     await toKick.send(dmMsg);
     await toKickM.kick(toKick);

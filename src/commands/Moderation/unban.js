@@ -5,9 +5,9 @@ module.exports.run = async (client, message, args) => {
     const reason = args.slice(1).join(' ');
     const unBanHammer = '<:unbanhammer:459404085301346304>';
 
-    if(!message.guild.me.permissions.has('BAN_MEMBERS')) return message.send(`❌ \`|\` ${unBanHammer} **I am missing permissions:** \`Ban Members\``);
-    if(!message.member.permissions.has('BAN_MEMBERS')) return message.send(`❌ \`|\` ${unBanHammer} **You are missing permissions:** \`Ban Members\``);
-    if(!args[0]) return message.send(`❌ \`|\` ${unBanHammer} **You didn't give the ID of someone to unban!**`);
+    if (!message.guild.me.permissions.has('BAN_MEMBERS')) return message.send(`❌ \`|\` ${unBanHammer} **I am missing permissions:** \`Ban Members\``);
+    if (!message.member.permissions.has('BAN_MEMBERS')) return message.send(`❌ \`|\` ${unBanHammer} **You are missing permissions:** \`Ban Members\``);
+    if (!args[0]) return message.send(`❌ \`|\` ${unBanHammer} **You didn't give the ID of someone to unban!**`);
     await client.fetchUser(args[0]).catch(() => message.send(`❌ \`|\` ${unBanHammer} **I could not find that user!** (Is that the correct ID?)`));
 
     const toUnban = await client.fetchUser(args[0]);
@@ -24,7 +24,7 @@ module.exports.run = async (client, message, args) => {
         .addField('Unbanned User', `${toUnban.toString()} (${toUnban.tag})`)
         .addField('Moderator', `${message.author.toString()} (${message.author.tag})`);
 
-      if(reason) {modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: {id: info.id }});}
+      if (reason) { modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: { id: info.id } }); }
 
       await message.guild.unban(toUnban.id);
       await message.guild.settings.get('modLogChannel')
@@ -39,7 +39,7 @@ module.exports.run = async (client, message, args) => {
         })
         .catch(async e => message.send(`❌ **There was an error finding the mod log channel:** \`${e.stack}\``));
     });
-  } catch (e) {client.logger.error(e);}
+  } catch (e) { client.logger.error(e); }
 
 };
 

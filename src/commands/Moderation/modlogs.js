@@ -2,15 +2,15 @@ const Discord = require('discord.js');
 module.exports.run = (client, message) => {
   const user = message.mentions.users.first() ? message.mentions.users.first() : message.author;
 
-  message.guild.modbase.findAll({where: {victim: user.id}}).then(logs => {
-    logs = logs.sort((a,b) => a.dataValues.id > b.dataValues.id ? -1 : 1);
+  message.guild.modbase.findAll({ where: { victim: user.id } }).then(logs => {
+    logs = logs.sort((a, b) => a.dataValues.id > b.dataValues.id ? -1 : 1);
 
     const embed = new Discord.RichEmbed()
       .setColor(message.guild.accentColor)
       .setTitle(`Modlogs for ${user.tag}`);
 
-    if(logs.length === 0) return message.send(embed.setDescription('No logs found'));
-    if(logs.length <= 9) {
+    if (logs.length === 0) return message.send(embed.setDescription('No logs found'));
+    if (logs.length <= 9) {
       for (const data of logs) {
         const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
         const mod = message.guild.members.get(data.dataValues.moderator).user
@@ -31,7 +31,7 @@ module.exports.run = (client, message) => {
         .setColor(message.guild.accentColor)
         .setTitle(`Modlogs for ${user.tag} | Page ${curPage}/${Math.ceil(logs.length / 9)}`);
 
-      for(const data of logs) {
+      for (const data of logs) {
         const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
         const mod = message.guild.members.get(data.dataValues.moderator).user
           ? message.guild.members.get(data.dataValues.moderator).user
@@ -39,7 +39,7 @@ module.exports.run = (client, message) => {
             ? client.users.get(data.dataValues.moderator)
             : '[User not found]';
         embed.addField(`Case **${data.dataValues.id}** \`|\` **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
-        if(logs.indexOf(data) >= max) break;
+        if (logs.indexOf(data) >= max) break;
       }
 
       message.send(embed).then(async msg => {
@@ -50,9 +50,9 @@ module.exports.run = (client, message) => {
         const filter = (reaction, user) => ['◀', '🛑', '▶'].includes(reaction.emoji.name) && user.id === message.author.id;
         const collector = msg.createReactionCollector(filter, { time: 120000 })
           .on('collect', async g => {
-            if(g._emoji.name === '🛑') return collector.emit('end');
-            else if(g._emoji.name === '◀') {
-              if(min === 0 || curPage === 0) return msg.reactions.get('◀').remove(message.author);
+            if (g._emoji.name === '🛑') return collector.emit('end');
+            else if (g._emoji.name === '◀') {
+              if (min === 0 || curPage === 0) return msg.reactions.get('◀').remove(message.author);
               await client.wait(300);
               msg.reactions.get('◀').remove(message.author);
               min = await min - 9;
@@ -63,8 +63,8 @@ module.exports.run = (client, message) => {
                 .setColor(message.guild.accentColor)
                 .setTitle(`Modlogs for ${user.tag} | Page ${curPage}/${Math.ceil(logs.length / 9)}`);
 
-              for(const data of logs) {
-                if(logs.indexOf(data) < min) continue;
+              for (const data of logs) {
+                if (logs.indexOf(data) < min) continue;
                 const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
                 const mod = message.guild.members.get(data.dataValues.moderator).user
                   ? message.guild.members.get(data.dataValues.moderator).user
@@ -72,11 +72,11 @@ module.exports.run = (client, message) => {
                     ? client.users.get(data.dataValues.moderator)
                     : '[User not found]';
                 embed.addField(`Case **${data.dataValues.id}** \`|\` **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
-                if(logs.indexOf(data) >= max) break;
+                if (logs.indexOf(data) >= max) break;
               }
               msg.edit(embed);
 
-            } else if(g._emoji.name === '▶') {
+            } else if (g._emoji.name === '▶') {
               await client.wait(300);
               msg.reactions.get('▶').remove(message.author);
               min = await min + 9;
@@ -95,9 +95,9 @@ module.exports.run = (client, message) => {
                 .setColor(message.guild.accentColor)
                 .setTitle(`Modlogs for ${user.tag} | Page ${curPage}/${Math.ceil(logs.length / 9)}`);
 
-              for(const data of logs) {
+              for (const data of logs) {
                 const index = logs.indexOf(data);
-                if(index < min) continue;
+                if (index < min) continue;
                 const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
                 const mod = message.guild.members.get(data.dataValues.moderator).user
                   ? message.guild.members.get(data.dataValues.moderator).user

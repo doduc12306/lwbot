@@ -1,11 +1,11 @@
 module.exports.run = (client, message, args) => {
-  if(!message.guild.me.permissions.has('MANAGE_MESSAGES')) return message.send('❌ `|` 💣 **I am missing permissions to Manage Messages!**');
-  if(!message.member.permissions.has('MANAGE_MESSAGES')) return message.send('❌ `|` 💣 **You do not have permissions to Manage Messages!**');
+  if (!message.guild.me.permissions.has('MANAGE_MESSAGES')) return message.send('❌ `|` 💣 **I am missing permissions to Manage Messages!**');
+  if (!message.member.permissions.has('MANAGE_MESSAGES')) return message.send('❌ `|` 💣 **You do not have permissions to Manage Messages!**');
 
   const toPurge = args[0];
 
-  if(!toPurge) return message.send('❌ `|` 💣 **You didn\'t give an amount to purge!**');
-  if(toPurge > 100) return message.send('❌ `|` 💣 **Due to the limitations of Discord, I can only delete 100 messages at a time!**');
+  if (!toPurge) return message.send('❌ `|` 💣 **You didn\'t give an amount to purge!**');
+  if (toPurge > 100) return message.send('❌ `|` 💣 **Due to the limitations of Discord, I can only delete 100 messages at a time!**');
 
   message.channel.bulkDelete(toPurge)
     .then(messages => message.send(`✅ \`|\` 💣 **Deleted \`${messages.size}\` messages!**`))

@@ -46,8 +46,8 @@ module.exports.run = (client, message, args) => {
   }
   /* End logic */
 
-  if(reason && reason.endsWith('-f')) { forcemode = true; reason = reason.split(/-f$/gi)[0]; }
-  if(!channel.permissionsFor(message.guild.id).has('SEND_MESSAGES') && !forcemode) return message.send('❌ `|` 🔒 **This channel is already locked.**\nIf you believe this is an error, edit your command and put `-f` (force mode) at the end.');
+  if (reason && reason.endsWith('-f')) { forcemode = true; reason = reason.split(/-f$/gi)[0]; }
+  if (!channel.permissionsFor(message.guild.id).has('SEND_MESSAGES') && !forcemode) return message.send('❌ `|` 🔒 **This channel is already locked.**\nIf you believe this is an error, edit your command and put `-f` (force mode) at the end.');
 
   channel.permissionOverwrites.forEach(overwrite => {
     channel.overwritePermissions(overwrite.id, { SEND_MESSAGES: false }, reason ? `Channel lock | ${reason}` : 'Channel lock');
@@ -62,7 +62,7 @@ module.exports.run = (client, message, args) => {
 
   let durationMs;
   let durationHR;
-  if(duration) {
+  if (duration) {
     durationMs = parse(duration);
     durationHR = moment.duration(durationMs).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]'); // HR = "Human Readable"
     modEmbed.addField('Duration', durationHR);

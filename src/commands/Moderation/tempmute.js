@@ -13,11 +13,11 @@ module.exports.run = async (client, message, args) => {
   const durationMs = parse(duration);
   const durationHR = moment.duration(durationMs).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]'); // HR = "Human Readable"
 
-  if(!message.guild.me.permissions.has('MANAGE_ROLES')) return message.send(`❌ \`|\` ${mutedEmote} **I am missing permissions: \`Manage Roles\``);
-  if(!toMute) return message.send(`❌ \`|\` ${mutedEmote} **You didn't mention someone to mute!**`);
-  if(toMute.permissions.has('ADMINISTRATOR')) return message.send(`❌ \`|\` ${mutedEmote} **${toMute.toString()} could not be muted because they have Administrator!`);
-  if(message.guild.me.highestRole.position < toMute.highestRole.position) return message.send(`❌ \`|\` ${mutedEmote} **You need to move my role (${message.guild.me.highestRole.name}) above ${toMute.toString()}'s (${toMute.highestRole.name})!**`);
-  if(toMute.roles.has(role.id)) return message.send(`❌ \`|\` ${mutedEmote} **${toMute.toString()} is already muted!**`);
+  if (!message.guild.me.permissions.has('MANAGE_ROLES')) return message.send(`❌ \`|\` ${mutedEmote} **I am missing permissions: \`Manage Roles\``);
+  if (!toMute) return message.send(`❌ \`|\` ${mutedEmote} **You didn't mention someone to mute!**`);
+  if (toMute.permissions.has('ADMINISTRATOR')) return message.send(`❌ \`|\` ${mutedEmote} **${toMute.toString()} could not be muted because they have Administrator!`);
+  if (message.guild.me.highestRole.position < toMute.highestRole.position) return message.send(`❌ \`|\` ${mutedEmote} **You need to move my role (${message.guild.me.highestRole.name}) above ${toMute.toString()}'s (${toMute.highestRole.name})!**`);
+  if (toMute.roles.has(role.id)) return message.send(`❌ \`|\` ${mutedEmote} **${toMute.toString()} is already muted!**`);
 
   await message.guild.modbase.create({
     victim: toMute.id,
@@ -35,7 +35,7 @@ module.exports.run = async (client, message, args) => {
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`)
       .addField('Duration', durationHR);
 
-    if(reason) {dmMsg += `\n\n⚙️ **Reason \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({reason: reason}, {where: {id: info.id}});}
+    if (reason) { dmMsg += `\n\n⚙️ **Reason \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: { id: info.id } }); }
 
     toMute.user.send(dmMsg);
     toMute.addRole(role);
@@ -65,8 +65,8 @@ module.exports.run = async (client, message, args) => {
           .addField('User', `${toMute.toString()} (${toMute.user.tag})`)
           .addField('Moderator', `${client.user.toString()} (${client.user.tag})`);
 
-        if(!reason) {message.guild.modbase.update({ reason: 'Tempmute auto unmute' }, { where: {id: info.id}}); await modEmbed.addField('Reason', 'Tempmute auto unmute');}
-        else {message.guild.modbase.update({ reason: `${reason} | Tempmute auto unmute`}, { where: {id: info.id}}); await modEmbed.addField('Reason', `${reason} | Tempmute auto unmute`);}
+        if (!reason) { message.guild.modbase.update({ reason: 'Tempmute auto unmute' }, { where: { id: info.id } }); await modEmbed.addField('Reason', 'Tempmute auto unmute'); }
+        else { message.guild.modbase.update({ reason: `${reason} | Tempmute auto unmute` }, { where: { id: info.id } }); await modEmbed.addField('Reason', `${reason} | Tempmute auto unmute`); }
 
         toMute.removeRole(role);
         await message.guild.settings.get('modLogChannel')
