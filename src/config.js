@@ -15,6 +15,7 @@ const config = {
   'verboseMode': false,
   'sqLogMode': false,
   'ciMode': false,
+  'noFileLog': false,
 
   // Default per-server settings. New guilds have these settings.
 

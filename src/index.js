@@ -11,12 +11,30 @@ const options = commandLineArgs([
   { name: 'verbose', alias: 'v', type: Boolean },
   { name: 'sqLog', alias: 's', type: Boolean },
   { name: 'ciMode', type: Boolean },
+  { name: 'noFileLog', type: Boolean },
 
   // Tokens
   { name: 'token', type: String },
   { name: 'debugToken', type: String },
   { name: 'googleAPIKey', type: String }
 ]);
+
+const Discord = require('discord.js');
+const client = new Discord.Client({
+  fetchAllMembers: true,
+  disabledEvents: ['TYPING_START', 'USER_NOTE_UPDATE', 'RELATIONSHIP_ADD', 'RELATIONSHIP_REMOVE'],
+  ws: { large_threshold: 1000 }
+});
+client.config = require('./config.js');
+
+// This is down here because client isn't defined by the time cli args are.
+if (options.debug) client.config.debugMode = true;
+if (options.verbose) client.config.verboseMode = true;
+if (options.sqLog) client.config.sqLogMode = true;
+if (options.token) process.env.TOKEN = options.token;
+if (options.debugToken) process.env.DEBUG_TOKEN = options.debugToken;
+if (options.googleAPIKey) process.env.GOOGLE_API_KEY = options.googleAPIKey;
+if (options.noFileLog) client.config.noFileLog = true;
 
 const { promisify } = require('util');
 const fs = require('fs');
@@ -28,14 +46,6 @@ const walk = require('walk');
 
 const Enmap = require('enmap');
 
-const Discord = require('discord.js');
-const client = new Discord.Client({
-  fetchAllMembers: true,
-  disabledEvents: ['TYPING_START', 'USER_NOTE_UPDATE', 'RELATIONSHIP_ADD', 'RELATIONSHIP_REMOVE'],
-  ws: { large_threshold: 1000 }
-});
-client.config = require('./config.js');
-
 client.commands = new Enmap();
 client.aliases = new Enmap();
 client.folder = new Enmap();
@@ -43,16 +53,14 @@ client.cooldowns = new Enmap();
 
 client.before = new Date();
 
-// This is down here because client isn't defined by the time cli args are.
-if (options.debug) client.config.debugMode = true;
-if (options.verbose) client.config.verboseMode = true;
-if (options.sqLog) client.config.sqLogMode = true;
-if (options.token) process.env.TOKEN = options.token;
-if (options.debugToken) process.env.DEBUG_TOKEN = options.debugToken;
-if (options.googleAPIKey) process.env.GOOGLE_API_KEY = options.googleAPIKey;
+const currentDayLog = new Date().toDateString().replace(/ +/g, '-'); // Gets current date, and formats it
+require('os').platform() === 'win32' // Makes ../logs/ if it not already exist
+  ? mkdir(`logs/${currentDayLog}/`, { recursive: true }, e => { if (e) throw new Error(e); }) // Windows mkdir
+  : mkdir('logs/', { recursive: true }, e => { // Not windows mkdir
+    if (e && e.code === 'EEXIST') return;
+    if (e) throw new Error(e);
+  });
 
-const currentDayLog = new Date().toDateString().replace(/ +/g, '-'); // Gets current date
-mkdir(`logs/${currentDayLog}/`, { recursive: true }, e => { if(e) console.error(e); }); // Makes ../logs/ if it not already exist
 client.logger = require('./util/Logger');
 
 require('./dbFunctions/client/misc.js')(client);
@@ -66,6 +74,8 @@ if (options.ciMode) {
   client.logger.debug('CI MODE ENABLED - RUNNING TESTS AND EXITING');
   return require('./util/ci')(client);
 }
+
+client.logger.log('STARTING BOT...');
 
 // Here we load commands into memory, as a collection, so they're accessible
 // here and everywhere else.
@@ -104,12 +114,13 @@ cmdFiles.on('end', async () => {
   client.login(client.config.debugMode ? process.env.DEBUG_TOKEN : process.env.TOKEN);
 });
 
+// Events that don't require their own files since they're so minor
 client.on('disconnect', () => client.logger.log('Client disconnected!', 'disconnect'));
 client.on('reconnecting', () => client.logger.log('Reconnecting...', 'reconnecting'));
 client.on('resume', replayed => client.logger.log(`Client resumed! Replayed ${replayed} events`, 'resume'));
 client.on('warn', info => client.logger.warn(`Warning: "${info}"`));
 
-// These 2 process methods will catch exceptions and give *more details* about the error and stack trace.
+// Error handling
 process.on('uncaughtException', async (err) => {
   if (err.stack.trim().includes('at WebSocketConnection.onError')) {
     client.logger.log('Disconnected! Lost connection to websocket', 'disconnect');
@@ -145,7 +156,7 @@ process.on('unhandledRejection', err => {
     return require('child_process').exec('yarn add sqlite3', async (e, out, err) => {
       if (e || err) client.logger.error(`Error installing sqlite3 package: ${await e || await err}`);
       client.logger.log(await out);
-      if(process.env._pm2_version) {
+      if (process.env._pm2_version) {
         client.logger.log('PM2 detected! Restarting using PM2...');
       } else client.logger.log('Please restart the bot.');
       await process.exit();
@@ -163,5 +174,5 @@ process.on('SIGINT', async () => {
 });
 
 // lwbot-rewrite - Discord bot
-// Copyright (C) 2017-2019 Samir Buch
+// Copyright © Samir Buch 2017-2019
 // License is applicable to all files and folders within directory

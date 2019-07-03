@@ -69,6 +69,8 @@ exports.verbose = (...args) => this.log(...args, 'verbose');
 exports.sqLog = (...args) => this.log(...args, 'sqLog');
 
 async function appendToLog(type, content, combined = true, combinedDebug = true) {
+  if(config.noFileLog) return;
+  
   const timestamp = moment().format('MM/DD/YYYY HH:mm:ss');
   const currentDayLog = new Date().toDateString().replace(/ +/g, '-'); // Gets current date
 
@@ -77,6 +79,10 @@ async function appendToLog(type, content, combined = true, combinedDebug = true)
 
   if (combined) await appendFile(`./logs/${currentDayLog}/combined.log`, `${timestamp} ${type.toUpperCase()} ${content}\n`, e);
   if (combinedDebug) await appendFile(`./logs/${currentDayLog}/combinedDebug.log`, `${timestamp} ${type.toUpperCase()} ${content}\n`, e);
+}
+exports.appendToLog = appendToLog; // Export it for other files' usage
 
-  function e(e) { if(e) console.error('Appendfile error:' + e); }
+function e(e) {
+  if (e && e.code === 'EEXIST') return;
+  if (e) console.error('Appendfile error: ' + e);
 }
