@@ -15,6 +15,7 @@ const commands = require('../../dbFunctions/message/commands');
 const xp = require('../../dbFunctions/message/xp');
 const settings = require('../../dbFunctions/message/settings');
 const User = require('../../dbFunctions/client/user');
+const package = require('../../../package.json');
 
 exports.run = async (client, message, args) => {
   require('../../dbFunctions/client/misc')(client);
@@ -46,7 +47,7 @@ exports.run = async (client, message, args) => {
     }
   } catch (error) {
     try {
-      message.send(error).catch(errorSendingError => {
+      message.send(`:x: **Error**\n\`\`\`xl\n${error}\n\`\`\` `).catch(errorSendingError => {
         message.send(':x: **Ironically, there was an error sending the error. Check the console.**');
         client.logger.error('Error sending eval error: ' + errorSendingError);
         client.logger.error('Initial eval error output: ' + error);
