@@ -2,6 +2,7 @@ const parse = require('parse-duration');
 const { RichEmbed } = require('discord.js');
 const moment = require('moment');
 module.exports.run = (client, message, args) => {
+  const settings = require('../../dbFunctions/message/settings').functions;
   if (!message.guild.me.permissionsIn(message.channel).serialize()['MANAGE_ROLES']) return message.send('❌ `|` 🔒 **I am missing permissions!** `Manage Roles`'); // Manage roles, oddly enough, lets the bot edit channel perms.
   if (!message.member.permissionsIn(message.channel).serialize()['MANAGE_CHANNELS'] ||
     !message.member.permissionsIn(message.channel).serialize()['MANAGE_MESSAGES']) return message.send('❌ `|` 🔒 **You are missing permissions!** `Manage Channels` or `Manage Messages`');
@@ -70,10 +71,10 @@ module.exports.run = (client, message, args) => {
 
   if (reason) modEmbed.addField('Reason', reason);
 
-  message.guild.settings.get('modLogChannel')
+  settings.get(message.guild.id, 'modLogChannel')
     .then(async modLogChannel => {
       modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
-      if (!modLogChannel) return message.send(`⚠️ **Lock completed, but there is no mod log channel set.** Try \`${await message.guild.settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
+      if (!modLogChannel) return message.send(`⚠️ **Lock completed, but there is no mod log channel set.** Try \`${await settings.get(message.guild.id, 'prefix')}set <edit/add> modLogChannel <channel name>\``);
       if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
         modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Lock completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
       }
@@ -100,7 +101,7 @@ module.exports.run = (client, message, args) => {
       if (duration) modEmbed.addField('Duration', durationHR, true);
       modEmbed.addField('Reason', reason ? `Auto-unlock | ${reason}` : 'Auto-unlock');
 
-      message.guild.settings.get('modLogChannel')
+      settings.get(message.guild.id, 'modLogChannel')
         .then(async modLogChannel => {
           modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
           if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {

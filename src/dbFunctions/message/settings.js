@@ -1,8 +1,10 @@
 const Sequelize = require('sequelize');
-const { Client } = require('discord.js'); // eslint-disable-line no-unused-vars
+const { Client, Guild } = require('discord.js'); // eslint-disable-line no-unused-vars
 
 module.exports.table = (guildID) => {
   if (!guildID) throw new Error('guildID parameter is undefined');
+  if (guildID instanceof Guild) guildID = guildID.id;
+  if (typeof guildID !== 'string') throw new Error('guildID is not a string (ID)');
   return new Sequelize('database', 'user', 'password', {
     host: 'localhost',
     dialect: 'sqlite',

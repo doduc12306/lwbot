@@ -10,6 +10,7 @@ module.exports = async (client, message) => {
   message.benchmarks = {};
 
   require('../dbFunctions/message/misc.js')(client, message);
+  require('../dbFunctions/message/modbase.js')(client, message);
 
   let commandsTable;
   if (message.channel.type !== 'dm') commandsTable = require('../dbFunctions/message/commands').functions.commandsSchema(message.guild.id);
@@ -80,8 +81,9 @@ module.exports = async (client, message) => {
     }
 
     // Checks if level up is possible
-    functions.xpSchema(message.guild.id).findOne({ where: { user: message.author.id }})
+    functions.xpSchema(message.guild.id).findOrCreate({ where: { user: message.author.id }, defaults: { xp: 0, level: 0 }})
       .then(user => {
+        user = user[0];
         if (xpNeededToLevelUp(user.dataValues.level) < user.dataValues.xp) {
           message.channel.send(xpLevelUpMessage.replaceAll('{{user}}', message.author.toString()).replaceAll('{{level}}', user.dataValues.level +1)).then(msg => msg.delete(10000));
           user.increment('level');
@@ -103,6 +105,11 @@ module.exports = async (client, message) => {
   if (message.content.indexOf(prefix) !== 0) return;
   const args = message.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
+
+  if (!command) {
+    const responses = ['...yes? That\'s me, did you need something?', 'What would you like, young one?', 'Yes?', 'You rang?', 'What\'s up?', 'You\'re missing a little something there..', 'Oops. Missed a spot.'];
+    return message.send(responses.randomElement());
+  }
 
   // Get the user or member's permission level from the elevation
   const level = client.permlevel(message.member);
@@ -187,7 +194,7 @@ module.exports = async (client, message) => {
   client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name}${message.edited ? ' (edited) ' : ' '}${message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs'}`);
   try {
     await cmd.run(client, message, args, level);
-  } catch(e) { message.send(`:x: **Something went wrong running the command:\n\`\`\`${e}\`\`\` `); }
+  } catch(e) { message.send(`:x: **Something went wrong running the command:**\n\`\`\`${e}\`\`\` `); }
   /* -------------------- RUNS THE COMMAND -------------------- */
 
   message.benchmarks['CmdRunBenchmark'] = new Date() - a;
