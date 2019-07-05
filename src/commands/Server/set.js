@@ -110,7 +110,7 @@ exports.conf = {
 
 exports.help = {
   name: 'set',
-  category: 'System',
+  category: 'Server',
   description: 'View or change settings for your server.',
   usage: 'set [view/edit/add/del/reset] [key] [value]'
 };
