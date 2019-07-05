@@ -5,7 +5,7 @@ const { Collection } = require('discord.js');
 const moment = require('moment');
 
 module.exports = async client => {
-  if(!client.user.bot) {
+  if (!client.user.bot) {
     client.logger.error(`The user I logged in with, ${client.user.tag}, is not a bot!`);
     client.logger.error('This is strictly against the Discord Terms of Service!');
     client.logger.error('• http://discordapp.com/terms');
@@ -19,12 +19,12 @@ module.exports = async client => {
   const servers = await readdir('databases/servers/');
   client.settings = new Collection();
   await Promise.all(servers.map(async server => {
-    if(server === 'x.txt') return client.logger.sqLog('Found x.txt - Placeholder file. Ignored, continuing.');
+    if (server === 'x.txt') return client.logger.sqLog('Found x.txt - Placeholder file. Ignored, continuing.');
     const serverId = server.split('.sqlite')[0];
-    const db = new Sequelize('database', 'username', 'password', {logging: false, host: 'localhost', storage: `databases/servers/${server}`, dialect: 'sqlite'});
+    const db = new Sequelize('database', 'username', 'password', { logging: false, host: 'localhost', storage: `databases/servers/${server}`, dialect: 'sqlite' });
     client.logger.sqLog(`Opened server ${server}`);
-    if(!server.endsWith('.sqlite')) return client.logger.error('Non-sqlite file found in databases/servers! File: ' + server);
-    if(!/\d+/g.test(server)) client.logger.warn('Non-server file found in databases/servers! File: ' + server);
+    if (!server.endsWith('.sqlite')) return client.logger.error('Non-sqlite file found in databases/servers! File: ' + server);
+    if (!/\d+/g.test(server)) client.logger.warn('Non-server file found in databases/servers! File: ' + server);
     const [data] = await db.query('SELECT * FROM \'settings\'');
     const settings = {};
     data.forEach(({ key, value }) => {
@@ -50,12 +50,12 @@ module.exports = async client => {
 
   client.statusRotationInterval = setInterval(() => {
     const { statuses, enabled } = require('../util/statuses');
-    if(!enabled) return false;
+    if (!enabled) return false;
     const randomPl = statuses(client).randomElement();
     return client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
   }, 60000);
 
-  if(!client.config.ciMode) {
+  if (!client.config.ciMode) {
     // Finds if there was an error generated on uncaughtException the last time the bot started up.
     // This is achieved by writing a new file on error, exiting, then on restart, reading the file
     // then sending the contents to me.
@@ -65,7 +65,7 @@ module.exports = async client => {
       e = await fs.readFileSync('e', 'utf8');
       await client.users.get(client.config.ownerID).send(`**I restarted! There was an error before I restarted:**\n\`\`\`${e}\`\`\``);
       await fs.unlink('e', (err) => {
-        if(err) throw err;
+        if (err) throw err;
         client.logger.log('Error log reported, now deleted.');
       });
     } catch (e) {
@@ -95,9 +95,9 @@ module.exports = async client => {
   • Channels:  ${client.channels.size}
   • Took:      ${moment.duration(client.startup, 'milliseconds').format('[~]s [secs]')} to start up
   `, 'ready');
-  if(client.config.debugMode) client.logger.debug('Debug mode enabled');
-  if(client.config.verboseMode) client.logger.verbose('Verbose mode enabled');
-  if(client.config.sqLogMode) client.logger.sqLog('SQLog mode enabled');
+  if (client.config.debugMode) client.logger.debug('Debug mode enabled');
+  if (client.config.verboseMode) client.logger.verbose('Verbose mode enabled');
+  if (client.config.sqLogMode) client.logger.sqLog('SQLog mode enabled');
 
-  if(client.config.ciMode) client.emit('ciStepGuildCreate');
+  if (client.config.ciMode) client.emit('ciStepGuildCreate');
 };
