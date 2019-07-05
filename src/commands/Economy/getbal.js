@@ -1,7 +1,16 @@
-module.exports.run = (client, message) => client.bank.get(message.author.id || message.mentions.users.first().id).then(bal => message.send(`ℹ \`|\` ${message.author.tag || message.mentions.users.first().tag}**'s balance is** \`${bal}\`**.**`));
+const User = require('../../dbFunctions/client/user');
+module.exports.run = async (client, message) => {
+  if(message.mentions.users.first()) {
+    const user = new User(message.mentions.users.first().id);
+    message.send(`:bank: ${user}**'s balance is** \`${await user.balance}\` **Kowoks**`);
+  } else {
+    const user = new User(message.author.id);
+    message.send(`:bank: **Your balance is** \`${await user.balance}\` **Kowoks**`);
+  }
+};
 
 exports.conf = {
-  enabled: false,
+  enabled: true,
   guildOnly: false,
   aliases: ['balance', 'money', '$'],
   permLevel: 'User'
