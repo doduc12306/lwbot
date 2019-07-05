@@ -18,7 +18,7 @@ exports.log = (content, type = 'log') => {
     }
     case 'error': {
       appendToLog('error', content, true, true);
-      return console.error(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${chalk.red(content)} `);
+      return console.error(`${timestamp} ${chalk.black.bgRed(type.toUpperCase())} ${chalk.red(content)} `);
     }
     case 'debug': {
       appendToLog('debug', content, false, true);
