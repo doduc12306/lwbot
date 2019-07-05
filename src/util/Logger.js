@@ -22,7 +22,7 @@ exports.log = (content, type = 'log') => {
     }
     case 'debug': {
       appendToLog('debug', content, false, true);
-      if (config.debugMode) return console.log(`${timestamp} ${chalk.white.bgCyan(type.toUpperCase())} ${chalk.gray(content)} `);
+      if (config.debugMode) return console.log(`${timestamp} ${chalk.black.bgCyan(type.toUpperCase())} ${chalk.gray(content)} `);
       break;
     }
     case 'verbose': {
@@ -69,8 +69,8 @@ exports.verbose = (...args) => this.log(...args, 'verbose');
 exports.sqLog = (...args) => this.log(...args, 'sqLog');
 
 async function appendToLog(type, content, combined = true, combinedDebug = true) {
-  if(config.noFileLog) return;
-  
+  if (config.noFileLog) return;
+
   const timestamp = moment().format('MM/DD/YYYY HH:mm:ss');
   const currentDayLog = new Date().toDateString().replace(/ +/g, '-'); // Gets current date
 
