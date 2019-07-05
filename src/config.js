@@ -19,7 +19,7 @@ const config = {
 
   // Default per-server settings. New guilds have these settings.
 
-  'defaultSettings' : {
+  'defaultSettings': {
     'prefix': '!w ',
     'modLogChannel': 'mod_logs',
     'modRole': 'Mods',
@@ -51,14 +51,16 @@ const config = {
 
   permLevels: [
     // This is the lowest permissison level, this is for non-roled users.
-    { level: 0,
+    {
+      level: 0,
       name: 'User',
       // Don't bother checking, just return true which allows them to execute any command their
       // level allows them to.
       check: () => true
     },
 
-    { level: 2,
+    {
+      level: 2,
       name: 'Moderator',
       check: member => {
         try {
@@ -70,7 +72,8 @@ const config = {
       }
     },
 
-    { level: 3,
+    {
+      level: 3,
       name: 'Administrator',
       check: member => {
         try {
@@ -86,19 +89,20 @@ const config = {
       level: 4,
       name: 'Bot Commander',
       check: member => {
-        try{
+        try {
           const bcRole = member.guild.roles.find(r => r.name.toLowerCase() === member.user.client.settings.get(member.guild.id).botCommanderRole.toLowerCase());
           return (bcRole && member.roles.has(bcRole.id));
-        } catch (e) {return false;}
+        } catch (e) { return false; }
       }
     },
 
     // This is the server owner, or if they have an Owner role, since a lot of servers have multiple owners.
-    { level: 5,
+    {
+      level: 5,
       name: 'Server Owner',
       check: member => {
-        if(!member.guild) return false;
-        if(member.guild.owner.user.id !== member.user.id) {
+        if (!member.guild) return false;
+        if (member.guild.owner.user.id !== member.user.id) {
           const ownerRole = member.guild.roles.find(r => r.name.toLowerCase() === member.user.client.settings.get(member.guild.id).ownerRole.toLowerCase());
           return (ownerRole && member.roles.has(ownerRole.id));
         } else return true;
@@ -107,13 +111,15 @@ const config = {
 
     // Bot Support is a special in-between level that has the equivalent of server owner access
     // to any server they joins, in order to help troubleshoot the bot on behalf of owners.
-    { level: 8,
+    {
+      level: 8,
       name: 'Bot Support',
       check: member => config.support.includes(member.user.id)
     },
 
     // Bot Admin has some limited access like rebooting the bot or reloading commands.
-    { level: 9,
+    {
+      level: 9,
       name: 'Bot Admin',
       check: member => config.admins.includes(member.user.id)
     },
@@ -121,7 +127,8 @@ const config = {
     // This is the bot owner, this should be the highest permission level available.
     // The reason this should be the highest level is because of dangerous commands such as eval
     // or exec (if the owner has that).
-    { level: 10,
+    {
+      level: 10,
       name: 'Bot Owner',
       // Another simple check, compares the message author id to the one stored in the config file.
       check: member => member.user.client.config.ownerID === member.user.id
