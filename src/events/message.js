@@ -17,7 +17,7 @@ module.exports = async (client, message) => {
 
   let settingsFunctions;
   let settingsSchema;
-  if(message.channel.type !== 'dm') {
+  if (message.channel.type !== 'dm') {
     settingsFunctions = require('../dbFunctions/message/settings').functions;
     settingsSchema = settingsFunctions.settingsSchema(message.guild.id);
   }
@@ -50,13 +50,13 @@ module.exports = async (client, message) => {
     message.content.length >= 15 &&
     capsWarnEnabled === 'true' &&
     (message.content.match(/[A-Z]+/g).join(' ').replaceAll(' ', '').split('').length / message.content.length) * 100 >= capsThreshold;
-    /* ok so this mess of code checks to see if the message has more than ${capsThreshold}% caps. To break it down, it matches all of the capital letters in the message. Then joins the array that spits out. Then it replaces all of the spaces with an empty string, so they looklikethisinsteadofspaced, then it splits it from each character. It takes the length of this array and divides it by the length of the message itself. It then multiplies that number by 100 to give the percentage, then it checks that number against ${capsThreshold}. */
+  /* ok so this mess of code checks to see if the message has more than ${capsThreshold}% caps. To break it down, it matches all of the capital letters in the message. Then joins the array that spits out. Then it replaces all of the spaces with an empty string, so they looklikethisinsteadofspaced, then it splits it from each character. It takes the length of this array and divides it by the length of the message itself. It then multiplies that number by 100 to give the percentage, then it checks that number against ${capsThreshold}. */
   message.benchmarks['ExceedsCapsThreshold'] = new Date() - a;
 
   const emsg = `⚠️ \`|\` ${message.author}**, your message is more than ${capsThreshold}% caps.** Please do not spam caps.`;
-  if(exceedsCapsThreshold) {
+  if (exceedsCapsThreshold) {
     if (client.permlevel(message.member) !== 0) {
-      if(staffBypassesLimits === 'true');
+      if (staffBypassesLimits === 'true');
       else { message.delete(); message.send(emsg).then(msg => msg.delete(6000)); }
     } else { message.delete(); message.send(emsg).then(msg => msg.delete(6000)); }
   }
@@ -81,16 +81,16 @@ module.exports = async (client, message) => {
     }
 
     // Checks if level up is possible
-    functions.xpSchema(message.guild.id).findOrCreate({ where: { user: message.author.id }, defaults: { xp: 0, level: 0 }})
+    functions.xpSchema(message.guild.id).findOrCreate({ where: { user: message.author.id }, defaults: { xp: 0, level: 0 } })
       .then(user => {
         user = user[0];
         if (xpNeededToLevelUp(user.dataValues.level) < user.dataValues.xp) {
-          message.channel.send(xpLevelUpMessage.replaceAll('{{user}}', message.author.toString()).replaceAll('{{level}}', user.dataValues.level +1)).then(msg => msg.delete(10000));
+          message.channel.send(xpLevelUpMessage.replaceAll('{{user}}', message.author.toString()).replaceAll('{{level}}', user.dataValues.level + 1)).then(msg => msg.delete(10000));
           user.increment('level');
         }
 
         function xpNeededToLevelUp(x) {
-          return 5 * (10 ** -4) * ((x*100) ** 2) + (0.5 * (x*100)) + 100;
+          return 5 * (10 ** -4) * ((x * 100) ** 2) + (0.5 * (x * 100)) + 100;
         }
       });
   }
@@ -125,7 +125,7 @@ module.exports = async (client, message) => {
   let cmdInDb;
   if (message.guild) {
     await commandsTable.findOne({ where: { command: cmd.help.name } }).then(data => {
-      if(!data) cmdInDb === null;
+      if (!data) cmdInDb === null;
       else cmdInDb = data.dataValues;
     });
   } else cmdInDb = {
@@ -143,8 +143,8 @@ module.exports = async (client, message) => {
   // Command status check
   if ((!cmdInDb || !cmd.conf.enabled) && message.author.id !== client.config.ownerID) return message.send('❌ **That command is disabled globally by the developer!**');
   else {
-    if(!cmdInDb.enabled) {
-      if(systemNotice === 'true') message.send('❌ **This command is disabled for the server!**');
+    if (!cmdInDb.enabled) {
+      if (systemNotice === 'true') message.send('❌ **This command is disabled for the server!**');
       return;
     }
   }
@@ -154,14 +154,14 @@ module.exports = async (client, message) => {
   if (cmd && !message.guild && cmd.conf.guildOnly) return message.send('❌ **This command cannot be run in DM\'s.**');
   message.benchmarks['CmdDmsBenchmark'] = new Date() - a;
 
-  if(client.levelCache[cmdInDb.permLevel] > level) {
+  if (client.levelCache[cmdInDb.permLevel] > level) {
     if (systemNotice === 'true') message.send('❌ **You do not have permission to use this command!**');
     return;
   }
   message.benchmarks['DbPermCheckBenchmark'] = new Date() - a;
 
   // Embed check
-  if (cmd.conf.requiresEmbed && message.guild && !message.guild.me.permissionsIn(message.channel).serialize()['EMBED_LINKS'])
+  if (cmd.conf.requiresEmbed && message.guild && !message.guild.me.permissionsIn(message.channel).has('EMBED_LINKS'))
     return message.send('❌ **This command requires `Embed Links`, which I don\'t have!**');
   message.benchmarks['EmbedCheckBenchmark'] = new Date() - a;
   // if embed and no accent color, set it and send it.
@@ -173,11 +173,11 @@ module.exports = async (client, message) => {
   }
 
   // Cooldown check
-  if(cmd.conf.cooldown) {
-    if(!message.author.cooldownSet) message.author.cooldownSet = new Set();
-    if(!message.author.cooldownTimers) message.author.cooldownTimers = new Map();
+  if (cmd.conf.cooldown) {
+    if (!message.author.cooldownSet) message.author.cooldownSet = new Set();
+    if (!message.author.cooldownTimers) message.author.cooldownTimers = new Map();
 
-    if(!message.author.cooldownSet.has(cmd.help.name)) {
+    if (!message.author.cooldownSet.has(cmd.help.name)) {
       message.author.cooldownSet.add(cmd.help.name);
       message.author.cooldownTimers.set(cmd.help.name, new client.timer(() => message.author.cooldownSet.delete(cmd.help.name), cmd.conf.cooldown));
     } else {
@@ -194,7 +194,7 @@ module.exports = async (client, message) => {
   client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name}${message.edited ? ' (edited) ' : ' '}${message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs'}`);
   try {
     await cmd.run(client, message, args, level);
-  } catch(e) { message.send(`:x: **Something went wrong running the command:**\n\`\`\`${e}\`\`\` `); }
+  } catch (e) { message.send(`:x: **Something went wrong running the command:**\n\`\`\`${e}\`\`\` `); }
   /* -------------------- RUNS THE COMMAND -------------------- */
 
   message.benchmarks['CmdRunBenchmark'] = new Date() - a;
@@ -206,7 +206,7 @@ module.exports = async (client, message) => {
       const key = setting[0];
       const value = setting[1];
 
-      settingsSchema.findOrCreate({ where: { key: key }, defaults: { value: value }});
+      settingsSchema.findOrCreate({ where: { key: key }, defaults: { value: value } });
     }
     await settingsSchema.findOrCreate({ where: { key: 'accentColor' }, defaults: { value: client.config.colors.accentColor } });
     settingsSchema.sync();
@@ -218,8 +218,8 @@ module.exports = async (client, message) => {
 
       await commandsTable.findOrCreate({ where: { command: command[0], permLevel: permLevel }, defaults: { folder: folder, enabled: enabled } })
         .catch(async e => {
-          if(e.name === 'SequelizeUniqueConstraintError') {
-            await commandsTable.destroy({ where: { command: command[0] }});
+          if (e.name === 'SequelizeUniqueConstraintError') {
+            await commandsTable.destroy({ where: { command: command[0] } });
             await commandsTable.create({ command: command[0], permLevel: permLevel, folder: folder, enabled: enabled });
             commandsTable.sync();
           }
@@ -229,5 +229,5 @@ module.exports = async (client, message) => {
     commandsTable.sync();
   }
 
-  if(client.config.ciMode) client.emit('ciStepFinish', message.benchmarks);
+  if (client.config.ciMode) client.emit('ciStepFinish', message.benchmarks);
 };
