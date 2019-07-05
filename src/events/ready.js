@@ -80,7 +80,7 @@ module.exports = async client => {
 
   client.musicQueue = new Map();
 
-  require('../util/sqWatchdog')(client);
+  require('../util/sqWatchdog').timer(client);
 
   const after = new Date();
   client.startup = after - client.before;
