@@ -76,7 +76,7 @@ module.exports.functions = {
         delete client.settings.get(guildID)[key];
         this.functions.settingsSchema(guildID).destroy({ where: { key: key } });
         return resolve(true);
-      });
+      }).catch(e => { return reject(new Error(e)); });
     });
   },
 
@@ -99,7 +99,7 @@ module.exports.functions = {
         client.settings.get(guildID)[key] = newValue;
         this.functions.settingsSchema(guildID).update({ value: newValue }, { where: { key: key } });
         return resolve(true);
-      });
+      }).catch(e => { return reject(new Error(e)); });
     });
   },
 
@@ -116,7 +116,7 @@ module.exports.functions = {
       this.functions.settingsSchema(guildID).findOne({ where: { key: key } }).then(data => {
         if (!data) return reject(new Error(`"${key}" does not exist to get`));
         return resolve(data.value);
-      });
+      }).catch(e => { return reject(new Error(e)); });
     });
   }
 };
