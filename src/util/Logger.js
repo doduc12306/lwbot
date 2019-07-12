@@ -10,7 +10,7 @@ exports.log = (content, type = 'log') => {
   switch (type) {
     case 'log': {
       appendToLog('info', content, true, true);
-      return console.log(`${timestamp} ${chalk.bgBlue('INFO')} ${content} `);
+      return console.log(`${timestamp} ${chalk.black.bgBlue('INFO')} ${content} `);
     }
     case 'warn': {
       appendToLog('warn', content, true, true);
