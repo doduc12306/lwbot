@@ -18,7 +18,6 @@ const config = {
   'noFileLog': false,
 
   // Default per-server settings. New guilds have these settings.
-
   'defaultSettings': {
     'prefix': '!w ',
     'modLogChannel': 'mod_logs',
@@ -32,9 +31,11 @@ const config = {
     'botCommanderRole': 'Bot Commander',
     'ownerRole': 'Owners',
     'capsThreshold': '70', // (70%), not 70 or more characters.
+    'capsWarnEnabled': 'true',
     'staffBypassesLimits': 'true',
     'xpLevelUpMessage': '⬆ **{{user}} just advanced to level {{level}}!**',
-    'accentColor': '0x00d564'
+    'accentColor': '0x00d564',
+    'owoMode': 'false'
   },
 
   // COLORS
@@ -48,7 +49,6 @@ const config = {
   },
 
   // PERMISSION LEVEL DEFINITIONS.
-
   permLevels: [
     // This is the lowest permissison level, this is for non-roled users.
     {
