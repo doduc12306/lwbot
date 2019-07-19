@@ -37,7 +37,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "pm2 start index.js"
+    "start": "pm2 start index.js",
+    "build-node-opus": "sudo apt-get update; sudo apt install make g++; sudo apt-get install autoconf libtool; sudo yarn add node-opus ffmpeg-binaries; echo \" \"; echo \"Build complete\";"
   },
   "repository": {
     "type": "git",
