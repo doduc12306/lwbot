@@ -116,7 +116,7 @@ class User {
    * @param {String} newMood New mood to set
    * @returns {String<newMood>}
    * @example
-   * <User>.changeMood('Hello new mood!'); // => 'Hello new mood!'  
+   * <User>.changeMood('Hello new mood!'); // => 'Hello new mood!'
    */
   changeMood(newMood) {
     if (!newMood) throw new Error('Missing mood parameter');
