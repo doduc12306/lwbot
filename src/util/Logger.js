@@ -6,29 +6,31 @@ const config = require('../config');
 const { mkdir, appendFile } = require('fs');
 
 exports.log = (content, type = 'log') => {
-  const timestamp = chalk.grey(`[${moment().format('MM/DD/YYYY HH:mm:ss')}]:`);
+  const timestamp = chalk.grey(`[${moment().format('MM/DD/YYYY HH:mm:ss')}]`);
   switch (type) {
     case 'log': {
       appendToLog('info', content, true, true);
-      return console.log(`${timestamp} ${chalk.black.bgBlue('INFO')} ${content} `);
+      return console.log(`${timestamp} ${chalk.blue('info:')} ${content} `);
     }
     case 'warn': {
       appendToLog('warn', content, true, true);
-      return console.warn(`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${chalk.yellow(content)} `);
+      return console.warn(`${timestamp} ${chalk.yellow('warn:')} ${content} `);
     }
     case 'error': {
+      if(content.stack || content.includes('\n')) content = content.stack || content;
       appendToLog('error', content, true, true);
-      return console.error(`${timestamp} ${chalk.black.bgRed(type.toUpperCase())} ${chalk.red(content)} `);
+      return console.error(`${timestamp} ${chalk.red('error:')} ${content.split('\n').join(chalk.red('\nerror: '))} `);
     }
     case 'debug': {
       appendToLog('debug', content, false, true);
-      if (config.debugMode) return console.log(`${timestamp} ${chalk.black.bgCyan(type.toUpperCase())} ${chalk.gray(content)} `);
+      if (config.debugMode) return console.log(`${timestamp} ${chalk.cyan('debug:')} ${chalk.gray(content)} `);
       break;
     }
     case 'verbose': {
       if (!['string', 'number'].includes(typeof content)) content = require('util').inspect(content, { depth: 0, colors: true });
+      if(content.stack || content.includes('\n')) content = content.stack || content;
       appendToLog('verbose', content, false, true);
-      if (config.verboseMode) return console.log(`${timestamp} ${chalk.white.bgBlack(type.toUpperCase())} ${chalk.gray(content)} `);
+      if (config.verboseMode) return console.log(`${timestamp} ${chalk.gray('verbose:')} ${chalk.gray(content.split('\n').join(chalk.gray('\nverbose: ')))} `);
       break;
     }
     case 'sqLog': {
@@ -38,23 +40,23 @@ exports.log = (content, type = 'log') => {
     }
     case 'cmd': {
       appendToLog('cmd', content, true, true);
-      return console.log(`${timestamp} ${chalk.black.bgWhite(type.toUpperCase())} ${content}`);
+      return console.log(`${timestamp} ${chalk.blue('cmd:')} ${content}`);
     }
     case 'ready': {
       appendToLog('info', content, true, true);
-      return console.log(`${timestamp} ${chalk.black.bgGreen(type.toUpperCase())} ${chalk.green(content)}`);
+      return console.log(`${timestamp} ${chalk.green('ready:')} ${chalk.green(content)}`);
     }
     case 'reconnecting': {
       appendToLog('info', content, true, true);
-      return console.log(`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${content}`);
+      return console.log(`${timestamp} ${chalk.yellow('reconnecting:')} ${content}`);
     }
     case 'disconnect': {
       appendToLog('info', content, true, true);
-      return console.warn(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${content} `);
+      return console.warn(`${timestamp} ${chalk.red('disconnect:')} ${content} `);
     }
     case 'resume': {
       appendToLog('info', content, true, true);
-      return console.log(`${timestamp} ${chalk.black.bgGreen(type.toUpperCase())} ${content}`);
+      return console.log(`${timestamp} ${chalk.green('resume:')} ${content}`);
     }
     default: throw new TypeError('Logger type must be either warn, debug, log, ready, cmd or error.');
   }
