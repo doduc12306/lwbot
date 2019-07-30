@@ -19,7 +19,7 @@ exports.log = (content, type = 'log') => {
     case 'error': {
       if(content.stack || content.includes('\n')) content = content.stack || content;
       appendToLog('error', content, true, true);
-      return console.error(`${timestamp} ${chalk.red('error:')} ${content.split('\n').join(chalk.red('\nerror: '))} `);
+      return console.error(`${timestamp} ${chalk.red('error:')} ${content.split('\n').join(`\n${timestamp} ${chalk.red('error: ')}`)} `);
     }
     case 'debug': {
       appendToLog('debug', content, false, true);
@@ -30,7 +30,7 @@ exports.log = (content, type = 'log') => {
       if (!['string', 'number'].includes(typeof content)) content = require('util').inspect(content, { depth: 0, colors: true });
       if(content.stack || content.includes('\n')) content = content.stack || content;
       appendToLog('verbose', content, false, true);
-      if (config.verboseMode) return console.log(`${timestamp} ${chalk.gray('verbose:')} ${chalk.gray(content.split('\n').join(chalk.gray('\nverbose: ')))} `);
+      if (config.verboseMode) return console.log(`${timestamp} ${chalk.gray('verbose:')} ${chalk.gray(content.split('\n').join(`\n${timestamp} ${chalk.gray('verbose: ')}`))} `);
       break;
     }
     case 'sqLog': {
