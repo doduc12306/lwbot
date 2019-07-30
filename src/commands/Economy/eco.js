@@ -2,10 +2,11 @@ const User = require('../../dbFunctions/client/user');
 
 module.exports.run = async (client, message, args) => {
   const type = args[0];
-  if(!['add', 'subtract', 'set', 'get'].includes(type)) return message.send('❌ | 🏦 **Please say what you would like to do:** `add`, `subtract`, `set`, or `get`');
+  if(!['add', 'subtract', 'set', 'get'].includes(type)) return message.send('❌ `|` 🏦 **Please say what you would like to do:** `add`, `subtract`, `set`, or `get`');
 
   const user = new User(message.mentions.users.first() ? message.mentions.users.first() : message.author);
   let amount = args[1];
+  if(!amount) return message.send(':x: `|` :bank: **Missing amount!**');
 
   if(type === 'add') {
     if(isNaN(amount)) return message.send(`❌ \`|\` 🏦 \`${amount}\` **is not a number!**`);
