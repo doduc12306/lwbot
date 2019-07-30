@@ -165,9 +165,9 @@ process.on('unhandledRejection', err => {
   client.logger.error(`Unhandled rejection: ${err.stack}`);
 });
 
-process.on('SIGINT', async () => {
+process.on('beforeExit', async () => {
   console.log('');
-  client.logger.log('SIGINT detected! Cleaning up and exiting...');
+  client.logger.log('Cleaning up and exiting...');
   await client.destroy();
   client.logger.log('Client destroyed. Exiting...');
   await process.exit();

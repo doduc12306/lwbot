@@ -1,46 +1,46 @@
-//var { bank } = require('../dbFunctions/functions');
+const User = require('../../dbFunctions/client/user');
 
 module.exports.run = async (client, message, args) => {
   const type = args[0];
-  if(!['add', 'subtract', 'set', 'get'].includes(type)) return message.send('❌ | 🏦 **Please say what you would like to do:** `add` `subtract` `set` `get`');
+  if(!['add', 'subtract', 'set', 'get'].includes(type)) return message.send('❌ | 🏦 **Please say what you would like to do:** `add`, `subtract`, `set`, or `get`');
 
-  const user = message.mentions.users.first() ? message.mentions.users.first() : message.author;
+  const user = new User(message.mentions.users.first() ? message.mentions.users.first() : message.author);
   let amount = args[1];
 
   if(type === 'add') {
     if(isNaN(amount)) return message.send(`❌ \`|\` 🏦 \`${amount}\` **is not a number!**`);
     amount = +amount;
 
-    client.bank.add(user.id, amount);
-    await client.bank.sync();
-    client.bank.get(user.id).then(balance => message.send(`✅ \`|\` 🏦 **Successfully added** \`${amount}\` **to** \`${user.tag}\`**.** New balance: \`${balance}\`.`));
+    const newBalance = await user.changeBalance('add', amount);
+    if (!newBalance) return message.send(`:x: \`|\` :bank: \`${user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
+    message.send(`✅ \`|\` 🏦 **Successfully added** \`${amount}\` **to** \`${user.tag}\`**.** New balance: \`${newBalance}\`.`);
   }
 
   if(type === 'subtract') {
     if(isNaN(amount)) return message.send(`❌ \`|\` 🏦 \`${amount}\` **is not a number!**`);
     amount = +amount;
 
-    client.bank.subtract(user.id, amount);
-    await client.bank.sync();
-    client.bank.get(user.id).then(balance => message.send(`✅ \`|\` 🏦 **Successfully subtracted** \`${amount}\` **from** \`${user.tag}\`**'s balance.** New balance: \`${balance}\`. `));
+    const newBalance = await user.changeBalance('add', amount);
+    if (!newBalance) return message.send(`:x: \`|\` :bank: \`${user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
+    message.send(`✅ \`|\` 🏦 **Successfully subtracted** \`${amount}\` **from** \`${user.tag}\`**.** New balance: \`${newBalance}\`.`);
   }
 
   if(type === 'set') {
     if(isNaN(amount)) return message.send(`❌ \`|\` 🏦 \`${amount}\` **is not a number!**`);
     amount = +amount;
 
-    client.bank.set(user.id, amount);
-    await client.bank.sync();
-    client.bank.get(user.id).then(balance => message.send(`✅ \`|\` 🏦 **Successfully set** \`${user.tag}\`**'s balance to** \`${balance}\`**.**`));
+    const newBalance = await user.changeBalance('add', amount);
+    if (!newBalance) return message.send(`:x: \`|\` :bank: \`${user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
+    message.send(`✅ \`|\` 🏦 **Successfully set** \`${user.tag}\`**'s new balance to** \`${newBalance}\`**.**`);
   }
 
   if(type === 'get') {
-    client.bank.get(user.id).then(balance => message.send(`ℹ \`|\` 🏦 **Balance of** \`${user.tag}\`**:** \`${balance}\`.`));
+    message.send(`:bank: \`${user.tag}\`**'s balance is** ${await user.balance}**.**`);
   }
 };
 
 exports.conf = {
-  enabled: false,
+  enabled: true,
   aliases: ['economy'],
   guildOnly: false,
   permLevel: 'Bot Admin'
