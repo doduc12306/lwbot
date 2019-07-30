@@ -1,3 +1,4 @@
+/* eslint-disable require-atomic-updates */
 const Discord = require('discord.js');
 module.exports.run = (client, message) => {
   const user = message.mentions.users.first() ? message.mentions.users.first() : message.author;
