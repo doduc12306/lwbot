@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 const { RichEmbed } = require('discord.js');
 
 module.exports.run = (client, message, args) => {
@@ -15,7 +15,7 @@ module.exports.run = (client, message, args) => {
   message.send(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(0 / 5)\``).then(async msg => {
     try {
       // Initialize browser
-      const browser = await puppeteer.launch();
+      const browser = await puppeteer.launch({executablePath: '/usr/bin/chromium-browser'});
       const page = await browser.newPage();
       msg.edit(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(1 / 5)\``);
 
