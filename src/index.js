@@ -26,6 +26,7 @@ const client = new Discord.Client({
   ws: { large_threshold: 1000 }
 });
 client.config = require('./config.js');
+module.exports.client = client; // Export the client for use in other files
 
 // This is down here because client isn't defined by the time cli args are.
 if (options.debug) client.config.debugMode = true;
