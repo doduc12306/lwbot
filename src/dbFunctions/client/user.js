@@ -1,14 +1,19 @@
 const Sequelize = require('sequelize');
+const { client } = require('../../index'); // Client bot got initialized with
 
 /**
  * Hub for interacting with user profile database
  */
-class User {
+class UserProfile {
   /**
    * @param {String} userID User ID of the user to create/modify
    */
   constructor(userID) {
+    const user = client.users.get(userID);
+    if(!user) throw new Error('User does not exist to get.');
+
     this.userID = userID;
+    this.user = user;
   }
 
   /**
@@ -231,6 +236,10 @@ class User {
     }
   }
 
+  /**
+   * Gets the user from the Discord.js User object
+   */
+  get user() { return this.user; }
 }
 
-module.exports = User;
+module.exports.User = UserProfile;
