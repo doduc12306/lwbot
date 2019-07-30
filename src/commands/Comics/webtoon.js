@@ -105,5 +105,5 @@ exports.help = {
   name: 'search',
   description: 'Find a webtoon!',
   usage: 'search [featured (default) / canvas] <title name>',
-  category: 'Webtoons'
+  category: 'Comics'
 };
