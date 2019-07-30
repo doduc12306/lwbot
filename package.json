@@ -21,7 +21,7 @@
     "node-fetch": "^2.5.0",
     "node-opus": "^0.3.2",
     "parse-duration": "^0.1.1",
-    "puppeteer": "^1.17.0",
+    "puppeteer-core": "^1.19.0",
     "redis": "^2.8.0",
     "sequelize": "^4.43.0",
     "simple-youtube-api": "^5.1.1",
