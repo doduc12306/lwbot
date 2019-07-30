@@ -1,16 +1,15 @@
 const Discord = require('discord.js');
 module.exports.run = (client, message, args) => {
   if(message.mentions.members.size === 0) {
-    if(!args[0]) return message.send('❌ **You didn\'t give the ID of a message to quote!**');
+    if(!args[0]) return message.send('❌ `|` 💬 **You didn\'t give the ID of a message to quote!**');
   }
 
   if(message.mentions.members.size !== 0) {
     const member = message.mentions.members.first();
     message.send(new Discord.RichEmbed()
       .setColor(member.displayColor === 0 ? message.guild.accentColor : member.displayColor)
-      .setAuthor(member.user.tag, member.user.avatarURL)
+      .setAuthor(member.user.tag, member.user.avatarURL, `https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${member.lastMessageID}`)
       .addField('Message', member.lastMessage.content)
-      .addField('Jump To Message', `https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${member.lastMessageID}`)
       .setTimestamp(member.lastMessage.createdTimestamp)
     );
   } else {
@@ -18,16 +17,15 @@ module.exports.run = (client, message, args) => {
       .then(msg => {
         message.send(new Discord.RichEmbed()
           .setColor(msg.member.displayColor === 0 ? message.guild.accentColor : msg.member.displayColor)
-          .setAuthor(msg.author.tag, msg.author.avatarURL)
+          .setAuthor(msg.author.tag, msg.author.avatarURL, `https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${msg.id}`)
           .addField('Message', msg.content)
-          .addField('Jump To Message', `https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${msg.id}`)
           .setTimestamp(msg.createdTimestamp)
         );
       })
       .catch(e => {
-        if (e.message.includes('Invalid Form Body')) return message.send('❌ **That isn\'t a valid message ID!**');
-        else if (e.message.includes('Unknown Message')) return message.send('❌ **That message could not be found in the current channel!**');
-        else return message.send(`❌ **Something went wrong during the process, the message could not be fetched.**\n⚙️ *Debug information:*\n\`\`\`${e}\`\`\``);
+        if (e.message.includes('Invalid Form Body')) return message.send('❌ `|` 💬 **That isn\'t a valid message ID!**');
+        else if (e.message.includes('Unknown Message')) return message.send('❌ `|` 💬 **That message could not be found in the current channel!**');
+        else return message.send(`❌ \`|\` 💬 **Something went wrong during the process, the message could not be fetched.**\n⚙️ *Debug information:*\n\`\`\`${e}\`\`\``);
       });
   }
 };
