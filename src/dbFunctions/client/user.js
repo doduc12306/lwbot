@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const { client } = require('../../index'); // Client bot got initialized with
+const { User } = require('discord.js');
 
 /**
  * Hub for interacting with user profile database
@@ -9,11 +10,13 @@ class UserProfile {
    * @param {String} userID User ID of the user to create/modify
    */
   constructor(userID) {
+    if(userID instanceof User) userID = userID.id; // If the userID passed is actually a d.js user object, then turn it into an id that the class can handle.
+
     const user = client.users.get(userID);
     if(!user) throw new Error('User does not exist to get.');
 
     this.userID = userID;
-    this.user = user;
+    this.djsUser = user;
   }
 
   /**
@@ -42,7 +45,7 @@ class UserProfile {
   /**
    * Simple shortcut to the table using the user ID provided earlier
    */
-  shortcut() {
+  get shortcut() {
     this.table().sync();
     this.userSchema().sync();
 
@@ -55,7 +58,7 @@ class UserProfile {
    * @readonly
    */
   get balance() {
-    return this.shortcut().findOrCreate({ where: { key: 'balance' }, defaults: { value: '0' } })
+    return this.shortcut.findOrCreate({ where: { key: 'balance' }, defaults: { value: '0' } })
       .then(res => {
         return +res[0].get('value');
       });
@@ -73,28 +76,28 @@ class UserProfile {
     if (!amount) throw new Error('Missing amount parameter');
     switch (operation) {
       case 'add': {
-        return this.shortcut().findOrCreate({ where: { key: 'balance' }, defaults: { value: '0' } })
+        return this.shortcut.findOrCreate({ where: { key: 'balance' }, defaults: { value: '0' } })
           .then(res => {
-            return this.shortcut().update({ value: (+res[0].get('value') + amount).toString() }, { where: { key: 'balance' } }).then(() => {
+            return this.shortcut.update({ value: (+res[0].get('value') + amount).toString() }, { where: { key: 'balance' } }).then(() => {
               return +res[0].get('value') + amount;
             }).catch(e => { throw new Error(e); });
           }).catch(e => { throw new Error(e); });
       }
       case 'subtract': {
-        return this.shortcut().findOrCreate({ where: { key: 'balance' }, defaults: { value: '0' } })
+        return this.shortcut.findOrCreate({ where: { key: 'balance' }, defaults: { value: '0' } })
           .then(res => {
             if (+res[0].get('value') <= 0) return false;
             if (+res[0].get('value') - amount <= 0) return false;
 
-            return this.shortcut().update({ value: (+res[0].get('value') - amount).toString() }, { where: { key: 'balance' } }).then(() => {
+            return this.shortcut.update({ value: (+res[0].get('value') - amount).toString() }, { where: { key: 'balance' } }).then(() => {
               return +res[0].get('value') - amount;
             }).catch(e => { throw new Error(e); });
           }).catch(e => { throw new Error(e); });
       }
       case 'set': {
-        return this.shortcut().findOrCreate({ where: { key: 'balance' }, defaults: { value: '0' } })
+        return this.shortcut.findOrCreate({ where: { key: 'balance' }, defaults: { value: '0' } })
           .then(() => {
-            return this.shortcut().update({ value: amount.toString() }, { where: { key: 'balance' } }).then(() => {
+            return this.shortcut.update({ value: amount.toString() }, { where: { key: 'balance' } }).then(() => {
               return amount;
             }).catch(e => { throw new Error(e); });
           }).catch(e => { throw new Error(e); });
@@ -109,7 +112,7 @@ class UserProfile {
    * @readonly
    */
   get mood() {
-    return this.shortcut().findOrCreate({ where: { key: 'mood' }, defaults: { value: 'Great day to set your mood!' } })
+    return this.shortcut.findOrCreate({ where: { key: 'mood' }, defaults: { value: 'Great day to set your mood!' } })
       .then(res => {
         res = res[0].dataValues.value;
         return res;
@@ -125,9 +128,9 @@ class UserProfile {
    */
   changeMood(newMood) {
     if (!newMood) throw new Error('Missing mood parameter');
-    return this.shortcut().findOrCreate({ where: { key: 'mood' }, defaults: { value: 'Great day to set your mood!' } })
+    return this.shortcut.findOrCreate({ where: { key: 'mood' }, defaults: { value: 'Great day to set your mood!' } })
       .then(() => {
-        this.shortcut().update({ value: newMood }, { where: { key: 'mood' } }).catch(e => { throw new Error(e); });
+        this.shortcut.update({ value: newMood }, { where: { key: 'mood' } }).catch(e => { throw new Error(e); });
         return newMood;
       }).catch(e => { throw new Error(e); });
   }
@@ -138,7 +141,7 @@ class UserProfile {
    * @readonly
    */
   get badges() {
-    return this.shortcut().findOrCreate({ where: { key: 'badges' }, defaults: { value: '' } })
+    return this.shortcut.findOrCreate({ where: { key: 'badges' }, defaults: { value: '' } })
       .then(res => {
         return res[0].get('value').split(' ');
       }).catch(e => { throw new Error(e); });
@@ -156,24 +159,24 @@ class UserProfile {
   changeBadges(operation, badgeName) {
     switch (operation) {
       case 'add': {
-        return this.shortcut().findOrCreate({ where: { key: 'badges' }, defaults: { value: '' } })
+        return this.shortcut.findOrCreate({ where: { key: 'badges' }, defaults: { value: '' } })
           .then(res => {
             const badgeArray = res[0].get('value').split(' ');
             if (badgeArray.includes(badgeName)) return false; // If the array has it already, dont go further.
 
-            this.shortcut().update({ value: `${res[0].get('value')} ${badgeName}` }).catch(e => { throw new Error(e); });
+            this.shortcut.update({ value: `${res[0].get('value')} ${badgeName}` }).catch(e => { throw new Error(e); });
             badgeArray.push(badgeName);
             return badgeArray;
           }).catch(e => { throw new Error(e); });
       }
       case 'remove': {
-        return this.shortcut().findOrCreate({ where: { key: 'badges' }, defaults: { value: '' } })
+        return this.shortcut.findOrCreate({ where: { key: 'badges' }, defaults: { value: '' } })
           .then(res => {
             const badgeArray = res[0].get('value').split(' ');
             if (!badgeArray.includes(badgeName)) return false; // If the array does not have the badge, dont go further.
 
             const updated = badgeArray.splice(badgeArray.indexOf(badgeName), 1).join(' '); // Find the index of the badge, then remove (splice) it from that index
-            this.shortcut().update({ value: updated }, { where: { key: 'badges' } }).catch(e => { throw new Error(e); });
+            this.shortcut.update({ value: updated }, { where: { key: 'badges' } }).catch(e => { throw new Error(e); });
             return updated;
           }).catch(e => { throw new Error(e); });
       }
@@ -186,7 +189,7 @@ class UserProfile {
    * @returns {Number}
    */
   get reputation() {
-    return this.shortcut().findOrCreate({ where: { key: 'reputation' }, defaults: { value: '0' } })
+    return this.shortcut.findOrCreate({ where: { key: 'reputation' }, defaults: { value: '0' } })
       .then(res => {
         return +res[0].get('value');
       });
@@ -206,28 +209,28 @@ class UserProfile {
     if (!amount) throw new Error('Missing amount parameter');
     switch (operation) {
       case 'add': {
-        return this.shortcut().findOrCreate({ where: { key: 'reputation' }, defaults: { value: '0' } })
+        return this.shortcut.findOrCreate({ where: { key: 'reputation' }, defaults: { value: '0' } })
           .then(res => {
-            return this.shortcut().update({ value: (+res[0].get('value') + amount).toString() }, { where: { key: 'reputation' } })
+            return this.shortcut.update({ value: (+res[0].get('value') + amount).toString() }, { where: { key: 'reputation' } })
               .then(() => { return +res[0].get('value') + amount; })
               .catch(e => { throw new Error(e); });
           }).catch(e => { throw new Error(e); });
       }
       case 'subtract': {
-        return this.shortcut().findOrCreate({ where: { key: 'reputation' }, defaults: { value: '0' } })
+        return this.shortcut.findOrCreate({ where: { key: 'reputation' }, defaults: { value: '0' } })
           .then(res => {
             if (+res[0].get('value') <= 0) return false;
             if (+res[0].get('value') - amount < 0) return false;
 
-            return this.shortcut().update({ value: (+res[0].get('value') - amount).toString() }, { where: { key: 'reputation' } })
+            return this.shortcut.update({ value: (+res[0].get('value') - amount).toString() }, { where: { key: 'reputation' } })
               .then(() => { return +res[0].get('value') - amount; })
               .catch(e => { throw new Error(e); });
           }).catch(e => { throw new Error(e); });
       }
       case 'set': {
-        return this.shortcut().findOrCreate({ where: { key: 'reputation' }, defaults: { value: '0' } })
+        return this.shortcut.findOrCreate({ where: { key: 'reputation' }, defaults: { value: '0' } })
           .then(() => {
-            return this.shortcut().update({ value: amount.toString() }, { where: { key: 'reputation' } }).then(() => {
+            return this.shortcut.update({ value: amount.toString() }, { where: { key: 'reputation' } }).then(() => {
               return amount;
             }).catch(e => { throw new Error(e); });
           }).catch(e => { throw new Error(e); });
@@ -239,7 +242,7 @@ class UserProfile {
   /**
    * Gets the user from the Discord.js User object
    */
-  get user() { return this.user; }
+  get user() { return this.djsUser; }
 }
 
-module.exports.User = UserProfile;
+module.exports = UserProfile;
