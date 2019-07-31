@@ -10,7 +10,7 @@ module.exports.run = async (client, message, [option, command, ...permlevel]) =>
 
   if (['commandconf'].includes(cmd.help.name)) return message.send(`❌ \`|\` ⚙️ \`${command}\` **cannot be edited!**`); // A list of commands that cannot be edited by ANYONE
 
-  if (['commandconf', 'eval', 'sys', 'power', 'registercmd', 'reload', 'set'].includes(cmd.help.name) && client.permlevel(message.member) > 5) return message.send('oh come *on* dude, you\'re a trusted member of my team. you trying to disable a vital command does *not* help. if it *really* needs to be disabled, get me to do it through the database or something.\n- Akii'); // Basically bot helper shaming, then redirecting to me.
+  if (['commandconf', 'eval', 'sys', 'power', 'registercmd', 'reload', 'set'].includes(cmd.help.name) && client.permlevel(message.member) > 5) return message.send('seriously? you\'re a trusted member of my team. why are you trying to disable a vital command? if it *really* needs to be disabled, get me to do it through the database or something.\n- Akii'); // Basically bot helper shaming, then redirecting to me.
 
   let cmdInDb;
   if (message.guild) {

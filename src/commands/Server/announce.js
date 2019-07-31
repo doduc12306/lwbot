@@ -4,9 +4,8 @@ module.exports.run = async (client, message, args) => {
     const settings = client.settings.get(message.guild.id);
 
     //if ( message.member.permissions.has(`MANAGE_MESSAGES`) || message.author.id === `107599228900999168`) {
-    const date = new Date();
 
-    String.prototype.replaceAll = function(search, replacement) {
+    String.prototype.replaceAll = function (search, replacement) {
       const target = this;
       return target.replace(new RegExp(search, 'g'), replacement);
     };
@@ -17,27 +16,27 @@ module.exports.run = async (client, message, args) => {
     const part2 = splitter[1];
     const cmdargs = splitter[2];
 
-    if (!title) return message.send('❌ Missing a title!');
-    if (!part2) return message.send('❌ Missing the content!');
+    if (!title) return message.send('❌ **Missing a title!**');
+    if (!part2) return message.send('❌ **Missing the content!**');
     const content = part2.replaceAll('/n', '\n').trim();
 
-    let color = 54371;
+    let color = message.guild.accentColor;
     if (cmdargs) {
-      if (cmdargs.includes('color=')) {color = cmdargs.substring(cmdargs.indexOf('color=')+6);} else {color = 54371;}
-    } else {color = 54371; announce();}
+      if (cmdargs.includes('color=')) { color = cmdargs.substring(cmdargs.indexOf('color=') + 6); } else { color = message.guild.accentColor; }
+    } else { color = message.guild.accentColor; announce(); }
 
     function announce() { // eslint-disable-line no-inner-declarations
       message.guild.channels.find(channel => channel.name === settings.announcementsChannel).send(new Discord.RichEmbed()
         .setColor(color)
         .setAuthor(message.author.username, message.author.avatarURL)
-        .setFooter(`${date.toDateString()} @ ${date.toTimeString().substring(0,5)}`)
+        .setTimestamp()
         .addField(title, content)
       );
       if (cmdargs) message.send(`✅ **Announcement sent!** | **Args:** \`${cmdargs}\``);
       else message.send('✅ **Announcement sent!**');
     }
     // } else message.send(`❌ You do not have access to this command!`);
-  } catch (err) {message.send(`❌ ${err}`);}
+  } catch (err) { message.send(`❌ ${err}`); }
 };
 
 exports.conf = {

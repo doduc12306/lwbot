@@ -57,7 +57,7 @@ exports.run = async (client, message, args) => {
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: ['h', 'halp', 'hlp', 'commands', 'cmds'],
+  aliases: ['h', 'halp', 'hlp', 'commands', 'cmds', '?'],
   permLevel: 'User',
   requiresEmbed: true
 };
