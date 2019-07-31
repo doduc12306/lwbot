@@ -181,7 +181,8 @@ module.exports = async (client, message) => {
       timeLeft.setMilliseconds(new Date().getMilliseconds() + timeLeftMs);
       timeLeft = moment(timeLeft).fromNow(); // Time / date / milliseconds shenanegins.
 
-      return message.send(`❌ \`|\` ⏱ **Cooldown! Try again ${timeLeft}**`).then(msg => msg.delete(7000));
+      const cooldownMessages = ['Cooldown!', 'You\'re going too fast!', 'Please slow down!', 'Hold your horses!', 'Stop going that fast!', 'I need some time to rest.', 'You\'re making me tired.. :yawning:', 'Why must you go that fast?', 'I\'m about to hit you if you keep going.', 'Error 429: Ratelimited `|`'];
+      return message.send(`❌ \`|\` ⏱ **${cooldownMessages.randomElement()} Try again ${timeLeft}.**`).then(msg => msg.delete(10000));
     }
   }
 
@@ -189,7 +190,11 @@ module.exports = async (client, message) => {
   client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name}${message.edited ? ' (edited) ' : ' '}${message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs'}`);
   try {
     await cmd.run(client, message, args, level);
-  } catch (e) { message.send(`:x: **Something went wrong running the command:**\n\`\`\`${e}\`\`\` `); }
+  } catch (e) { 
+    let firstErrorStackTrace;
+    if(e.stack) firstErrorStackTrace = e.stack.split('\n')[1];
+    message.send(`:x: **Something went wrong running the command:**\n\`\`\`\n${e}\n\t${firstErrorStackTrace}\n\`\`\` `); 
+  }
   /* -------------------- RUNS THE COMMAND -------------------- */
 
   message.benchmarks['CmdRunBenchmark'] = new Date() - a;
