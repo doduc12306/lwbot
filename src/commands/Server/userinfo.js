@@ -1,29 +1,40 @@
 const Discord = require('discord.js');
 const moment = require('moment');
+const UserProfile = require('../../dbFunctions/client/user');
 
-module.exports.run = (client, message) => {
+module.exports.run = async (client, message) => {
   const member = message.mentions.members.size === 0 ? message.member : message.mentions.members.first();
   const { user } = member;
+  const profile = new UserProfile(user);
 
   const embed = new Discord.RichEmbed()
     .setAuthor(user.tag, user.avatarURL)
     .addField('ID', user.id, true)
     .setThumbnail(user.avatarURL)
-    .setDescription(user.toString())
+    .setDescription(`${user.toString()} | ${await profile.mood}`)
     .addField('Status', user.presence.status === 'online' ? '<:online:450674128777904149> Online' : user.presence.status === 'dnd' ? '<:dnd:450674354163023882> Do Not Disturb' : user.presence.status === 'idle' ? '<:idle:450674222176403456> Idle' : user.presence.status === 'offline' ? '<:offline:450674445670154240> Offline' : `<:streaming:450674542717698058> Streaming [${user.presence.game.name}](${user.presence.game.url})`, true);
 
+  // If the user is playing a game and not streaming
   if(user.presence.game && !user.presence.game.streaming) embed.addField('Game', user.presence.game.name, true);
 
+  // If the user has a nickname
   if(member.nickname) embed.addField('Nickname', member.nickname, true);
 
+  // Display color
   embed.setColor(member.displayColor === 0 ? message.guild.accentColor : member.displayColor);
-  embed.addField('Joined', moment(member.joinedAt).format('MMM Do YYYY, h:mm a'), true);
-  embed.addField('Registered', moment(user.createdAt).format('MMM Do YYYY, h:mm a'), true);
+  embed.addField('Joined', moment(member.joinedAt).format('MMM Do YYYY, h:mm a'), true); // Joined (formatted)
+  embed.addField('Registered', moment(user.createdAt).format('MMM Do YYYY, h:mm a'), true); // Registered (formatted)
 
+  // If the member has more than one role
   if(member.roles.size > 1) {
-    const roles = member.roles.filter(({ id }) => id !== message.guild.id).map((role) => role.toString()).join(' ').trim();
-    embed.addField('Roles', roles.length > 1024 ? `${member.roles.size} roles.` : roles, true);
+    const roles = member.roles.filter(({ id }) => id !== message.guild.id).map((role) => role.toString()).join(' ').trim(); // Filter out the @everyone role
+    embed.addField('Roles', roles.length > 1024 ? `${member.roles.size} roles.` : roles, true); // If the length of the roles string is more than 1024, list it as a number. If not, list out the roles.
   }
+
+  // Profile-related embed fields
+  if(await profile.badges != false) embed.addField('Badges', await profile.badges, true);
+  embed.addField('Balance', `${await profile.balance} Kowoks`, true);
+  embed.addField('Reputation', await profile.reputation, true);
 
   message.send(embed).catch((e) => {
     message.send(e);
