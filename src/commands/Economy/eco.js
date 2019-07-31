@@ -13,8 +13,8 @@ module.exports.run = async (client, message, args) => {
     amount = +amount;
 
     const newBalance = await user.changeBalance('add', amount);
-    if (!newBalance) return message.send(`:x: \`|\` :bank: \`${user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
-    message.send(`✅ \`|\` 🏦 **Successfully added** \`${amount}\` **to** \`${user.tag}\`**.** New balance: \`${newBalance}\`.`);
+    if (!newBalance) return message.send(`:x: \`|\` :bank: \`${user.user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
+    message.send(`✅ \`|\` 🏦 **Successfully added** \`${amount}\` **to** \`${user.user.tag}\`**.** New balance: \`${newBalance}\`.`);
   }
 
   if(type === 'subtract') {
@@ -22,8 +22,8 @@ module.exports.run = async (client, message, args) => {
     amount = +amount;
 
     const newBalance = await user.changeBalance('add', amount);
-    if (!newBalance) return message.send(`:x: \`|\` :bank: \`${user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
-    message.send(`✅ \`|\` 🏦 **Successfully subtracted** \`${amount}\` **from** \`${user.tag}\`**.** New balance: \`${newBalance}\`.`);
+    if (!newBalance) return message.send(`:x: \`|\` :bank: \`${user.user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
+    message.send(`✅ \`|\` 🏦 **Successfully subtracted** \`${amount}\` **from** \`${user.user.tag}\`**.** New balance: \`${newBalance}\`.`);
   }
 
   if(type === 'set') {
@@ -31,12 +31,12 @@ module.exports.run = async (client, message, args) => {
     amount = +amount;
 
     const newBalance = await user.changeBalance('add', amount);
-    if (!newBalance) return message.send(`:x: \`|\` :bank: \`${user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
-    message.send(`✅ \`|\` 🏦 **Successfully set** \`${user.tag}\`**'s new balance to** \`${newBalance}\`**.**`);
+    if (!newBalance) return message.send(`:x: \`|\` :bank: \`${user.user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
+    message.send(`✅ \`|\` 🏦 **Successfully set** \`${user.user.tag}\`**'s new balance to** \`${newBalance}\`**.**`);
   }
 
   if(type === 'get') {
-    message.send(`:bank: \`${user.tag}\`**'s balance is** ${await user.balance}**.**`);
+    message.send(`:bank: \`${user.user.tag}\`**'s balance is** ${await user.balance}**.**`);
   }
 };
 
