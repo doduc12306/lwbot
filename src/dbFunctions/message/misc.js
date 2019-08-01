@@ -4,9 +4,9 @@ module.exports = async (client, message) => {
   // Message send function, pretty much extends message.channel.send/message.edit in that it allows the user to edit their command message and it runs that instead
   message.send = (content, options) => {
     return new Promise(async (resolve, reject) => {
-      if (!content) {
+      if (!content) { // Accidental empty message handling
         content = '[Empty Message]';
-        reject(new Error('Empty message detected!'));
+        reject('Empty message detected!');
       }
 
       // command editing functionality
@@ -39,7 +39,7 @@ module.exports = async (client, message) => {
         })
         .catch(e => {
           if (e.message === 'Unknown Message') {
-            message.channel.send(content, options ? options : null)
+            message.channel.send(owoify(), options ? options : null)
               .then(msg => {
                 client.msgCmdHistory[message.id] = msg.id;
                 return resolve(msg);
@@ -48,26 +48,48 @@ module.exports = async (client, message) => {
           } else return reject(new Error(e));
         });
 
-      // owo mode functionality
-      if (client.settings.get(message.guild.id)['owoMode'] === 'true' && !(content instanceof RichEmbed)) {
-        content = content
-          .replaceAll('r', 'w')
-          .replaceAll('l', 'w');
+      function owoify() {
+        // owo mode functionality
+        if (client.settings.get(message.guild.id)['owoMode'] === 'true') {
+          if (content instanceof RichEmbed) {
+            const owoedEmbed = new RichEmbed();
 
-        const ous = ['o', 'O', '0', 'u', 'U'];
-        const ws = ['w', 'W'];
+            if (content.title) owoedEmbed.setTitle(owoedContent(content.title));
+            if (content.description) owoedEmbed.setDescription(owoedContent(content.description));
+            if (content.author) owoedEmbed.setAuthor(owoedContent(content.author.name), content.author.iconURL ? content.author.iconURL : undefined, content.author.url ? content.author.url : undefined);
+            if (content.footer) owoedEmbed.setFooter(owoedContent(content.footer));
+            if (content.fields) for (const field of content.fields) { owoedEmbed.addField(field.name, owoedContent(field.value), field.inline); }
+            if (content.color) owoedEmbed.setCollr(content.color);
+            if (content.file) owoedEmbed.attachFile(content.file);
+            if (content.files) owoedEmbed.attachFiles(content.files);
+            if (content.image) owoedEmbed.setImage(content.image);
+            if (content.thumbnail) owoedEmbed.setThumbnail(content.thumbnail);
+            if (content.timestamp) owoedEmbed.setTimestamp(content.timestamp);
+            if (content.url) owoedEmbed.setURL(content.url);
 
-        content += ` ${[`${ous.randomElement()}${ws.randomElement()}${ous.randomElement()}`, ':3c'].randomElement()}`;
+            return owoedEmbed;
+          }
+
+          return owoedContent(content);
+        } else return content;
+
+        function owoedContent(str) {
+          str = str.replaceAll('r', 'w').replaceAll('l', 'w').replaceAll('R', 'W').replaceAll('L', 'W');
+          const ous = ['o', 'O', '0', 'u', 'U'];
+          const ws = ['w', 'W'];
+
+          return str += ` ${[`${ous.randomElement()}${ws.randomElement()}${ous.randomElement()}`, ':3c'].randomElement()}`;
+        }
       }
 
       // Checks if msgCmdHistory (Set) has the id of the message. If not, it sends a new message.
       // This is placed after the initial edit statement because it will send a message regardless.
       if (!client.msgCmdHistory.has(message.id)) {
-        if (options) return message.channel.send(content, options).then(msg => {
+        if (options) return message.channel.send(owoify(), options).then(msg => {
           client.msgCmdHistory[message.id] = msg.id;
           return resolve(msg);
         }).catch(e => { return reject(new Error(e)); });
-        else return message.channel.send(content).then(msg => {
+        else return message.channel.send(owoify()).then(msg => {
           client.msgCmdHistory[message.id] = msg.id;
           return resolve(msg);
         }).catch(e => { return reject(new Error(e)); });
@@ -77,7 +99,7 @@ module.exports = async (client, message) => {
 
   // Other various functions
   message.functions = {
-    /** 
+    /**
      * Parses a role from a given role name or role snowflake
      * @param {String} data
      * @returns {Role}
@@ -97,7 +119,7 @@ module.exports = async (client, message) => {
         return role;
       }
     },
-    /** 
+    /**
      * Parses a user from a given user name or user snowflake
      * @param {String} data
      * @returns {User}
@@ -116,7 +138,7 @@ module.exports = async (client, message) => {
         return user;
       }
     },
-    /** 
+    /**
      * Parses a member from a given member username or member snowflake
      * @param {String} data
      * @returns {GuildMember}
@@ -136,7 +158,7 @@ module.exports = async (client, message) => {
         return member;
       }
     },
-    /** 
+    /**
      * Parses a channel from a given channel name or channel snowflake
      * CANNOT PARSE DMS
      * @param {String} data
