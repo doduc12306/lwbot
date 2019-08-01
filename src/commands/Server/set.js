@@ -1,4 +1,3 @@
-
 const Discord = require('discord.js');
 const settingsFunctions = require('../../dbFunctions/message/settings').functions;
 
