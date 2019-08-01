@@ -33,6 +33,7 @@ const config = {
     'capsThreshold': '70', // (70%), not 70 or more characters.
     'capsWarnEnabled': 'true',
     'staffBypassesLimits': 'true',
+    'xpLevelUpEnabled': 'true',
     'xpLevelUpMessage': '⬆ **{{user}} just advanced to level {{level}}!**',
     'accentColor': '0x00d564',
     'owoMode': 'false'

@@ -64,6 +64,14 @@ module.exports = async (client, message) => {
   if (message.channel.type !== 'dm') {
     const { functions } = require('../dbFunctions/message/xp.js');
 
+    let xpLevelUpEnabled = client.config.defaultSettings.xpLevelUpEnabled;
+    if (!message.guild) xpLevelUpEnabled = client.config.defaultSettings.xpLevelUpEnabled;
+    else {
+      await settingsSchema.findOrCreate({ where: { key: 'xpLevelUpEnabled' }, defaults: { value: 'true' } });
+      xpLevelUpEnabled = await settingsFunctions.get(message.guild.id, 'xpLevelUpEnabled');
+    }
+    message.benchmarks['XpLevelUpMessageBenchmark'] = new Date() - a;
+
     let xpLevelUpMessage = client.config.defaultSettings.xpLevelUpMessage;
     if (!message.guild) xpLevelUpMessage = client.config.defaultSettings.xpLevelUpMessage;
     else {
@@ -85,7 +93,7 @@ module.exports = async (client, message) => {
       .then(user => {
         user = user[0];
         if (xpNeededToLevelUp(user.dataValues.level) < user.dataValues.xp) {
-          message.channel.send(xpLevelUpMessage.replaceAll('{{user}}', message.author.toString()).replaceAll('{{level}}', user.dataValues.level + 1)).then(msg => msg.delete(10000));
+          if(xpLevelUpEnabled === 'true') message.send(xpLevelUpMessage.replaceAll('{{user}}', message.author.toString()).replaceAll('{{level}}', user.dataValues.level + 1)).then(msg => msg.delete(10000));
           user.increment('level');
         }
 
@@ -93,6 +101,7 @@ module.exports = async (client, message) => {
           return 5 * (10 ** -4) * ((x * 100) ** 2) + (0.5 * (x * 100)) + 100;
         }
       });
+
   }
   message.benchmarks['XpAdditionAndLevelCheckBenchmark'] = new Date() - a;
 
@@ -190,10 +199,10 @@ module.exports = async (client, message) => {
   client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name}${message.edited ? ' (edited) ' : ' '}${message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs'}`);
   try {
     await cmd.run(client, message, args, level);
-  } catch (e) { 
+  } catch (e) {
     let firstErrorStackTrace;
     if(e.stack) firstErrorStackTrace = e.stack.split('\n')[1];
-    message.send(`:x: **Something went wrong running the command:**\n\`\`\`\n${e}\n\t${firstErrorStackTrace}\n\`\`\` `); 
+    message.send(`:x: **Something went wrong running the command:**\n\`\`\`\n${e}\n\t${firstErrorStackTrace}\n\`\`\` `);
   }
   /* -------------------- RUNS THE COMMAND -------------------- */
 
