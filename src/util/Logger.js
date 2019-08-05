@@ -35,7 +35,7 @@ exports.log = (content, type = 'log') => {
     }
     case 'sqLog': {
       appendToLog('sqLog', content, false, true);
-      if (config.sqLogMode) return console.log(`${timestamp} ${chalk.white.bgBlack(type.toUpperCase())} ${chalk.gray(content)} `);
+      if (config.sqLogMode) return console.log(`${timestamp} ${chalk.white.bgBlack('sqlog:')} ${chalk.gray(content)} `);
       break;
     }
     case 'cmd': {
