@@ -42,10 +42,14 @@ exports.run = async (client, message, args) => {
       return message.send(':x: `|` ⚙ **Invalid new value. Must be a percentage.**');
 
     // Edits
-    if (setting.key.toLowerCase().includes('channel') && message.mentions.CHANNELS_PATTERN.test(newValue))
-      newValue = newValue.substring(2, newValue.length - 1);
-    if (setting.key.toLowerCase().includes('role') && message.mentions.ROLES_PATTERN.test(newValue))
-      newValue = newValue.substring(2, newValue.length - 1);
+    if (setting.key.toLowerCase().includes('channel') && /<#([0-9]+)>/g.test(newValue)) {
+      newValue = message.guild.channels.get(newValue.substring(2, newValue.length - 1)).name;
+      if (!newValue) return message.send(':x: `|` ⚙ **There was an error finding that channel!** (Did you spell it correctly?)');
+    }
+    if (setting.key.toLowerCase().includes('role') && /<@&[0-9]+>/g.test(newValue)) {
+      newValue = message.guild.roles.get(newValue.substring(3, newValue.length - 1)).name;
+      if (!newValue) return message.send(':x: `|` ⚙ **There was an error finding that role!** (Did you spell it correctly?)');
+    }
     if (/enabled?/gi.test(newValue))
       newValue = 'true';
     if (/disabled?/gi.test(newValue))
@@ -95,7 +99,7 @@ exports.run = async (client, message, args) => {
         settingsFunctions.edit(client, message.guild.id, setting.originalSetting, client.config.defaultSettings[setting.originalSetting])
           .then(async () => {
             await (client.settings.get(message.guild.id)[setting.originalSetting] = client.config.defaultSettings[setting.originalSetting]);
-            const newSetting = await viewSettings(+settingToReset, null);
+            const newSetting = await viewSettings(null, settingToReset);
             message.send(`:white_check_mark: \`|\` ⚙ **Setting reset!**\n\`\`\`xl\n[${newSetting.id}] ${newSetting.key} - ${newSetting.value}\n\`\`\``);
           }).catch(e => { return message.send(`:x: \`|\` ⚙ **There was an error resetting the setting:**\n\`\`\`${e}\`\`\``); });
         // If the user said "n" or "no"
