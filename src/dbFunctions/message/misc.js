@@ -59,7 +59,7 @@ module.exports = async (client, message) => {
             if (content.author) owoedEmbed.setAuthor(owoedContent(content.author.name), content.author.iconURL ? content.author.iconURL : undefined, content.author.url ? content.author.url : undefined);
             if (content.footer) owoedEmbed.setFooter(owoedContent(content.footer));
             if (content.fields) for (const field of content.fields) { owoedEmbed.addField(field.name, owoedContent(field.value), field.inline); }
-            if (content.color) owoedEmbed.setCollr(content.color);
+            if (content.color) owoedEmbed.setColor(content.color);
             if (content.file) owoedEmbed.attachFile(content.file);
             if (content.files) owoedEmbed.attachFiles(content.files);
             if (content.image) owoedEmbed.setImage(content.image);
