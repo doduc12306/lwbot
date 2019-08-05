@@ -96,8 +96,13 @@ module.exports = async (client, message) => {
     : client.config.defaultSettings.prefix;
   message.benchmarks['PrefixGetterBenchmark'] = new Date() - a;
 
-  if (message.content.indexOf(prefix) !== 0) return;
-  const args = message.content.slice(prefix.length).trim().split(/ +/g);
+  const escapeRegex = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`);
+
+  if (!prefixRegex.test(message.content)) return;
+
+  const [, matchedPrefix] = message.content.match(prefixRegex);
+  const args = message.content.slice(matchedPrefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 
   if (!command) {
