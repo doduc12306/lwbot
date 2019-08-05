@@ -7,7 +7,7 @@ module.exports.run = (client, message) => {
     logs = logs.sort((a, b) => a.dataValues.id > b.dataValues.id ? -1 : 1);
 
     const embed = new Discord.RichEmbed()
-      .setColor(message.guild.accentColor)
+      .setColor(client.accentColor)
       .setTitle(`Modlogs for ${user.tag}`);
 
     if (logs.length === 0) return message.send(embed.setDescription('No logs found'));
@@ -29,7 +29,7 @@ module.exports.run = (client, message) => {
       let curPage = 1;
 
       let embed = new Discord.RichEmbed()
-        .setColor(message.guild.accentColor)
+        .setColor(client.accentColor)
         .setTitle(`Modlogs for ${user.tag} | Page ${curPage}/${Math.ceil(logs.length / 9)}`);
 
       for (const data of logs) {
@@ -61,7 +61,7 @@ module.exports.run = (client, message) => {
               curPage = await curPage - 1;
 
               embed = new Discord.RichEmbed()
-                .setColor(message.guild.accentColor)
+                .setColor(client.accentColor)
                 .setTitle(`Modlogs for ${user.tag} | Page ${curPage}/${Math.ceil(logs.length / 9)}`);
 
               for (const data of logs) {
@@ -93,7 +93,7 @@ module.exports.run = (client, message) => {
               }
 
               embed = new Discord.RichEmbed()
-                .setColor(message.guild.accentColor)
+                .setColor(client.accentColor)
                 .setTitle(`Modlogs for ${user.tag} | Page ${curPage}/${Math.ceil(logs.length / 9)}`);
 
               for (const data of logs) {

@@ -20,10 +20,10 @@ module.exports.run = async (client, message, args) => {
     if (!part2) return message.send('❌ **Missing the content!**');
     const content = part2.replaceAll('/n', '\n').trim();
 
-    let color = message.guild.accentColor;
+    let color = client.accentColor;
     if (cmdargs) {
-      if (cmdargs.includes('color=')) { color = cmdargs.substring(cmdargs.indexOf('color=') + 6); } else { color = message.guild.accentColor; }
-    } else { color = message.guild.accentColor; announce(); }
+      if (cmdargs.includes('color=')) { color = cmdargs.substring(cmdargs.indexOf('color=') + 6); } else { color = client.accentColor; }
+    } else { color = client.accentColor; announce(); }
 
     function announce() { // eslint-disable-line no-inner-declarations
       message.guild.channels.find(channel => channel.name === settings.announcementsChannel).send(new Discord.RichEmbed()

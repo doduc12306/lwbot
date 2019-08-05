@@ -92,7 +92,7 @@ module.exports.run = async (client, message, args) => {
 
   function listQueue() {
     const embed = new RichEmbed()
-      .setColor(message.guild.accentColor)
+      .setColor(client.accentColor)
       .setTimestamp();
 
     let desc = '\n';

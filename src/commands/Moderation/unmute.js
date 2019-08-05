@@ -21,7 +21,7 @@ module.exports.run = async (client, message, args) => {
 
     const modEmbed = new Discord.RichEmbed()
       .setThumbnail(toUnmute.user.avatarURL)
-      .setColor(message.guild.accentColor)
+      .setColor(client.accentColor)
       .setFooter(`ID: ${toUnmute.user.id} | Case: ${info.id}`)
       .addField('Unmuted User', `${toUnmute.user.toString()} (${toUnmute.user.tag})`)
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`);

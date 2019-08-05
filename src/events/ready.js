@@ -1,8 +1,6 @@
-const { promisify } = require('util');
-const readdir = promisify(require('fs').readdir);
-const Sequelize = require('sequelize');
 const { Collection } = require('discord.js');
 const moment = require('moment');
+const watchdog = require('../util/sqWatchdog');
 
 module.exports = async client => {
   if (!client.user.bot) {
@@ -15,24 +13,6 @@ module.exports = async client => {
 
   require('../dbFunctions/client/tags.js')(client);
   require('../dbFunctions/client/protos.js')(client);
-
-  const servers = await readdir('databases/servers/');
-  client.settings = new Collection();
-  await Promise.all(servers.map(async server => {
-    if (server === 'x.txt') return client.logger.sqLog('Found x.txt - Placeholder file. Ignored, continuing.');
-    const serverId = server.split('.sqlite')[0];
-    const db = new Sequelize('database', 'username', 'password', { logging: false, host: 'localhost', storage: `databases/servers/${server}`, dialect: 'sqlite' });
-    client.logger.sqLog(`Opened server ${server}`);
-    if (!server.endsWith('.sqlite')) return client.logger.error('Non-sqlite file found in databases/servers! File: ' + server);
-    if (!/\d+/g.test(server)) client.logger.warn('Non-server file found in databases/servers! File: ' + server);
-    const [data] = await db.query('SELECT * FROM \'settings\'');
-    const settings = {};
-    data.forEach(({ key, value }) => {
-      settings[key] = value;
-    });
-    client.settings.set(serverId, settings);
-    client.logger.sqLog(`Mapped settings for ${server}`);
-  }));
 
   client.tags.sync();
 
@@ -74,30 +54,36 @@ module.exports = async client => {
     }
   }
 
+  // Define all client variables before they're called elsewhere
+  client.settings = new Collection();
   client.xpLockSet = new Set();
-
   client.msgCmdHistory = new Collection();
+  client.musicQueue = new Collection();
 
-  client.musicQueue = new Map();
+  // Run the watchdog once before ready
+  client.logger.log('Running watchdog once before full startup...');
+  const wasSqLogEnabled = client.config.sqLogMode; // boolean
+  if(!wasSqLogEnabled) { client.logger.log('Enabling sqLogMode temporarily while it runs...'); client.config.sqLogMode = true; }
+  await watchdog.runner(client);
+  if(!wasSqLogEnabled) { client.logger.log('Disabling sqLogMode because it was disabled originally...'); client.config.sqLogMode = false; }
 
-  require('../util/sqWatchdog').timer(client);
+  // Start the sqWatchdog interval timer
+  watchdog.timer(client);
 
   const after = new Date();
   client.startup = after - client.before;
 
+  if (client.config.debugMode) client.logger.debug('Debug mode enabled');
+  if (client.config.verboseMode) client.logger.verbose('Verbose mode enabled');
+  if (client.config.sqLogMode) client.logger.sqLog('SQLog mode enabled');
   client.logger.log(`
-
   ${'⎻'.repeat(client.user.tag.length + client.user.id.length + 5)}
    ${client.user.tag} (${client.user.id})
   ${'⎼'.repeat(client.user.tag.length + client.user.id.length + 5)}
   • Users:     ${client.users.size}
   • Guilds:    ${client.guilds.size}
   • Channels:  ${client.channels.size}
-  • Took:      ${moment.duration(client.startup, 'milliseconds').format('[~]s [secs]')} to start up
-  `, 'ready');
-  if (client.config.debugMode) client.logger.debug('Debug mode enabled');
-  if (client.config.verboseMode) client.logger.verbose('Verbose mode enabled');
-  if (client.config.sqLogMode) client.logger.sqLog('SQLog mode enabled');
+  • Took:      ${moment.duration(client.startup, 'milliseconds').format('[~]s [secs]')} to start up`, 'ready');
 
   if (client.config.ciMode) client.emit('ciStepGuildCreate');
 };

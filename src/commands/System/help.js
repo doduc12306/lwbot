@@ -44,7 +44,7 @@ exports.run = async (client, message, args) => {
       const cmdEmbed = new Discord.RichEmbed()
         .setTitle(command.help.name.toProperCase())
         .setDescription(desc)
-        .setColor(message.guild.accentColor)
+        .setColor(client.accentColor)
         .setFooter('<required arguments> | [optional arguments]')
         .setTimestamp();
 

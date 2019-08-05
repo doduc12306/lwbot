@@ -7,7 +7,7 @@ module.exports.run = (client, message, args) => {
   if(message.mentions.members.size !== 0) {
     const member = message.mentions.members.first();
     message.send(new Discord.RichEmbed()
-      .setColor(member.displayColor === 0 ? message.guild.accentColor : member.displayColor)
+      .setColor(member.displayColor === 0 ? client.accentColor : member.displayColor)
       .setAuthor(member.user.tag, member.user.avatarURL, `https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${member.lastMessageID}`)
       .addField('Message', member.lastMessage.content)
       .setTimestamp(member.lastMessage.createdTimestamp)
@@ -16,7 +16,7 @@ module.exports.run = (client, message, args) => {
     message.channel.fetchMessage(args[0])
       .then(msg => {
         message.send(new Discord.RichEmbed()
-          .setColor(msg.member.displayColor === 0 ? message.guild.accentColor : msg.member.displayColor)
+          .setColor(msg.member.displayColor === 0 ? client.accentColor : msg.member.displayColor)
           .setAuthor(msg.author.tag, msg.author.avatarURL, `https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${msg.id}`)
           .addField('Message', msg.content)
           .setTimestamp(msg.createdTimestamp)

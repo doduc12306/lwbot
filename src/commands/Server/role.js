@@ -6,7 +6,7 @@ module.exports.run = (client, message, args) => {
     role = message.functions.parseRole(role);
 
     const embed = new Discord.RichEmbed()
-      .setColor(role.color === 0 ? message.guild.accentColor : role.color)
+      .setColor(role.color === 0 ? client.accentColor : role.color)
       .addField('Name', role.name, true)
       .addField('ID', role.id, true)
       .addField('Created', moment(role.createdAt).format('MMM Do YYYY, h:mm a'), true)

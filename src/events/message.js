@@ -22,41 +22,32 @@ module.exports = async (client, message) => {
     settingsSchema = settingsFunctions.settingsSchema(message.guild.id);
   }
 
-  let capsWarnEnabled = client.config.defaultSettings.capsWarnEnabled;
-  if (!message.guild) capsWarnEnabled = client.config.defaultSettings.capsWarnEnabled;
-  else {
-    await settingsSchema.findOrCreate({ where: { key: 'capsWarnEnabled' }, defaults: { value: 'false' } });
-    capsWarnEnabled = await settingsFunctions.get(message.guild.id, 'capsWarnEnabled');
-  }
+  const capsWarnEnabled = message.guild
+    ? client.settings.get(message.guild.id)['capsWarnEnabled'] === 'true' ? true : false
+    : client.config.defaultSettings['capsWarnEnabled'];
   message.benchmarks['CapsWarnEnabledBenchmark'] = new Date() - a;
 
-  let capsThreshold = client.config.defaultSettings.capsThreshold;
-  if (!message.guild) capsThreshold = client.config.defaultSettings.capsThreshold;
-  else {
-    await settingsSchema.findOrCreate({ where: { key: 'capsThreshold' }, defaults: { value: '70' } });
-    capsThreshold = await settingsFunctions.get(message.guild.id, 'capsThreshold');
-  }
+  const capsThreshold = message.guild
+    ? client.settings.get(message.guild.id)['capsThreshold']
+    : client.config.defaultSettings['capsThreshold'];
   message.benchmarks['CapsThresholdBenchmark'] = new Date() - a;
 
-  let staffBypassesLimits = client.config.defaultSettings.staffBypassesLimits;
-  if (!message.guild) staffBypassesLimits = client.config.defaultSettings.staffBypassesLimits;
-  else {
-    await settingsSchema.findOrCreate({ where: { key: 'staffBypassesLimits' }, defaults: { value: 'true' } });
-    staffBypassesLimits = await settingsFunctions.get(message.guild.id, 'staffBypassesLimits');
-  }
+  const staffBypassesLimits = message.guild
+    ? client.settings.get(message.guild.id)['staffBypassesLimits'] === 'true' ? true : false
+    : client.config.defaultSettings['staffBypassesLimits'];
   message.benchmarks['StaffBypassesLimitsBenchmark'] = new Date() - a;
 
   const exceedsCapsThreshold = message.content.match(/[A-Z]+/g) !== null &&
     message.content.length >= 15 &&
-    capsWarnEnabled === 'true' &&
+    capsWarnEnabled &&
     (message.content.match(/[A-Z]+/g).join(' ').replaceAll(' ', '').split('').length / message.content.length) * 100 >= capsThreshold;
-  /* ok so this mess of code checks to see if the message has more than ${capsThreshold}% caps. To break it down, it matches all of the capital letters in the message. Then joins the array that spits out. Then it replaces all of the spaces with an empty string, so they looklikethisinsteadofspaced, then it splits it from each character. It takes the length of this array and divides it by the length of the message itself. It then multiplies that number by 100 to give the percentage, then it checks that number against ${capsThreshold}. */
+  /* This mess of code checks to see if the message has more than ${capsThreshold}% caps. To break it down, it matches all of the capital letters in the message. Then joins the array that spits out. Then it replaces all of the spaces with an empty string, so they looklikethisinsteadofspaced, then it splits it from each character. It takes the length of this array and divides it by the length of the message itself. It then multiplies that number by 100 to give the percentage, then it checks that number against ${capsThreshold}. */
   message.benchmarks['ExceedsCapsThreshold'] = new Date() - a;
 
   const emsg = `⚠️ \`|\` ${message.author}**, your message is more than ${capsThreshold}% caps.** Please do not spam caps.`;
   if (exceedsCapsThreshold) {
     if (client.permlevel(message.member) !== 0) {
-      if (staffBypassesLimits === 'true');
+      if (staffBypassesLimits);
       else { message.delete(); message.send(emsg).then(msg => msg.delete(6000)); }
     } else { message.delete(); message.send(emsg).then(msg => msg.delete(6000)); }
   }
@@ -64,20 +55,14 @@ module.exports = async (client, message) => {
   if (message.channel.type !== 'dm') {
     const { functions } = require('../dbFunctions/message/xp.js');
 
-    let xpLevelUpEnabled = client.config.defaultSettings.xpLevelUpEnabled;
-    if (!message.guild) xpLevelUpEnabled = client.config.defaultSettings.xpLevelUpEnabled;
-    else {
-      await settingsSchema.findOrCreate({ where: { key: 'xpLevelUpEnabled' }, defaults: { value: 'true' } });
-      xpLevelUpEnabled = await settingsFunctions.get(message.guild.id, 'xpLevelUpEnabled');
-    }
-    message.benchmarks['XpLevelUpMessageBenchmark'] = new Date() - a;
+    const xpLevelUpEnabled = message.guild
+      ? client.settings.get(message.guild.id)['xpLevelUpEnabled'] === 'true' ? true : false
+      : client.config.defaultSettings['xpLevelUpEnabled'];
+    message.benchmarks['XpLevelUpEnabledBenchmark'] = new Date() - a;
 
-    let xpLevelUpMessage = client.config.defaultSettings.xpLevelUpMessage;
-    if (!message.guild) xpLevelUpMessage = client.config.defaultSettings.xpLevelUpMessage;
-    else {
-      await settingsSchema.findOrCreate({ where: { key: 'xpLevelUpMessage' }, defaults: { value: '⬆ **{{user}} just advanced to level {{level}}!**' } });
-      xpLevelUpMessage = await settingsFunctions.get(message.guild.id, 'xpLevelUpMessage');
-    }
+    const xpLevelUpMessage = message.guild
+      ? client.settings.get(message.guild.id)['xpLevelUpMessage']
+      : client.config.defaultSettings['xpLevelUpMessage'];
     message.benchmarks['XpLevelUpMessageBenchmark'] = new Date() - a;
 
     // Adds XP
@@ -93,7 +78,7 @@ module.exports = async (client, message) => {
       .then(user => {
         user = user[0];
         if (xpNeededToLevelUp(user.dataValues.level) < user.dataValues.xp) {
-          if(xpLevelUpEnabled === 'true') message.send(xpLevelUpMessage.replaceAll('{{user}}', message.author.toString()).replaceAll('{{level}}', user.dataValues.level + 1)).then(msg => msg.delete(10000));
+          if (xpLevelUpEnabled) message.send(xpLevelUpMessage.replaceAll('{{user}}', message.author.toString()).replaceAll('{{level}}', user.dataValues.level + 1)).then(msg => msg.delete(10000));
           user.increment('level');
         }
 
@@ -146,12 +131,12 @@ module.exports = async (client, message) => {
   // systemNotice creator
   const systemNotice = message.guild
     ? client.settings.get(message.guild.id)['systemNotice']
-    : client.config.defaultSettings.systemNotice;
+    : client.config.defaultSettings['systemNotice'];
   message.benchmarks['SystemNoticeBenchmark'] = new Date() - a;
 
   // Command status check
-  if(!cmd.conf.enabled || !cmdInDb) return message.send(':x: **This command is disabled globally!**');
-  if(!cmdInDb.enabled && client.permlevel < 8) return message.send(':x: **This command is disabled for this server!**');
+  if (!cmd.conf.enabled || !cmdInDb) return message.send(':x: **This command is disabled globally!**');
+  if (!cmdInDb.enabled && client.permlevel < 8) return message.send(':x: **This command is disabled for this server!**');
 
   // Some commands may not be useable in DMs. This check prevents those commands from running
   // and return a friendly error message.
@@ -168,13 +153,11 @@ module.exports = async (client, message) => {
   if (cmd.conf.requiresEmbed && message.guild && !message.guild.me.permissionsIn(message.channel).has('EMBED_LINKS'))
     return message.send('❌ **This command requires `Embed Links`, which I don\'t have!**');
   message.benchmarks['EmbedCheckBenchmark'] = new Date() - a;
+
   // if embed and no accent color, set it and send it.
-  message.guild.accentColor = client.config.colors.accentColor;
-  if (!message.guild) message.guild.accentColor = client.config.colors.accentColor;
-  else {
-    await settingsSchema.findOrCreate({ where: { key: 'accentColor' }, defaults: { value: client.config.colors.accentColor } });
-    message.guild.accentColor = await settingsFunctions.get(message.guild.id, 'accentColor');
-  }
+  client.accentColor = message.guild
+    ? client.settings.get(message.guild.id)['accentColor']
+    : client.config.defaultSettings['accentColor'];
 
   // Cooldown check
   if (cmd.conf.cooldown) {
@@ -201,7 +184,7 @@ module.exports = async (client, message) => {
     await cmd.run(client, message, args, level);
   } catch (e) {
     let firstErrorStackTrace;
-    if(e.stack) firstErrorStackTrace = e.stack.split('\n')[1];
+    if (e.stack) firstErrorStackTrace = e.stack.split('\n')[1];
     message.send(`:x: **Something went wrong running the command:**\n\`\`\`\n${e}\n\t${firstErrorStackTrace}\n\`\`\` `);
   }
   /* -------------------- RUNS THE COMMAND -------------------- */
@@ -217,7 +200,6 @@ module.exports = async (client, message) => {
 
       settingsSchema.findOrCreate({ where: { key: key }, defaults: { value: value } });
     }
-    await settingsSchema.findOrCreate({ where: { key: 'accentColor' }, defaults: { value: client.config.colors.accentColor } });
     settingsSchema.sync();
 
     for (const command of client.commands.filter(g => g.conf.enabled)) {

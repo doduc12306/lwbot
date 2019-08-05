@@ -17,7 +17,7 @@ module.exports.run = (client, message) => {
   const totalTime = moment.duration(music.songs[0].duration, 'milliseconds').format('H[:]mm[:]ss');
 
   message.send(new RichEmbed()
-    .setColor(message.guild.accentColor)
+    .setColor(client.accentColor)
     .setTitle(music.songs[0].title)
     .setURL(music.songs[0].url)
     .setThumbnail(music.songs[0].thumbnail)

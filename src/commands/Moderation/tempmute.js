@@ -60,7 +60,7 @@ module.exports.run = async (client, message, args) => {
       }).then(async info => {
         modEmbed = new Discord.RichEmbed()
           .setThumbnail(toMute.user.avatarURL)
-          .setColor(message.guild.accentColor)
+          .setColor(client.accentColor)
           .setAuthor(`Unmuted ${toMute.user.tag} (${toMute.id})`)
           .setFooter(`ID: ${toMute.id} | Case: ${info.id}`)
           .addField('User', `${toMute.toString()} (${toMute.user.tag})`)

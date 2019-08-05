@@ -14,7 +14,7 @@ module.exports.run = (client, message, args) => {
     definition = data.definition.length <= 1024 ? definition = data.definition : definition = data.definition.substring(0, 1020) + '...';
 
     message.send(new Discord.RichEmbed()
-      .setColor(message.guild.accentColor)
+      .setColor(client.accentColor)
       .addField(data.word, clean(definition))
       .addField('Example', `*${clean(data.example)}*`)
       .setTimestamp(data.written_on)

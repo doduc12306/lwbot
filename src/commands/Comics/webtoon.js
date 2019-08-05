@@ -46,7 +46,7 @@ module.exports.run = (client, message, args) => {
         msg.edit(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(5 / 5)\``);
 
         msg.edit(new RichEmbed()
-          .setColor(message.guild.accentColor)
+          .setColor(client.accentColor)
           .setTitle(title)
           .setURL(url)
           .setDescription(description)
@@ -75,7 +75,7 @@ module.exports.run = (client, message, args) => {
         msg.edit(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(5 / 5)\``);
 
         msg.edit(new RichEmbed()
-          .setColor(message.guild.accentColor)
+          .setColor(client.accentColor)
           .setTitle(title)
           .setURL(url)
           .setDescription(description)

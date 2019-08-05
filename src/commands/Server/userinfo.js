@@ -21,7 +21,7 @@ module.exports.run = async (client, message) => {
   if(member.nickname) embed.addField('Nickname', member.nickname, true);
 
   // Display color
-  embed.setColor(member.displayColor === 0 ? message.guild.accentColor : member.displayColor);
+  embed.setColor(member.displayColor === 0 ? client.accentColor : member.displayColor);
   embed.addField('Joined', moment(member.joinedAt).format('MMM Do YYYY, h:mm a'), true); // Joined (formatted)
   embed.addField('Registered', moment(user.createdAt).format('MMM Do YYYY, h:mm a'), true); // Registered (formatted)
 
