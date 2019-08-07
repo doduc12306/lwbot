@@ -1,5 +1,92 @@
 # Changelog
 
+## v1.5.7 [7/7/2019]
+### Commands
+* Webtoons/search -> Comics/webtoon: Renamed discover to canvas, while still keeping discover there for those that forget the update happened
+* Added Comics/xkcd: Fetches an xkcd comic
+* Economy/eco: Added support for the user profile class
+* Economy/getbal: Added support for the user profile class and re-enabled the command
+* Economy/rep: Bug fixes, and a cooldown of 1 day
+* Fun/lenny: Hid the command
+* Misc/avatar: avatarURL -> displayAvatarURL: Still displays if a user does not have an avatar.
+* Deleted Misc/google
+* Moderation/ban: Settings support
+* Moderation/hackban: Settings support
+* oh fuck it most of the moderation commands now have settings support. my fingers are getting tired
+* Music: Settings & accent color support
+* Music/queue: Redid the shuffle function, without using a whole extra library
+* Server/announce: Bug fixes
+* Server/commandconf: Edited passive agressive bot admin shaming
+* Server/quote: Changed message jump from field to author
+* System/set -> Server/set: Complete rewrite. It looks so much better now
+* Server/userinfo: User profile class support
+* System/eval: Added packages to require, added eval error handling
+* System/info: Added thanks to my testers
+* System/ping: Now just normal text instead of an embed.
+* System/stats: Benchmarks now relies on a flag in the command instead of config.verboseMode
+* Added System/sudo: Perform a command as another user
+* Fun/akinator, Fun/urban, Moderation/case, Server/levels, Server/membercount, Server/role, Server/stafflist, System/help, System/invite, System/stats: Accent color support
+
+### Backend
+* Added accent color support as a server setting
+* Created user profiles (as a class): a mood, badges, kowoks, and reputation
+* Added user profile class
+* message.send(): Dont error, just reject on empty message
+* Added embed support for owoMode
+* dbFunctions/message/settings: If guildID is a guild object, convert it into a guild id.
+* Events/channelCreate: Removed permission syncing for categories. This overrode all per-channel permissions with the bot's own.
+* Events/guildCreate: Replaced makeshift settings creation with the sqWatchdog's runner
+* Events/message:
+  * Redid settings retrieval. Now gets from the client.settings object, which is verified at ready event
+  * Added mention prefixes, finally
+  * Bot responds if prefix but no command
+  * Accent color support
+  * Randomized cooldown messages
+  * Try/catch for command running
+* Events/ready: Runs through sqWatchdog once before creating the interval
+* index:
+  * Removed sentry
+  * Added `--noFileLog` argument, which doesn't output logs to a file
+  * Exported the client for use in other files
+  * Creates folders for the current day's logs
+  * process.on('SIGINT') -> process.on('beforeExit')
+* Logger: Every method now logs to a file.
+* sqWatchdog: You can either do per-server or entire server/ database cleanups
+
+### Misc
+* Added CONTRIBUTING.md
+* Added PACKAGE_WHY.md - Explains why I have all those packages
+* modules/terminal: formatting.. at this point I might as well just not support it anymore. It's useless to me.
+* Updated / added packages:
+  * aki-api: 2.1.1 -> 3.1.1
+  * Added @discordjs/uws v11.149.1
+  * Added command-line-args v5.1.1
+  * discord.js: 11.5.0 -> 11.5.1
+  * dotenv: 7.0.0 -> 8.0.0
+  * enmap: 4.8.1 -> 5.1.0
+  * Added erlpack
+  * Added ffmpeg-binaries v4.0.0
+  * Removed google
+  * Added node-opus v0.3.2
+  * sequelize: 4.43.0 -> 5.12.1
+  * simple-youtube-api: 5.1.1 -> 5.2.1
+  * sqlite3: 4.0.6 -> 4.0.9
+  * Replaced ytdl-core with ytdl-core-discord v1.0.3
+* Package: added `build-node-opus` script for Debian-based systems
+* Added Nen to Bot Support
+* defaultSettings:
+  * Added capsWarnEnabled
+  * Added xpLevelUpEnabled
+  * Added xpLevelUpMessage
+  * Added accentColor
+  * Added owoMode
+* Statuses:
+  * Added Playing with Gallium
+  * Removed Playing with Chris McCoy @ Safely Endangered
+  * Added Playing on a Raspberry Pi
+  * Added Watching an unhealthy amount of anime
+* Yarnpkg support
+
 ## v1.5.4 [6/13/2019]
 ### Commands
 * Added Economy/rep command - Adds a reputation point to a user

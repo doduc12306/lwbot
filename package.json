@@ -1,6 +1,6 @@
 {
   "name": "lwbot-rewrite",
-  "version": "1.5.4",
+  "version": "1.5.7",
   "description": "a rewrite to [lwbot](http://github.com/jennasisis/lwbot)",
   "main": "index.js",
   "dependencies": {
