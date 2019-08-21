@@ -15,5 +15,5 @@ exports.help = {
   name: 'avatar',
   description: 'Find the avatar of yourself or another user',
   usage: 'avatar [@user]',
-  category: 'Misc'
+  category: 'User'
 };

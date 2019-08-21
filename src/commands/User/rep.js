@@ -22,6 +22,6 @@ module.exports = {
     name: 'rep',
     description: 'Add a reputation point to a user',
     usage: 'rep <@user>',
-    category: 'Economy'
+    category: 'User'
   }
 };
