@@ -1,6 +1,7 @@
 const { Collection } = require('discord.js');
 const moment = require('moment');
 const watchdog = require('../util/sqWatchdog');
+const websocket = require('../util/websocket');
 
 module.exports = async client => {
   if (!client.user.bot) {
@@ -69,6 +70,10 @@ module.exports = async client => {
 
   // Start the sqWatchdog interval timer
   watchdog.timer(client);
+
+  // Create the websocket server, and pass the client in
+  websocket(client);
+  // This is handled in another file because it would clutter this one.
 
   const after = new Date();
   client.startup = after - client.before;

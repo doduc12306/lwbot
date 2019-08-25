@@ -42,6 +42,10 @@ exports.log = (content, type = 'log') => {
       appendToLog('cmd', content, true, true);
       return console.log(`${timestamp} ${chalk.blue('cmd:')} ${content}`);
     }
+    case 'ws': {
+      appendToLog('ws', content, true, true);
+      return console.log(`${timestamp} ${chalk.blue('ws:')} ${content}`);
+    }
     case 'ready': {
       appendToLog('info', content, true, true);
       return console.log(`${timestamp} ${chalk.green('ready:')} ${chalk.green(content)}`);
@@ -69,6 +73,8 @@ exports.cmd = (...args) => this.log(...args, 'cmd');
 exports.debug = (...args) => this.log(...args, 'debug');
 exports.verbose = (...args) => this.log(...args, 'verbose');
 exports.sqLog = (...args) => this.log(...args, 'sqLog');
+exports.ws = (...args) => this.log(...args, 'ws');
+exports.websocket = (...args) => this.log(...args, 'ws');
 
 async function appendToLog(type, content, combined = true, combinedDebug = true) {
   if (config.noFileLog) return;
