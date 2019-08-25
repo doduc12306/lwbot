@@ -1,6 +1,3 @@
 [submodule "webtoon-webhook-data"]
 	path = webtoon-webhook-data
 	url = https://gitlab.com/akii0008/webtoon-webhook-data
-[submodule "lwbotrw-web"]
-	path = lwbotrw-web
-	url = https://gitlab.com/akii0008/lwbotrw-web
