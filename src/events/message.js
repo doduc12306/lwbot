@@ -1,5 +1,4 @@
 const moment = require('moment');
-
 module.exports = async (client, message) => {
   const a = new Date();
   if (message.author.bot && !client.config.ciMode) return;
