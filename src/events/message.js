@@ -36,7 +36,7 @@ module.exports = async (client, message) => {
   const exceedsCapsThreshold = message.content.match(/[A-Z]+/g) !== null &&
     message.content.length >= 15 &&
     capsWarnEnabled &&
-    (message.content.match(/[A-Z]+/g).join(' ').replaceAll(' ', '').split('').length / message.content.length) * 100 >= capsThreshold;
+    (message.content.match(/[A-Z]+/g).join(' ').replaceAll(' ', '').length / message.content.length) * 100 >= capsThreshold;
   /* This mess of code checks to see if the message has more than ${capsThreshold}% caps. To break it down, it matches all of the capital letters in the message. Then joins the array that spits out. Then it replaces all of the spaces with an empty string, so they looklikethisinsteadofspaced, then it splits it from each character. It takes the length of this array and divides it by the length of the message itself. It then multiplies that number by 100 to give the percentage, then it checks that number against ${capsThreshold}. */
   message.benchmarks['ExceedsCapsThreshold'] = new Date() - a;
 
