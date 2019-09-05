@@ -106,7 +106,7 @@ module.exports = async (client, message) => {
   const command = args.shift().toLowerCase();
 
   if (!command) {
-    const responses = ['...yes? That\'s me, did you need something?', 'What would you like, young one?', 'Yes?', 'You rang?', 'What\'s up?', 'You\'re missing a little something there..', 'Oops. Missed a spot.'];
+    const responses = ['...yes? That\'s me, did you need something?', 'What would you like, young one?', 'Yes?', 'You rang?', 'What\'s up?', 'You\'re missing a little something there..', 'Oops. Missed a spot.', 'Hello?', 'Hi there! Need something?', 'Hmm?', 'Wot', 'Huh? You say something? Didn\'t quite catch that.', '😬'];
     return message.send(responses.randomElement());
   }
 
