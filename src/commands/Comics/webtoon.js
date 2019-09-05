@@ -3,19 +3,19 @@ const { RichEmbed } = require('discord.js');
 
 module.exports.run = (client, message, args) => {
   let mode;
-  if (!['featured', 'discover', 'discovery', 'canvas'].includes(args[0])) mode = 'featured';
+  if (!['featured', 'original', 'originals', 'discover', 'discovery', 'canvas'].includes(args[0])) mode = 'featured';
 
   if (!args[0]) return message.send('❌ `|` 🔎 **You didn\'t specify featured or canvas webtoon to search!**');
   if (args[0] === 'featured') mode = 'featured';
   else if (['discover', 'discovery', 'canvas'].includes(args[0])) mode = 'discover';
-  if (['featured', 'discover', 'discovery', 'canvas'].includes(args[0]) && !args[1]) return message.send('❌ `|` 🔎 **You didn\'t give me anything to search!**');
+  if (['featured', 'original', 'originals', 'discover', 'discovery', 'canvas'].includes(args[0]) && !args[1]) return message.send('❌ `|` 🔎 **You didn\'t give me anything to search!**');
 
-  const search = ['featured', 'discover', 'discovery', 'canvas'].includes(args[0]) ? args.slice(1).join(' ') : args.slice(0).join(' ');
+  const search = ['featured', 'original', 'originals', 'discover', 'discovery', 'canvas'].includes(args[0]) ? args.slice(1).join(' ') : args.slice(0).join(' ');
 
   message.send(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(0 / 5)\``).then(async msg => {
     try {
       // Initialize browser
-      const browser = await puppeteer.launch({executablePath: '/usr/bin/chromium-browser'});
+      const browser = await puppeteer.launch({ executablePath: '/usr/bin/chromium-browser' });
       const page = await browser.newPage();
       msg.edit(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(1 / 5)\``);
 
@@ -85,7 +85,7 @@ module.exports.run = (client, message, args) => {
 
         await browser.close();
 
-      }
+      } else message.send(`:x: \`|\` 🔎 **Something went horribly wrong. You should** __***NOT***__ **be seeing this.** Contact <@107599228900999168> (Akii#0008) and give him this:\n**Mode:** \`${mode}\``);
 
     } catch (e) {
       msg.edit(`❌ \`|\` 🔎 **Something went wrong! Please try again later.**\n\`\`\`${e}\`\`\``);
@@ -104,6 +104,6 @@ exports.conf = {
 exports.help = {
   name: 'search',
   description: 'Find a webtoon!',
-  usage: 'search [featured (default) / canvas] <title name>',
+  usage: 'search [original (default) / canvas] <title name>',
   category: 'Comics'
 };
