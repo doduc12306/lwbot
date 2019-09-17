@@ -155,12 +155,12 @@ process.on('unhandledRejection', err => {
     client.logger.error('sqlite3 package needs to be reinstalled.');
     client.logger.log('Installing package...');
     return require('child_process').exec('yarn add sqlite3', async (e, out, err) => {
-      if (e || err) client.logger.error(`Error installing sqlite3 package: ${await e || await err}`);
-      client.logger.log(await out);
+      if (e || err) client.logger.error(`Error installing sqlite3 package: ${e || err}`);
+      client.logger.log(out);
       if (process.env._pm2_version) {
         client.logger.log('PM2 detected! Restarting using PM2...');
       } else client.logger.log('Please restart the bot.');
-      await process.exit();
+      process.exit();
     });
   }
   client.logger.error(`Unhandled rejection: ${err.stack}`);
@@ -171,7 +171,7 @@ process.on('beforeExit', async () => {
   client.logger.log('Cleaning up and exiting...');
   await client.destroy();
   client.logger.log('Client destroyed. Exiting...');
-  await process.exit();
+  process.exit();
 });
 
 // lwbot-rewrite - Discord bot
