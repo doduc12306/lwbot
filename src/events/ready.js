@@ -82,13 +82,13 @@ module.exports = async client => {
   if (client.config.verboseMode) client.logger.verbose('Verbose mode enabled');
   if (client.config.sqLogMode) client.logger.sqLog('SQLog mode enabled');
   client.logger.log(`
-  ${'⎻'.repeat(client.user.tag.length + client.user.id.length + 5)}
-   ${client.user.tag} (${client.user.id})
-  ${'⎼'.repeat(client.user.tag.length + client.user.id.length + 5)}
-  • Users:     ${client.users.size}
-  • Guilds:    ${client.guilds.size}
-  • Channels:  ${client.channels.size}
-  • Took:      ${moment.duration(client.startup, 'milliseconds').format('[~]s [secs]')} to start up`, 'ready');
+${'⎻'.repeat(client.user.tag.length + client.user.id.length + 5)}
+ ${client.user.tag} (${client.user.id})
+${'⎼'.repeat(client.user.tag.length + client.user.id.length + 5)}
+• Users:     ${client.users.size}
+• Guilds:    ${client.guilds.size}
+• Channels:  ${client.channels.size}
+• Took:      ${moment.duration(client.startup, 'milliseconds').format('[~]s [secs]')} to start up`, 'ready');
 
   if (client.config.ciMode) client.emit('ciStepGuildCreate');
 };
