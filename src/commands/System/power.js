@@ -8,7 +8,7 @@ exports.run = async (client, message, args) => {
   }
 
   if(args[0] === 'restart' || args[0] === 'reboot') {
-    if(!process.env._pm2_version) {
+    if(!process.env.pm_uptime) {
       await message.send('❌ `|` 🔄 **Process is not running under pm2.** Simply exiting...');
       client.destroy();
       process.exit(0);
