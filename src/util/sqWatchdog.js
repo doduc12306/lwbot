@@ -71,6 +71,7 @@ module.exports.runner = async function runner(client, guild) {
     client.guilds.forEach(guild => {
       // If a guild exists, but a database for the guild does not, create one.
       if(!servers.includes(guild.id)) this.runner(client, guild.id);
+      client.logger.warn(`Found guild (${guild.id}) but no corresponding database. Creating one now...`);
     });
 
     // Begin cleanup process...
