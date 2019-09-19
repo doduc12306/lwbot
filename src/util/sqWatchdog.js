@@ -148,8 +148,8 @@ module.exports.runner = async function runner(client, guild) {
   
         }
   
-      }); */ // Disabled because increment function is moving too fast. https://gitlab.com/akii0008/lwbot-rewrite/issues/3
-      logger.sqLog(`${serverID}: Finished xp cleanup`);
+      }); */ // Disabled because increment function is moving too fast for node to handle. Related issue: https://gitlab.com/akii0008/lwbot-rewrite/issues/3
+      // logger.sqLog(`${serverID}: Finished xp cleanup`);
 
     }));
     logger.sqLog(`Process completed! Took ${new Date() - start}ms`);
@@ -161,5 +161,5 @@ module.exports.runner = async function runner(client, guild) {
 
 module.exports.timer = (client) => {
   logger.sqLog('Watchdog started');
-  setInterval(() => this.runner(client), config.debugMode ? 30000 : 600000);
+  setInterval(() => this.runner(client), config.debugMode ? 30000 : 600000); // If debugMode, run every 30 seconds. If not, run every 10 minutes.
 };
