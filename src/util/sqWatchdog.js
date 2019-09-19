@@ -66,6 +66,14 @@ module.exports.runner = async function runner(client, guild) {
 
     logger.sqLog('Starting process for all servers...');
     const servers = await readdir('databases/servers/');
+
+    // Run through all the guilds to make sure they have a database
+    client.guilds.forEach(guild => {
+      // If a guild exists, but a database for the guild does not, create one.
+      if(!servers.includes(guild.id)) this.runner(client, guild.id);
+    });
+
+    // Begin cleanup process...
     await Promise.all(servers.map(async server => {
       if (server === 'x.txt') return logger.sqLog('Found x.txt - Placeholder file. Ignored, continuing.');
 
