@@ -20,7 +20,7 @@ module.exports.run = async (client, message, args) => {
     let dmMsg = `${bhEmote} **You were softbanned from** \`${message.guild.name}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     const modEmbed = new Discord.RichEmbed()
-      .setThumbnail(toBan.avatarURL)
+      .setThumbnail(toBan.displayAvatarURL)
       .setColor('0x8C0F52')
       .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
       .addField('Softbanned User', `${toBan.toString()} (${toBan.tag})`)

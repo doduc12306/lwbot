@@ -22,7 +22,7 @@ module.exports.run = async (client, message, args) => {
     let dmMsg = `👢 **You were voicekicked from** \`${message.member.voiceChannel.name}\`, **in** \`${message.guild.name}\` \`|\` 👢 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     const modEmbed = new Discord.RichEmbed()
-      .setThumbnail(toKick.avatarURL)
+      .setThumbnail(toKick.displayAvatarURL)
       .setColor('0xA80000')
       .setFooter(`ID: ${toKick.id} | Case: ${info.id}`)
       .addField('Voicekicked User', `${toKick.toString()} (${toKick.tag})`)

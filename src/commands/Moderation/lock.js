@@ -59,7 +59,7 @@ module.exports.run = (client, message, args) => {
     .setColor(client.config.colors.red)
     .addField('Lock Channel', `${channel.toString()} (#${channel.name})`)
     .addField('Moderator', `${message.author.toString()} (${message.author.tag})`)
-    .setThumbnail(message.author.avatarURL);
+    .setThumbnail(message.author.displayAvatarURL);
 
   let durationMs;
   let durationHR;
@@ -96,7 +96,7 @@ module.exports.run = (client, message, args) => {
         .setColor(client.accentColor)
         .addField('Unlock Channel', `${channel.toString()} (#${channel.name})`, true)
         .addField('Moderator', `${client.user.toString()} (${client.user.tag})`, true)
-        .setThumbnail(client.user.avatarURL);
+        .setThumbnail(client.user.displayAvatarURL);
 
       if (duration) modEmbed.addField('Duration', durationHR, true);
       modEmbed.addField('Reason', reason ? `Auto-unlock | ${reason}` : 'Auto-unlock');

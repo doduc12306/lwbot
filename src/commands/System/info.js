@@ -4,8 +4,8 @@ const package = require('../../../package.json');
 module.exports.run = (client, message) => {
   message.send(new Discord.RichEmbed()
     .setColor(client.accentColor)
-    .setAuthor('LINE WEBTOON', client.user.avatarURL)
-    .setThumbnail(client.user.avatarURL)
+    .setAuthor('LINE WEBTOON', client.user.displayAvatarURL)
+    .setThumbnail(client.user.displayAvatarURL)
     .addField('Version', `v${package.version}`, true)
     .addField('Library', `[Discord.js](http://discord.js.org/) (v${package.dependencies['discord.js']})`, true)
     .addField('Repository', '[Gitlab - lwbot-rewrite](http://gitlab.com/akii0008/lwbot-rewrite)', true)

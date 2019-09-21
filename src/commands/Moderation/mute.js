@@ -21,7 +21,7 @@ module.exports.run = async (client, message, args) => {
     let dmMsg = `${mutedEmote} **You were muted in** \`${message.guild.name}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     const modEmbed = new Discord.RichEmbed()
-      .setThumbnail(toMute.user.avatarURL)
+      .setThumbnail(toMute.user.displayAvatarURL)
       .setColor(client.config.colors.purple)
       .setAuthor(`Muted ${toMute.user.tag} (${toMute.user.id})`)
       .setFooter(`ID: ${toMute.user.id} | Case: ${info.id}`)

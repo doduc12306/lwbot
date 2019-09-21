@@ -19,7 +19,7 @@ module.exports.run = async (client, message, args) => {
     let dmMsg = `👢 **You were kicked from** \`${message.guild.name}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     const modEmbed = new Discord.RichEmbed()
-      .setThumbnail(toKick.avatarURL)
+      .setThumbnail(toKick.displayAvatarURL)
       .setColor('0xff8e2b')
       .setFooter(`ID: ${toKick.id} | Case: ${info.id}`)
       .addField('Kicked User', `${toKick.toString()} (${toKick.tag})`)

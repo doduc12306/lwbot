@@ -19,7 +19,7 @@ module.exports.run = async (client, message, args) => {
     let dmMsg = `${bhEmote} **You were banned from** \`${message.guild.name}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     const modEmbed = new Discord.RichEmbed()
-      .setThumbnail(toBan.avatarURL)
+      .setThumbnail(toBan.displayAvatarURL)
       .setColor(client.config.colors.red)
       .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
       .addField('Banned User', `${toBan.toString()} (${toBan.tag})`)

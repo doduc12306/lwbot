@@ -23,7 +23,7 @@ module.exports.run = async (client, message, args) => {
     let dmMsg = `${vbEmote} **You were voicebanned from** \`${message.member.voiceChannel.name}\`, **in** \`${message.guild.name}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     const modEmbed = new Discord.RichEmbed()
-      .setThumbnail(toBan.avatarURL)
+      .setThumbnail(toBan.displayAvatarURL)
       .setColor('0xA80000')
       .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
       .addField('Voicebanned User', `${toBan.toString()} (${toBan.tag})`)

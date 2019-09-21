@@ -8,9 +8,9 @@ module.exports.run = async (client, message) => {
   const profile = new UserProfile(user);
 
   const embed = new Discord.RichEmbed()
-    .setAuthor(user.tag, user.avatarURL)
+    .setAuthor(user.tag, user.displayAvatarURL)
     .addField('ID', user.id, true)
-    .setThumbnail(user.avatarURL)
+    .setThumbnail(user.displayAvatarURL)
     .setDescription(`${user.toString()} | ${await profile.mood}`)
     .addField('Status', user.presence.status === 'online' ? '<:online:450674128777904149> Online' : user.presence.status === 'dnd' ? '<:dnd:450674354163023882> Do Not Disturb' : user.presence.status === 'idle' ? '<:idle:450674222176403456> Idle' : user.presence.status === 'offline' ? '<:offline:450674445670154240> Offline' : `<:streaming:450674542717698058> Streaming [${user.presence.game.name}](${user.presence.game.url})`, true);
 

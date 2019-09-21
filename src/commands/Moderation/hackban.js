@@ -21,7 +21,7 @@ module.exports.run = async (client, message, args) => {
       if (reason) message.guild.modbase.update({ reason: reason }, { where: { id: info.id } });
 
       const modEmbed = new Discord.RichEmbed()
-        .setThumbnail(toBan.avatarURL)
+        .setThumbnail(toBan.displayAvatarURL)
         .setColor(client.config.colors.black)
         .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
         .addField('Hackbanned User', `${toBan.toString()} (${toBan.tag})`)

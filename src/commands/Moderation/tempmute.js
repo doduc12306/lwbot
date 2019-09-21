@@ -29,7 +29,7 @@ module.exports.run = async (client, message, args) => {
     let dmMsg = `${mutedEmote} **You were tempmuted in** \`${message.guild.name}\` **for** \`${durationHR}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     let modEmbed = new Discord.RichEmbed()
-      .setThumbnail(toMute.user.avatarURL)
+      .setThumbnail(toMute.user.displayAvatarURL)
       .setColor(client.config.colors.purple)
       .setFooter(`ID: ${toMute.user.id} | Case: ${info.id}`)
       .addField('Muted User', `${toMute.user.toString()} (${toMute.user.tag})`)
@@ -59,7 +59,7 @@ module.exports.run = async (client, message, args) => {
         type: 'tempmute unmute',
       }).then(async info => {
         modEmbed = new Discord.RichEmbed()
-          .setThumbnail(toMute.user.avatarURL)
+          .setThumbnail(toMute.user.displayAvatarURL)
           .setColor(client.accentColor)
           .setAuthor(`Unmuted ${toMute.user.tag} (${toMute.id})`)
           .setFooter(`ID: ${toMute.id} | Case: ${info.id}`)

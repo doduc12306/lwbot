@@ -19,7 +19,7 @@ module.exports.run = async (client, message, args) => {
     .addField('Moderator', `${moderator} (${moderator.tag})`)
     .addField('Reason', log.dataValues.reason)
     .setFooter(`ID: ${victim.id} | Case ${log.dataValues.id}`)
-    .setThumbnail(victim.avatarURL)
+    .setThumbnail(victim.displayAvatarURL)
     .setTimestamp(log.dataValues.updatedAt);
 
   switch (log.dataValues.type) {

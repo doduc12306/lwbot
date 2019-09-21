@@ -28,7 +28,7 @@ module.exports.run = async (client, message, args) => {
     function announce() { // eslint-disable-line no-inner-declarations
       message.guild.channels.find(channel => channel.name === settings.announcementsChannel).send(new Discord.RichEmbed()
         .setColor(color)
-        .setAuthor(message.author.username, message.author.avatarURL)
+        .setAuthor(message.author.username, message.author.displayAvatarURL)
         .setTimestamp()
         .addField(title, content)
       );

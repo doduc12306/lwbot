@@ -37,7 +37,7 @@ module.exports.run = (client, message, args) => {
     .setColor(client.accentColor)
     .addField('Unlock Channel', `${channel.toString()} (#${channel.name})`)
     .addField('Moderator', `${message.author.toString()} (${message.author.tag})`)
-    .setThumbnail(message.author.avatarURL);
+    .setThumbnail(message.author.displayAvatarURL);
 
   if (reason) modEmbed.addField('Reason', reason);
 

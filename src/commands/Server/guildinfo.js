@@ -10,7 +10,7 @@ module.exports.run = (client, message) => {
     let guildIcon;
     //If the guild icon is empty, sets guildIcon to owner's avatar
     if (message.guild.iconURL) { guildIcon = message.guild.iconURL; }
-    else { guildIcon = message.guild.owner.user.avatarURL; }
+    else { guildIcon = message.guild.owner.user.displayAvatarURL; }
 
     let emotes;
     //Goes with the emote parsing

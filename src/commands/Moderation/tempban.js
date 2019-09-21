@@ -31,7 +31,7 @@ module.exports.run = async (client, message, args) => {
     let dmMsg = `${bhEmote} **You were tempbanned from** \`${message.guild.name}\` ***for*** \`${durationHR}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     let modEmbed = new Discord.RichEmbed()
-      .setThumbnail(toBan.avatarURL)
+      .setThumbnail(toBan.displayAvatarURL)
       .setColor(client.config.colors.red)
       .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
       .addField('Tempbanned User', `${toBan.toString()} (${toBan.tag})`)
@@ -60,7 +60,7 @@ module.exports.run = async (client, message, args) => {
         type: 'tempban unban',
       }).then(async info => {
         modEmbed = new Discord.RichEmbed()
-          .setThumbnail(toBan.avatarURL)
+          .setThumbnail(toBan.displayAvatarURL)
           .setColor(client.accentColor)
           .setAuthor(`Unbanned ${toBan.tag} (${toBan.id})`)
           .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
