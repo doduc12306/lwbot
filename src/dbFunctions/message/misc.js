@@ -3,7 +3,7 @@ module.exports = async (client, message) => {
 
   // Message send function, pretty much extends message.channel.send/message.edit in that it allows the user to edit their command message and it runs that instead
   message.send = (content, options) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (!content) { // Accidental empty message handling
         content = '[Empty Message]';
         reject('Empty message detected!');
@@ -65,7 +65,6 @@ module.exports = async (client, message) => {
             if (content.image) owoedEmbed.setImage(content.image);
             if (content.thumbnail) owoedEmbed.setThumbnail(content.thumbnail);
             if (content.timestamp) owoedEmbed.setTimestamp(content.timestamp);
-            if (content.url) owoedEmbed.setURL(content.url);
 
             return owoedEmbed;
           }
@@ -74,7 +73,7 @@ module.exports = async (client, message) => {
         } else return content;
 
         function owoedContent(str) {
-          str = str.replaceAll('r', 'w').replaceAll('l', 'w').replaceAll('R', 'W').replaceAll('L', 'W');
+          str = str.replace(/r/g, 'w').replace(/l/g, 'w').replace(/R/g, 'W').replace(/L/g, 'W');
           const ous = ['o', 'O', '0', 'u', 'U'];
           const ws = ['w', 'W'];
 
