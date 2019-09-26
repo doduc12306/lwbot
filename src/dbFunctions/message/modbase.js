@@ -7,8 +7,7 @@ module.exports = (client, message) => {
     host: 'localhost',
     dialect: 'sqlite',
     logging: false,
-    storage: `databases/servers/${message.guild.id}.sqlite`,
-    operatorsAliases: false
+    storage: `databases/servers/${message.guild.id}.sqlite`
   });
 
   // Guild modbase support

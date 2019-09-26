@@ -7,8 +7,7 @@ module.exports.table = (guildID) => {
     host: 'localhost',
     dialect: 'sqlite',
     logging: false,
-    storage: `databases/servers/${guildID}.sqlite`,
-    operatorsAliases: false
+    storage: `databases/servers/${guildID}.sqlite`
   });
 };
 
