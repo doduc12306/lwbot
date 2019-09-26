@@ -69,9 +69,14 @@ module.exports.runner = async function runner(client, guild) {
 
     // Run through all the guilds to make sure they have a database
     client.guilds.forEach(guild => {
+      // Separate the .sqlite extention from the server ID
+      const serversWithout_dotSqlite = servers.map(g => g.split('.sqlite')[0]);
+
       // If a guild exists, but a database for the guild does not, create one.
-      if(!servers.includes(guild.id)) this.runner(client, guild.id);
-      client.logger.warn(`Found guild (${guild.id}) but no corresponding database. Creating one now...`);
+      if(!serversWithout_dotSqlite.includes(guild.id)) {
+        client.logger.warn(`Found guild (${guild.id}) but no corresponding database. Creating one now...`);
+        this.runner(client, guild.id);
+      } else client.logger.sqLog(`Found guild (${guild.id}) with corresponding database.`);
     });
 
     // Begin cleanup process...
