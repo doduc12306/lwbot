@@ -9,7 +9,7 @@ module.exports.run = (client, message, args) => {
 };
 
 exports.conf = {
-  enabled: true,
+  enabled: false,
   aliases: [],
   guildOnly: false,
   permLevel: 'User'
