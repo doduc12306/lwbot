@@ -50,7 +50,7 @@ module.exports = async (client, message) => {
 
       function owoify() {
         // owo mode functionality
-        if (client.settings.get(message.guild.id)['owoMode'] === 'true') {
+        if (message.guild && client.settings.get(message.guild.id)['owoMode'] === 'true') {
           if (content instanceof RichEmbed) {
             const owoedEmbed = new RichEmbed();
 
