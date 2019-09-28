@@ -56,7 +56,7 @@ module.exports.run = (client, message, args) => {
 exports.conf = {
   enabled: true,
   aliases: ['unlockchannel'],
-  permLevel: 'User',
+  permLevel: 'Moderator',
   guildOnly: true
 };
 
