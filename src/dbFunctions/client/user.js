@@ -164,7 +164,7 @@ class UserProfile {
             const badgeArray = res[0].get('value').split(' ');
             if (badgeArray.includes(badgeName)) return false; // If the array has it already, dont go further.
 
-            this.shortcut.update({ value: `${res[0].get('value')} ${badgeName}` }).catch(e => { throw new Error(e); });
+            this.shortcut.update({ value: `${res[0].get('value')} ${badgeName}` }, { where: { key: 'badges' } }).catch(e => { throw new Error(e); });
             badgeArray.push(badgeName);
             return badgeArray;
           }).catch(e => { throw new Error(e); });
