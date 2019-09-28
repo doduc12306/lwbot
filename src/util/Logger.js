@@ -27,7 +27,7 @@ exports.log = (content, type = 'log') => {
       break;
     }
     case 'verbose': {
-      if (!['string', 'number'].includes(typeof content)) content = require('util').inspect(content, { depth: 0, colors: true });
+      if (typeof content === 'object') content = require('util').inspect(content, { depth: 0, colors: true });
       if(content.stack || content.includes('\n')) content = content.stack || content;
       appendToLog('verbose', content, false, true);
       if (config.verboseMode) return console.log(`${timestamp} ${chalk.gray('verbose:')} ${chalk.gray(content.split('\n').join(`\n${timestamp} ${chalk.gray('verbose: ')}`))} `);
