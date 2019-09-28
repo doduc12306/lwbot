@@ -39,7 +39,7 @@ exports.run = async (client, message, args) => {
 
       if (command.conf.aliases.join(', ')) desc += `\n**Aliases:** ${command.conf.aliases.join(', ')}`;
 
-      if (level < client.levelCache[command.conf.permLevel]) desc += '❌ **You do not have access to this command.**';
+      if (level < client.levelCache[command.conf.permLevel]) desc += '\n❌ **You do not have access to this command.**';
 
       const cmdEmbed = new Discord.RichEmbed()
         .setTitle(command.help.name.toProperCase())
