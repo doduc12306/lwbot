@@ -10,6 +10,7 @@ module.exports = (client) => {
 
   */
   client.permlevel = member => {
+    if (!member) return 0; // If member is undefined or null for whatever reason, return 0 - User
     if (!member.guild) return 0; // If the member given isn't in a guild (for DMs) return 0 - User for the permlevel
 
     let permlvl = 0;
@@ -124,12 +125,6 @@ module.exports = (client) => {
     }
     delete require.cache[require.resolve(`../../commands/${folder}/${commandName}.js`)];
     return false;
-  };
-
-  // <Object>.inspect() - shortcut to util.inspect()
-  client.inspect = (obj, depth) => {
-    if (!obj) throw new Error('No object given to inspect');
-    return require('util').inspect(obj, { depth: typeof depth === 'number' ? depth : 0, colors: true });
   };
 
   client.verbose = content => client.logger.verbose(content);
