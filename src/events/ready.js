@@ -18,7 +18,7 @@ module.exports = async client => {
 
   client.tags.sync();
 
-  client.verbose(`
+  client.logger.verbose(`
 
       ______ ______  _____  _____  _   _    _____  _____   ______   ___   _   _
       |  ___|| ___ \\|  _  ||_   _|| | | |  |_   _||_   _|  |  _  \\ / _ \\ | \\ | |

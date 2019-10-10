@@ -127,8 +127,6 @@ module.exports = (client) => {
     return false;
   };
 
-  client.verbose = content => client.logger.verbose(content);
-
   // `await client.wait(1000);` to "pause" for 1 second.
   client.wait = require('util').promisify(setTimeout);
 

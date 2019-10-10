@@ -16,8 +16,8 @@ module.exports = async (client, guild) => {
   let role = await guild.roles.find(g => g.name.toLowerCase() === 'muted');
   if (!role) {
     role = await guild.createRole({ name: 'Muted', color: 'DARK_ORANGE', position: guild.me.highestRole.position - 1 }, 'Guild Create | Guild setup!')
-      .then(role => { client.verbose(`guildCreate | Created muted role in ${guild.name} (${guild.id})`); owPerms(role); })
-      .catch(e => { mutedRoleCreateError = true; client.verbose(e); });
+      .then(role => { client.logger.verbose(`guildCreate | Created muted role in ${guild.name} (${guild.id})`); owPerms(role); })
+      .catch(e => { mutedRoleCreateError = true; client.logger.verbose(e); });
   }
   else { owPerms(role); }
 
@@ -25,16 +25,16 @@ module.exports = async (client, guild) => {
     await guild.channels.filter(g => g.type === 'text').forEach(channel => {
       if (guild.me.permissionsIn(channel).serialize()['MANAGE_ROLES']) {
         channel.overwritePermissions(role, { SEND_MESSAGES: false, ADD_REACTIONS: false }, 'Initial Setup Process')
-          .then(() => client.verbose(`guildCreate | Wrote permissions for text channel #${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`))
-          .catch(e => { client.verbose(e); textErrored = true; });
+          .then(() => client.logger.verbose(`guildCreate | Wrote permissions for text channel #${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`))
+          .catch(e => { client.logger.verbose(e); textErrored = true; });
       }
       else client.logger.verbose(`guildCreate | Tried to write permissions to text channel #${channel.name} (${channel.id}) in ${guild.name} (${guild.id}), but I'm missing the MANAGE_ROLES permission.`);
     });
     await guild.channels.filter(g => g.type === 'voice').forEach(channel => {
       if (guild.me.permissionsIn(channel).serialize()['MANAGE_ROLES']) {
         channel.overwritePermissions(role, { CONNECT: false, SPEAK: false }, 'Inital Setup Process')
-          .then(() => client.verbose(`guildCreate | Wrote permissions for voice channel ${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`))
-          .catch(e => { client.verbose(e); voiceErrored = true; });
+          .then(() => client.logger.verbose(`guildCreate | Wrote permissions for voice channel ${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`))
+          .catch(e => { client.logger.verbose(e); voiceErrored = true; });
       }
       else client.logger.verbose(`guildCreate | Tried to write permissions to voice channel ${channel.name} (${channel.id}) in ${guild.name} (${guild.id}), but I'm missing the MANAGE_ROLES permission.`);
     });
