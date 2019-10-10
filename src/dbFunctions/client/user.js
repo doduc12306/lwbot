@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const { client } = require('../../index'); // Client bot got initialized with
+const { client } = require('../../startup'); // Client bot got initialized with
 const { User } = require('discord.js');
 
 /**
@@ -10,10 +10,10 @@ class UserProfile {
    * @param {String} userID User ID of the user to create/modify
    */
   constructor(userID) {
-    if(userID instanceof User) userID = userID.id; // If the userID passed is actually a d.js user object, then turn it into an id that the class can handle.
+    if (userID instanceof User) userID = userID.id; // If the userID passed is actually a d.js user object, then turn it into an id that the class can handle.
 
     const user = client.users.get(userID);
-    if(!user) throw new Error('User does not exist to get.');
+    if (!user) throw new Error('User does not exist to get.');
 
     this.userID = userID;
     this.djsUser = user;
