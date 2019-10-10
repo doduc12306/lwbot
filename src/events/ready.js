@@ -1,7 +1,8 @@
 const { Collection } = require('discord.js');
 const moment = require('moment');
 const watchdog = require('../util/sqWatchdog');
-const websocket = require('../util/websocket');
+const failoverWSS = require('../util/ws-failover-server');
+const Websocket = require('ws');
 
 module.exports = async client => {
   if (!client.user.bot) {
@@ -64,16 +65,57 @@ module.exports = async client => {
   // Run the watchdog once before ready
   client.logger.log('Running watchdog once before full startup...');
   const wasSqLogEnabled = client.config.sqLogMode; // boolean
-  if(!wasSqLogEnabled) { client.logger.log('Enabling sqLogMode temporarily while it runs...'); client.config.sqLogMode = true; }
+  if (!wasSqLogEnabled) { client.logger.log('Enabling sqLogMode temporarily while it runs...'); client.config.sqLogMode = true; }
   await watchdog.runner(client);
-  if(!wasSqLogEnabled) { client.logger.log('Disabling sqLogMode because it was disabled originally...'); client.config.sqLogMode = false; }
+  if (!wasSqLogEnabled) { client.logger.log('Disabling sqLogMode because it was disabled originally...'); client.config.sqLogMode = false; }
 
   // Start the sqWatchdog interval timer
   watchdog.timer(client);
 
-  // Create the websocket server, and pass the client in
-  websocket(client);
-  // This is handled in another file because it would clutter this one.
+  if (!global.failover) { // If this is the main process (aka not failover mode)
+    // Create the websocket server, and pass the client in
+    failoverWSS(client);
+    // This is handled in another file because it would clutter this one.
+  } else { // If this is the failover process (aka failover mode)
+    client.logger.warn('Failover mode enabled. Websocket server not started.');
+
+    const reconnectionTimer = setInterval(reconnect, 1000);
+    function reconnect() { // eslint-disable-line no-inner-declarations
+      const ws = new Websocket('ws://localhost:13807');
+
+      // Websocket connection encountered an error.
+      ws.on('error', err => {
+        if (err.code === 'ECONNREFUSED') { client.logger.verbose('Main process reconnection failed. Assuming it is still offline. Retrying...'); }
+        else {
+          client.logger.error(`FAILOVER ERROR: ${err}\n\nPROCESS WILL NOW EXIT`);
+          process.exit(1);
+        }
+      });
+
+      // Reconnection established!
+      ws.on('open', () => {
+        client.logger.log('Main process reconnected!', 'ready');
+        ws.send(JSON.stringify({ action: 'reconnect' }));
+        clearInterval(reconnectionTimer);
+        // Don't exit the process here because the server will close it for me
+      });
+
+      // Connection was closed.
+      ws.on('close', (code, reason) => {
+        if (code === 1006) return; // Code 1006 = Connection does not exist
+        client.logger.log(`Failover websocket connection closed gracefully. \nCode: ${code} | Reason: ${reason}`);
+
+        if(process.env.pm_uptime) {
+          client.logger.log('Restarting using PM2...');
+          process.exit();
+        } else {
+          client.logger.warn('Process is not running via PM2. Manual restart required.');
+          process.exit();
+        }
+      });
+    }
+
+  }
 
   const after = new Date();
   client.startup = after - client.before;

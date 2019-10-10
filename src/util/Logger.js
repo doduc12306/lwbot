@@ -6,7 +6,7 @@ const config = require('../config');
 const { mkdir, appendFile } = require('fs');
 
 exports.log = (content, type = 'log') => {
-  const timestamp = chalk.grey(`[${moment().format('MM/DD/YYYY HH:mm:ss')}]`);
+  const timestamp = `${chalk.grey(`[${moment().format('MM/DD/YYYY HH:mm:ss')}]`)}${global.failover ? chalk.yellow(' F') : ''}`;
   switch (type) {
     case 'log': {
       appendToLog('info', content, true, true);
@@ -80,7 +80,7 @@ async function appendToLog(type, content, combined = true, combinedDebug = true)
   if (config.noFileLog) return;
 
   const timestamp = moment().format('MM/DD/YYYY HH:mm:ss');
-  const currentDayLog = new Date().toDateString().replace(/ +/g, '-'); // Gets current date
+  const currentDayLog = moment().format('YYYY-MM-DD');
 
   await mkdir(`./logs/${currentDayLog}`, { recursive: true }, e); // Makes ../logs/ if it not already exist
   await appendFile(`./logs/${currentDayLog}/${type}.log`, `${timestamp} ${content}\n`, e);
