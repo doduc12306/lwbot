@@ -12,7 +12,7 @@
     "convert-units": "^2.3.4",
     "discord.js": "^11.5.1",
     "dotenv": "^8.0.0",
-    "enmap": "^5.1.0",
+    "enmap": "5.2.0",
     "erlpack": "github:hammerandchisel/erlpack",
     "ffmpeg-binaries": "^4.0.0",
     "giphy-api": "^2.0.1",
@@ -21,8 +21,8 @@
     "node-fetch": "^2.5.0",
     "node-opus": "^0.3.2",
     "parse-duration": "^0.1.1",
-    "puppeteer-core": "^1.19.0",
-    "sequelize": "^5.12.1",
+    "puppeteer-core": "1.20.0",
+    "sequelize": "5.19.5",
     "simple-youtube-api": "^5.2.1",
     "sodium": "^3.0.2",
     "sqlite3": "^4.0.9",
@@ -31,14 +31,14 @@
     "ytdl-core-discord": "^1.0.3"
   },
   "devDependencies": {
-    "eslint": "^6.1.0",
+    "eslint": "6.5.1",
     "pm2": "^3.5.0",
     "terminal-kit": "^1.28.42"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "pm2 start index.js",
-    "build-node-opus": "sudo apt-get update; sudo apt install make g++; sudo apt-get install autoconf libtool; sudo yarn add node-opus ffmpeg-binaries; echo \" \"; echo \"Build complete\";"
+    "build": "sudo apt-get update; sudo apt install make g++ autoconf libtool pkg-config libcairo2-dev libjpeg-dev libgif-dev; sudo yarn add node-opus ffmpeg-binaries; echo \" \"; echo \"Build complete\";"
   },
   "repository": {
     "type": "git",
