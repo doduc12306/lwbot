@@ -106,7 +106,7 @@ module.exports = async (client, message) => {
   }
 
   // Get the user or member's permission level from the elevation
-  const level = client.permlevel(message.member);
+  const level = message.guild ? client.permlevel(message.member) : 0;
   message.benchmarks['LevelGetterBenchmark'] = new Date() - a;
 
   // Check whether the command, or alias, exist in the collections defined
@@ -183,6 +183,7 @@ module.exports = async (client, message) => {
   try {
     await cmd.run(client, message, args, level);
   } catch (e) {
+    client.logger.error(e);
     let firstErrorStackTrace;
     if (e.stack) firstErrorStackTrace = e.stack.split('\n')[1];
     message.send(`:x: **Something went wrong running the command:**\n\`\`\`\n${e}\n\t${firstErrorStackTrace}\n\`\`\` `);
