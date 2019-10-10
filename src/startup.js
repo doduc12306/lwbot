@@ -7,30 +7,35 @@ const fs = require('fs');
 const walk = require('walk');
 const Enmap = require('enmap');
 
+// Export the client for other files' usage
+module.exports.client = new Discord.Client({
+  fetchAllMembers: true,
+  disabledEvents: ['TYPING_START', 'USER_NOTE_UPDATE', 'RELATIONSHIP_ADD', 'RELATIONSHIP_REMOVE'],
+  ws: { large_threshold: 1000 }
+});
+
 module.exports.startup = () => {
   if(global.failover) console.warn('FAILOVER INITIATED!');
 
   const options = commandLineArgs([
-  // Modes
+    // Modes
     { name: 'debug', alias: 'd', type: Boolean },
     { name: 'verbose', alias: 'v', type: Boolean },
     { name: 'sqLog', alias: 's', type: Boolean },
     { name: 'ciMode', type: Boolean },
-    { name: 'noFileLog', type: Boolean },
   
     // Tokens
     { name: 'token', type: String },
     { name: 'debugToken', type: String },
-    { name: 'googleAPIKey', type: String }
+    { name: 'googleAPIKey', type: String },
+
+    // Options
+    { name: 'noFileLog', type: Boolean },
+    { name: 'noFailoverWebsocket', type: Boolean }
   ]);
-  
-  const client = new Discord.Client({
-    fetchAllMembers: true,
-    disabledEvents: ['TYPING_START', 'USER_NOTE_UPDATE', 'RELATIONSHIP_ADD', 'RELATIONSHIP_REMOVE'],
-    ws: { large_threshold: 1000 }
-  });
+
+  const client = this.client;
   client.config = require('./config.js');
-  module.exports.client = client; // Export the client for use in other files
   
   // This is down here because client isn't defined by the time cli args are.
   if (options.debug) client.config.debugMode = true;
