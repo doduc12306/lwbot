@@ -6,6 +6,14 @@ const { promisify } = require('util');
 const fs = require('fs-extra');
 const walk = require('walk');
 const Enmap = require('enmap');
+const moment = require('moment');
+const compressing = require('compressing');
+
+const readdir = promisify(fs.readdir);
+const writeFile = promisify(fs.writeFile);
+const mkdir = promisify(fs.mkdir);
+const stat = promisify(fs.stat);
+const remove = promisify(fs.remove);
 
 // Export the client for other files' usage
 module.exports.client = new Discord.Client({
