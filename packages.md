@@ -10,23 +10,26 @@ I have quite a few packages; I felt like I should explain them and why they're h
 `node index.js -v # Verbose mode`
 `node index.js --ciMode # Bypasses startup script, instead uses ci script.`
 ... etc
+* compressing - Compresses log folders to save space on the disk
 * convert-units - Converts *many* units from one to another - For [convert command](src/commands/Misc/convert.js)
-* **discord.js - Main library used to do everything here.** If I could have only one package this would be it.
+* **discord.js - Connects to Discord API** If I could have only one package this would be it.
 * dotenv - .env file support, also used in conjunction with command-line-args
 * enmap - Used for various mappings, like commands, folders, aliases, etc.
 * erlpack - Significantly faster WebSocket data (de)serialisation
 * ffmpeg-binaries - Music support
+* fs-extra - Promise based fs, plus support for deleting directories which is what I was going for anyway
 * giphy-api - Giphy API access - For [kiss command](src/commands/Fun/kiss.js)
 * moment / moment-duration-format - Timestamp formatting
 * node-fetch - Alternative to snekfetch - For [wolfram command](src/commands/Misc/wolfram.js)
 * node-opus - Music support
 * parse-duration - For converting times into milliseconds, mainly used in the Moderation/temp(etc) commands
-* puppeteer - Headless browser. Really neat. For [search command](src/commands/Webtoons/search.js)
+* puppeteer-core - Headless browser. Really neat. For [webtoon command](src/commands/Comics/webtoon.js)
 * sequelize - ORM used for handling *all* database queries on this bot
 * simple-youtube-api - For Music module, pulls information on the youtube video provided by user
 * sodium - Faster voice packet encryption and decryption
 * sqlite3 - Required for sequelize package
 * walk - Finds files inside directories, and loads them. Used in the [index file](src/index.js)
+* ws - Used for the failover websocket
 * ytdl-core-discord - Alternative to ytdl-core, optimized specifically for discord.js, voice backend
 
 ## devDependencies
