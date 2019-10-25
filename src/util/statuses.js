@@ -55,6 +55,7 @@ module.exports.statuses = client => [
   ['on a Raspberry Pi', { type: 'PLAYING' }],
   [`with ${client.users.size} users!`, { type: 'PLAYING' }],
   [`with ${client.guilds.size} servers!`, { type: 'PLAYING' }],
+  ['with da bois', { type: 'PLAYING' }], 
 
   /* Watching */
   ['Netflix', { type: 'WATCHING' }],
