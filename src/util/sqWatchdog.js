@@ -1,5 +1,5 @@
 const logger = require('./Logger');
-const readdir = require('util').promisify(require('fs').readdir);
+const readdir = require('util').promisify(require('fs-extra').readdir);
 const { Guild } = require('discord.js');
 
 const config = require('../config');
@@ -84,7 +84,7 @@ module.exports.runner = async function runner(client, guild) {
       if (server === 'x.txt') return logger.sqLog('Found x.txt - Placeholder file. Ignored, continuing.');
 
       const serverID = server.split('.sqlite')[0];
-      logger.sqLog(`Found ${serverID}`);
+      logger.sqLog(`Found ${server}`);
       if (!server.endsWith('.sqlite')) return logger.error('Non-sqlite file found in databases/servers! File: ' + server);
       if (!/\d+/g.test(server)) logger.warn('Non-server file found in databases/servers! File: ' + server);
 

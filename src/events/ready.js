@@ -42,7 +42,7 @@ module.exports = async client => {
     // This is achieved by writing a new file on error, exiting, then on restart, reading the file
     // then sending the contents to me.
     try {
-      const fs = require('fs');
+      const fs = require('fs-extra');
       let e = require.resolve('../e');
       e = await fs.readFileSync('e', 'utf8');
       await client.users.get(client.config.ownerID).send(`**I restarted! There was an error before I restarted:**\n\`\`\`${e}\`\`\``);

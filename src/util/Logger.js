@@ -3,7 +3,7 @@
 const chalk = require('chalk');
 const moment = require('moment');
 const config = require('../config');
-const { mkdir, appendFile } = require('fs');
+const { mkdir, appendFile } = require('fs-extra');
 
 exports.log = (content, type = 'log') => {
   const timestamp = `${chalk.grey(`[${moment().format('MM/DD/YYYY HH:mm:ss')}]`)}${global.failover ? chalk.yellow(' F') : ''}`;

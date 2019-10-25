@@ -1,7 +1,7 @@
 const walk = require('walk');
 const { join } = require('path');
 const { promisify } = require('util');
-let { readdir } = require('fs');
+let { readdir } = require('fs-extra');
 readdir = promisify(readdir);
 require('dotenv').config({ path: join(__dirname, '../../.env') });
 
