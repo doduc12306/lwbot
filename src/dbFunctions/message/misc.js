@@ -60,11 +60,6 @@ module.exports = async (client, message) => {
             if (content.footer) owoedEmbed.setFooter(owoedContent(content.footer));
             if (content.fields) for (const field of content.fields) { owoedEmbed.addField(field.name, owoedContent(field.value), field.inline); }
             if (content.color) owoedEmbed.setColor(content.color);
-            if (content.file) owoedEmbed.attachFile(content.file);
-            if (content.files) owoedEmbed.attachFiles(content.files);
-            if (content.image) owoedEmbed.setImage(content.image);
-            if (content.thumbnail) owoedEmbed.setThumbnail(content.thumbnail);
-            if (content.timestamp) owoedEmbed.setTimestamp(content.timestamp);
 
             return owoedEmbed;
           }
