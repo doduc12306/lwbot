@@ -1,5 +1,64 @@
 # Changelog
 
+## v1.5.9 [10/24/2019]
+### Commands
+* Comics/webtoon: Added backwards compatibility in case users still type "featured" or "discovery"
+* Fun/cowsay: Disabled while I find a way to not run cowasy directly on my rpi
+* System/help: Newline for description if user doesnt have access
+* System/power: Reboot now checks proper pm2 environment variable
+* Tags: Consistent emoji scheme :pencil:
+* Misc/avatar -> User/avatar
+* Economy/rep -> User/rep
+* Server/userinfo -> User/userinfo
+
+### Backend
+* **Failover websocket.** Process 1 is running. Process 2 connects to p1 via websocket. P2 detects p1 has gone offline via broken websocket connection. P2 starts clone of P1 with reduced features (planned!) and waits for p1 to come back. Once p1 comes back, p2 restarts and waits for p1 to go down again.
+* Packages
+  * `+` compressing@1.4.0 to compress log folders to save disk space
+  * `*` enmap@5.1.0 -> 5.2.0
+  * `+` fs-extra@8.1.0 to add some promises to fs, plus deleting whole folders; Bot-wide: fs -> fs-extra
+  * `*` puppeteer-core@1.19.0 -> 1.20.0
+  * `*` sequelize@5.12.1 -> 5.19.5
+  * `+` ws for failover websocket communication
+  * `*` eslint@6.1.0 -> 6.5.1
+* dbFunctions
+  * client
+    * misc
+      * Deleted client.inspect() because it was causing issues with console.log and such
+    * user
+      * index -> startup
+      * whitespace changes
+      * badges: actually shows where to update the row in the database
+  * message
+    * misc
+      * owomode: check to make sure message is in a guild
+      * owomode: remove owo'ing of things that have a url. This does not apply to field values.
+      * owomode: replaceAll -> replace(/${letter}/g)
+* Events
+  * message
+    * Remove the split for caps checking
+    * Added some more ping-but-no-command responses
+    * If there isn't a guild in the message, the permlevel is 0, regardless of bot config status.
+  * ready
+    * Failover websocket support
+* src/failover: Process 2 source
+* src/util/ws-failover-server: Process 1 failover websocket server source
+* index.js -> startup.js, because the failover starts a process but via a module.export from index (startup, now)
+* startup: Not-current-day log compression to save space
+* Logger: Outputs if process is in failover mode too; +ws export
+* sqWatchdog: Checks for a guild that doesn't have a database. If not, create one.
+* Added "Playing **with da bois**" status
+
+### Misc
+* .env.default FAILOVER_WEBSOCKET_KEY key now exists for the failover websocket to authenticate with itself.
+* .eslintrc: disabled no-empty, which was basically just eslint having a cow every time i left an if statement or for loop open
+* Deleted .gitmodules
+* Changed around the working for README.md
+* Created /modules/README.md, just for some clarification of what's in there
+* Renamed PACKAGE_WHY to packages
+* Bot-wide: avatarURL -> displayAvatarURL because displayAvatarURL shows the default blue Clyde if the user hasnt set their avatar yet
+* Bot-wide: client.verbose -> client.logger.verbose
+
 ## v1.5.7 [7/7/2019]
 ### Commands
 * Webtoons/search -> Comics/webtoon: Renamed discover to canvas, while still keeping discover there for those that forget the update happened
