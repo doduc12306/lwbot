@@ -3,7 +3,7 @@ require('dotenv').config({ path: join(__dirname, '../.env') });
 const commandLineArgs = require('command-line-args');
 const Discord = require('discord.js');
 const { promisify } = require('util');
-const fs = require('fs');
+const fs = require('fs-extra');
 const walk = require('walk');
 const Enmap = require('enmap');
 
