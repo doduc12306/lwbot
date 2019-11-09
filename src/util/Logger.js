@@ -17,7 +17,7 @@ exports.log = (content, type = 'log') => {
       return console.warn(`${timestamp} ${chalk.yellow('warn:')} ${content} `);
     }
     case 'error': {
-      if(content.stack || content.includes('\n')) content = content.stack || content;
+      if (content.stack || content.includes('\n')) content = content.stack || content;
       appendToLog('error', content, true, true);
       return console.error(`${timestamp} ${chalk.red('error:')} ${content.split('\n').join(`\n${timestamp} ${chalk.red('error: ')}`)} `);
     }
@@ -28,9 +28,9 @@ exports.log = (content, type = 'log') => {
     }
     case 'verbose': {
       if (typeof content === 'object') content = require('util').inspect(content, { depth: 0, colors: true });
-      if(content.stack || content.includes('\n')) content = content.stack || content;
+      if (typeof content === 'string' && (content.stack || content.includes('\n'))) content = content.stack || content.split('\n').join(`\n${timestamp} ${chalk.gray('verbose: ')}`);
       appendToLog('verbose', content, false, true);
-      if (config.verboseMode) return console.log(`${timestamp} ${chalk.gray('verbose:')} ${chalk.gray(content.split('\n').join(`\n${timestamp} ${chalk.gray('verbose: ')}`))} `);
+      if (config.verboseMode) return console.log(`${timestamp} ${chalk.gray('verbose:')} ${chalk.gray(content)} `);
       break;
     }
     case 'sqLog': {
