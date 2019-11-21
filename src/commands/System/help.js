@@ -1,12 +1,13 @@
 const Discord = require('discord.js');
 
 exports.run = async (client, message, args) => {
-  const settings = require('../../dbFunctions/message/settings').functions;
+  const GuildSettings = require('../../dbFunctions/message/settings');
+  const settings = new GuildSettings(message.guild.id);
 
   const level = client.permlevel(message.member);
   // If no specific command is called, show all filtered commands.
   if (!args[0]) {
-    const prefix = message.guild ? await settings.get(message.guild.id, 'prefix') : client.config.defaultSettings.prefix;
+    const prefix = message.guild ? await settings.get('prefix') : client.config.defaultSettings.prefix;
 
     // Filter all commands by which are available for the user's level, using the <Collection>.filter() method.
     const myCommands = message.guild ? client.commands.filter(cmd => client.levelCache[cmd.conf.permLevel] <= level && cmd.conf.enabled && !cmd.conf.hidden) : client.commands.filter(cmd => client.levelCache[cmd.conf.permLevel] <= level && cmd.conf.guildOnly !== true && cmd.conf.enabled && !cmd.conf.hidden);

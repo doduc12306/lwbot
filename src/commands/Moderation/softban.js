@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 
 module.exports.run = async (client, message, args) => {
-  const settings = require('../../dbFunctions/message/settings').functions;
+  const GuildSettings = require('../../dbFunctions/message/settings');
+  const settings = new GuildSettings(message.guild.id);
   const toBan = message.mentions.users.first();
   const toBanM = message.mentions.members.first();
   const reason = args.slice(1).join(' ');
@@ -31,10 +32,10 @@ module.exports.run = async (client, message, args) => {
     await toBan.send(dmMsg);
     await message.guild.ban(toBan, { days: 2 });
     await message.guild.unban(toBan);
-    await settings.get(message.guild.id, 'modLogChannel')
+    await settings.get('modLogChannel')
       .then(async modLogChannel => {
         modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
-        if (!modLogChannel) return message.send(`⚠️ **Softban completed, but there is no mod log channel set.** Try \`${await settings.get(message.guild.id, 'prefix')}set <edit/add> modLogChannel <channel name>\``);
+        if (!modLogChannel) return message.send(`⚠️ **Softban completed, but there is no mod log channel set.** Try \`${await settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
         if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
           modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Softban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }

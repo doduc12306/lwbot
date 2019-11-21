@@ -1,10 +1,11 @@
 const Discord = require('discord.js');
-const settingsFunctions = require('../../dbFunctions/message/settings').functions;
+const GuildSettings = require('../../dbFunctions/message/settings');
 
 exports.run = async (client, message, args) => {
-  const guildSettings = client.settings.get(message.guild.id);
   const action = args[0];
   if (!action) return viewSettings();
+
+  const settingsFunctions = new GuildSettings(message.guild.id);
 
   if (action === 'view') {
     if (!args[1]) return viewSettings();
@@ -57,12 +58,12 @@ exports.run = async (client, message, args) => {
     if (/\d{1,3}%/.test(newValue))
       newValue = newValue.substring(0, newValue.length - 1);
 
-    settingsFunctions.edit(client, message.guild.id, setting.originalSetting, newValue)
+    settingsFunctions.edit(setting.originalSetting, newValue)
       .then(async () => {
         await (client.settings.get(message.guild.id)[setting.originalSetting] = newValue);
         const newSetting = await viewSettings(setting.id, null);
         message.send(`:white_check_mark: \`|\` ⚙ **Setting edited!**\n\`\`\`xl\n[${newSetting.id}] ${newSetting.key} - ${newSetting.value}\n\`\`\``);
-      }).catch(e => { return message.send(`:x: \`|\` ⚙ **There was an error editing the setting:**\n\`\`\`${e.stack}\`\`\``); });
+      }).catch(e => { client.logger.error(e.stack); return message.send(`:x: \`|\` ⚙ **There was an error editing the setting:**\n\`\`\`${e.stack}\`\`\``); });
 
   } else if (action === 'reset') {
     const settingToReset = args.slice(1).join(' ');
@@ -76,7 +77,7 @@ exports.run = async (client, message, args) => {
 
       // If the user said "y" or "yes"
       if (/y(es)?/i.test(response)) {
-        settingsFunctions.edit(client, message.guild.id, setting.originalSetting, client.config.defaultSettings[setting.originalSetting])
+        settingsFunctions.edit(setting.originalSetting, client.config.defaultSettings[setting.originalSetting])
           .then(async () => {
             await (client.settings.get(message.guild.id)[setting.originalSetting] = client.config.defaultSettings[setting.originalSetting]);
             const newSetting = await viewSettings(+settingToReset, null);
@@ -96,7 +97,7 @@ exports.run = async (client, message, args) => {
 
       // If the user said "y" or "yes"
       if (/y(es)?/i.test(response)) {
-        settingsFunctions.edit(client, message.guild.id, setting.originalSetting, client.config.defaultSettings[setting.originalSetting])
+        settingsFunctions.edit(setting.originalSetting, client.config.defaultSettings[setting.originalSetting])
           .then(async () => {
             await (client.settings.get(message.guild.id)[setting.originalSetting] = client.config.defaultSettings[setting.originalSetting]);
             const newSetting = await viewSettings(null, settingToReset);
@@ -114,7 +115,7 @@ exports.run = async (client, message, args) => {
    * Get a setting [by ID or key]
    * @param {Number} [id=undefined] ID of the setting
    * @param {String} [key=undefined] Name of the setting
-   * @returns id: Number, key: String, value: String
+   * @return id: Number, key: String, value: String
    */
   function viewSettings(id, key) {
     /* * * * * * * * * * * * * * LEGEND * * * * * * * * * * * * * * * *
@@ -129,6 +130,7 @@ exports.run = async (client, message, args) => {
 
     // Makes settings look nicer to display
     const prettySettings = new Discord.Collection();
+    const guildSettings = client.settings.get(message.guild.id);
     for (const setting of Object.entries(guildSettings)) {
       const key = setting[0];
       const value = setting[1];

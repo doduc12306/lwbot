@@ -8,14 +8,7 @@ module.exports = async (client, message) => {
   require('../dbFunctions/message/modbase.js')(client, message);
 
   let commandsTable;
-  if (message.channel.type !== 'dm') commandsTable = require('../dbFunctions/message/commands').functions.commandsSchema(message.guild.id);
-
-  let settingsFunctions;
-  let settingsSchema;
-  if (message.channel.type !== 'dm') {
-    settingsFunctions = require('../dbFunctions/message/settings').functions;
-    settingsSchema = settingsFunctions.settingsSchema(message.guild.id);
-  }
+  if (message.channel.type !== 'dm') commandsTable = require('../dbFunctions/message/commands').functions.commandsSchema(message.guild.id); 
 
   const capsWarnEnabled = message.guild
     ? client.settings.get(message.guild.id)['capsWarnEnabled'] === 'true' ? true : false
@@ -195,6 +188,8 @@ module.exports = async (client, message) => {
 
   // Other server database checks
   if (message.guild) {
+    const GuildSettings = require('../dbFunctions/message/settings');
+    const settingsSchema = new GuildSettings(message.guild.id).shortcut;
     for (const setting of Object.entries(client.config.defaultSettings)) {
       const key = setting[0];
       const value = setting[1];

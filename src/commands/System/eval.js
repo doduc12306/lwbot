@@ -13,7 +13,7 @@ require('moment-duration-format');
 
 const commands = require('../../dbFunctions/message/commands');
 const xp = require('../../dbFunctions/message/xp');
-const settings = require('../../dbFunctions/message/settings');
+const GuildSettings = require('../../dbFunctions/message/settings');
 const User = require('../../dbFunctions/client/user');
 const package = require('../../../package.json');
 

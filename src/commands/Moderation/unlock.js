@@ -1,6 +1,7 @@
 const { RichEmbed } = require('discord.js');
 module.exports.run = (client, message, args) => {
-  const settings = require('../../dbFunctions/message/settings').functions;
+  const GuildSettings = require('../../dbFunctions/message/settings');
+  const settings = new GuildSettings(message.guild.id);
   if (!message.guild.me.permissionsIn(message.channel).serialize()['MANAGE_ROLES']) return message.send('❌ `|` 🔓 **I am missing permission!** `Manage Roles`');
   if (!message.member.permissionsIn(message.channel).serialize()['MANAGE_MESSAGES'] ||
     !message.member.permissionsIn(message.channel).serialize()['MANAGE_CHANNELS']) return message.send('❌ `|` 🔓 **You are missing permissions!** `Manage Messages` or `Manage Channel`');
@@ -41,7 +42,7 @@ module.exports.run = (client, message, args) => {
 
   if (reason) modEmbed.addField('Reason', reason);
 
-  settings.get(message.guild.id, 'modLogChannel')
+  settings.get('modLogChannel')
     .then(async modLogChannel => {
       modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
       if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {

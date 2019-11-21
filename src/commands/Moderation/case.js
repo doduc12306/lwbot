@@ -17,10 +17,11 @@ module.exports.run = async (client, message, args) => {
     .setTitle(`${log.dataValues.type.toProperCase()} | ${victim.tag} (${victim.id})`)
     .addField('User', `${victim} (${victim.tag})`)
     .addField('Moderator', `${moderator} (${moderator.tag})`)
-    .addField('Reason', log.dataValues.reason)
     .setFooter(`ID: ${victim.id} | Case ${log.dataValues.id}`)
     .setThumbnail(victim.displayAvatarURL)
     .setTimestamp(log.dataValues.updatedAt);
+
+  if(log.dataValues.reason) embed.addField('Reason', log.dataValues.reason);
 
   switch (log.dataValues.type) {
     case 'ban': { embed.setColor(client.config.colors.red); break; }

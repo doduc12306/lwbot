@@ -18,8 +18,8 @@ module.exports.runner = async function runner(client, guild) {
     logger.sqLog(`Starting process for ${guild}...`);
 
     /* SETTINGS CLEANUP */
-    const settingsTable = require('../dbFunctions/message/settings').functions.settingsSchema(guild);
-    await settingsTable.sync();
+    const GuildSettings = require('../dbFunctions/message/settings');
+    const settingsTable = new GuildSettings(guild).shortcut;
 
     const settings = {};
     for (const setting of Object.entries(config.defaultSettings)) {
@@ -89,8 +89,8 @@ module.exports.runner = async function runner(client, guild) {
       if (!/\d+/g.test(server)) logger.warn('Non-server file found in databases/servers! File: ' + server);
 
       /* SETTINGS CLEANUP */
-      const settingsTable = require('../dbFunctions/message/settings').functions.settingsSchema(serverID);
-      await settingsTable.sync();
+      const GuildSettings = require('../dbFunctions/message/settings');
+      const settingsTable = new GuildSettings(serverID).shortcut;
 
       const settings = {};
       for (const setting of Object.entries(config.defaultSettings)) {

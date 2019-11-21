@@ -56,9 +56,9 @@ module.exports.run = (client, message) => {
               if (min === 0 || curPage === 0) return msg.reactions.get('◀').remove(message.author);
               await client.wait(300);
               msg.reactions.get('◀').remove(message.author);
-              min = await min - 9;
-              max = await max - 9;
-              curPage = await curPage - 1;
+              min = min - 9;
+              max = max - 9;
+              curPage = curPage - 1;
 
               embed = new Discord.RichEmbed()
                 .setColor(client.accentColor)
@@ -80,11 +80,11 @@ module.exports.run = (client, message) => {
             } else if (g._emoji.name === '▶') {
               await client.wait(300);
               msg.reactions.get('▶').remove(message.author);
-              min = await min + 9;
-              max = await max + 9;
-              curPage = await curPage + 1;
+              min = min + 9;
+              max = max + 9;
+              curPage = curPage + 1;
               if (curPage > Math.ceil(logs.length / 9)) {
-                await curPage--;
+                curPage--;
                 min = min - 9;
                 max = max - 9;
                 msg.edit(embed.setFooter('This is the final page. There is no more data past this range.'));
