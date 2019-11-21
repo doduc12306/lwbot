@@ -23,7 +23,6 @@ class UserProfile {
    * The table of the profile
    */
   table() {
-    if (!this.userID) throw new Error('userID parameter is undefined');
     return new Sequelize('database', 'user', 'password', {
       host: 'localhost',
       dialect: 'sqlite',
@@ -54,7 +53,7 @@ class UserProfile {
 
   /**
    * Balance of the user
-   * @returns {Number}
+   * @return {Number}
    * @readonly
    */
   get balance() {
@@ -68,7 +67,7 @@ class UserProfile {
    * Changes the balance of the user
    * @param {'add' | 'subtract' | 'set'} operation Operation to perform on balance of user
    * @param {Number} amount Amount to add/subtract/set
-   * @returns {Number}
+   * @return {Number}
    * @example
    * <User>.changeBalance('add', 10); // 0 => 10
    */
@@ -108,7 +107,7 @@ class UserProfile {
 
   /**
    * Gets the mood of the user
-   * @returns {String}
+   * @return {String}
    * @readonly
    */
   get mood() {
@@ -122,7 +121,7 @@ class UserProfile {
   /**
    * Change the mood of the user
    * @param {String} newMood New mood to set
-   * @returns {String<newMood>}
+   * @return {String<newMood>}
    * @example
    * <User>.changeMood('Hello new mood!'); // => 'Hello new mood!'
    */
@@ -137,7 +136,7 @@ class UserProfile {
 
   /**
    * Get the badges of the user
-   * @returns {Array<String>}
+   * @return {Array<String>}
    * @readonly
    */
   get badges() {
@@ -151,7 +150,7 @@ class UserProfile {
    * Add/remove a badge from the user's profile
    * @param {'add' | 'remove'} operation Operation to perform on badges
    * @param {String} badgeName Add/remove badgeName
-   * @returns {Array<String>}
+   * @return {Array<String>}
    * @example
    * <User>.changeBadges('add', ':wave:');    // => [':wave:', ...badges]
    * <User>.changeBadges('remove', ':wave:'); // => [...badges]
@@ -186,7 +185,7 @@ class UserProfile {
 
   /**
    * Get the amount of reputation points this user has
-   * @returns {Number}
+   * @return {Number}
    */
   get reputation() {
     return this.shortcut.findOrCreate({ where: { key: 'reputation' }, defaults: { value: '0' } })
@@ -199,7 +198,7 @@ class UserProfile {
    * Change the reputation of the user
    * @param {'add' | 'subtract' | 'set'} operation Operation to perform on the user's reputation
    * @param {Number} amount Amount to add/subtract/set
-   * @returns {Number} The new reputation of the user
+   * @return {Number} The new reputation of the user
    * @example
    * <User>.changeReputation('add', 1); // 0 => 1
    * <User>.changeReputation('remove', 10); // 200 => 190
