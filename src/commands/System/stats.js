@@ -4,7 +4,7 @@ require('moment-duration-format');
 
 exports.run = (client, message) => {
   const embed = new Discord.RichEmbed()
-    .setTitle('`Statistics`')
+    .setTitle('Statistics')
     .addField('Guilds', client.guilds.size, true)
     .addField('Users', client.users.size, true)
     .addField('Memory Usage', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`, true)
