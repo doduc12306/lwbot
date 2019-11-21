@@ -1,3 +1,4 @@
+const { client } = require('./startup');
 const config = {
   // Bot Owner, level 10 by default. A User ID. Should never be anything else than the bot owner's ID.
   'ownerID': '107599228900999168',
@@ -65,7 +66,7 @@ const config = {
       name: 'Moderator',
       check: member => {
         try {
-          const modRole = member.guild.roles.find(r => r.name.toLowerCase() === member.user.client.settings.get(member.guild.id).modRole.toLowerCase());
+          const modRole = member.guild.roles.find(r => r.name.toLowerCase() === client.settings.get(member.guild.id).modRole.toLowerCase());
           if (modRole && member.roles.has(modRole.id)) return true;
         } catch (e) {
           return false;
@@ -78,7 +79,7 @@ const config = {
       name: 'Administrator',
       check: member => {
         try {
-          const adminRole = member.guild.roles.find(r => r.name.toLowerCase() === member.user.client.settings.get(member.guild.id).adminRole.toLowerCase());
+          const adminRole = member.guild.roles.find(r => r.name.toLowerCase() === client.settings.get(member.guild.id).adminRole.toLowerCase());
           return ((adminRole && member.roles.has(adminRole.id)) || member.permissions.has('ADMINISTRATOR'));
         } catch (e) {
           return false;
@@ -91,7 +92,7 @@ const config = {
       name: 'Bot Commander',
       check: member => {
         try {
-          const bcRole = member.guild.roles.find(r => r.name.toLowerCase() === member.user.client.settings.get(member.guild.id).botCommanderRole.toLowerCase());
+          const bcRole = member.guild.roles.find(r => r.name.toLowerCase() === client.settings.get(member.guild.id).botCommanderRole.toLowerCase());
           return (bcRole && member.roles.has(bcRole.id));
         } catch (e) { return false; }
       }
@@ -104,7 +105,7 @@ const config = {
       check: member => {
         if (!member.guild) return false;
         if (member.guild.owner.user.id !== member.user.id) {
-          const ownerRole = member.guild.roles.find(r => r.name.toLowerCase() === member.user.client.settings.get(member.guild.id).ownerRole.toLowerCase());
+          const ownerRole = member.guild.roles.find(r => r.name.toLowerCase() === client.settings.get(member.guild.id).ownerRole.toLowerCase());
           return (ownerRole && member.roles.has(ownerRole.id));
         } else return true;
       }
