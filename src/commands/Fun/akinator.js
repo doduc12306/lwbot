@@ -3,22 +3,22 @@ const aki = require('aki-api');
 const { RichEmbed } = require('discord.js');
 module.exports.run = async (client, message, args) => {
   aki.start('en', (resolve, err) => {
-    if (err) { message.send(`❌ **Sorry!** There was some error when starting the game. Please try again later.`); client.logger.error(err); }
+    if (err) { message.send('❌ **Sorry!** There was some error when starting the game. Please try again later.'); client.logger.error(err); }
     else {
       // START THE GAME
 
-      var region = 'en';
-      var session = resolve.session;
-      var signature = resolve.signature;
-      var step = 0;
+      const region = 'en';
+      const session = resolve.session;
+      const signature = resolve.signature;
+      let step = 0;
 
-      var reactionsObject = {
+      const reactionsObject = {
         '✅': 0, // Yes
         '❌': 1, // No
         '🤷': 2, // Don't Know
         '👍': 3, // Probably
         '👎': 4  // Probably Not
-      }
+      };
 
       message.send(new RichEmbed()
         .setColor(client.accentColor)
