@@ -44,7 +44,7 @@ module.exports.run = async (client, message) => {
 exports.conf = {
   enabled: true,
   guildOnly: true,
-  aliases: ['whois', 'user'],
+  aliases: ['whois', 'user', 'profile', 'i'],
   permLevel: 'User',
   requiresEmbed: true
 };
