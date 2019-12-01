@@ -78,7 +78,7 @@ module.exports = (client) => {
   client.loadCommand = (folder, commandName) => {
     try {
       const props = require(`../../commands/${folder}/${commandName}`);
-      client.logger.log(`Loading Command: ${folder}/${props.help.name}.js`);
+      client.logger.verbose(`Loading Command: ${folder}/${props.help.name}.js`);
 
       /* Checks galore. */
       if(!props.run) return `${folder}/${commandName} does not have a run export`;

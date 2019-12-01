@@ -133,7 +133,7 @@ module.exports.startup = async () => {
       const eventName = file.split('.')[0];
       const event = require(`./events/${file}`);
       client.on(eventName, event.bind(null, client));
-      await client.logger.log(`Loaded ${file} event`);
+      await client.logger.verbose(`Loaded ${eventName} event`);
     });
     await client.logger.log('All events finished loading!');
     /* END SECTION */
