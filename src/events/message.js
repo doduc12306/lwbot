@@ -1,4 +1,6 @@
 const moment = require('moment');
+const { Message } = require('discord.js');
+
 module.exports = async (client, message) => {
   const a = new Date();
   if (message.author.bot && !client.config.ciMode) return;
@@ -157,10 +159,7 @@ module.exports = async (client, message) => {
     if (!message.author.cooldownSet) message.author.cooldownSet = new Set();
     if (!message.author.cooldownTimers) message.author.cooldownTimers = new Map();
 
-    if (!message.author.cooldownSet.has(cmd.help.name)) {
-      message.author.cooldownSet.add(cmd.help.name);
-      message.author.cooldownTimers.set(cmd.help.name, new client.timer(() => message.author.cooldownSet.delete(cmd.help.name), cmd.conf.cooldown));
-    } else {
+    if (message.author.cooldownSet.has(cmd.help.name)) {
       const timeLeftMs = message.author.cooldownTimers.get(cmd.help.name).getTimeLeft();
       let timeLeft = new Date();
       timeLeft.setMilliseconds(new Date().getMilliseconds() + timeLeftMs);
@@ -174,7 +173,22 @@ module.exports = async (client, message) => {
   /* -------------------- RUNS THE COMMAND -------------------- */
   client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name}${message.edited ? ' (edited) ' : ' '}${message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs'}`);
   try {
-    await cmd.run(client, message, args, level);
+    const response = await cmd.run(client, message, args, level);
+    
+    // If the command returned successful, create a cooldown on it
+    if(!response || (response instanceof Message && /(:white_check_mark:)|(✅)/gi.test(response.content))) {
+      // Cooldown check
+      if (cmd.conf.cooldown) {
+        if (!message.author.cooldownSet) message.author.cooldownSet = new Set();
+        if (!message.author.cooldownTimers) message.author.cooldownTimers = new Map();
+
+        if (!message.author.cooldownSet.has(cmd.help.name)) {
+          message.author.cooldownSet.add(cmd.help.name);
+          message.author.cooldownTimers.set(cmd.help.name, new client.timer(() => message.author.cooldownSet.delete(cmd.help.name), cmd.conf.cooldown));
+        }
+      }
+    }
+
   } catch (e) {
     client.logger.error(e);
     let firstErrorStackTrace;
