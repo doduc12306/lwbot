@@ -1,7 +1,7 @@
 const logger = require('./Logger');
 const readdir = require('util').promisify(require('fs-extra').readdir);
 const { Guild } = require('discord.js');
-const { unlink } = require('fs');
+const { unlink } = require('fs-extra');
 const { join } = require('path');
 
 const config = require('../config');
