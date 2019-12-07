@@ -1,6 +1,8 @@
 const logger = require('./Logger');
 const readdir = require('util').promisify(require('fs-extra').readdir);
 const { Guild } = require('discord.js');
+const { unlink } = require('fs');
+const { join } = require('path');
 
 const config = require('../config');
 
@@ -34,6 +36,7 @@ module.exports.runner = async function runner(client, guild) {
     }
     await settingsTable.sync();
     client.settings.set(guild, settings);
+    if(client.guilds.get(guild)) client.guilds.get(guild).settings = settings;
     logger.sqLog(`${guild}: Finished settings cleanup`);
 
     /* COMMANDS CLEANUP */
@@ -67,26 +70,39 @@ module.exports.runner = async function runner(client, guild) {
     logger.sqLog('Starting process for all servers...');
     const servers = await readdir('databases/servers/');
 
-    // Run through all the guilds to make sure they have a database
-    client.guilds.forEach(guild => {
-      // Separate the .sqlite extention from the server ID
-      const serversWithout_dotSqlite = servers.map(g => g.split('.sqlite')[0]);
-
-      // If a guild exists, but a database for the guild does not, create one.
-      if(!serversWithout_dotSqlite.includes(guild.id)) {
-        client.logger.warn(`Found guild (${guild.id}) but no corresponding database. Creating one now...`);
-        this.runner(client, guild.id);
-      } else client.logger.sqLog(`Found guild (${guild.id}) with corresponding database.`);
-    });
-
     // Begin cleanup process...
     await Promise.all(servers.map(async server => {
       if (server === 'x.txt') return logger.sqLog('Found x.txt - Placeholder file. Ignored, continuing.');
 
       const serverID = server.split('.sqlite')[0];
-      logger.sqLog(`Found ${server}`);
       if (!server.endsWith('.sqlite')) return logger.error('Non-sqlite file found in databases/servers! File: ' + server);
       if (!/\d+/g.test(server)) logger.warn('Non-server file found in databases/servers! File: ' + server);
+
+      logger.sqLog(`Found ${server}`);
+
+      // Run through all the databases to make sure they have a guild
+      const clientGuild = client.guilds.get(serverID);
+      if(!clientGuild) {
+        client.logger.warn(`Found guild database ${server} without guild in client collection. Deleting...`);
+        const toDelete = join(__dirname, `../databases/servers/${server}`);
+        client.logger.verbose(toDelete);
+        return unlink(toDelete, err => {
+          if(err) throw err;
+          client.logger.sqLog(`Deleted database ${server} because it had no presence in client guild collection.`);
+        });
+      }
+
+      // Run through all the guilds to make sure they have a database
+      client.guilds.forEach(guild => {
+      // Separate the .sqlite extention from the server ID
+        const serversWithout_dotSqlite = servers.map(g => g.split('.sqlite')[0]);
+
+        // If a guild exists, but a database for the guild does not, create one.
+        if(!serversWithout_dotSqlite.includes(guild.id)) {
+          client.logger.warn(`Found guild (${guild.id}) but no corresponding database. Creating one now...`);
+          this.runner(client, guild.id);
+        }
+      });
 
       /* SETTINGS CLEANUP */
       const GuildSettings = require('../dbFunctions/message/settings');
@@ -105,6 +121,7 @@ module.exports.runner = async function runner(client, guild) {
       }
       await settingsTable.sync();
       client.settings.set(serverID, settings);
+      client.guilds.get(serverID).settings = settings;
       logger.sqLog(`${serverID}: Finished settings cleanup`);
 
 
