@@ -1,4 +1,3 @@
-/* eslint-disable */
 module.exports.run = async (client, message, args) => {
   if(!args[0]) return message.send('❌ `|` ⚡ **Missing a user!**');
   if(!/<@!?[0-9]+>/.test(args[0])) return message.send(`❌ \`|\` ⚡ \`${args[0]}\` **is not a user!**`);
@@ -8,7 +7,7 @@ module.exports.run = async (client, message, args) => {
   const victim = {
     user: client.users.get(userID),
     member: message.guild.members.get(userID)
-  } // The same person, in different formats
+  }; // The same person, in different formats
 
   const sudoerPermLevel = client.permLevel(message.member);
   const victimPermLevel = client.permLevel(victim.member);
@@ -21,8 +20,11 @@ module.exports.run = async (client, message, args) => {
   message.member = await victim.member;
   message.content = await args.slice(1).join(' ');
 
+  if(!message.content.startsWith(message.guild.settings.prefix))
+    message.content = `${message.guild.settings.prefix} ${message.content}`;
+
   client.emit('message', message);
-  message.send(`✅ \`|\` ⚡ **Performed** \`${message.content}\` **on** \`${victim.user.tag}\`**.** `)
+  message.send(`✅ \`|\` ⚡ **Performed** \`${message.content}\` **on** \`${victim.user.tag}\`**.** `);
 };
 
 exports.conf = {
