@@ -1,7 +1,8 @@
 # LINE WEBTOON Bot
 Soon to be public Discord bot.
 
-[![](https://gitlab.com/akii0008/lwbot-rewrite/badges/master/pipeline.svg)](https://gitlab.com/akii0008/lwbot-rewrite/pipelines)
+[![](https://gitlab.com/akii0008/lwbot-rewrite/badges/master/pipeline.svg)](https://gitlab.com/akii0008/lwbot-rewrite/pipelines)<br>
+**^** This is almost always "failed" because the bot moves faster than the database can handle. I make sure that whatever I've committed works before I commit it. Don't worry about this badge.
 
 Migrated from [GitHub](http://github.com/jennasisis/lwbot-rewrite) a *long* time ago.<br>
 Was originally [just lwbot on GitHub](http://github.com/jennasisis/lwbot), however both of these repositories have been archived.
@@ -19,7 +20,7 @@ Now, *sure*, it will work if you're not me. I make sure it works on other enviro
 ---
 
 ## [LICENSE.md](LICENSE.md)
-[![GNU AGPLv3](https://i.imgur.com/m7Khb4u.png)](https://choosealicense.com/licenses/agpl-3.0/)
+[![GNU AGPLv3](https://i.imgur.com/m7Khb4u.png)](https://choosealicense.com/licenses/agpl-3.0/)<br>
 **TL;DR:** You can use this. Feel free to make changes. **Must be open source, must use AGPLv3, must state changes.**
 
 ## [CHANGELOG.md](CHANGELOG.md)
