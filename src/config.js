@@ -62,6 +62,17 @@ const config = {
     },
 
     {
+      level: 1,
+      name: 'DJ',
+      check: member => {
+        try {
+          const djRole = member.guild.roles.find(r => r.name.toLowerCase === 'dj');
+          if(djRole && member.roles.has(djRole.id)) return true;
+        } catch (e) { return false; }
+      }
+    },
+
+    {
       level: 2,
       name: 'Moderator',
       check: member => {
