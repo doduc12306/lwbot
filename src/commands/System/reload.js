@@ -17,7 +17,7 @@ exports.run = async (client, message, args) => {
     if (response) return message.send(`❌ **Error Unloading:** ${response}`);
 
     response = client.loadCommand(client.folder.get(cmd.help.name), cmd.help.name);
-    if (response) return message.send(`❌ **Error Loading:** \`${response}\``);
+    if (response) return message.send(`❌ **Error Loading:** \`\`\`js\n${response}\`\`\``);
 
     message.send(`✅ **Reloaded** \`${args[0]}\``);
   }
