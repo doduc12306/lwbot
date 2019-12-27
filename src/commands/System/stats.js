@@ -1,20 +1,21 @@
 const moment = require('moment');
 const Discord = require('discord.js');
 require('moment-duration-format');
+const os = require('os');
 
 exports.run = (client, message) => {
   const embed = new Discord.RichEmbed()
     .setTitle('Statistics')
     .addField('Guilds', client.guilds.size, true)
     .addField('Users', client.users.size, true)
-    .addField('Memory Usage', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB`, true)
     .setColor(client.accentColor)
     .setTimestamp();
 
-  const CU = moment.duration(client.uptime).format('M [months] W [weeks] D [days], H [hours], m [mins], s [seconds]'); // CU = client uptime
+  embed.addField('Memory Usage', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB / ${(os.totalmem() / 1000 / 1000 / 1000).toFixed(2)} GB (${(process.memoryUsage().heapUsed / os.totalmem()).toFixed(3)}%)`, true);
 
-  if(require('os').platform() === 'darwin') embed.addField('Uptime', `🤖 : ${CU} | 🖥 : ${require('child_process').execSync('uptime').toString().split('load averages')[0]}`, true);
-  else embed.addField('Uptime:', `🤖 : ${CU} | 🖥 : ${require('child_process').execSync('uptime -p').toString().split('up')[1]}`, true);
+  const botUptime = moment.duration(client.uptime).format('M [months] W [weeks] D [days], H [hours], m [mins], s [seconds]');
+  const osUptime = moment.duration(os.uptime(), 'seconds').format('M [months] W [weeks] D [days], H [hours], m [mins], s [seconds]');
+  embed.addField('Uptime', `:robot: ${botUptime} | :desktop: ${osUptime}`);
 
   if(message.content.endsWith('--benchmarks')) embed.addField('Verbose benchmarks', `\`\`\`js\n${JSON.stringify(message.benchmarks, null, 2)}\n\`\`\``);
 
