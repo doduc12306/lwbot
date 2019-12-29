@@ -53,7 +53,7 @@ exports.run = async (client, message, args) => {
       const commandsInCategory = myCommands.filter(g => g.help.category === args[0]);
       const sorted = commandsInCategory.array().sort((p, c) => p.help.name > c.help.name ? 1 : -1);
 
-      let msg = `\`\`\`fix\nCategory: ${args[0]}\n\`\`\`\n`;
+      let msg = `\`\`\`fix\nAvailable Commands for Category: ${args[0]}\n\`\`\`\n`;
 
       sorted.forEach(c => {
         msg += `\`${prefix}${c.help.name}\` - ${c.help.description}\n`;
