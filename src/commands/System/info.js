@@ -17,7 +17,7 @@ module.exports.run = (client, message) => {
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: ['botinfo'],
+  aliases: ['botinfo', 'about'],
   permLevel: 'User',
   requiresEmbed: true
 };
