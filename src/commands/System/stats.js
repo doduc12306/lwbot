@@ -11,7 +11,7 @@ exports.run = (client, message) => {
     .setColor(client.accentColor)
     .setTimestamp();
 
-  embed.addField('Memory Usage', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB / ${(os.totalmem() / 1000 / 1000 / 1000).toFixed(2)} GB (${(process.memoryUsage().heapUsed / os.totalmem()).toFixed(3)}%)`, true);
+  embed.addField('Memory Usage', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB / ${(os.totalmem() / 1000 / 1000 / 1000).toFixed(2)} GB (${((process.memoryUsage().heapUsed / os.totalmem()).toFixed(3)) * 100}%)`, true);
 
   const botUptime = moment.duration(client.uptime).format('M [months] W [weeks] D [days], H [hours], m [mins], s [seconds]');
   const osUptime = moment.duration(os.uptime(), 'seconds').format('M [months] W [weeks] D [days], H [hours], m [mins], s [seconds]');
