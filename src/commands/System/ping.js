@@ -3,7 +3,7 @@ module.exports.run = (client, message) => message.send(`:ping_pong: \`${Math.rou
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: ['pong', 'p', 'pnig', '🏓'],
+  aliases: ['pong', 'p', 'pnig', '🏓', 'pimg'],
   permLevel: 'User'
 };
 
