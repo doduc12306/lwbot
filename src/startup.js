@@ -70,16 +70,20 @@ module.exports.startup = async () => {
 
   client.before = new Date(); // Boot timestamp - Initial
   /* END SECTION */
-
+  
   const curDay = moment().format('YYYY-MM-DD');
-  /* SECTION: LOG DIRECTORY CREATION */
-  mkdir(`logs/${curDay}`, { recursive: true })
-    .then(() => client.logger.log(`Created log directory for today: ${curDay}`))
-    .catch(e => {
-      if (e.code === 'EEXIST') return;
-      else client.logger.log(e);
-    });
+  function makeLogsForToday() {
+    /* SECTION: LOG DIRECTORY CREATION */
+    mkdir(`logs/${curDay}`, { recursive: true })
+      .then(() => client.logger.log(`Created log directory for today: ${curDay}`))
+      .catch(e => {
+        if (e.code === 'EEXIST') return;
+        else client.logger.log(e);
+      });
   /* END SECTION */
+  }
+  if(!client.config.noFileLog) makeLogsForToday();
+
   /* SECTION: LOG COMPRESSION */
   await compressLogs();
   async function compressLogs() {
