@@ -56,6 +56,21 @@ module.exports.startup = async () => {
   if (options.noFileLog) client.config.noFileLog = true;
   /* END SECTION */
 
+  /* SECTION: LOG DIRECTORY CREATION */
+  const curDay = moment().format('YYYY-MM-DD');
+  function makeLogsForToday() {
+    
+    mkdir(`logs/${curDay}`, { recursive: true })
+      .then(() => client.logger.log(`Created log directory for today: ${curDay}`))
+      .catch(e => {
+        if (e.code === 'EEXIST') return;
+        else client.logger.log(e);
+      });
+
+  }
+  if(!client.config.noFileLog) makeLogsForToday();
+  /* END SECTION */
+
   /* SECTION: CLIENT DEFINITIONS */
   client.commands = new Enmap(); // Where all the commands are kept
   client.aliases = new Enmap(); // Where all the aliases to each command are kept
@@ -70,19 +85,6 @@ module.exports.startup = async () => {
 
   client.before = new Date(); // Boot timestamp - Initial
   /* END SECTION */
-  
-  const curDay = moment().format('YYYY-MM-DD');
-  function makeLogsForToday() {
-    /* SECTION: LOG DIRECTORY CREATION */
-    mkdir(`logs/${curDay}`, { recursive: true })
-      .then(() => client.logger.log(`Created log directory for today: ${curDay}`))
-      .catch(e => {
-        if (e.code === 'EEXIST') return;
-        else client.logger.log(e);
-      });
-  /* END SECTION */
-  }
-  if(!client.config.noFileLog) makeLogsForToday();
 
   /* SECTION: LOG COMPRESSION */
   await compressLogs();
