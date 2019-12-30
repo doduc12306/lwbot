@@ -121,6 +121,7 @@ module.exports = async client => {
 
   }
 
+  /*
   // Initialize the brains
   const brains = readdirSync('brains/');
   const brainsWithoutJson = brains.map(g => g.split('.json')[0]);
@@ -128,7 +129,7 @@ module.exports = async client => {
     //guild.brain = new brain.recurrent.LSTM({ hiddenLayers: [20, 20, 20] });
 
     if (brainsWithoutJson.includes(guild.id)) return guild.brain.fromJSON(`${join(__dirname, 'brains/')}/${guild.id}.json`);
-  });
+  }); */
 
   const after = new Date();
   client.startup = after - client.before;
