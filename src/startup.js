@@ -60,6 +60,7 @@ module.exports.startup = async () => {
   const curDay = moment().format('YYYY-MM-DD');
   function makeLogsForToday() {
     
+    if(client.config.ciMode) return;
     mkdir(`logs/${curDay}`, { recursive: true })
       .then(() => client.logger.log(`Created log directory for today: ${curDay}`))
       .catch(e => {
