@@ -2,7 +2,7 @@ image: node:10.18.0
 
 test:
   before_script:
-    - npm i --build-from-source --verbose
+    - npm i --build-from-source
   script:
     - cd src
     - node index.js --ciMode --debugToken=$DEBUG_TOKEN --googleAPIKey=$GOOGLE_API_KEY
