@@ -144,7 +144,7 @@ const config = {
       level: 10,
       name: 'Bot Owner',
       // Another simple check, compares the message author id to the one stored in the config file.
-      check: member => member.user.client.config.ownerID === member.user.id
+      check: member => config.ownerID === member.user.id
     }
   ]
 };
