@@ -79,6 +79,9 @@ module.exports.startup = async () => {
   client.cooldowns = new Enmap(); // Where all user-command cooldowns are kept
   client.logger = require('./util/Logger'); // Logger class interface for the rest of the client
 
+  require('./dbFunctions/client/misc.js')(client);
+  require('./dbFunctions/client/protos.js')(client);
+
   if (options.ciMode) { // If CI mode was enabled,
     client.config.ciMode = true; // ... enable ci mode in the config
     client.config.debugMode = true; // ... enable debug mode (debug bot)
@@ -88,11 +91,6 @@ module.exports.startup = async () => {
     client.logger.debug('CI MODE ENABLED - RUNNING TESTS AND EXITING');
     return require('./util/ci')(client); // ... and run the CI test suite
   }
-
-  client.logger.log('STARTING BOT...');
-
-  require('./dbFunctions/client/misc.js')(client);
-  require('./dbFunctions/client/protos.js')(client);
 
   client.before = new Date(); // Boot timestamp - Initial
   /* END SECTION */
@@ -114,6 +112,8 @@ module.exports.startup = async () => {
   }
   setInterval(compressLogs, 8.64e+7); // Run the compressLogs function every 24 hours.
   /* END SECTION */
+
+  client.logger.log('STARTING BOT...');
 
   /* SECTION: COMMAND LOADING */
   // Here we load commands into memory, as a collection, so they're accessible here and everywhere else
