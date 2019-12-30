@@ -1,3 +1,11 @@
+// The reason this file exists is because
+// in the ytdl-discord package, there is a 
+// broken require statement. It looks for files
+// in a "lib" folder, when it's actually in a "dist"
+// folder. This quick script fixes that error by
+// manually editing the lines of code that
+// have that incorrect require statement.
+
 const fs = require('fs-extra');
 const package = require('../../package.json');
 const ytdlcorediscordVersion = package.dependencies['ytdl-core-discord'];
