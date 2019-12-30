@@ -102,6 +102,7 @@ module.exports.startup = async () => {
     client.config.ciMode = true; // ... enable ci mode in the config
     client.config.debugMode = true; // ... enable debug mode (debug bot)
     client.config.verboseMode = true; // ... enable verbose logging
+    client.config.noFileLog = true; // ... disable logging to files
 
     client.logger.debug('CI MODE ENABLED - RUNNING TESTS AND EXITING');
     return require('./util/ci')(client); // ... and run the CI test suite
