@@ -3,6 +3,8 @@ image: node:10.18.0
 test:
   before_script:
     - npm i
+    - cd src/util
+    - node findandedit.js
   script:
     - cd src
     - node index.js --ciMode --debugToken=$DEBUG_TOKEN --googleAPIKey=$GOOGLE_API_KEY
