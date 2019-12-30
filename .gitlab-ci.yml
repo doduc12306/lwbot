@@ -2,7 +2,7 @@ image: node:lts
 
 test:
   before_script:
-    - npm i
+    - npm i --build-from-source --verbose
   script:
     - cd src
     - node index.js --ciMode --debugToken=$DEBUG_TOKEN --googleAPIKey=$GOOGLE_API_KEY
