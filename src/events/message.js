@@ -200,35 +200,5 @@ module.exports = async (client, message) => {
   message.benchmarks['CmdRunBenchmark'] = new Date() - a;
   message.benchmarks['TOTAL_BENCHMARK'] = new Date() - a;
 
-  // Other server database checks
-  if (message.guild) {
-    const GuildSettings = require('../dbFunctions/message/settings');
-    const settingsSchema = new GuildSettings(message.guild.id).shortcut;
-    for (const setting of Object.entries(client.config.defaultSettings)) {
-      const key = setting[0];
-      const value = setting[1];
-
-      settingsSchema.findOrCreate({ where: { key: key }, defaults: { value: value } });
-    }
-    settingsSchema.sync();
-
-    for (const command of client.commands.filter(g => g.conf.enabled)) {
-      const folder = client.folder.get(command[0]);
-      const enabled = command[1].conf.enabled;
-      const permLevel = command[1].conf.permLevel;
-
-      await commandsTable.findOrCreate({ where: { command: command[0], permLevel: permLevel }, defaults: { folder: folder, enabled: enabled } })
-        .catch(async e => {
-          if (e.name === 'SequelizeUniqueConstraintError') {
-            await commandsTable.destroy({ where: { command: command[0] } });
-            await commandsTable.create({ command: command[0], permLevel: permLevel, folder: folder, enabled: enabled });
-            commandsTable.sync();
-          }
-          else client.logger.error(e);
-        });
-    }
-    commandsTable.sync();
-  }
-
   if (client.config.ciMode) client.emit('ciStepFinish', message.benchmarks);
 };

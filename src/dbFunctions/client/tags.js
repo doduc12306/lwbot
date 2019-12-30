@@ -6,7 +6,8 @@ module.exports = client => {
     host: 'localhost',
     dialect: 'sqlite',
     logging: false,
-    storage: 'databases/tags.sqlite'
+    storage: 'databases/tags.sqlite',
+    transactionType: 'IMMEDIATE' // Setting this helps with the "SQLITE_BUSY: Database is locked" errors
   });
 
   client.tags = tagBase.define('tags', {

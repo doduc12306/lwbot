@@ -23,7 +23,8 @@ class GuildSettings {
       host: 'localhost',
       dialect: 'sqlite',
       logging: false,
-      storage: `databases/servers/${this.guildID}.sqlite`
+      storage: `databases/servers/${this.guildID}.sqlite`,
+      transactionType: 'IMMEDIATE' // Setting this helps with the "SQLITE_BUSY: Database is locked" errors
     });
   }
 

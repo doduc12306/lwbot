@@ -7,7 +7,8 @@ module.exports = (client, message) => {
     host: 'localhost',
     dialect: 'sqlite',
     logging: false,
-    storage: `databases/servers/${message.guild.id}.sqlite`
+    storage: `databases/servers/${message.guild.id}.sqlite`,
+    transactionType: 'IMMEDIATE' // Setting this helps with the "SQLITE_BUSY: Database is locked" errors
   });
 
   // Guild modbase support
