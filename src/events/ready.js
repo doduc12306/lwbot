@@ -3,6 +3,9 @@ const moment = require('moment');
 const watchdog = require('../util/sqWatchdog');
 const failoverWSS = require('../util/ws-failover-server');
 const Websocket = require('ws');
+const brain = require('brain.js');
+const { readdirSync } = require('fs');
+const { join } = require('path');
 
 module.exports = async client => {
   if (!client.user.bot) {
@@ -66,7 +69,8 @@ module.exports = async client => {
   client.logger.log('Running watchdog once before full startup...');
   const wasSqLogEnabled = client.config.sqLogMode; // boolean
   if (!wasSqLogEnabled) { client.logger.log('Enabling sqLogMode temporarily while it runs...'); client.config.sqLogMode = true; }
-  await watchdog.runner(client);
+  if (client.config.ciMode) await watchdog.runner(client, client.guilds.get('332632603737849856'));
+  else await watchdog.runner(client);
   if (!wasSqLogEnabled) { client.logger.log('Disabling sqLogMode because it was disabled originally...'); client.config.sqLogMode = false; }
 
   // Start the sqWatchdog interval timer
@@ -105,7 +109,7 @@ module.exports = async client => {
         if (code === 1006) return; // Code 1006 = Connection does not exist
         client.logger.log(`Failover websocket connection closed gracefully. \nCode: ${code} | Reason: ${reason}`);
 
-        if(process.env.pm_uptime) {
+        if (process.env.pm_uptime) {
           client.logger.log('Restarting using PM2...');
           process.exit();
         } else {
@@ -116,6 +120,15 @@ module.exports = async client => {
     }
 
   }
+
+  // Initialize the brains
+  const brains = readdirSync('brains/');
+  const brainsWithoutJson = brains.map(g => g.split('.json')[0]);
+  client.guilds.forEach(guild => {
+    guild.brain = new brain.recurrent.LSTM({ hiddenLayers: [20, 20, 20] });
+
+    if (brainsWithoutJson.includes(guild.id)) return guild.brain.fromJSON(`${join(__dirname, 'brains/')}/${guild.id}.json`);
+  });
 
   const after = new Date();
   client.startup = after - client.before;
