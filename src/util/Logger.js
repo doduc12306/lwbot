@@ -83,14 +83,23 @@ async function appendToLog(type, content, combined = true, combinedDebug = true)
   const currentDayLog = moment().format('YYYY-MM-DD');
 
   await mkdir(`./logs/${currentDayLog}`, { recursive: true }, e); // Makes ../logs/ if it not already exist
-  await appendFile(`./logs/${currentDayLog}/${type}.log`, `${timestamp} ${content}\n`, e);
+  await appendFile(`./logs/${currentDayLog}/${type}.log`, `${timestamp} ${content}\n`, e, type);
 
   if (combined) await appendFile(`./logs/${currentDayLog}/combined.log`, `${timestamp} ${type.toUpperCase()} ${content}\n`, e);
   if (combinedDebug) await appendFile(`./logs/${currentDayLog}/combinedDebug.log`, `${timestamp} ${type.toUpperCase()} ${content}\n`, e);
 }
 exports.appendToLog = appendToLog; // Export it for other files' usage
 
-function e(e) {
+function e(e, type) {
   if (e && e.code === 'EEXIST') return;
+  if (e && e.code === 'ENOENT') {
+    const curDay = moment().format('YYYY-MM-DD');
+    mkdir(`./logs/${curDay}${type ? `/${type}.log` : ''}`, { recursive: true })
+      .then(() => this.log(`Created log directory for today: ${curDay}`))
+      .catch(e => {
+        if (e.code === 'EEXIST') return;
+        else this.log(e);
+      });
+  }
   if (e) console.error('Appendfile error: ' + e);
 }
