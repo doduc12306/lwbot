@@ -2,13 +2,12 @@
 Soon to be public Discord bot.
 
 [![](https://gitlab.com/akii0008/lwbot-rewrite/badges/master/pipeline.svg)](https://gitlab.com/akii0008/lwbot-rewrite/pipelines)<br>
-**^** This is almost always "failed" because the bot moves faster than the database can handle. I make sure that whatever I've committed works before I commit it. Don't worry about this badge.
 
 Migrated from [GitHub](http://github.com/jennasisis/lwbot-rewrite) a *long* time ago.<br>
 Was originally [just lwbot on GitHub](http://github.com/jennasisis/lwbot), however both of these repositories have been archived.
 
 Tested in Node: v8.x - v11.x. <br>
-**NODE 12 DOES NOT WORK! DO NOT USE!** For some reason, one of the packages I use, sqlite3, doesn't like node 12. **Do not use node 12.**
+**NODE 12+ DOES NOT WORK! DO NOT USE NODE 12+!** A few packages don't like it for whatever reason, sqlite3 and lzma-native. **Do not use node 12+.**
 Tested wherever Node works, including an iPhone (yes, really o.o (it was jailbroken and I wanted to see if it worked (it did)))
 
 ### ⚠️ **This bot was not designed to be hosted by someone who isn't me.**
