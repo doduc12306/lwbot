@@ -5,5 +5,5 @@ if (process.version.slice(1).split('.')[0] < 8 || process.version.slice(1).split
 require('./startup').startup();
 
 // lwbot-rewrite - Discord bot
-// Copyright © Samir Buch 2017-2019
+// Copyright © Samir Buch 2017-2020
 // License is applicable to all files and folders within directory
