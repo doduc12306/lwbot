@@ -190,6 +190,7 @@ module.exports = async (client, message) => {
     }
 
   } catch (e) {
+    client.logger.verbose(`From: ${__filename}`);
     client.logger.error(e);
     let firstErrorStackTrace;
     if (e.stack) firstErrorStackTrace = e.stack.split('\n')[1];
