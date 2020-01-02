@@ -15,7 +15,7 @@ const mkdir = promisify(fs.mkdir);
 const stat = promisify(fs.stat);
 const remove = promisify(fs.remove);
 
-declare module NodeJS {
+declare module NodeJS { // Adds node.js global variables
   interface Global {
     failover: Boolean
   }
