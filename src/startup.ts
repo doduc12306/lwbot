@@ -15,6 +15,12 @@ const mkdir = promisify(fs.mkdir);
 const stat = promisify(fs.stat);
 const remove = promisify(fs.remove);
 
+declare module NodeJS {
+  interface Global {
+    failover: Boolean
+  }
+}
+
 // Export the client for other files' usage
 module.exports.client = new Discord.Client({
   fetchAllMembers: true,
@@ -59,8 +65,8 @@ module.exports.startup = async () => {
   /* SECTION: LOG DIRECTORY CREATION */
   const curDay = moment().format('YYYY-MM-DD');
   function makeLogsForToday() {
-    
-    if(client.config.ciMode) return;
+
+    if (client.config.ciMode) return;
     mkdir(`logs/${curDay}`, { recursive: true })
       .then(() => client.logger.log(`Created log directory for today: ${curDay}`))
       .catch(e => {
@@ -69,7 +75,7 @@ module.exports.startup = async () => {
       });
 
   }
-  if(!client.config.noFileLog) makeLogsForToday();
+  if (!client.config.noFileLog) makeLogsForToday();
   /* END SECTION */
 
   /* SECTION: CLIENT DEFINITIONS */
@@ -196,7 +202,8 @@ module.exports.startup = async () => {
     process.exit(1); // Even if the previous don't run for whatever reason, this will.
   });
 
-  process.on('unhandledRejection', err => {
+  interface Error { message?: String, stack?: Object }; // wow that worked?
+  process.on('unhandledRejection', function (err: Error): void {
     if (err.message === 'Please install sqlite3 package manually') {
       client.logger.error('sqlite3 package needs to be reinstalled.');
       client.logger.log('Installing package...');
@@ -209,6 +216,7 @@ module.exports.startup = async () => {
         process.exit();
       });
     }
+    client.logger.verbose(`From: ${__filename}`);
     client.logger.error(`Unhandled rejection: ${err.stack}`);
   });
 
