@@ -1,11 +1,11 @@
 const { Collection } = require('discord.js');
 const moment = require('moment');
 const watchdog = require('../util/sqWatchdog');
-const failoverWSS = require('../util/ws-failover-server');
+const WSS = require('../util/ws-server');
 const Websocket = require('ws');
 //const brain = require('brain.js');
-const { readdirSync } = require('fs');
-const { join } = require('path');
+//const { readdirSync } = require('fs');
+//const { join } = require('path');
 
 module.exports = async client => {
   if (!client.user.bot) {
@@ -78,7 +78,7 @@ module.exports = async client => {
 
   if (!global.failover) { // If this is the main process (aka not failover mode)
     // Create the websocket server, and pass the client in
-    failoverWSS(client);
+    WSS(client);
     // This is handled in another file because it would clutter this one.
   } else { // If this is the failover process (aka failover mode)
     client.logger.warn('Failover mode enabled. Websocket server not started.');
