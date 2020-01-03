@@ -15,12 +15,6 @@ const mkdir = promisify(fs.mkdir);
 const stat = promisify(fs.stat);
 const remove = promisify(fs.remove);
 
-declare module NodeJS { // Adds node.js global variables
-  interface Global {
-    failover: Boolean
-  }
-}
-
 // Export the client for other files' usage
 module.exports.client = new Discord.Client({
   fetchAllMembers: true,
@@ -29,7 +23,7 @@ module.exports.client = new Discord.Client({
 });
 
 module.exports.startup = async () => {
-  if (global.failover) console.warn('FAILOVER INITIATED!');
+  if ((global as any).failover) console.warn('FAILOVER INITIATED!');
 
   /* SECTION: CLI ARGUMENTS PARSING */
   const options = commandLineArgs([
