@@ -6,8 +6,9 @@
   "dependencies": {
     "@discordjs/uws": "^11.149.1",
     "aki-api": "^3.1.1",
-    "ascii-art": "^1.5.1",
-    "chalk": "^2.4.2",
+    "ascii-art": "^2.4.0",
+    "brain.js": "^2.0.0-alpha.9",
+    "chalk": "^3.0.0",
     "command-line-args": "^5.1.1",
     "compressing": "^1.5.0",
     "convert-units": "^2.3.4",
@@ -41,7 +42,7 @@
     "typescript": "^3.7.4"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "ts-node index.js --ciMode",
     "start": "pm2 start index.js",
     "build": "sudo apt-get update; sudo apt install make g++ autoconf libtool pkg-config libcairo2-dev libjpeg-dev libgif-dev; sudo yarn add node-opus ffmpeg-binaries; echo \" \"; echo \"Build complete\";"
   },

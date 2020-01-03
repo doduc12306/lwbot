@@ -8,6 +8,8 @@
 src/node_modules
 tests/
 src/e
+src/tmp
+src/temp
 
 # Logs
 logs
