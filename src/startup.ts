@@ -17,9 +17,10 @@ const remove = promisify(fs.remove);
 
 // Export the client for other files' usage
 module.exports.client = new Discord.Client({
-  fetchAllMembers: true,
-  disabledEvents: ['TYPING_START', 'USER_NOTE_UPDATE', 'RELATIONSHIP_ADD', 'RELATIONSHIP_REMOVE'],
-  ws: { large_threshold: 1000 }
+  disabledEvents: ['TYPING_START', 'USER_NOTE_UPDATE', 'USER_SETTINGS_UPDATE', 'RELATIONSHIP_ADD', 'RELATIONSHIP_REMOVE'],
+  ws: { large_threshold: 1000 },
+  messageCacheLifetime: 600, // 600 seconds = 10 minutes
+  messageSweepInterval: 60  //  60 seconds  = 1 minute
 });
 
 module.exports.startup = async () => {
