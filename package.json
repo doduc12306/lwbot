@@ -2,7 +2,8 @@
   "name": "lwbot-rewrite",
   "version": "1.5.9",
   "description": "a rewrite to [lwbot](http://github.com/jennasisis/lwbot)",
-  "main": "index.js",
+  "main": "src/index.js",
+  "private": true,
   "dependencies": {
     "@discordjs/uws": "^11.149.1",
     "aki-api": "^3.1.1",
@@ -12,7 +13,7 @@
     "command-line-args": "^5.1.1",
     "compressing": "^1.5.0",
     "convert-units": "^2.3.4",
-    "discord.js": "^11.5.1",
+    "discord.js": "discordjs/discord.js#11.5-dev",
     "dotenv": "^8.0.0",
     "enmap": "^5.2.3",
     "erlpack": "github:hammerandchisel/erlpack",
@@ -44,13 +45,14 @@
   "scripts": {
     "test": "cd src; ts-node index.js --ciMode",
     "start": "pm2 start index.js",
-    "build": "sudo apt-get update; sudo apt install make g++ autoconf libtool pkg-config libcairo2-dev libjpeg-dev libgif-dev; sudo yarn add node-opus ffmpeg-binaries; echo \" \"; echo \"Build complete\";"
+    "build": "sudo apt-get update; sudo apt install make g++ autoconf libtool pkg-config libcairo2-dev libjpeg-dev libgif-dev; sudo yarn add node-opus ffmpeg-binaries; echo \" \"; echo \"Build complete\";",
+    "postinstall": "cd src/util; node findandedit.js"
   },
   "repository": {
     "type": "git",
     "url": "http://gitlab.com/akii0008/lwbot-rewrite.git"
   },
-  "author": "jennasisis/akii",
+  "author": "Samir Buch <samir.js.zip@gmail.com> (https://akii.dev)",
   "license": "MIT",
   "bugs": {
     "url": "https://gitlab.com/akii0008/lwbot-rewrite/issues"
