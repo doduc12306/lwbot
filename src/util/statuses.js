@@ -1,3 +1,4 @@
+const { version } = require('../../package.json');
 module.exports.statuses = client => [
   /* Playing */
   ['with Shin-Ae', { type: 'PLAYING' }],
@@ -30,6 +31,7 @@ module.exports.statuses = client => [
   ['[object Object]', { type: 'PLAYING' }],
   ['against the clock', { type: 'PLAYING' }],
   ['Error 404: Not Found', { type: 'PLAYING' }],
+  ['Error 418: I\'m a teapot', { type: 'PLAYING' }],
   ['with your ships', { type: 'PLAYING' }],
   ['Monopoly', { type: 'PLAYING' }],
   ['with life in a box', { type: 'PLAYING' }],
@@ -55,7 +57,9 @@ module.exports.statuses = client => [
   ['on a Raspberry Pi', { type: 'PLAYING' }],
   [`with ${client.users.size} users!`, { type: 'PLAYING' }],
   [`with ${client.guilds.size} servers!`, { type: 'PLAYING' }],
-  ['with da bois', { type: 'PLAYING' }], 
+  ['with da bois', { type: 'PLAYING' }],
+  ['mit dir', { type: 'PLAYING' }],
+  [`on version v${version} :)`],
 
   /* Watching */
   ['Netflix', { type: 'WATCHING' }],
