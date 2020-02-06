@@ -12,7 +12,7 @@ module.exports.run = async (client, message, args) => {
   const sudoerPermLevel = client.permLevel(message.member);
   const victimPermLevel = client.permLevel(victim.member);
 
-  if(victimPermLevel >= sudoerPermLevel) return message.send(`❌ \`|\` ⚡ **You cannot sudo this user because their permission level is higher or equal to yours.**\n\t\tYour level: \`${sudoerPermLevel} - ${client.config.permLevels.find(l => l.level === sudoerPermLevel).name}\`\n\t\t${victim.user.username}'s level: \`${victimPermLevel} - ${client.config.permLevels.find(l => l.level === victimPermLevel).name}\``); // One big error message.
+  if(victimPermLevel >= sudoerPermLevel) return message.send(`❌ \`|\` ⚡ **You cannot sudo this user because their permission level is higher than or equal to yours.**\n\t\tYour level: \`${sudoerPermLevel} - ${client.config.permLevels.find(l => l.level === sudoerPermLevel).name}\`\n\t\t${victim.user.username}'s level: \`${victimPermLevel} - ${client.config.permLevels.find(l => l.level === victimPermLevel).name}\``); // One big error message.
 
   if(!args[1]) return message.send(':x: `|` ⚡ **Missing command to emulate!**');
 
@@ -21,7 +21,7 @@ module.exports.run = async (client, message, args) => {
   message.content = await args.slice(1).join(' ');
 
   if(!message.content.startsWith(message.guild.settings.prefix))
-    message.content = `${message.guild.settings.prefix} ${message.content}`;
+    message.content = `${message.guild.settings.prefix}${message.content}`;
 
   client.emit('message', message);
   message.send(`✅ \`|\` ⚡ **Performed** \`${message.content}\` **on** \`${victim.user.tag}\`**.** `);
@@ -29,7 +29,7 @@ module.exports.run = async (client, message, args) => {
 
 exports.conf = {
   enabled: true,
-  aliases: ['su', 'run'],
+  aliases: ['su', 'run', 'runas'],
   guildOnly: true,
   permLevel: 'Bot Support'
 };
