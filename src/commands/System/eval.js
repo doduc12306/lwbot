@@ -14,6 +14,7 @@ require('moment-duration-format');
 const commands = require('../../dbFunctions/message/commands');
 const xp = require('../../dbFunctions/message/xp');
 const GuildSettings = require('../../dbFunctions/message/settings');
+const GuildEvents = require('../../dbFunctions/message/events');
 const User = require('../../dbFunctions/client/user');
 const package = require('../../../package.json');
 
@@ -58,13 +59,13 @@ exports.run = async (client, message, args) => {
       client.logger.error('Initial eval error ouput: ' + error);
     }
   }
-
-  function clean(text) {
-    return text
-      .replace(/`/g, '`' + String.fromCharCode(8203))
-      .replace(/@/g, '@' + String.fromCharCode(8203));
-  }
 };
+
+function clean(text) {
+  return text
+    .replace(/`/g, '`' + String.fromCharCode(8203))
+    .replace(/@/g, '@' + String.fromCharCode(8203));
+}
 
 exports.conf = {
   enabled: true,

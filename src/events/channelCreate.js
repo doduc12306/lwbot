@@ -1,3 +1,4 @@
+const { RichEmbed } = require('discord.js');
 module.exports = async (client, channel) => {
   if (channel.type === 'dm') return;
 
@@ -21,4 +22,20 @@ module.exports = async (client, channel) => {
   } else return client.logger.verbose('channelCreate | Category channel detected. Skipping...');
 
   if (client.config.ciMode) client.emit('ciStepMessage');
+
+  const loggingEnabled = client.events.get(channel.guild.id)['channelCreate'];
+  if(!loggingEnabled) return;
+
+  const modLogChannel = channel.guild.channels.find(g => g.name === client.settings.get(channel.guild.id)['modLogChannel']);
+  if (!modLogChannel) return;
+
+  const embed = new RichEmbed()
+    .setColor(client.accentColor)
+    .setTitle('Channel Created')
+    .setDescription(channel.toString())
+    .addField('ID', channel.id, true)
+    .addField('Type', channel.type, true)
+    .setTimestamp(channel.createdTimestamp);
+
+  modLogChannel.send(embed);
 };

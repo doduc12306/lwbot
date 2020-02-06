@@ -61,6 +61,7 @@ module.exports = async client => {
 
   // Define all client variables before they're called elsewhere
   client.settings = new Collection();
+  client.events = new Collection();
   client.xpLockSet = new Set();
   client.msgCmdHistory = new Collection();
   client.musicQueue = new Collection();
@@ -131,6 +132,7 @@ module.exports = async client => {
     if (brainsWithoutJson.includes(guild.id)) return guild.brain.fromJSON(`${join(__dirname, 'brains/')}/${guild.id}.json`);
   }); */
 
+  client.ready = true;
   const after = new Date();
   client.startup = after - client.before;
 
@@ -145,6 +147,10 @@ ${'⎼'.repeat(client.user.tag.length + client.user.id.length + 5)}
 • Guilds:    ${client.guilds.size}
 • Channels:  ${client.channels.size}
 • Took:      ${moment.duration(client.startup, 'milliseconds').format('[~]s [secs]')} to start up`, 'ready');
+
+  delete client.before;
+  delete client.after;
+  delete client.startup;
 
   if (client.config.ciMode) client.emit('ciStepGuildCreate');
 };

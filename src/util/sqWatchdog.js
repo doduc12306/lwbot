@@ -60,6 +60,26 @@ module.exports.runner = async function runner(client, guild) {
     await commandsTable.sync();
     logger.sqLog(`${guild}: Finished commands cleanup`);
 
+    /* EVENT DB CLEANUP */
+    const GuildEvents = require('../dbFunctions/message/events');
+    const eventsTable = new GuildEvents(guild).shortcut;
+
+    const events = {};
+    for (const event of Object.entries(config.defaultEvents)) {
+      const eventName = event[0];
+      const enabled = event[1];
+
+      await eventsTable.findOrCreate({ where: { event: eventName }, defaults: { enabled }})
+        .then(event => {
+          event = event[0];
+          events[event.dataValues.event] = event.dataValues.enabled;
+        }).catch(e => logger.error(e));
+    }
+    await eventsTable.sync();
+    client.events.set(guild, events);
+    client.guilds.get(guild).events = events;
+    logger.sqLog(`${guild}: Finished events cleanup`);
+
     // TODO: Add in XP cleanup. See https://gitlab.com/akii0008/lwbot-rewrite/issues/3
 
     logger.sqLog(`${guild}: Finished process! ${new Date() - start}`);
@@ -113,7 +133,7 @@ module.exports.runner = async function runner(client, guild) {
         const key = setting[0];
         const value = setting[1];
 
-        await settingsTable.findOrCreate({ where: { key: key }, defaults: { value: value } })
+        await settingsTable.findOrCreate({ where: { key }, defaults: { value } })
           .then(setting => {
             setting = setting[0];
             settings[setting.dataValues.key] = setting.dataValues.value;
@@ -133,11 +153,11 @@ module.exports.runner = async function runner(client, guild) {
         const enabled = command[1].conf.enabled;
         const permLevel = command[1].conf.permLevel;
 
-        await commandsTable.findOrCreate({ where: { command: command[0], permLevel: permLevel }, defaults: { folder: folder, enabled: enabled } })
+        await commandsTable.findOrCreate({ where: { command: command[0], permLevel }, defaults: { folder, enabled } })
           .catch(async e => {
             if (e.name === 'SequelizeUniqueConstraintError') {
               await commandsTable.destroy({ where: { command: command[0] } }).catch(e => logger.error(e));
-              await commandsTable.create({ command: command[0], permLevel: permLevel, folder: folder, enabled: enabled }).catch(e => logger.error(e));
+              await commandsTable.create({ command: command[0], permLevel, folder, enabled }).catch(e => logger.error(e));
               await commandsTable.sync();
             }
             else logger.error(e);
@@ -146,10 +166,30 @@ module.exports.runner = async function runner(client, guild) {
       await commandsTable.sync();
       logger.sqLog(`${serverID}: Finished commands cleanup`);
 
+      /* EVENT DB CLEANUP */
+      const GuildEvents = require('../dbFunctions/message/events');
+      const eventsTable = new GuildEvents(serverID).shortcut;
+
+      const events = {};
+      for (const event of Object.entries(config.defaultEvents)) {
+        const eventName = event[0];
+        const enabled = event[1];
+
+        await eventsTable.findOrCreate({ where: { event: eventName }, defaults: { enabled }})
+          .then(event => {
+            event = event[0];
+            events[event.dataValues.event] = event.dataValues.enabled;
+          }).catch(e => logger.error(e));
+      }
+      await eventsTable.sync();
+      client.events.set(serverID, events);
+      client.guilds.get(serverID).events = events;
+      logger.sqLog(`${serverID}: Finished events cleanup`);
+
 
       /* XP CLEANUP */
-      const xpTable = require('../dbFunctions/message/xp').functions.xpSchema(serverID);
-      await xpTable.sync();
+      //const xpTable = require('../dbFunctions/message/xp').functions.xpSchema(serverID);
+      //await xpTable.sync();
 
       /* await xpTable.findAll().then(data => {
         for (const dataPoint of data) {
@@ -184,5 +224,5 @@ module.exports.runner = async function runner(client, guild) {
 
 module.exports.timer = (client) => {
   logger.sqLog('Watchdog started');
-  setInterval(() => this.runner(client), config.debugMode ? 30000 : 600000); // If debugMode, run every 30 seconds. If not, run every 10 minutes.
+  return setInterval(() => this.runner(client), config.debugMode ? 30000 : 600000); // If debugMode, run every 30 seconds. If not, run every 10 minutes.
 };
