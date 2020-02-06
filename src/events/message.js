@@ -22,24 +22,28 @@ module.exports = async (client, message) => {
     : client.config.defaultSettings['capsThreshold'];
   message.benchmarks['CapsThresholdBenchmark'] = new Date() - a;
 
+  const capsDelete = message.guild
+    ? client.settings.get(message.guild.id)['capsDelete']
+    : client.config.defaultSettings['capsDelete'];
+  message.benchmarks['CapsDeleteBenchmark'] = new Date() - a;
+
   const staffBypassesLimits = message.guild
     ? client.settings.get(message.guild.id)['staffBypassesLimits'] === 'true' ? true : false
     : client.config.defaultSettings['staffBypassesLimits'];
   message.benchmarks['StaffBypassesLimitsBenchmark'] = new Date() - a;
 
-  const exceedsCapsThreshold = message.content.match(/[A-Z]+/g) !== null &&
-    message.content.length >= 15 &&
-    capsWarnEnabled &&
-    (message.content.match(/[A-Z]+/g).join(' ').replaceAll(' ', '').length / message.content.length) * 100 >= capsThreshold;
-  /* This mess of code checks to see if the message has more than ${capsThreshold}% caps. To break it down, it matches all of the capital letters in the message. Then joins the array that spits out. Then it replaces all of the spaces with an empty string, so they looklikethisinsteadofspaced, then it splits it from each character. It takes the length of this array and divides it by the length of the message itself. It then multiplies that number by 100 to give the percentage, then it checks that number against ${capsThreshold}. */
+  const exceedsCapsThreshold = message.content.match(/[A-Z]+/g) !== null && // Make sure the message HAS caps
+    message.content.length >= 15 && // Message length is more than 15 characters
+    capsWarnEnabled && // The warning is enabled?
+    (message.content.match(/[A-Z]+/g).join(' ').replaceAll(' ', '').length / message.content.length) * 100 >= capsThreshold; // Percentage of caps is above the threshold
   message.benchmarks['ExceedsCapsThreshold'] = new Date() - a;
 
   const emsg = `⚠️ \`|\` ${message.author}**, your message is more than ${capsThreshold}% caps.** Please do not spam caps.`;
   if (exceedsCapsThreshold) {
     if (client.permlevel(message.member) !== 0) {
       if (staffBypassesLimits);
-      else { message.delete(); message.send(emsg).then(msg => msg.delete(6000)); }
-    } else { message.delete(); message.send(emsg).then(msg => msg.delete(6000)); }
+      else { capsDelete ? message.delete() : false; message.send(emsg).then(msg => msg.delete(6000)); }
+    } else { capsDelete ? message.delete() : false; message.send(emsg).then(msg => msg.delete(6000)); }
   }
 
   if (message.channel.type !== 'dm') {
