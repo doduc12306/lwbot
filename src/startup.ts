@@ -44,7 +44,8 @@ module.exports.startup = async () => {
     { name: 'noFailoverWebsocket', type: Boolean }
   ]);
 
-  const client = this.client;
+  const client = (this as any).client;
+  client.ready = false;
   client.config = require('./config.js');
 
   // This is down here because client isn't defined by the time cli args are.
