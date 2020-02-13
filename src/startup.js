@@ -24,7 +24,7 @@ module.exports.client = new Discord.Client({
 });
 
 module.exports.startup = async () => {
-  if ((global as any).failover) console.warn('FAILOVER INITIATED!');
+  if (global.failover) console.warn('FAILOVER INITIATED!');
 
   /* SECTION: CLI ARGUMENTS PARSING */
   const options = commandLineArgs([
@@ -44,7 +44,7 @@ module.exports.startup = async () => {
     { name: 'noFailoverWebsocket', type: Boolean }
   ]);
 
-  const client = (this as any).client;
+  const client = this.client;
   client.ready = false;
   client.config = require('./config.js');
 
@@ -198,8 +198,7 @@ module.exports.startup = async () => {
     process.exit(1); // Even if the previous don't run for whatever reason, this will.
   });
 
-  interface Error { message?: String, stack?: Object }; // wow that worked?
-  process.on('unhandledRejection', function (err: Error): void {
+  process.on('unhandledRejection', function (err) {
     if (err.message === 'Please install sqlite3 package manually') {
       client.logger.error('sqlite3 package needs to be reinstalled.');
       client.logger.log('Installing package...');
