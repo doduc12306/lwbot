@@ -9,7 +9,7 @@ module.exports.database = new Sequelize('database', 'username', 'password', {
 });
 
 module.exports.userModel = this.database.define('users', {
-  userID: { type: DataTypes.STRING, aloowNull: false, unique: true },
+  userID: { type: DataTypes.STRING, allowNull: false, unique: true },
   username: { type: DataTypes.STRING, allowNull: false },
   discrim: { type: DataTypes.STRING, allowNull: false },
   avatar: { type: DataTypes.STRING, allowNull: false },
