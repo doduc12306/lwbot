@@ -12,7 +12,7 @@ if(worker.isMainThread) {
 const guildID = worker.workerData.id;
 const messages = worker.workerData.messages;
 
-const brainInBrains = readFile(`./brains/${message.guild.id}.json`, (err, data) => {
+const brainInBrains = readFile(`./brains/${guildID}.json`, (err, data) => {
   if(err && err.code === 'ENOENT') return false;
   else if(err && err.code !== 'ENOENT') { logger.error(`[WORKER-${worker.threadId}]: ${err.stack}`); process.exit(1); }
 
