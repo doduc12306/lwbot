@@ -1,25 +1,25 @@
 const { client } = require('./startup');
 const config = {
   // Bot Owner, level 10 by default. A User ID. Should never be anything else than the bot owner's ID.
-  'ownerID': '107599228900999168',
+  ownerID: '107599228900999168',
 
   // Bot Admins, level 9 by default. Array of user ID strings.
-  'admins': [],
+  admins: [],
 
   // Bot Support, level 8 by default. Array of user ID strings
-  'support': ['158272711146209281', '235920655823011840'], // [Gallium, Nen]
+  support: ['158272711146209281', '235920655823011840'], // [Gallium, Nen]
 
   // [ 2018.10.28 ] TOKENS REMOVED - ADDED TO .env FILE
   // [ 2018.10.28 ] TOKENS REGENERATED - don't even try, commit lurkers
 
-  'debugMode': false,
-  'verboseMode': false,
-  'sqLogMode': false,
-  'ciMode': false,
-  'noFileLog': false,
+  debugMode: false,
+  verboseMode: false,
+  sqLogMode: false,
+  ciMode: false,
+  noFileLog: false,
 
   // Default per-server settings. New guilds have these settings.
-  'defaultSettings': {
+  defaultSettings: {
     'prefix': '!w ',
     'modLogChannel': 'mod_logs',
     'modRole': 'Mods',
@@ -31,7 +31,7 @@ const config = {
     'announcementsChannel': 'announcements',
     'botCommanderRole': 'Bot Commander',
     'ownerRole': 'Owners',
-    'capsThreshold': '70', // (70%), not 70 or more characters.
+    'capsThreshold': '80', // (80%), not 80 or more characters.
     'capsWarnEnabled': 'true',
     'capsDelete': 'true',
     'staffBypassesLimits': 'true',
@@ -41,10 +41,17 @@ const config = {
     'owoMode': 'false'
   },
 
+  defaultEvents: {
+    'messageUpdate': false,
+    'messageDelete': false,
+    'channelCreate': false
+  },
+
   // COLORS
   colors: {
     'red': '0xFF0000',
     'accentColor': '0x00d564',
+    'green': '0x00d564',
     'yellow': '0xFFFF00',
     'blurple': '0x7289DA',
     'purple': '0x821ABA',
