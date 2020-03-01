@@ -45,7 +45,6 @@ module.exports.startup = async () => {
   ]);
 
   const client = this.client;
-  client.ready = false;
   client.config = require('./config.js');
 
   // This is down here because client isn't defined by the time cli args are.

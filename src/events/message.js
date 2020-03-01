@@ -3,7 +3,7 @@ const { Message } = require('discord.js');
 
 module.exports = async (client, message) => {
   const a = new Date();
-  if ((message.author.bot && !client.config.ciMode) || !client.ready) return;
+  if ((message.author.bot && !client.config.ciMode) || client.status !== 0) return;
   message.benchmarks = {};
 
   require('../dbFunctions/message/misc.js')(client, message);
