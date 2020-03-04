@@ -141,9 +141,9 @@ module.exports = async (client, message) => {
       if (message.channel.type !== 'text') throw new Error('I can\'t find a member if I\'m not in a guild!');
       if (!data) throw new Error('You didn\'t give me anything to find a member from!');
       if (message.mentions.members.size === 0) {
-        let member = message.guild.members.get(data);
+        let member = message.guild.members.cache.get(data);
         if (member === undefined) {
-          member = message.guild.members.find(r => (r.user.username.toLowerCase().includes(data.toLowerCase()) || r.user.tag.toLowerCase() === data.toLowerCase()));
+          member = message.guild.members.cache.find(r => (r.user.username.toLowerCase().includes(data.toLowerCase()) || r.user.tag.toLowerCase() === data.toLowerCase()));
           if (!member) throw new Error('I couldn\'t find that member!');
           else return member;
         } else return member;
@@ -162,18 +162,18 @@ module.exports = async (client, message) => {
       if (!message.guild) throw new Error('I can\'t find a channel if I\'m not in a guild!');
       if (!data) return undefined;
       if (data.startsWith('<#') && data.endsWith('>')) { // data === <#ID>
-        const channel = message.guild.channels.get(data.substring(2, data.length - 1));
+        const channel = message.guild.channels.cache.get(data.substring(2, data.length - 1));
         if (!channel) throw new Error('Channel does not exist');
         return channel;
       }
       else if (data.startsWith('#')) { // data === #channel
         data = data.substring(1);
-        const channel = message.guild.channels.find(g => g.name.includes(data));
+        const channel = message.guild.channels.cache.find(g => g.name.includes(data));
         if (!channel) throw new Error('Channel does not exist');
         return channel;
       }
       else { // data === ID
-        const channel = message.guild.channels.get(data);
+        const channel = message.guild.channels.cache.get(data);
         if (!channel) throw new Error('Channel does not exist');
         return channel;
       }
