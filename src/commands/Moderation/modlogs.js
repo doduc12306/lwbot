@@ -6,7 +6,7 @@ module.exports.run = (client, message) => {
   message.guild.modbase.findAll({ where: { victim: user.id } }).then(logs => {
     logs = logs.sort((a, b) => a.dataValues.id > b.dataValues.id ? -1 : 1);
 
-    const embed = new Discord.RichEmbed()
+    const embed = new Discord.MessageEmbed()
       .setColor(client.accentColor)
       .setTitle(`Modlogs for ${user.tag}`);
 
@@ -16,8 +16,8 @@ module.exports.run = (client, message) => {
         const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
         const mod = message.guild.members.get(data.dataValues.moderator).user
           ? message.guild.members.get(data.dataValues.moderator).user
-          : client.users.get(data.dataValues.moderator)
-            ? client.users.get(data.dataValues.moderator)
+          : client.users.cache.get(data.dataValues.moderator)
+            ? client.users.cache.get(data.dataValues.moderator)
             : '[User not found]';
         embed.addField(`Case **${data.dataValues.id}** \`|\` **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
 
@@ -28,7 +28,7 @@ module.exports.run = (client, message) => {
       let max = 8;
       let curPage = 1;
 
-      let embed = new Discord.RichEmbed()
+      let embed = new Discord.MessageEmbed()
         .setColor(client.accentColor)
         .setTitle(`Modlogs for ${user.tag} | Page ${curPage}/${Math.ceil(logs.length / 9)}`);
 
@@ -36,8 +36,8 @@ module.exports.run = (client, message) => {
         const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
         const mod = message.guild.members.get(data.dataValues.moderator).user
           ? message.guild.members.get(data.dataValues.moderator).user
-          : client.users.get(data.dataValues.moderator)
-            ? client.users.get(data.dataValues.moderator)
+          : client.users.cache.get(data.dataValues.moderator)
+            ? client.users.cache.get(data.dataValues.moderator)
             : '[User not found]';
         embed.addField(`Case **${data.dataValues.id}** \`|\` **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
         if (logs.indexOf(data) >= max) break;
@@ -53,14 +53,14 @@ module.exports.run = (client, message) => {
           .on('collect', async g => {
             if (g._emoji.name === '🛑') return collector.emit('end');
             else if (g._emoji.name === '◀') {
-              if (min === 0 || curPage === 0) return msg.reactions.get('◀').remove(message.author);
+              if (min === 0 || curPage === 0) return msg.reactions.get('◀').users.remove(message.author);
               await client.wait(300);
-              msg.reactions.get('◀').remove(message.author);
+              msg.reactions.get('◀').users.remove(message.author);
               min = min - 9;
               max = max - 9;
               curPage = curPage - 1;
 
-              embed = new Discord.RichEmbed()
+              embed = new Discord.MessageEmbed()
                 .setColor(client.accentColor)
                 .setTitle(`Modlogs for ${user.tag} | Page ${curPage}/${Math.ceil(logs.length / 9)}`);
 
@@ -69,8 +69,8 @@ module.exports.run = (client, message) => {
                 const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
                 const mod = message.guild.members.get(data.dataValues.moderator).user
                   ? message.guild.members.get(data.dataValues.moderator).user
-                  : client.users.get(data.dataValues.moderator)
-                    ? client.users.get(data.dataValues.moderator)
+                  : client.users.cache.get(data.dataValues.moderator)
+                    ? client.users.cache.get(data.dataValues.moderator)
                     : '[User not found]';
                 embed.addField(`Case **${data.dataValues.id}** \`|\` **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
                 if (logs.indexOf(data) >= max) break;
@@ -79,7 +79,7 @@ module.exports.run = (client, message) => {
 
             } else if (g._emoji.name === '▶') {
               await client.wait(300);
-              msg.reactions.get('▶').remove(message.author);
+              msg.reactions.get('▶').users.remove(message.author);
               min = min + 9;
               max = max + 9;
               curPage = curPage + 1;
@@ -92,7 +92,7 @@ module.exports.run = (client, message) => {
                 return;
               }
 
-              embed = new Discord.RichEmbed()
+              embed = new Discord.MessageEmbed()
                 .setColor(client.accentColor)
                 .setTitle(`Modlogs for ${user.tag} | Page ${curPage}/${Math.ceil(logs.length / 9)}`);
 
@@ -102,8 +102,8 @@ module.exports.run = (client, message) => {
                 const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
                 const mod = message.guild.members.get(data.dataValues.moderator).user
                   ? message.guild.members.get(data.dataValues.moderator).user
-                  : client.users.get(data.dataValues.moderator)
-                    ? client.users.get(data.dataValues.moderator)
+                  : client.users.cache.get(data.dataValues.moderator)
+                    ? client.users.cache.get(data.dataValues.moderator)
                     : '[User not found]';
                 embed.addField(`Case **${data.dataValues.id}** \`|\` **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
               }
@@ -112,7 +112,7 @@ module.exports.run = (client, message) => {
             } else return;
           })
           .on('end', () => {
-            msg.clearReactions();
+            msg.reactions.removeAll();
           });
       });
     }

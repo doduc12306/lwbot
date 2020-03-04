@@ -1,6 +1,6 @@
 /* eslint-disable */
 const moment = require('moment');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 function shuffle(array, size) {
   var index = -1,
       length = array.length,
@@ -22,7 +22,7 @@ function baseRandom(lower, upper) {
 }
 
 module.exports.run = async (client, message, args) => {
-  const { voiceChannel } = message.member;
+  const voiceChannel = message.member.voice.channel;
   if (!voiceChannel) return message.send('❌ `|` 🎵 **You aren\'t in a voice channel!**');
 
   const music = client.musicQueue.get(message.guild.id);
@@ -91,7 +91,7 @@ module.exports.run = async (client, message, args) => {
   }
 
   function listQueue() {
-    const embed = new RichEmbed()
+    const embed = new MessageEmbed()
       .setColor(client.accentColor)
       .setTimestamp();
 

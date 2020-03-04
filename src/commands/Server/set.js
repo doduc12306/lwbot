@@ -48,7 +48,7 @@ exports.run = async (client, message, args) => {
       if (!newValue) return message.send(':x: `|` ⚙ **There was an error finding that channel!** (Did you spell it correctly?)');
     }
     if (setting.key.toLowerCase().includes('role') && /<@&[0-9]+>/g.test(newValue)) {
-      newValue = message.guild.roles.get(newValue.substring(3, newValue.length - 1)).name;
+      newValue = message.guild.roles.cache.get(newValue.substring(3, newValue.length - 1)).name;
       if (!newValue) return message.send(':x: `|` ⚙ **There was an error finding that role!** (Did you spell it correctly?)');
     }
     if (/enabled?/gi.test(newValue))

@@ -87,7 +87,7 @@ module.exports = async client => {
       client.logger.log('CI GUILDCREATE STEP');
       client.logger.log('Testing guildCreate event');
 
-      const guildObject = client.guilds.get('332632603737849856');
+      const guildObject = client.guilds.cache.get('332632603737849856');
       client.emit('guildCreate', guildObject);
     });
 
@@ -99,7 +99,7 @@ module.exports = async client => {
       client.logger.log('CI CHANNELCREATE STEP');
       client.logger.log('Testing channelCreate event');
 
-      const channelObject = client.guilds.get('332632603737849856').channels.get('583018344370929684');
+      const channelObject = client.guilds.cache.get('332632603737849856').channels.get('583018344370929684');
       client.emit('channelCreate', channelObject);
     });
 
@@ -113,10 +113,10 @@ module.exports = async client => {
 
       const messageObject = {
         content: '!w ping',
-        guild: client.guilds.get('332632603737849856'),
-        member: client.guilds.get('332632603737849856').members.get('394913903466905601'),
+        guild: client.guilds.cache.get('332632603737849856'),
+        member: client.guilds.cache.get('332632603737849856').members.cache.get('394913903466905601'),
         author: client.user,
-        channel: client.guilds.get('332632603737849856').channels.get('583018344370929684')
+        channel: client.guilds.cache.get('332632603737849856').channels.cache.get('583018344370929684')
       };
 
       client.emit('message', messageObject);

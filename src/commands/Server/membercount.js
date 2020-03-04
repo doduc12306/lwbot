@@ -1,15 +1,15 @@
 const Discord = require('discord.js');
 module.exports.run = async (client, message) => {
-  await message.guild.fetchMembers();
+  await message.guild.members.fetch();
 
-  const bots = message.guild.members.filter(member => member.user.bot).map(g => g.toString()).length;
-  const online = message.guild.members.filter(member => !member.user.bot).filter(g => g.user.presence.status === 'online').size;
-  const idle = message.guild.members.filter(member => !member.user.bot).filter(g => g.user.presence.status === 'idle').size;
-  const dnd = message.guild.members.filter(member => !member.user.bot).filter(g => g.user.presence.status === 'dnd').size;
-  const offline = message.guild.members.filter(member => !member.user.bot).filter(g => g.user.presence.status === 'offline').size;
-  const streaming = message.guild.members.filter(member => !member.user.bot).filter(g => g.user.presence.streaming).size;
+  const bots = message.guild.members.cache.filter(member => member.user.bot).map(g => g.toString()).length;
+  const online = message.guild.members.cache.filter(member => !member.user.bot).filter(g => g.user.presence.status === 'online').size;
+  const idle = message.guild.members.cache.filter(member => !member.user.bot).filter(g => g.user.presence.status === 'idle').size;
+  const dnd = message.guild.members.cache.filter(member => !member.user.bot).filter(g => g.user.presence.status === 'dnd').size;
+  const offline = message.guild.members.cache.filter(member => !member.user.bot).filter(g => g.user.presence.status === 'offline').size;
+  const streaming = message.guild.members.cache.filter(member => !member.user.bot).filter(g => g.user.presence.streaming).size;
 
-  const embed = new Discord.RichEmbed()
+  const embed = new Discord.MessageEmbed()
     .addField('Total Users', message.guild.memberCount, true)
     .addField('Bots', bots, true)
     .addField('Humans', message.guild.memberCount-bots, true)

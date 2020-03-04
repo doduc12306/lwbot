@@ -23,8 +23,8 @@ module.exports.run = async (client, message, args) => {
   }).then(async info => {
     let dmMsg = `${vbEmote} **You were voicebanned from** \`${message.member.voiceChannel.name}\`, **in** \`${message.guild.name}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
-    const modEmbed = new Discord.RichEmbed()
-      .setThumbnail(toBan.displayAvatarURL)
+    const modEmbed = new Discord.MessageEmbed()
+      .setThumbnail(toBan.displayAvatarURL({ format: 'png', dynamic: true }))
       .setColor('0xA80000')
       .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
       .addField('Voicebanned User', `${toBan.toString()} (${toBan.tag})`)
@@ -33,8 +33,8 @@ module.exports.run = async (client, message, args) => {
 
     if (reason) { dmMsg += `\n\n⚙️ **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: { id: info.id } }); }
 
-    const vc = await message.guild.createChannel('Voice Ban', 'voice');
-    await toBanM.setVoiceChannel(vc);
+    const vc = await message.guild.channels.create('Voice Ban', 'voice');
+    await toBanM.voice.setChannel(vc);
     await message.member.voiceChannel.overwritePermissions(toBan, { CONNECT: false });
     await vc.delete();
     toBan.send(dmMsg);
@@ -42,7 +42,7 @@ module.exports.run = async (client, message, args) => {
       .then(async modLogChannel => {
         modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
         if (!modLogChannel) return message.send(`⚠️ **Voiceban completed, but there is no mod log channel set.** Try \`${await settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
-        if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
+        if (!message.guild.me.permissionsIn(modLogChannel).permissions.serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).permissions.serialize()['EMBED_LINKS']) {
           modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Voiceban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);

@@ -6,7 +6,7 @@ class GuildSettings {
   constructor(guildID) {
     if(guildID instanceof Guild) guildID = guildID.id; // If the guildID passed is actually a d.js guild object, turn it into an id that the class can handle.
 
-    const guild = client.guilds.get(guildID);
+    const guild = client.guilds.cache.get(guildID);
     if(!guild) throw new Error(`Guild (${guildID}) does not exist to get.`);
 
     this.guildID = guildID;

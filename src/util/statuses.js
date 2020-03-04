@@ -55,8 +55,8 @@ module.exports.statuses = client => [
   ['nothing.. b-baka!! (つω⊂* ) Why do you care?? Hmph! (/□＼*)・゜', { type: 'PLAYING' }],
   ['hl3_beta-B1', { type: 'PLAYING' }],
   ['on a Raspberry Pi', { type: 'PLAYING' }],
-  [`with ${client.users.size} users!`, { type: 'PLAYING' }],
-  [`with ${client.guilds.size} servers!`, { type: 'PLAYING' }],
+  [`with ${client.users.cache.size} users!`, { type: 'PLAYING' }],
+  [`with ${client.guilds.cache.size} servers!`, { type: 'PLAYING' }],
   ['with da bois', { type: 'PLAYING' }],
   ['mit dir', { type: 'PLAYING' }],
   [`on version v${version} :)`],
@@ -66,14 +66,14 @@ module.exports.statuses = client => [
   ['you', { type: 'WATCHING' }],
   ['you sleep', { type: 'WATCHING' }],
   ['an unhealthy amount of anime', { type: 'WATCHING' }],
-  [`${client.users.size} users...`, { type: 'WATCHING' }],
-  [`${client.guilds.size} servers...`, { type: 'WATCHING' }],
-  [`${client.channels.size} channels...`, { type: 'WATCHING' }],
+  [`${client.users.cache.size} users...`, { type: 'WATCHING' }],
+  [`${client.guilds.cache.size} servers...`, { type: 'WATCHING' }],
+  [`${client.channels.cache.size} channels...`, { type: 'WATCHING' }],
 
   /* Listening to */
   ['Spotify', { type: 'LISTENING' }],
   ['your conversations-- I mean what', { type: 'LISTENING' }],
-  [`${client.users.size} users-- wait I'm not allowed to oops`, { type: 'WATCHING' }]
+  [`${client.users.cache.size} users-- wait I'm not allowed to oops`, { type: 'WATCHING' }]
 ];
 
 module.exports.enabled = true;

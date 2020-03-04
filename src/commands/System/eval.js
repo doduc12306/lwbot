@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 const { inspect } = require('util');
-const snek = require('snekfetch');
 const Discord = require('discord.js');
 const Sequelize = require('sequelize');
 const moment = require('moment');

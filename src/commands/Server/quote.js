@@ -6,18 +6,18 @@ module.exports.run = (client, message, args) => {
 
   if(message.mentions.members.size !== 0) {
     const member = message.mentions.members.first();
-    message.send(new Discord.RichEmbed()
+    message.send(new Discord.MessageEmbed()
       .setColor(member.displayColor === 0 ? client.accentColor : member.displayColor)
-      .setAuthor(member.user.tag, member.user.displayAvatarURL, `https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${member.lastMessageID}`)
+      .setAuthor(member.user.tag, member.user.displayAvatarURL({ format: 'png', dynamic: true }), `https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${member.lastMessageID}`)
       .addField('Message', member.lastMessage.content)
       .setTimestamp(member.lastMessage.createdTimestamp)
     );
   } else {
-    message.channel.fetchMessage(args[0])
+    message.channel.messages.fetch(args[0])
       .then(msg => {
-        message.send(new Discord.RichEmbed()
+        message.send(new Discord.MessageEmbed()
           .setColor(msg.member.displayColor === 0 ? client.accentColor : msg.member.displayColor)
-          .setAuthor(msg.author.tag, msg.author.displayAvatarURL, `https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${msg.id}`)
+          .setAuthor(msg.author.tag, msg.author.displayAvatarURL({ format: 'png', dynamic: true }), `https://discordapp.com/channels/${message.guild.id}/${message.channel.id}/${msg.id}`)
           .addField('Message', msg.content)
           .setTimestamp(msg.createdTimestamp)
         );

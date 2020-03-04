@@ -38,7 +38,7 @@ module.exports = (client) => {
     ws.on('close', (code, reason) => {
       if(code === 1006) {
         client.logger.warn('Websocket process ended! PMing owner now...');
-        return client.users.get(client.config.ownerID).send(':warning: **Failover process closed.** Please check PM2.');
+        return client.users.cache.get(client.config.ownerID).send(':warning: **Failover process closed.** Please check PM2.');
       }
       if(code === 1003) return; // Code 1003 = Reconnection successful
       client.logger.warn(`Websocket closed! Code: ${code} | Reason: ${reason}`);

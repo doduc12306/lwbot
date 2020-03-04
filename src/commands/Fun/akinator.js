@@ -1,6 +1,6 @@
 /* eslint-disable */
 const aki = require('aki-api');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports.run = async (client, message, args) => {
   aki.start('en', (resolve, err) => {
     if (err) { message.send('❌ **Sorry!** There was some error when starting the game. Please try again later.'); client.logger.error(err); }
@@ -20,7 +20,7 @@ module.exports.run = async (client, message, args) => {
         '👎': 4  // Probably Not
       };
 
-      message.send(new RichEmbed()
+      message.send(new MessageEmbed()
         .setColor(client.accentColor)
         .setTitle(resolve.question)
         .setDescription('✅ **Yes** | ❌ **No** | 🤷 **Don\'t Know** | 👍 **Probably** | 👎 **Probably Not**')
@@ -45,7 +45,7 @@ module.exports.run = async (client, message, args) => {
                   return aki.win(region, session, signature, step, (resolve, e) => {
                     console.log(resolve);
                     //if (e) { message.send('❌ **There was an error.** Game ended.'); client.logger.error(error); return collector.emit('end'); }
-                    msg.edit(new RichEmbed()
+                    msg.edit(new MessageEmbed()
                       .setColor(client.accentColor)
                       .addField('I guess...', `**${resolve.answers[0].name}!** | ${resolve.answers[0].description}`)
                       .setImage(resolve.answers[0].absolute_picture_path)
@@ -53,18 +53,18 @@ module.exports.run = async (client, message, args) => {
                   });
                 }
                 step++;
-                msg.edit(new RichEmbed()
+                msg.edit(new MessageEmbed()
                   .setColor(client.accentColor)
                   .setTitle(res.nextQuestion)
                   .setDescription('✅ **Yes** | ❌ **No** | 🤷 **Don\'t Know** | 👍 **Probably** | 👎 **Probably Not**')
                   .setFooter('React with 🛑 to stop')
                 );
               });
-              msg.reactions.get(g._emoji.name).remove(message.author);
+              msg.reactions.get(g._emoji.name).users.remove(message.author);
             } else if (g._emoji.name === '🛑') { collector.emit('end'); }
-            else msg.reactions.get(g._emoji.name).remove(message.author);
+            else msg.reactions.get(g._emoji.name).users.remove(message.author);
           })
-          .on('end', () => msg.clearReactions());
+          .on('end', () => msg.reactions.removeAll());
 
       });
     }

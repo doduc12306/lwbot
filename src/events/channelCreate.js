@@ -1,4 +1,4 @@
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = async (client, channel) => {
   if (channel.type === 'dm') return;
 
@@ -9,7 +9,7 @@ module.exports = async (client, channel) => {
 
   client.logger.verbose(`Channel created: ${channel.name} (${channel.id}) | Guild: ${channel.guild.name} (${channel.guild.id})`);
 
-  const role = await channel.guild.roles.find(g => g.name.toLowerCase() === 'muted');
+  const role = await channel.guild.roles.cache.find(g => g.name.toLowerCase() === 'muted');
 
   if (channel.type === 'text') {
     channel.overwritePermissions(role.id, { SEND_MESSAGES: false, ADD_REACTIONS: false })
@@ -29,7 +29,7 @@ module.exports = async (client, channel) => {
   const modLogChannel = channel.guild.channels.find(g => g.name === client.settings.get(channel.guild.id)['modLogChannel']);
   if (!modLogChannel) return;
 
-  const embed = new RichEmbed()
+  const embed = new MessageEmbed()
     .setColor(client.accentColor)
     .setTitle('Channel Created')
     .setDescription(channel.toString())
