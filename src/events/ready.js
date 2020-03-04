@@ -62,9 +62,9 @@ module.exports = async client => {
   // Define all client variables before they're called elsewhere
   client.settings = new Collection();
   client.events = new Collection();
-  client.xpLockSet = new Set();
   client.msgCmdHistory = new Collection();
   client.musicQueue = new Collection();
+  client.xpLockSet = new Set();
 
   // Run the watchdog once before ready
   client.logger.log('Running watchdog once before full startup...');
