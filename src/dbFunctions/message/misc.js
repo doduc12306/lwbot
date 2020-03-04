@@ -53,12 +53,20 @@ module.exports = async (client, message) => {
         if (message.guild && client.settings.get(message.guild.id)['owoMode'] === 'true') {
           if (content instanceof MessageEmbed) {
             const owoedEmbed = new MessageEmbed();
+            client.logger.verbose(content);
 
+            // Stuff that's changed
             if (content.title) owoedEmbed.setTitle(owoedContent(content.title));
             if (content.description) owoedEmbed.setDescription(owoedContent(content.description));
-            if (content.author) owoedEmbed.setAuthor(owoedContent(content.author.name), content.author.iconURL() ? content.author.iconURL() : undefined, content.author.url ? content.author.url : undefined);
+            if (content.author) owoedEmbed.setAuthor(owoedContent(content.author.name), content.author.iconURL ? content.author.iconURL : undefined, content.author.url ? content.author.url : undefined);
             if (content.footer) owoedEmbed.setFooter(owoedContent(content.footer.text));
             if (content.fields) for (const field of content.fields) { owoedEmbed.addField(field.name, owoedContent(field.value), field.inline); }
+
+            // Stuff that's not changed, but still needs to be transferred over
+            if (content.color) owoedEmbed.setColor(content.color);
+            if (content.url) owoedEmbed.setURL(content.url);
+            if (content.timestamp) owoedEmbed.setTimestamp(content.timestamp);
+            if (content.files.length !== 0) owoedEmbed.attachFiles(content.files); // MessageEmbed.files is an array
 
             return owoedEmbed;
           }
