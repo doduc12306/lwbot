@@ -12,13 +12,13 @@ module.exports = async (client, message) => {
       // command editing functionality
       if (message.edited) return message.channel.messages.fetch(client.msgCmdHistory[message.id])
         .then(async msg => {
-          const embedC = typeof content === 'object'; // embedC = "embed Check"
+          const embedC = content instanceof MessageEmbed; // embedC = "embed Check"
 
           options = {
             embed: embedC
               ? content
               : msg.embeds.length !== 0
-                ? {} : {},
+                ? null : null,
             code: options
               ? options.code
                 ? options.code
@@ -59,7 +59,6 @@ module.exports = async (client, message) => {
             if (content.author) owoedEmbed.setAuthor(owoedContent(content.author.name), content.author.iconURL() ? content.author.iconURL() : undefined, content.author.url ? content.author.url : undefined);
             if (content.footer) owoedEmbed.setFooter(owoedContent(content.footer.text));
             if (content.fields) for (const field of content.fields) { owoedEmbed.addField(field.name, owoedContent(field.value), field.inline); }
-            if (content.color) owoedEmbed.setColor(content.color);
 
             return owoedEmbed;
           }
