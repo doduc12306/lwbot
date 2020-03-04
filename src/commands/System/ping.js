@@ -1,4 +1,4 @@
-module.exports.run = (client, message) => message.send(`:ping_pong: \`${Math.round(client.ping)}ms\``).then(msg => msg.edit(`${msg.content} • **Latency:** \`${msg.createdAt - message.createdAt}ms\``));
+module.exports.run = (client, message) => message.send(`:ping_pong: \`${Math.round(client.ws.ping)}ms\``).then(msg => msg.edit(`${msg.content} • **Latency:** \`${msg.createdAt - message.createdAt}ms\``));
 
 exports.conf = {
   enabled: true,

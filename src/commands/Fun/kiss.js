@@ -11,7 +11,7 @@ exports.run = (client, message) => {
     const myArray = ['snogging', 'sucking face', 'getting intimate', 'kissing', 'in a loving embrace'];
     const words = myArray[Math.floor(Math.random() * myArray.length)];
 
-    message.send(new Discord.RichEmbed()
+    message.send(new Discord.MessageEmbed()
       .setTitle(`${message.author.tag} and ${message.mentions.members.first().displayName} are ${words}, give em a bit of privacy!`)
       .setImage(res.data.image_url)
       .setColor('0xef6969')

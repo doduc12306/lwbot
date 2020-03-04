@@ -36,7 +36,7 @@ module.exports.runner = async function runner(client, guild) {
     }
     await settingsTable.sync();
     client.settings.set(guild, settings);
-    if(client.guilds.get(guild)) client.guilds.get(guild).settings = settings;
+    if(client.guilds.cache.get(guild)) client.guilds.cache.get(guild).settings = settings;
     logger.sqLog(`${guild}: Finished settings cleanup`);
 
     /* COMMANDS CLEANUP */
@@ -77,7 +77,7 @@ module.exports.runner = async function runner(client, guild) {
     }
     await eventsTable.sync();
     client.events.set(guild, events);
-    client.guilds.get(guild).events = events;
+    client.guilds.cache.get(guild).events = events;
     logger.sqLog(`${guild}: Finished events cleanup`);
 
     // TODO: Add in XP cleanup. See https://gitlab.com/akii0008/lwbot-rewrite/issues/3
@@ -101,7 +101,7 @@ module.exports.runner = async function runner(client, guild) {
       logger.sqLog(`Found ${server}`);
 
       // Run through all the databases to make sure they have a guild
-      const clientGuild = client.guilds.get(serverID);
+      const clientGuild = client.guilds.cache.get(serverID);
       if(!clientGuild) {
         client.logger.warn(`Found guild database ${server} without guild in client collection. Deleting...`);
         const toDelete = join(__dirname, `../databases/servers/${server}`);
@@ -113,7 +113,7 @@ module.exports.runner = async function runner(client, guild) {
       }
 
       // Run through all the guilds to make sure they have a database
-      client.guilds.forEach(guild => {
+      client.guilds.cache.forEach(guild => {
       // Separate the .sqlite extention from the server ID
         const serversWithout_dotSqlite = servers.map(g => g.split('.sqlite')[0]);
 
@@ -141,7 +141,7 @@ module.exports.runner = async function runner(client, guild) {
       }
       await settingsTable.sync();
       client.settings.set(serverID, settings);
-      client.guilds.get(serverID).settings = settings;
+      client.guilds.cache.get(serverID).settings = settings;
       logger.sqLog(`${serverID}: Finished settings cleanup`);
 
 
@@ -183,7 +183,7 @@ module.exports.runner = async function runner(client, guild) {
       }
       await eventsTable.sync();
       client.events.set(serverID, events);
-      client.guilds.get(serverID).events = events;
+      client.guilds.cache.get(serverID).events = events;
       logger.sqLog(`${serverID}: Finished events cleanup`);
 
 

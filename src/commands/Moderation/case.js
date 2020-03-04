@@ -1,4 +1,4 @@
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 require('moment-duration-format');
 
@@ -10,15 +10,15 @@ module.exports.run = async (client, message, args) => {
   const log = await message.guild.modbase.findOne({ where: { id: id } });
   if (!log) return message.send(`❌ **I couldn't find case** \`${id}\`!`);
 
-  const victim = client.users.get(log.dataValues.victim);
-  const moderator = client.users.get(log.dataValues.moderator);
+  const victim = client.users.cache.get(log.dataValues.victim);
+  const moderator = client.users.cache.get(log.dataValues.moderator);
 
-  const embed = new RichEmbed()
+  const embed = new MessageEmbed()
     .setTitle(`${log.dataValues.type.toProperCase()} | ${victim.tag} (${victim.id})`)
     .addField('User', `${victim} (${victim.tag})`)
     .addField('Moderator', `${moderator} (${moderator.tag})`)
     .setFooter(`ID: ${victim.id} | Case ${log.dataValues.id}`)
-    .setThumbnail(victim.displayAvatarURL)
+    .setThumbnail(victim.displayAvatarURL({ format: 'png', dynamic: true }))
     .setTimestamp(log.dataValues.updatedAt);
 
   if(log.dataValues.reason) embed.addField('Reason', log.dataValues.reason);

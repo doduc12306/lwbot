@@ -1,5 +1,3 @@
-const { post } = require('snekfetch');
-
 module.exports.run = async (client, message, args) => {
   const code = args.join(' ');
   const token = client.token.split('').join('[^]{0,2}');
@@ -13,12 +11,8 @@ module.exports.run = async (client, message, args) => {
       if (out.length < 1950) {
         message.send(out, {code: 'bash'});
       } else {
-        try {
-          const { body } = await post('https://www.hastebin.com/documents').send(out);
-          message.send(`❌ **Output too long, uploaded to hastebin:** https://www.hastebin.com/${body.key}.js `);
-        } catch (error) {
-          message.send(`❌ **Hastebin upload error:** \`${error.name}\`\n\`\`\`\n${error.message}\n\`\`\``);
-        }
+        message.send(':x: **Output too large. Check the console.**');
+        client.logger.log(out);
       }
     });
   } catch (error) {

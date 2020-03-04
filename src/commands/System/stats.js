@@ -4,10 +4,10 @@ require('moment-duration-format');
 const os = require('os');
 
 exports.run = (client, message) => {
-  const embed = new Discord.RichEmbed()
+  const embed = new Discord.MessageEmbed()
     .setTitle('Statistics')
-    .addField('Guilds', client.guilds.size, true)
-    .addField('Users', client.users.size, true)
+    .addField('Guilds', client.guilds.cache.size, true)
+    .addField('Users', client.users.cache.size, true)
     .setColor(client.accentColor)
     .setTimestamp();
 

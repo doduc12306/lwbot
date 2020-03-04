@@ -9,21 +9,21 @@ module.exports.run = (client, message) => {
 
     let guildIcon;
     //If the guild icon is empty, sets guildIcon to owner's avatar
-    if (message.guild.iconURL) { guildIcon = message.guild.iconURL; }
-    else { guildIcon = message.guild.owner.user.displayAvatarURL; }
+    if (message.guild.iconURL()) { guildIcon = message.guild.iconURL(); }
+    else { guildIcon = message.guild.owner.user.displayAvatarURL({ format: 'png', dynamic: true }); }
 
     let emotes;
     //Goes with the emote parsing
-    const emoteInfo = message.guild.emojis.map(e => e.toString()).join(' ');
+    const emoteInfo = message.guild.emojis.cache.map(e => e.toString()).join(' ');
     //Checks to see if the total character count of all the emojis combined is ≥ 1024
     if (emoteInfo.length >= 1024) {
-      emotes = `${message.guild.emojis.size} emotes`;
+      emotes = `${message.guild.emojis.cache.size} emotes`;
       //Checks to see if there are no emotes
     } else if (emoteInfo.length === 0) {
       emotes = 'None';
       //Sets emotes to all of the emojis, and they get printed in the embed field
     } else {
-      emotes = message.guild.emojis.map(e => e.toString()).join(' ');
+      emotes = message.guild.emojis.cache.map(e => e.toString()).join(' ');
     }
 
     //You can probably tell what this is by looking at the var name
@@ -48,25 +48,25 @@ module.exports.run = (client, message) => {
     //Verification level checker
     let verification;
 
-    if (message.guild.verificationLevel === 0) { verification = 'None'; }
-    else if (message.guild.verificationLevel === 1) { verification = 'Low'; }
-    else if (message.guild.verificationLevel === 2) { verification = 'Medium'; }
-    else if (message.guild.verificationLevel === 3) { verification = '(╯°□°）╯︵ ┻━┻ (High: 10 minutes on server)'; }
-    else if (message.guild.verificationLevel === 4) { verification = '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻ (Extreme: Verified phone)'; }
+    if (message.guild.verificationLevel === 'NONE') { verification = 'None'; }
+    else if (message.guild.verificationLevel === 'LOW') { verification = 'Low'; }
+    else if (message.guild.verificationLevel === 'MEDIUM') { verification = 'Medium'; }
+    else if (message.guild.verificationLevel === 'HIGH') { verification = '(╯°□°）╯︵ ┻━┻ (High: 10 minutes on server)'; }
+    else if (message.guild.verificationLevel === 'VERY_HIGH') { verification = '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻ (Very High: Verified phone)'; }
 
     // embed color
     let color = message.guild.me.displayColor;
     if (message.guild.me.displayColor === 0) color = '0x59D851';
 
     //The actual message
-    message.send(new Discord.RichEmbed()
+    message.send(new Discord.MessageEmbed()
       .setColor(color)
       .setThumbnail(guildIcon)
-      .setAuthor(`Information on ${message.guild.name}:`, guildIcon, null)
+      .setAuthor(message.guild.name, guildIcon, null)
       .addField('Guild Owner:', message.guild.owner.user.tag, true)
       .addField('Guild ID:', message.guild.id, true)
       .addField('Members:', message.guild.memberCount, true)
-      .addField('Channels:', `${message.guild.channels.size} channels`, true)
+      .addField('Channels:', `${message.guild.channels.cache.size} channels`, true)
       .addField('Region:', region, true)
       .addField('Verification:', verification, true)
       .addField('Server Created:', guildCreatedAt, true)

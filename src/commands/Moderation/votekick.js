@@ -35,7 +35,7 @@ module.exports.run = (client, message, args) => {
           msg.edit(`:x: \`|\` :boot: **Did not votekick \`${toKick.tag}\`.** \`${yesVotesCount}\`/\`${noVotesCount}\``);
         }
 
-        msg.clearReactions();
+        msg.reactions.removeAll();
       });
   });
 };

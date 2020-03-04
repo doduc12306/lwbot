@@ -17,10 +17,10 @@ const remove = promisify(fs.remove);
 
 // Export the client for other files' usage
 module.exports.client = new Discord.Client({
-  disabledEvents: ['TYPING_START', 'USER_NOTE_UPDATE', 'USER_SETTINGS_UPDATE', 'RELATIONSHIP_ADD', 'RELATIONSHIP_REMOVE'],
-  ws: { large_threshold: 1000 },
+  ws: { large_threshold: 1000  },
   messageCacheLifetime: 600, // 600 seconds = 10 minutes
-  messageSweepInterval: 60  //  60 seconds  = 1 minute
+  messageSweepInterval: 60, //  60 seconds  = 1 minute
+  retryLimit: Infinity
 });
 
 module.exports.startup = async () => {
@@ -164,9 +164,9 @@ module.exports.startup = async () => {
   });
 
   // Events that don't require their own files since they're so minor
-  client.on('disconnect', () => client.logger.log('Client disconnected!', 'disconnect'));
-  client.on('reconnecting', () => client.logger.log('Reconnecting...', 'reconnecting'));
-  client.on('resume', replayed => client.logger.log(`Client resumed! Replayed ${replayed} events`, 'resume'));
+  client.on('shardDisconnect', () => client.logger.log('Client disconnected!', 'disconnect'));
+  client.on('shardReconnecting', () => client.logger.log('Reconnecting...', 'reconnecting'));
+  client.on('shardResume', replayed => client.logger.log(`Client resumed! Replayed ${replayed} events`, 'resume'));
   client.on('warn', info => client.logger.warn(`Warning: "${info}"`));
 
   // Error handling

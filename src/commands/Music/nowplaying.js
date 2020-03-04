@@ -1,7 +1,7 @@
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 module.exports.run = (client, message) => {
-  const { voiceChannel } = message.member;
+  const voiceChannel = message.member.voice.channel;
   if(!voiceChannel) return message.send('❌ `|` 🎵 **You aren\'t in a voice channel!**');
 
   const music = client.musicQueue.get(message.guild.id);
@@ -16,7 +16,7 @@ module.exports.run = (client, message) => {
   const timeElapsed = moment.duration(music.playing.duration, 'seconds').format('H[:]mm[:]ss');
   const totalTime = moment.duration(music.songs[0].duration, 'milliseconds').format('H[:]mm[:]ss');
 
-  message.send(new RichEmbed()
+  message.send(new MessageEmbed()
     .setColor(client.accentColor)
     .setTitle(music.songs[0].title)
     .setURL(music.songs[0].url)

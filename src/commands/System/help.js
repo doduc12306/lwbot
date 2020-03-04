@@ -40,7 +40,7 @@ exports.run = async (client, message, args) => {
       if (!message.guild && command.conf.guildOnly) desc += '\n❌ **This command is guild only.**';
       if (level < client.levelCache[command.conf.permLevel]) desc += '\n❌ **You do not have access to this command.**';
 
-      const cmdEmbed = new Discord.RichEmbed()
+      const cmdEmbed = new Discord.MessageEmbed()
         .setTitle(command.help.name.toProperCase())
         .setDescription(desc)
         .setColor(client.accentColor)

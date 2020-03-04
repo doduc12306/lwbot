@@ -1,4 +1,4 @@
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = async (client, message) => {
 
   // Message send function, pretty much extends message.channel.send/message.edit in that it allows the user to edit their command message and it runs that instead
@@ -10,7 +10,7 @@ module.exports = async (client, message) => {
       }
 
       // command editing functionality
-      if (message.edited) return message.channel.fetchMessage(client.msgCmdHistory[message.id])
+      if (message.edited) return message.channel.messages.fetch(client.msgCmdHistory[message.id])
         .then(async msg => {
           const embedC = typeof content === 'object'; // embedC = "embed Check"
 
@@ -31,7 +31,7 @@ module.exports = async (client, message) => {
               : undefined
           };
 
-          if (msg.reactions.size > 0) msg.clearReactions();
+          if (msg.reactions.size > 0) msg.reactions.removeAll();
 
           return msg.edit(embedC ? '' : content, options) // If content === object, send (text) nothing. Else, send the content
             .then(m => { return resolve(m); })
@@ -51,12 +51,12 @@ module.exports = async (client, message) => {
       function owoify() {
         // owo mode functionality
         if (message.guild && client.settings.get(message.guild.id)['owoMode'] === 'true') {
-          if (content instanceof RichEmbed) {
-            const owoedEmbed = new RichEmbed();
+          if (content instanceof MessageEmbed) {
+            const owoedEmbed = new MessageEmbed();
 
             if (content.title) owoedEmbed.setTitle(owoedContent(content.title));
             if (content.description) owoedEmbed.setDescription(owoedContent(content.description));
-            if (content.author) owoedEmbed.setAuthor(owoedContent(content.author.name), content.author.iconURL ? content.author.iconURL : undefined, content.author.url ? content.author.url : undefined);
+            if (content.author) owoedEmbed.setAuthor(owoedContent(content.author.name), content.author.iconURL() ? content.author.iconURL() : undefined, content.author.url ? content.author.url : undefined);
             if (content.footer) owoedEmbed.setFooter(owoedContent(content.footer.text));
             if (content.fields) for (const field of content.fields) { owoedEmbed.addField(field.name, owoedContent(field.value), field.inline); }
             if (content.color) owoedEmbed.setColor(content.color);
@@ -102,7 +102,7 @@ module.exports = async (client, message) => {
       if (message.channel.type !== 'text') throw new Error('I can\'t find a role if I\'m not in a guild!');
       if (!data) throw new Error('You didn\'t give me anything to find a role from!');
       if (message.mentions.roles.size === 0) {
-        let role = message.guild.roles.get(data);
+        let role = message.guild.roles.cache.get(data);
         if (role === undefined) {
           role = message.guild.roles.find(r => r.name.toLowerCase().includes(data.toLowerCase()));
           if (!role) throw new Error('I couldn\'t find that role! ');
@@ -121,7 +121,7 @@ module.exports = async (client, message) => {
     parseUser: data => {
       if (!data) throw new Error('You didn\'t give me anything to find a user from!');
       if (message.mentions.users.size === 0) {
-        let user = client.users.get(data);
+        let user = client.users.cache.get(data);
         if (user === undefined) {
           user = client.users.find(r => (r.username.toLowerCase().includes(data.toLowerCase()) || r.tag.toLowerCase() === data.toLowerCase()));
           if (!user) throw new Error('I couldn\'t find that user!');

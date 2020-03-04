@@ -9,10 +9,10 @@ module.exports.run = async (client, message, args) => {
   require('../../dbFunctions/client/misc.js')(client); // For awaitReply function
   require('../../dbFunctions/message/misc.js')(client, message);
 
-  const { voiceChannel } = message.member;
+  const voiceChannel = message.member.voice.channel;
   if (!voiceChannel) return message.send('❌ `|` 🎵 **You aren\'t in a voice channel!**');
-  if (!message.guild.me.permissionsIn(voiceChannel).serialize()['CONNECT']) return message.send(`❌ \`|\` 🎵 **Missing permissions to connect to** \`${voiceChannel.name}\`**!**`);
-  if (!message.guild.me.permissionsIn(voiceChannel).serialize()['SPEAK']) return message.send(`❌ \`|\` 🎵 **Missing permissions to speak in** \`${voiceChannel.name}\`**!**`);
+  if (!message.guild.me.permissionsIn(voiceChannel).permissions.serialize()['CONNECT']) return message.send(`❌ \`|\` 🎵 **Missing permissions to connect to** \`${voiceChannel.name}\`**!**`);
+  if (!message.guild.me.permissionsIn(voiceChannel).permissions.serialize()['SPEAK']) return message.send(`❌ \`|\` 🎵 **Missing permissions to speak in** \`${voiceChannel.name}\`**!**`);
 
   if (client.musicQueue.get(message.guild.id) && client.musicQueue.get(message.guild.id).connection.dispatcher.paused && client.permlevel(message.member) >= 2) {
     client.musicQueue.get(message.guild.id).connection.dispatcher.resume();
@@ -124,8 +124,8 @@ module.exports.run = async (client, message, args) => {
 
     const toPlay = await ytdl(song.url, { filter: 'audioonly' });
 
-    serverQueue.connection.playOpusStream(toPlay)
-      .on('end', async reason => {
+    serverQueue.connection.play(toPlay, { type: 'opus' })
+      .on('finish', async reason => {
         if (!['Stream is not generating quickly enough.', 'stream'].includes(reason)) message.send(reason);
         if(serverQueue.loop) {
           const songAt0 = serverQueue.songs.shift();
@@ -142,7 +142,7 @@ module.exports.run = async (client, message, args) => {
     serverQueue.textChannel.send(`🎵 **Started playing** \`${song.title}\``);
     
     await user.changeBalance('subtract', 1000);
-    await client.users.get(song.queuedBy).send(`🎵 **Started playing** \`${song.title}\` \n\`1000\` Kowoks deducted from your account. **Balance:** \`${await user.balance}\``);
+    await client.users.cache.get(song.queuedBy).send(`🎵 **Started playing** \`${song.title}\` \n\`1000\` Kowoks deducted from your account. **Balance:** \`${await user.balance}\``);
 
   }
 };

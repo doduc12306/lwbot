@@ -1,5 +1,5 @@
 module.exports.run = (client, message, [ volume ]) => {
-  const { voiceChannel } = message.member;
+  const voiceChannel = message.member.voice.channel;
   if(!voiceChannel) return message.send('❌ `|` 🎵 **You aren\'t in a voice channel!**');
 
   const music = client.musicQueue.get(message.guild.id);

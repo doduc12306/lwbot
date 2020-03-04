@@ -10,9 +10,9 @@ module.exports.run = async (client, message, args) => {
     if (!message.guild.me.permissions.has('BAN_MEMBERS')) return message.send(`❌ \`|\` ${bhEmote} **I am missing permissions:** \`Ban Members\``);
     if (!message.member.permissions.has('BAN_MEMBERS')) return message.send(`❌ \`|\` ${bhEmote} **You are missing permissions:** \`Ban Members\``);
     if (!args[0]) return message.send(`❌ \`|\` ${bhEmote} **You didn't give the ID of someone to ban!**`);
-    await client.fetchUser(args[0]).catch(() => message.send(`❌ \`|\` ${bhEmote} **I could not find that user!**`));
+    await client.users.fetch(args[0]).catch(() => message.send(`❌ \`|\` ${bhEmote} **I could not find that user!**`));
 
-    const toBan = await client.fetchUser(args[0]);
+    const toBan = await client.users.fetch(args[0]);
 
     await message.guild.modbase.create({
       victim: toBan.id,
@@ -21,8 +21,8 @@ module.exports.run = async (client, message, args) => {
     }).then(async info => {
       if (reason) message.guild.modbase.update({ reason: reason }, { where: { id: info.id } });
 
-      const modEmbed = new Discord.RichEmbed()
-        .setThumbnail(toBan.displayAvatarURL)
+      const modEmbed = new Discord.MessageEmbed()
+        .setThumbnail(toBan.displayAvatarURL({ format: 'png', dynamic: true }))
         .setColor(client.config.colors.black)
         .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
         .addField('Hackbanned User', `${toBan.toString()} (${toBan.tag})`)
@@ -30,12 +30,12 @@ module.exports.run = async (client, message, args) => {
 
       if (reason) modEmbed.addField('Reason', reason);
 
-      await message.guild.ban(toBan.id, { days: 2 });
+      await message.guild.members.ban(toBan.id, { days: 2 });
       await settings.get('modLogChannel')
         .then(async modLogChannel => {
           modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
           if (!modLogChannel) return message.send(`⚠️ **Hackban completed, but there is no mod log channel set.** Try \`${await settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
-          if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
+          if (!message.guild.me.permissionsIn(modLogChannel).permissions.serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).permissions.serialize()['EMBED_LINKS']) {
             modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Hackban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
           }
           await modLogChannel.send(modEmbed);

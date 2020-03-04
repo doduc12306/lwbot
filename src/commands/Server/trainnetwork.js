@@ -1,5 +1,5 @@
 /* eslint-disable */
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const { readdirSync, writeFile, readFile, access, constants } = require('fs-extra');
 
 //var brains = readdirSync('./brains/');
@@ -26,7 +26,7 @@ module.exports.run = async (client, message, [...IDs]) => {
   // Sort through and make sure all the messages provided actually exist
   let msgsThatDoExist = [];
   for (const id of IDs) {
-    const msg = await message.channel.fetchMessage(id)
+    const msg = await message.channel.messages.fetch(id)
       .catch(e => { if (e.message === 'Unknown Message') return; else throw e; });
 
     if (msg) msgsThatDoExist.push(msg);
@@ -49,7 +49,7 @@ module.exports.run = async (client, message, [...IDs]) => {
 
     trainBrain()
       .then(res => {
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
           .setColor(client.config.colors.green)
           .setTitle('🧠 Network trained!')
           .setDescription(`Your message${msgsThatDoExist.length === 1 ? 's were' : ' was'} successfully added to the network that detects bad messages.`)
@@ -59,7 +59,7 @@ module.exports.run = async (client, message, [...IDs]) => {
         msg.edit(embed);
       })
       .catch(e => {
-        const embed = new RichEmbed()
+        const embed = new MessageEmbed()
           .setColor(client.config.colors.red)
           .setTitle('🧠 Error training network')
           .setDescription(`\`\`\`${e.stack}\`\`\``)

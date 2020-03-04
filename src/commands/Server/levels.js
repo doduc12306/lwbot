@@ -9,7 +9,7 @@ module.exports.run = async (client, message) => {
       ['id', 'DESC']
     ]
   }).then(data => {
-    const embed = new Discord.RichEmbed()
+    const embed = new Discord.MessageEmbed()
       .setColor(client.accentColor);
     for (const values of data) {
       if (data.indexOf(values) === 0) {

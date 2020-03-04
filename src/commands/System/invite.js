@@ -1,6 +1,6 @@
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports.run = async (client, message) => {
-  message.author.send(new RichEmbed()
+  message.author.send(new MessageEmbed()
     .setColor(client.accentColor)
     .setTitle('Invite me to another server!')
     .setDescription(`[${await client.generateInvite(['ADMINISTRATOR'])}](Click here!)`)

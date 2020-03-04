@@ -1,4 +1,4 @@
-module.exports.cleanperms = {
+module.exports = {
   ADMINISTRATOR:         'Administrator',
   CREATE_INSTANT_INVITE: 'Create Instant Invite',
   KICK_MEMBERS:          'Kick Members',
@@ -8,7 +8,7 @@ module.exports.cleanperms = {
   ADD_REACTIONS:         'Add Reactions',
   VIEW_AUDIT_LOG:        'View Audit Log',
   PRIORITY_SPEAKER:      'Priority Speaker',
-  VIEW_CHANNEL:          'View Channel',
+  READ_MESSAGES:         'Read Messages',
   SEND_MESSAGES:         'Send Messages',
   SEND_TTS_MESSAGES:     'Send TTS Messages',
   MANAGE_MESSAGES:       'Manage Messages',
@@ -25,5 +25,6 @@ module.exports.cleanperms = {
   CHANGE_NICKNAME:       'Change Nickname',
   MANAGE_ROLES:          'Manage Roles',
   MANAGE_WEBHOOKS:       'Manage Webhooks',
-  MANAGE_EMOJIS:         'Manage Emojis'
+  MANAGE_EMOJIS:         'Manage Emojis',
+  STREAM:                'Stream'
 };

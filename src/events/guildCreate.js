@@ -13,25 +13,25 @@ module.exports = async (client, guild) => {
   let voiceErrored = false;
   let mutedRoleCreateError = false;
 
-  let role = await guild.roles.find(g => g.name.toLowerCase() === 'muted');
+  let role = await guild.roles.cache.find(g => g.name.toLowerCase() === 'muted');
   if (!role) {
-    role = await guild.createRole({ name: 'Muted', color: 'DARK_ORANGE', position: guild.me.highestRole.position - 1 }, 'Guild Create | Guild setup!')
+    role = await guild.roles.create({ name: 'Muted', color: 'DARK_ORANGE', position: guild.me.roles.highest.position - 1 }, 'Guild Create | Guild setup!')
       .then(role => { client.logger.verbose(`guildCreate | Created muted role in ${guild.name} (${guild.id})`); owPerms(role); })
       .catch(e => { mutedRoleCreateError = true; client.logger.verbose(e); });
   }
   else { owPerms(role); }
 
   async function owPerms(role) {
-    await guild.channels.filter(g => g.type === 'text').forEach(channel => {
-      if (guild.me.permissionsIn(channel).serialize()['MANAGE_ROLES']) {
+    await guild.channels.cache.filter(g => g.type === 'text').forEach(channel => {
+      if (guild.me.permissionsIn(channel).permissions.serialize()['MANAGE_ROLES']) {
         channel.overwritePermissions(role, { SEND_MESSAGES: false, ADD_REACTIONS: false }, 'Initial Setup Process')
           .then(() => client.logger.verbose(`guildCreate | Wrote permissions for text channel #${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`))
           .catch(e => { client.logger.verbose(e); textErrored = true; });
       }
       else client.logger.verbose(`guildCreate | Tried to write permissions to text channel #${channel.name} (${channel.id}) in ${guild.name} (${guild.id}), but I'm missing the MANAGE_ROLES permission.`);
     });
-    await guild.channels.filter(g => g.type === 'voice').forEach(channel => {
-      if (guild.me.permissionsIn(channel).serialize()['MANAGE_ROLES']) {
+    await guild.channels.cache.filter(g => g.type === 'voice').forEach(channel => {
+      if (guild.me.permissionsIn(channel).permissions.serialize()['MANAGE_ROLES']) {
         channel.overwritePermissions(role, { CONNECT: false, SPEAK: false }, 'Inital Setup Process')
           .then(() => client.logger.verbose(`guildCreate | Wrote permissions for voice channel ${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`))
           .catch(e => { client.logger.verbose(e); voiceErrored = true; });
