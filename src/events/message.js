@@ -75,10 +75,6 @@ module.exports = async (client, message) => {
           if (xpLevelUpEnabled) message.send(xpLevelUpMessage.replaceAll('{{user}}', message.author.toString()).replaceAll('{{level}}', user.dataValues.level + 1)).then(msg => msg.delete(10000));
           user.increment('level');
         }
-
-        function xpNeededToLevelUp(x) {
-          return 5 * (10 ** -4) * ((x * 100) ** 2) + (0.5 * (x * 100)) + 100;
-        }
       });
 
   }
@@ -169,8 +165,8 @@ module.exports = async (client, message) => {
       timeLeft.setMilliseconds(new Date().getMilliseconds() + timeLeftMs);
       timeLeft = moment(timeLeft).fromNow(); // Time / date / milliseconds shenanegins.
 
-      const cooldownMessages = ['Cooldown!', 'You\'re going too fast!', 'Please slow down!', 'Hold your horses!', 'Stop going that fast!', 'I need some time to rest.', 'You\'re making me tired.. :yawning:', 'Why must you go that fast?', 'I\'m about to hit you if you keep going.', 'Error 429: Ratelimited `|`'];
-      return message.send(`❌ \`|\` ⏱ **${cooldownMessages.randomElement()} Try again ${timeLeft}.**`).then(msg => msg.delete(10000));
+      const cooldownMessages = ['Cooldown!', 'You\'re going too fast!', 'Please slow down!', 'Hold your horses!', 'Stop going that fast!', 'I need some time to rest.', 'You\'re making me tired.. :yawning:', 'Why must you go that fast?', 'I\'m gonna hit you if you keep going.', 'Error 429: Ratelimited `|`'];
+      return message.send(`❌ \`|\` ⏱ **${cooldownMessages.randomElement()} Try again ${timeLeft}.**`).then(msg => msg.delete({ timeout: 10000 }));
     }
   }
 
@@ -197,6 +193,9 @@ module.exports = async (client, message) => {
     client.logger.verbose(`From: ${__filename}`);
     client.logger.error(e);
     let firstErrorStackTrace;
+    if(e.message.includes('no such table')) {
+      return message.send(':warning: `|` :gear: **Oops!** Some data hasn\'t yet been initialized for this user. **Please run this command again!**');
+    }
     if (e.stack) firstErrorStackTrace = e.stack.split('\n')[1];
     message.send(`:x: **Something went wrong running the command:**\n\`\`\`\n${e}\n\t${firstErrorStackTrace}\n\`\`\` `);
   }
@@ -207,3 +206,7 @@ module.exports = async (client, message) => {
 
   if (client.config.ciMode) client.emit('ciStepFinish', message.benchmarks);
 };
+
+function xpNeededToLevelUp(x) {
+  return 5 * (10 ** -4) * ((x * 100) ** 2) + (0.5 * (x * 100)) + 100;
+}
