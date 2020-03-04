@@ -53,8 +53,7 @@ module.exports = async (client, message) => {
         if (message.guild && client.settings.get(message.guild.id)['owoMode'] === 'true') {
           if (content instanceof MessageEmbed) {
             const owoedEmbed = new MessageEmbed();
-            client.logger.verbose(content);
-
+            
             // Stuff that's changed
             if (content.title) owoedEmbed.setTitle(owoedContent(content.title));
             if (content.description) owoedEmbed.setDescription(owoedContent(content.description));
