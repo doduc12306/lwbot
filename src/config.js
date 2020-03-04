@@ -74,7 +74,7 @@ const config = {
       name: 'DJ',
       check: member => {
         try {
-          const djRole = member.guild.roles.find(r => r.name.toLowerCase === 'dj');
+          const djRole = member.guild.roles.cache.find(r => r.name.toLowerCase === 'dj');
           if(djRole && member.roles.has(djRole.id)) return true;
         } catch (e) { return false; }
       }
@@ -85,7 +85,7 @@ const config = {
       name: 'Moderator',
       check: member => {
         try {
-          const modRole = member.guild.roles.find(r => r.name.toLowerCase() === client.settings.get(member.guild.id).modRole.toLowerCase());
+          const modRole = member.guild.roles.cache.find(r => r.name.toLowerCase() === client.settings.get(member.guild.id).modRole.toLowerCase());
           if (modRole && member.roles.has(modRole.id)) return true;
         } catch (e) {
           return false;
@@ -98,7 +98,7 @@ const config = {
       name: 'Administrator',
       check: member => {
         try {
-          const adminRole = member.guild.roles.find(r => r.name.toLowerCase() === client.settings.get(member.guild.id).adminRole.toLowerCase());
+          const adminRole = member.guild.roles.cache.find(r => r.name.toLowerCase() === client.settings.get(member.guild.id).adminRole.toLowerCase());
           return ((adminRole && member.roles.has(adminRole.id)) || member.permissions.has('ADMINISTRATOR'));
         } catch (e) {
           return false;
@@ -111,7 +111,7 @@ const config = {
       name: 'Bot Commander',
       check: member => {
         try {
-          const bcRole = member.guild.roles.find(r => r.name.toLowerCase() === client.settings.get(member.guild.id).botCommanderRole.toLowerCase());
+          const bcRole = member.guild.roles.cache.find(r => r.name.toLowerCase() === client.settings.get(member.guild.id).botCommanderRole.toLowerCase());
           return (bcRole && member.roles.has(bcRole.id));
         } catch (e) { return false; }
       }
@@ -124,7 +124,7 @@ const config = {
       check: member => {
         if (!member.guild) return false;
         if (member.guild.owner.user.id !== member.user.id) {
-          const ownerRole = member.guild.roles.find(r => r.name.toLowerCase() === client.settings.get(member.guild.id).ownerRole.toLowerCase());
+          const ownerRole = member.guild.roles.cache.find(r => r.name.toLowerCase() === client.settings.get(member.guild.id).ownerRole.toLowerCase());
           return (ownerRole && member.roles.has(ownerRole.id));
         } else return true;
       }

@@ -19,8 +19,8 @@ module.exports.run = async (client, message, args) => {
   }).then(async info => {
     let dmMsg = `👢 **You were kicked from** \`${message.guild.name}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
-    const modEmbed = new Discord.RichEmbed()
-      .setThumbnail(toKick.displayAvatarURL)
+    const modEmbed = new Discord.MessageEmbed()
+      .setThumbnail(toKick.displayAvatarURL({ format: 'png', dynamic: true }))
       .setColor('0xff8e2b')
       .setFooter(`ID: ${toKick.id} | Case: ${info.id}`)
       .addField('Kicked User', `${toKick.toString()} (${toKick.tag})`)
@@ -34,7 +34,7 @@ module.exports.run = async (client, message, args) => {
       .then(async modLogChannel => {
         modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
         if (!modLogChannel) return message.send(`⚠️ **Kick completed, but there is no mod log channel set.** Try \`${await settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
-        if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
+        if (!message.guild.me.permissionsIn(modLogChannel).permissions.serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).permissions.serialize()['EMBED_LINKS']) {
           modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Kick completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);

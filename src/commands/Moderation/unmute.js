@@ -10,7 +10,7 @@ module.exports.run = async (client, message, args) => {
 
   if (!message.guild.me.permissions.has('MANAGE_ROLES')) return message.send(`❌ \`|\` ${unmutedEmote} **I am missing permissions: \`Manage Roles\`**`);
   if (!toUnmute) return message.send(`❌ \`|\` ${unmutedEmote} **You didn't mention someone to unmute!**`);
-  if (message.guild.me.highestRole.position < toUnmute.highestRole.position) return message.send(`❌ \`|\` ${unmutedEmote} **You need to move my role (${message.guild.me.highestRole.name}) above ${toUnmute.toString()}'s (${toUnmute.highestRole.name})!**`);
+  if (message.guild.me.roles.highest.position < toUnmute.roles.highest.position) return message.send(`❌ \`|\` ${unmutedEmote} **You need to move my role (${message.guild.me.roles.highest.name}) above ${toUnmute.toString()}'s (${toUnmute.roles.highest.name})!**`);
   if (!toUnmute.roles.has(role.id)) return message.send(`❌ \`|\` ${unmutedEmote} **${toUnmute.user.tag} is already unmuted!**`);
 
   await message.guild.modbase.create({
@@ -20,8 +20,8 @@ module.exports.run = async (client, message, args) => {
   }).then(async info => {
     let dmMsg = `${unmutedEmote} **You were unmuted in** \`${message.guild.name}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
-    const modEmbed = new Discord.RichEmbed()
-      .setThumbnail(toUnmute.user.displayAvatarURL)
+    const modEmbed = new Discord.MessageEmbed()
+      .setThumbnail(toUnmute.user.displayAvatarURL({ format: 'png', dynamic: true }))
       .setColor(client.accentColor)
       .setFooter(`ID: ${toUnmute.user.id} | Case: ${info.id}`)
       .addField('Unmuted User', `${toUnmute.user.toString()} (${toUnmute.user.tag})`)
@@ -30,12 +30,12 @@ module.exports.run = async (client, message, args) => {
     if (reason) { dmMsg += `\n\n⚙️ **Reason \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: { id: info.id } }); }
 
     toUnmute.user.send(dmMsg);
-    toUnmute.removeRole(role);
+    toUnmute.roles.remove(role);
     await settings.get('modLogChannel')
       .then(async modLogChannel => {
         modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
         if (!modLogChannel) return message.send(`⚠️ **Unmute completed, but there is no mod log channel set.** Try \`${await settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
-        if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
+        if (!message.guild.me.permissionsIn(modLogChannel).permissions.serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).permissions.serialize()['EMBED_LINKS']) {
           modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Unmute completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);

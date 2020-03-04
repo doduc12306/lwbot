@@ -48,7 +48,7 @@ module.exports = async client => {
       const fs = require('fs-extra');
       let e = require.resolve('../e');
       e = await fs.readFileSync('e', 'utf8');
-      await client.users.get(client.config.ownerID).send(`**I restarted! There was an error before I restarted:**\n\`\`\`${e}\`\`\``);
+      await client.users.cache.get(client.config.ownerID).send(`**I restarted! There was an error before I restarted:**\n\`\`\`${e}\`\`\``);
       await fs.unlink('e', (err) => {
         if (err) throw err;
         client.logger.log('Error log reported, now deleted.');
@@ -70,7 +70,7 @@ module.exports = async client => {
   client.logger.log('Running watchdog once before full startup...');
   const wasSqLogEnabled = client.config.sqLogMode; // boolean
   if (!wasSqLogEnabled) { client.logger.log('Enabling sqLogMode temporarily while it runs...'); client.config.sqLogMode = true; }
-  if (client.config.ciMode) await watchdog.runner(client, client.guilds.get('332632603737849856'));
+  if (client.config.ciMode) await watchdog.runner(client, client.guilds.cache.get('332632603737849856'));
   else await watchdog.runner(client);
   if (!wasSqLogEnabled) { client.logger.log('Disabling sqLogMode because it was disabled originally...'); client.config.sqLogMode = false; }
 
@@ -142,9 +142,9 @@ module.exports = async client => {
 ${'⎻'.repeat(client.user.tag.length + client.user.id.length + 5)}
  ${client.user.tag} (${client.user.id})
 ${'⎼'.repeat(client.user.tag.length + client.user.id.length + 5)}
-• Users:     ${client.users.size}
-• Guilds:    ${client.guilds.size}
-• Channels:  ${client.channels.size}
+• Users:     ${client.users.cache.size}
+• Guilds:    ${client.guilds.cache.size}
+• Channels:  ${client.channels.cache.size}
 • Took:      ${moment.duration(client.startup, 'milliseconds').format('[~]s [secs]')} to start up`, 'ready');
 
   delete client.before;

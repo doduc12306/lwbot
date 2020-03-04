@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer-core');
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 
 module.exports.run = (client, message, args) => {
   let mode;
@@ -12,15 +12,15 @@ module.exports.run = (client, message, args) => {
 
   const search = ['featured', 'original', 'originals', 'discover', 'discovery', 'canvas'].includes(args[0]) ? args.slice(1).join(' ') : args.slice(0).join(' ');
 
-  message.send(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(0 / 5)\``).then(async msg => {
+  message.send(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(0 / 5)\``).then(async msg => {
     try {
       // Initialize browser
       const browser = await puppeteer.launch({ executablePath: '/usr/bin/chromium-browser' });
       const page = await browser.newPage();
-      msg.edit(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(1 / 5)\``);
+      msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(1 / 5)\``);
 
       await page.goto(`https://www.webtoons.com/search?keyword=${search}`);
-      await msg.edit(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(2 / 5)\``);
+      await msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(2 / 5)\``);
 
       if (await page.$('div.card_nodata')) { // If the search result returned empty
         msg.edit('❌ `|` 🔎 **I couldn\'t find a webtoon by that name!**');
@@ -30,22 +30,22 @@ module.exports.run = (client, message, args) => {
       if (mode === 'featured') {
 
         await page.click('ul.card_lst li a');
-        msg.edit(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(3 / 5)\``);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(3 / 5)\``);
 
         const title = await page.$eval('div.cont_box div.detail_header.type_white div.info h1.subj', async e => await e.innerHTML);
         const description = await page.$eval('div.detail_body div.aside.detail p.summary', async e => await e.innerHTML);
         const thumbnail = await page.$eval('div.detail_body', async e => await e.getAttribute('style').split('url(')[1].split(')')[0]);
         const url = page._target._targetInfo.url;
-        msg.edit(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(4 / 5)\``);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(4 / 5)\``);
 
         const lastEpisode = {
           title: await page.$eval('div.detail_lst ul li a span.subj span', async e => await e.innerHTML),
           number: await page.$eval('div.detail_lst ul li a span.tx', async e => await e.innerHTML),
           url: await page.$eval('div.detail_lst ul li a', async e => await e.getAttribute('href'))
         };
-        msg.edit(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(5 / 5)\``);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(5 / 5)\``);
 
-        msg.edit(new RichEmbed()
+        msg.edit(new MessageEmbed()
           .setColor(client.accentColor)
           .setTitle(title)
           .setURL(url)
@@ -59,22 +59,22 @@ module.exports.run = (client, message, args) => {
       } else if (mode === 'discover') {
 
         await page.click('div.challenge_lst ul li a');
-        msg.edit(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(3 / 5)\``);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(3 / 5)\``);
 
         const title = await page.$eval('div.detail_header div.info h3.subj', async e => await e.innerHTML.split('<')[0].trim());
         const description = await page.$eval('div.detail_body div.aside.detail p.summary', async e => await e.innerHTML);
         const thumbnail = await page.$eval('div.detail_header span.thmb img', e => e.getAttribute('src'));
         const url = page._target._targetInfo.url;
-        msg.edit(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(4 / 5)\``);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(4 / 5)\``);
 
         const lastEpisode = {
           title: await page.$eval('div.detail_lst ul li a span.subj span', async e => await e.innerHTML),
           number: await page.$eval('div.detail_lst ul li a span.tx', async e => await e.innerHTML),
           url: await page.$eval('div.detail_lst ul li a', async e => await e.getAttribute('href'))
         };
-        msg.edit(`${client.emojis.get('536942274643361794')} **One moment please...**  \`(5 / 5)\``);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(5 / 5)\``);
 
-        msg.edit(new RichEmbed()
+        msg.edit(new MessageEmbed()
           .setColor(client.accentColor)
           .setTitle(title)
           .setURL(url)

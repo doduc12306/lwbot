@@ -1,10 +1,10 @@
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports.run = (client, message, args) => {
   const GuildSettings = require('../../dbFunctions/message/settings');
   const settings = new GuildSettings(message.guild.id);
-  if (!message.guild.me.permissionsIn(message.channel).serialize()['MANAGE_ROLES']) return message.send('❌ `|` 🔓 **I am missing permission!** `Manage Roles`');
-  if (!message.member.permissionsIn(message.channel).serialize()['MANAGE_MESSAGES'] ||
-    !message.member.permissionsIn(message.channel).serialize()['MANAGE_CHANNELS']) return message.send('❌ `|` 🔓 **You are missing permissions!** `Manage Messages` or `Manage Channel`');
+  if (!message.guild.me.permissionsIn(message.channel).permissions.serialize()['MANAGE_ROLES']) return message.send('❌ `|` 🔓 **I am missing permission!** `Manage Roles`');
+  if (!message.member.permissionsIn(message.channel).permissions.serialize()['MANAGE_MESSAGES'] ||
+    !message.member.permissionsIn(message.channel).permissions.serialize()['MANAGE_CHANNELS']) return message.send('❌ `|` 🔓 **You are missing permissions!** `Manage Messages` or `Manage Channel`');
 
   const crgx = /<#([0-9]+)>/g;
   let channel = undefined;
@@ -30,22 +30,22 @@ module.exports.run = (client, message, args) => {
 
   for (let overwrite of channel.permissionOverwrites) {
     overwrite = overwrite[1];
-    if (overwrite.type === 'role' && message.guild.roles.get(overwrite.id).name.toLowerCase() === 'muted') continue;
+    if (overwrite.type === 'role' && message.guild.roles.cache.get(overwrite.id).name.toLowerCase() === 'muted') continue;
     channel.overwritePermissions(overwrite.id, { SEND_MESSAGES: true });
   }
 
-  const modEmbed = new RichEmbed()
+  const modEmbed = new MessageEmbed()
     .setColor(client.accentColor)
     .addField('Unlock Channel', `${channel.toString()} (#${channel.name})`)
     .addField('Moderator', `${message.author.toString()} (${message.author.tag})`)
-    .setThumbnail(message.author.displayAvatarURL);
+    .setThumbnail(message.author.displayAvatarURL({ format: 'png', dynamic: true }));
 
   if (reason) modEmbed.addField('Reason', reason);
 
   settings.get('modLogChannel')
     .then(async modLogChannel => {
       modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
-      if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
+      if (!message.guild.me.permissionsIn(modLogChannel).permissions.serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).permissions.serialize()['EMBED_LINKS']) {
         modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Channel unlocked, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
       }
       await modLogChannel.send(modEmbed);

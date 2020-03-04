@@ -6,7 +6,7 @@ class GuildEvents {
   constructor(guildID) {
     if (guildID instanceof Guild) guildID = guildID.id;
 
-    const guild = client.guilds.get(guildID);
+    const guild = client.guilds.cache.get(guildID);
     if (!guild) throw new Error(`Guild (${guildID}) does not exist to get.`);
 
     this.guildID = guildID;

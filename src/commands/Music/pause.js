@@ -1,5 +1,5 @@
 module.exports.run = (client, message) => {
-  const { voiceChannel } = message.member;
+  const voiceChannel = message.member.voice.channel;
   if(!voiceChannel) return message.send('❌ `|` 🎵 **You aren\'t in a voice channel!**');
 
   const music = client.musicQueue.get(message.guild.id);
@@ -14,7 +14,7 @@ module.exports.run = (client, message) => {
     music.songs = await [];
     music.playing.duration = await 0;
     await clearInterval(music.playing.interval);
-    music.connection.dispatcher.end('⏱ `|` 🎵 **I left because I was paused for more than 5 minutes.**');
+    music.connection.dispatcher.stop('⏱ `|` 🎵 **I left because I was paused for more than 5 minutes.**');
   }, 300000); // 5 minutes
 };
 

@@ -1,6 +1,8 @@
 const logger = require('./util/Logger');
-if (process.version.slice(1).split('.')[0] < 8 || process.version.slice(1).split('.')[0] > 11)
-  return logger.error('Invalid Node.js version. Please choose a version from 8 to 11.');
+if (process.version.slice(1).split('.')[0] < 12) {
+  logger.error('Invalid Node.js version. Please choose a version greater than 11. (Preferrably v12)');
+  process.exit(1);
+}
 
 require('./startup').startup();
 

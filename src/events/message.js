@@ -3,7 +3,7 @@ const { Message } = require('discord.js');
 
 module.exports = async (client, message) => {
   const a = new Date();
-  if ((message.author.bot && !client.config.ciMode) || client.status !== 0) return;
+  if ((message.author.bot && !client.config.ciMode) || client.ws.status !== 0) return;
   message.benchmarks = {};
 
   require('../dbFunctions/message/misc.js')(client, message);
@@ -42,8 +42,8 @@ module.exports = async (client, message) => {
   if (exceedsCapsThreshold) {
     if (client.permlevel(message.member) !== 0) {
       if (staffBypassesLimits);
-      else { capsDelete ? message.delete() : false; message.send(emsg).then(msg => msg.delete(6000)); }
-    } else { capsDelete ? message.delete() : false; message.send(emsg).then(msg => msg.delete(6000)); }
+      else { capsDelete ? message.delete() : false; message.send(emsg).then(msg => msg.delete({ timeout: 6000 })); }
+    } else { capsDelete ? message.delete() : false; message.send(emsg).then(msg => msg.delete({ timeout: 6000 })); }
   }
 
   if (message.channel.type !== 'dm') {
@@ -72,7 +72,7 @@ module.exports = async (client, message) => {
       .then(user => {
         user = user[0];
         if (xpNeededToLevelUp(user.dataValues.level) < user.dataValues.xp) {
-          if (xpLevelUpEnabled) message.send(xpLevelUpMessage.replaceAll('{{user}}', message.author.toString()).replaceAll('{{level}}', user.dataValues.level + 1)).then(msg => msg.delete(10000));
+          if (xpLevelUpEnabled) message.send(xpLevelUpMessage.replaceAll('{{user}}', message.author.toString()).replaceAll('{{level}}', user.dataValues.level + 1)).then(msg => msg.delete({timeout: 10000}));
           user.increment('level');
         }
       });

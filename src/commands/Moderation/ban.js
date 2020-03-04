@@ -19,8 +19,8 @@ module.exports.run = async (client, message, args) => {
   }).then(async info => {
     let dmMsg = `${bhEmote} **You were banned from** \`${message.guild.name}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
-    const modEmbed = new Discord.RichEmbed()
-      .setThumbnail(toBan.displayAvatarURL)
+    const modEmbed = new Discord.MessageEmbed()
+      .setThumbnail(toBan.displayAvatarURL({ format: 'png', dynamic: true }))
       .setColor(client.config.colors.red)
       .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
       .addField('Banned User', `${toBan.toString()} (${toBan.tag})`)
@@ -29,12 +29,12 @@ module.exports.run = async (client, message, args) => {
     if (reason) { dmMsg += `\n\n⚙️ **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: { id: info.id } }); }
 
     await toBan.send(dmMsg);
-    await message.guild.ban(toBan, { days: 2 });
+    await message.guild.members.ban(toBan, { days: 2 });
     await settings.get('modLogChannel')
       .then(async modLogChannel => {
         modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
         if (!modLogChannel) return message.send(`⚠️ **Ban completed, but there is no mod log channel set.** Try \`${await settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
-        if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
+        if (!message.guild.me.permissionsIn(modLogChannel).permissions.serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).permissions.serialize()['EMBED_LINKS']) {
           modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Ban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);

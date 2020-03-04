@@ -12,7 +12,7 @@ class UserProfile {
   constructor(userID) {
     if (userID instanceof User) userID = userID.id; // If the userID passed is actually a d.js user object, then turn it into an id that the class can handle.
 
-    const user = client.users.get(userID);
+    const user = client.users.cache.get(userID);
     if (!user) throw new Error('User does not exist to get.');
 
     this.userID = userID;

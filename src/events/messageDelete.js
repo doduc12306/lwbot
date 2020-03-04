@@ -1,4 +1,4 @@
-const { RichEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 module.exports = (client, message) => {
   if(message.author.bot) return;
 
@@ -6,14 +6,14 @@ module.exports = (client, message) => {
   const loggingEnabled = client.events.get(message.guild.id)['messageDelete'];
   if (!loggingEnabled) return;
 
-  const modLogChannel = message.guild.channels.find(g => g.name === client.settings.get(message.guild.id)['modLogChannel']);
+  const modLogChannel = message.guild.channels.cache.find(g => g.name === client.settings.get(message.guild.id)['modLogChannel']);
   if (!modLogChannel) return;
 
   if(message.content.length > 1024) message.content = message.content.substring(0, 1020) + ' ...';
 
-  const embed = new RichEmbed()
+  const embed = new MessageEmbed()
     .setColor(client.config.colors.red)
-    .setAuthor(message.author.tag, message.author.displayAvatarURL, message.url)
+    .setAuthor(message.author.tag, message.author.displayAvatarURL({ format: 'png', dynamic: true }), message.url)
     .setTitle('Message Deleted')
     .setDescription(`Channel: ${message.channel.toString()}`)
     .addField('Message', message.content)

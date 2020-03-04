@@ -1,12 +1,12 @@
 module.exports.run = (client, message, args) => {
-  if (message.member.hasPermission('MANAGE_EMOJIS')) {
+  if (message.member.permissions.has()('MANAGE_EMOJIS')) {
     const emojiName = args[0];
     const emojiURL = args[1];
 
     if (!emojiName) return message.send('❌ You forgot the emoji name!');
     if (!emojiURL) return message.send('❌ You forgot the emoji url!');
 
-    message.guild.createEmoji(emojiURL, emojiName, null, `${message.author.tag} created emoji ${emojiName}`)
+    message.guild.emojis.create(emojiURL, emojiName, null, `${message.author.tag} created emoji ${emojiName}`)
       .then(emote => message.send(`✅ Emote **\`${emote.name}\`** ${emote} created!`))
       .catch(err => message.send(`❌ Something went wrong:\n${err}`));
 
@@ -16,7 +16,7 @@ module.exports.run = (client, message, args) => {
 exports.conf = {
   enabled: true,
   guildOnly: true,
-  aliases: ['ae', 'addemoji', 'createemote', 'createemoji'],
+  aliases: ['ae', 'addemoji', 'createemote', 'emojis.create'],
   permLevel: 'Moderator'
 };
 
