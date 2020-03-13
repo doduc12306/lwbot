@@ -75,7 +75,8 @@ exports.conf = {
   enabled: false,
   permLevel: 'User',
   aliases: ['aki'],
-  guildOnly: false
+  guildOnly: false,
+  disabledReason: 'The akinator package I was using suddenly stopped working.'
 };
 
 exports.help = {

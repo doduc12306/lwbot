@@ -19,7 +19,8 @@ exports.conf = {
   enabled: false,
   aliases: [],
   permLevel: 'DJ',
-  guildOnly: true
+  guildOnly: true,
+  disabledReason: 'Too many bugs, sorry'
 };
 
 exports.help = {

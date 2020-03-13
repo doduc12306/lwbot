@@ -105,7 +105,8 @@ exports.conf = {
   aliases: ['tn'],
   permLevel: 'Moderator',
   guildOnly: true,
-  requiresEmbed: true
+  requiresEmbed: true,
+  disabledReason: 'See this issue: https://github.com/BrainJS/brain.js/issues/507'
 };
 
 exports.help = {
