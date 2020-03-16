@@ -2,12 +2,12 @@
 Soon to be public Discord bot.
 
 [![](https://gitlab.com/akii0008/lwbot-rewrite/badges/master/pipeline.svg)](https://gitlab.com/akii0008/lwbot-rewrite/pipelines)<br>
+^ That pipeline is almost always failing. Don't worry, the bot works. I make sure it works before I push it.
 
 Migrated from [GitHub](http://github.com/jennasisis/lwbot-rewrite) a *long* time ago.<br>
 Was originally [just lwbot on GitHub](http://github.com/jennasisis/lwbot), however both of these repositories have been archived.
 
-Tested in Node: v8.x - v11.x. <br>
-**NODE 12+ DOES NOT WORK! DO NOT USE NODE 12+!** A few packages don't like it for whatever reason, sqlite3 and lzma-native. **Do not use node 12+.**
+~~Tested in Node: v8.x - v11.x.~~ This was before Discord.js v12. v12 now requires *at least* node 12. <br>
 Tested wherever Node works, including an iPhone (yes, really o.o (it was jailbroken and I wanted to see if it worked (it did)))
 
 ### ⚠️ **This bot was not designed to be hosted by someone who isn't me.**
