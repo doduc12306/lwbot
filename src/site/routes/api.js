@@ -10,7 +10,7 @@ router.get('/guilds', async (req, res, next) => {
 
   const response = await phin({
     url: `${baseDiscordURL}/users/@me/guilds`,
-    headers: { Authorization: `Bearer ${req.user.accessToken}` }
+    headers: { Authorization: `Bearer crPCVD0Wmq1WEU8BlGBrZz8UNJTBym` }
   });
   const guilds = JSON.parse(response.body.toString());
   const guildsIHaveAccessTo = [];
@@ -20,7 +20,7 @@ router.get('/guilds', async (req, res, next) => {
     if((guild.permissions & 0x20) === 0x20) guildsIHaveAccessTo.push(guild);
   });
 
-  res.send(guildsIHaveAccessTo);
+  res.json(guildsIHaveAccessTo);
 });
 
 router.get('/session', (req, res, next) => {

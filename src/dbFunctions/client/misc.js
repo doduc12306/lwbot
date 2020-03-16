@@ -1,3 +1,4 @@
+const { GuildMember } = require('discord.js');
 module.exports = (client) => {
 
   /*
@@ -10,6 +11,7 @@ module.exports = (client) => {
 
   */
   client.permlevel = member => {
+    if (!(member instanceof GuildMember)) throw new Error('Provided member is not a GuildMember');
     if (!member) return 0; // If member is undefined or null for whatever reason, return 0 - User
     if (!member.guild) return 0; // If the member given isn't in a guild (for DMs) return 0 - User
 

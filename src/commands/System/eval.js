@@ -15,6 +15,7 @@ const xp = require('../../dbFunctions/message/xp');
 const GuildSettings = require('../../dbFunctions/message/settings');
 const GuildEvents = require('../../dbFunctions/message/events');
 const User = require('../../dbFunctions/client/user');
+const sqWatchdog = require('../../util/sqWatchdog');
 const package = require('../../../package.json');
 
 exports.run = async (client, message, args) => {

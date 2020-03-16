@@ -13,8 +13,16 @@ const cors = require('cors');
 
 const User = require('./models/user').userModel;
 
+const corsWhitelist = ['http://127.0.0.1']
+const corsOptions = {
+  origin: (origin, cb) => {
+    if(corsWhitelist.indexOf(origin !== -1)) cb(null, true)
+    else cb(new Error('Blocked by CORS'))
+  }
+}
+
 app.use('/assets', express.static('assets')); // Creates https://domain.tld/assets/...
-app.use(cors());
+app.use(cors(corsOptions));
 
 // PASSPORT REQUIREMENTS
 app.use(session({
