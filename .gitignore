@@ -70,6 +70,7 @@ typings/
 # Yarn things
 .yarn-integrity
 .yarn/
+.pnp.js
 
 # dotenv environment variables file
 .env
