@@ -42,7 +42,7 @@
   "scripts": {
     "test": "cd src; node index.js --ciMode",
     "start": "pm2 start index.js",
-    "build": "sudo apt-get update; sudo apt install make g++ autoconf libtool pkg-config libcairo2-dev libjpeg-dev libgif-dev; sudo yarn add node-opus ffmpeg-binaries; echo \" \"; echo \"Build complete\";",
+    "build": "sudo apt-get update; sudo apt install make g++ autoconf libtool pkg-config libcairo2-dev libjpeg-dev libgif-dev; sudo yarn add @discordjs/opus; echo \" \"; echo \"Build complete\";",
     "postinstall": "cd src/util; node findandedit.js"
   },
   "repository": {
