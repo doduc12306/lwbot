@@ -1,3 +1,4 @@
+const { GuildMember } = require('discord.js');
 module.exports = (client) => {
 
   /*
@@ -10,8 +11,9 @@ module.exports = (client) => {
 
   */
   client.permlevel = member => {
+    if (!(member instanceof GuildMember)) throw new Error('Provided member is not a GuildMember');
     if (!member) return 0; // If member is undefined or null for whatever reason, return 0 - User
-    if (!member.guild) return 0; // If the member given isn't in a guild (for DMs) return 0 - User for the permlevel
+    if (!member.guild) return 0; // If the member given isn't in a guild (for DMs) return 0 - User
 
     let permlvl = 0;
 
@@ -27,7 +29,7 @@ module.exports = (client) => {
     }
     return permlvl;
   };
-  client.permLevel = member => { return client.permlevel(member); }; // An alias just in case I mess up permlevel casing
+  client.permLevel = member => client.permlevel(member); // An alias just in case I mess up permlevel casing
 
   /*
   SINGLE-LINE AWAITMESSAGE
@@ -120,9 +122,6 @@ module.exports = (client) => {
     }
     if (!command) return `The command \`${commandName}\` doesn't seem to exist, nor is it an alias.`;
 
-    if (command.shutdown) {
-      await command.shutdown(client);
-    }
     delete require.cache[require.resolve(`../../commands/${folder}/${commandName}.js`)];
     return false;
   };

@@ -12,7 +12,8 @@ exports.conf = {
   enabled: false,
   aliases: [],
   permLevel: 'User',
-  guildOnly: false
+  guildOnly: false,
+  disabledReason: 'This package unnecessarily requires a c++ package that I cannot build for some reason'
 };
 
 exports.help = {

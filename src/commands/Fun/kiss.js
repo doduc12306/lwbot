@@ -24,7 +24,8 @@ exports.conf = {
   guildOnly: true,
   aliases: ['makeout'],
   permLevel: 'User',
-  requiresEmbed: true
+  requiresEmbed: true,
+  disabledReason: 'Too many bugs, dont feel like fixing them'
 };
 
 exports.help = {

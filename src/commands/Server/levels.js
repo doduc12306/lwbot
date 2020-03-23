@@ -36,7 +36,8 @@ exports.conf = {
   permLevel: 'User',
   guildOnly: true,
   aliases: ['leaderboard', 'xplevels', 'xpleaderboard'],
-  requiresEmbed: true
+  requiresEmbed: true,
+  disabledReason: 'Unfinished command'
 };
 
 exports.help = {

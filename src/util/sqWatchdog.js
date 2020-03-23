@@ -6,7 +6,9 @@ const { join } = require('path');
 
 const config = require('../config');
 
-module.exports.runner = async function runner(client, guild) {
+module.exports.runner = async function runner(client, guild, reset = false) {
+  const force = { force: reset };
+
   if (!client) throw new Error('Missing client parameter');
   const start = new Date();
 
@@ -23,6 +25,7 @@ module.exports.runner = async function runner(client, guild) {
     const GuildSettings = require('../dbFunctions/message/settings');
     const settingsTable = new GuildSettings(guild).shortcut;
 
+    await settingsTable.sync(force);
     const settings = {};
     for (const setting of Object.entries(config.defaultSettings)) {
       const key = setting[0];
@@ -41,7 +44,7 @@ module.exports.runner = async function runner(client, guild) {
 
     /* COMMANDS CLEANUP */
     const commandsTable = require('../dbFunctions/message/commands').functions.commandsSchema(guild);
-    await commandsTable.sync();
+    await commandsTable.sync(force);
     for (const command of client.commands.filter(g => g.conf.enabled)) {
       const folder = client.folder.get(command[0]);
       const enabled = command[1].conf.enabled;
@@ -64,6 +67,7 @@ module.exports.runner = async function runner(client, guild) {
     const GuildEvents = require('../dbFunctions/message/events');
     const eventsTable = new GuildEvents(guild).shortcut;
 
+    await eventsTable.sync(force);
     const events = {};
     for (const event of Object.entries(config.defaultEvents)) {
       const eventName = event[0];
@@ -128,6 +132,7 @@ module.exports.runner = async function runner(client, guild) {
       const GuildSettings = require('../dbFunctions/message/settings');
       const settingsTable = new GuildSettings(serverID).shortcut;
 
+      await settingsTable.sync(force);
       const settings = {};
       for (const setting of Object.entries(config.defaultSettings)) {
         const key = setting[0];
@@ -147,7 +152,7 @@ module.exports.runner = async function runner(client, guild) {
 
       /* COMMANDS CLEANUP */
       const commandsTable = require('../dbFunctions/message/commands').functions.commandsSchema(serverID);
-      await commandsTable.sync();
+      await commandsTable.sync(force);
       for (const command of client.commands.filter(g => g.conf.enabled)) {
         const folder = client.folder.get(command[0]);
         const enabled = command[1].conf.enabled;
@@ -170,6 +175,7 @@ module.exports.runner = async function runner(client, guild) {
       const GuildEvents = require('../dbFunctions/message/events');
       const eventsTable = new GuildEvents(serverID).shortcut;
 
+      await eventsTable.sync(force);
       const events = {};
       for (const event of Object.entries(config.defaultEvents)) {
         const eventName = event[0];
@@ -189,7 +195,7 @@ module.exports.runner = async function runner(client, guild) {
 
       /* XP CLEANUP */
       //const xpTable = require('../dbFunctions/message/xp').functions.xpSchema(serverID);
-      //await xpTable.sync();
+      //await xpTable.sync(force);
 
       /* await xpTable.findAll().then(data => {
         for (const dataPoint of data) {

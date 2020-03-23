@@ -1,4 +1,7 @@
-image: node:10.18.0
+image: node:12.16.1
+
+include:
+  - template: License-Scanning.gitlab-ci.yml
 
 test:
   before_script:

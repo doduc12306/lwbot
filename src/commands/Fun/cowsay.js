@@ -12,7 +12,8 @@ exports.conf = {
   enabled: false,
   aliases: [],
   guildOnly: false,
-  permLevel: 'User'
+  permLevel: 'User',
+  disabledReason: 'This literally made a call to my machine\'s cowsay command. As there is no safe way to sanitize input like this, the command is disabled until I can find a suitable package replacement'
 };
 
 exports.help = {

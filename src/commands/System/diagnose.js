@@ -1,8 +1,13 @@
 module.exports.run = (client, message, args) => {
-  const command = client.commands.get(args[0]);
+  const command = client.commands.get(args[0]) || client.commands.get(client.aliases.get(args[0]));
 
-  if(command.conf.enabled) message.send('✅ **This command is enabled.**');
-  else message.send('❌ **This command is disabled.**');
+  if(command.conf.enabled) return message.send('✅ **This command is enabled.**');
+  
+  let msg = ':x: **This command is disabled.**';
+
+  if(command.conf.disabledReason) msg += `\n:gear: **Reason:** ${command.conf.disabledReason}`;
+
+  message.send(msg);
 };
 
 exports.conf = {
