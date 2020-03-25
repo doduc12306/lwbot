@@ -30,7 +30,7 @@ module.exports.run = (client, message, args) => {
         if(yesVotesCount + noVotesCount < 5) return msg.edit(`:x: \`|\` :boot: **Not enough votes were cast to kick \`${toKick.tag}\`.** (Minimum: 5)`);
 
         if(yesVotesCount > noVotesCount) {
-          msg.edit(`:white_check_mark: \`|\` :boot: **Votekicked \`${toKick.tag}\`.** \`${yesVotesCount}\`/\`${noVotesCount}\``);
+          msg.edit(`✅ \`|\` :boot: **Votekicked \`${toKick.tag}\`.** \`${yesVotesCount}\`/\`${noVotesCount}\``);
         } else {
           msg.edit(`:x: \`|\` :boot: **Did not votekick \`${toKick.tag}\`.** \`${yesVotesCount}\`/\`${noVotesCount}\``);
         }

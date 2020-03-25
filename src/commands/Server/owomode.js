@@ -7,24 +7,24 @@ module.exports.run = (client, message, [action]) => {
   if (!action) {
     if (settings['owoMode']) { 
       settings.edit('owoMode', 'false'); 
-      message.send(':white_check_mark: **Disabled**'); 
+      message.send('✅ **Disabled**'); 
     } else { 
       settings.edit('owoMode', 'true'); 
-      message.send(':white_check_mark: **Enabled**'); 
+      message.send('✅ **Enabled**'); 
     }
   } else if (action === 'on') { 
     settings.edit('owoMode', 'true'); 
-    message.send(':white_check_mark: **Enabled**'); 
+    message.send('✅ **Enabled**'); 
   } else if (action === 'off') { 
     settings.edit('owoMode', 'false');
-    message.send(':white_check_mark: **Disabled**'); 
+    message.send('✅ **Disabled**'); 
   } else if (action === 'toggle') {
     if (settings['owoMode']) { 
       settings.edit('owoMode', 'false'); 
-      message.send(':white_check_mark: **Disabled**'); 
+      message.send('✅ **Disabled**'); 
     } else { 
       settings.edit('owoMode', 'true'); 
-      message.send(':white_check_mark: **Enabled**'); 
+      message.send('✅ **Enabled**'); 
     }
   } else { message.send(':x: `owomode [on/off/toggle]`'); }
 

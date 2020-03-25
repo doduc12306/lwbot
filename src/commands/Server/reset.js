@@ -28,7 +28,7 @@ module.exports.run = async (client, message, args) => {
 
       await client.wait(500);
 
-      msg.edit(':white_check_mark: `|` 🔄 **Reset completed.**');
+      msg.edit('✅ `|` 🔄 **Reset completed.**');
     });
     
   }

@@ -62,7 +62,7 @@ exports.run = async (client, message, args) => {
       .then(async () => {
         await (client.settings.get(message.guild.id)[setting.originalSetting] = newValue);
         const newSetting = await viewSettings(setting.id, null);
-        message.send(`:white_check_mark: \`|\` ⚙ **Setting edited!**\n\`\`\`xl\n[${newSetting.id}] ${newSetting.key} - ${newSetting.value}\n\`\`\``);
+        message.send(`✅ \`|\` ⚙ **Setting edited!**\n\`\`\`xl\n[${newSetting.id}] ${newSetting.key} - ${newSetting.value}\n\`\`\``);
       }).catch(e => { client.logger.error(e.stack); return message.send(`:x: \`|\` ⚙ **There was an error editing the setting:**\n\`\`\`${e.stack}\`\`\``); });
 
   } else if (action === 'reset') {
@@ -81,7 +81,7 @@ exports.run = async (client, message, args) => {
           .then(async () => {
             await (client.settings.get(message.guild.id)[setting.originalSetting] = client.config.defaultSettings[setting.originalSetting]);
             const newSetting = await viewSettings(+settingToReset, null);
-            message.send(`:white_check_mark: \`|\` ⚙ **Setting reset!**\n\`\`\`xl\n[${newSetting.id}] ${newSetting.key} - ${newSetting.value}\n\`\`\``);
+            message.send(`✅ \`|\` ⚙ **Setting reset!**\n\`\`\`xl\n[${newSetting.id}] ${newSetting.key} - ${newSetting.value}\n\`\`\``);
           }).catch(e => { return message.send(`:x: \`|\` ⚙ **There was an error resetting the setting:**\n\`\`\`${e}\`\`\``); });
         // If the user said "n" or "no"
       } else if (/no?/i.test(response)) {
@@ -101,7 +101,7 @@ exports.run = async (client, message, args) => {
           .then(async () => {
             await (client.settings.get(message.guild.id)[setting.originalSetting] = client.config.defaultSettings[setting.originalSetting]);
             const newSetting = await viewSettings(null, settingToReset);
-            message.send(`:white_check_mark: \`|\` ⚙ **Setting reset!**\n\`\`\`xl\n[${newSetting.id}] ${newSetting.key} - ${newSetting.value}\n\`\`\``);
+            message.send(`✅ \`|\` ⚙ **Setting reset!**\n\`\`\`xl\n[${newSetting.id}] ${newSetting.key} - ${newSetting.value}\n\`\`\``);
           }).catch(e => { return message.send(`:x: \`|\` ⚙ **There was an error resetting the setting:**\n\`\`\`${e}\`\`\``); });
         // If the user said "n" or "no"
       } else if (/no?/i.test(response)) {
