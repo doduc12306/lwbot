@@ -1,8 +1,9 @@
-const puppeteer = require('puppeteer-core');
 const { MessageEmbed } = require('discord.js');
+const cheerio = require('cheerio');
+const fetch = require('node-fetch');
 
 module.exports.run = (client, message, args) => {
-  let mode;
+  let mode; // featured OR discover
   if (!['featured', 'original', 'originals', 'discover', 'discovery', 'canvas'].includes(args[0])) mode = 'featured';
 
   if (!args[0]) return message.send('❌ `|` 🔎 **You didn\'t specify featured or canvas webtoon to search!**');
@@ -12,83 +13,83 @@ module.exports.run = (client, message, args) => {
 
   const search = ['featured', 'original', 'originals', 'discover', 'discovery', 'canvas'].includes(args[0]) ? args.slice(1).join(' ') : args.slice(0).join(' ');
 
-  message.send(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(0 / 5)\``).then(async msg => {
+  message.send(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(0 / n)\``).then(async msg => {
     try {
-      // Initialize browser
-      const browser = await puppeteer.launch({ executablePath: '/usr/bin/chromium-browser' });
-      const page = await browser.newPage();
-      msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(1 / 5)\``);
-
-      await page.goto(`https://www.webtoons.com/search?keyword=${search}`);
-      await msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(2 / 5)\``);
-
-      if (await page.$('div.card_nodata')) { // If the search result returned empty
-        msg.edit('❌ `|` 🔎 **I couldn\'t find a webtoon by that name!**');
-        return browser.close();
-      }
+      let res = await fetch(`https://www.webtoons.com/search?keyword=${search}`).then(page => page.text());
+      let $ = cheerio.load(res);
+      msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(1 / n)\``);
+      if($('div.card_nodata').length === 1) return msg.edit(`:x: \`|\` 🔎 **No results for** \`${search}\``);
 
       if (mode === 'featured') {
 
-        await page.click('ul.card_lst li a');
-        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(3 / 5)\``);
+        const searchResult = $('div.card_wrap.search ul.card_lst li a.card_item').attr('href');
+        if(!searchResult) return msg.edit(`:x: \`|\` 🔎 **No featured webtoon results for** \`${search}\``);
+        res = await fetch(`https://www.webtoons.com${searchResult}`).then(page => page.text());
+        const page = cheerio.load(res);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(2 / n)\``);
 
-        const title = await page.$eval('div.cont_box div.detail_header.type_white div.info h1.subj', async e => await e.innerHTML);
-        const description = await page.$eval('div.detail_body div.aside.detail p.summary', async e => await e.innerHTML);
-        const thumbnail = await page.$eval('div.detail_body', async e => await e.getAttribute('style').split('url(')[1].split(')')[0]);
-        const url = page._target._targetInfo.url;
-        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(4 / 5)\``);
+        $ = cheerio.load(page('div.cont_box div.detail_body.banner div.detail_lst ul').children().first().html());
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(3 / n)\``);
 
-        const lastEpisode = {
-          title: await page.$eval('div.detail_lst ul li a span.subj span', async e => await e.innerHTML),
-          number: await page.$eval('div.detail_lst ul li a span.tx', async e => await e.innerHTML),
-          url: await page.$eval('div.detail_lst ul li a', async e => await e.getAttribute('href'))
+        const episode = {
+          name: $('a span.subj span').text(),
+          thumbnail: $('a span.thmb img').attr('src'),
+          date: $('a span.date').text(),
+          link: $('a').attr('href')
         };
-        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(5 / 5)\``);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(4 / n)\``);
 
-        msg.edit(new MessageEmbed()
+        const title = page('div.cont_box div.detail_header div.info h1.subj').text();
+        const summary = page('div.cont_box div.detail_body.banner div p.summary').text();
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(5 / n)\``);
+
+        const embed = new MessageEmbed()
           .setColor(client.accentColor)
           .setTitle(title)
-          .setURL(url)
-          .setDescription(description)
-          .setThumbnail(thumbnail)
-          .addField(`Episode ${lastEpisode.number}`, `[${lastEpisode.title}](${lastEpisode.url})`)
-        );
+          .setDescription(summary)
+          .addField('Latest Episode', `[${episode.name}](${episode.link})`)
+          .setThumbnail(episode.thumbnail)
+          .setTimestamp(new Date(episode.date));
 
-        await browser.close();
+        msg.edit('', { embed });
 
       } else if (mode === 'discover') {
 
-        await page.click('div.challenge_lst ul li a');
-        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(3 / 5)\``);
+        const searchResult = $('div.card_wrap.search div.challenge_lst.search ul li a.challenge_item').attr('href');
+        if(!searchResult) return msg.edit(`:x: \`|\` 🔎 **No canvas webtoon results for** \`${search}\``);
+        res = await fetch(`https://www.webtoons.com${searchResult}`).then(page => page.text());
+        const page = cheerio.load(res);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(2 / n)\``);
 
-        const title = await page.$eval('div.detail_header div.info h3.subj', async e => await e.innerHTML.split('<')[0].trim());
-        const description = await page.$eval('div.detail_body div.aside.detail p.summary', async e => await e.innerHTML);
-        const thumbnail = await page.$eval('div.detail_header span.thmb img', e => e.getAttribute('src'));
-        const url = page._target._targetInfo.url;
-        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(4 / 5)\``);
+        $ = cheerio.load(page('div.cont_box div.detail_body.challenge div.detail_lst ul').children().first().html());
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(3 / n)\``);
 
-        const lastEpisode = {
-          title: await page.$eval('div.detail_lst ul li a span.subj span', async e => await e.innerHTML),
-          number: await page.$eval('div.detail_lst ul li a span.tx', async e => await e.innerHTML),
-          url: await page.$eval('div.detail_lst ul li a', async e => await e.getAttribute('href'))
+        const episode = {
+          name: $('a span.subj span').text(),
+          thumbnail: $('a span.thmb img').attr('src'),
+          date: $('a span.date').text(),
+          link: $('a').attr('href')
         };
-        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(5 / 5)\``);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(4 / n)\``);
 
-        msg.edit(new MessageEmbed()
+        const title = page('div.cont_box div.detail_header.challenge div.info.challenge h3.subj._challengeTitle').text().split('DASHBOARD')[0].trim();
+        const summary = page('div.cont_box div.detail_body.challenge div p.summary').text();
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(5 / n)\``);
+
+        const embed = new MessageEmbed()
           .setColor(client.accentColor)
           .setTitle(title)
-          .setURL(url)
-          .setDescription(description)
-          .setThumbnail(thumbnail)
-          .addField(`Episode ${lastEpisode.number}`, `[${lastEpisode.title}](${lastEpisode.url})`)
-        );
+          .setDescription(summary)
+          .addField('Latest Episode', `[${episode.name}](${episode.link})`)
+          .setThumbnail(episode.thumbnail)
+          .setTimestamp(new Date(episode.date));
 
-        await browser.close();
-
-      } else message.send(`:x: \`|\` 🔎 **Something went horribly wrong. You should** __***NOT***__ **be seeing this.** Contact <@107599228900999168> (Akii#0008) and give him this:\n**Mode:** \`${mode}\``);
+        msg.edit('', { embed });
+      }
 
     } catch (e) {
       msg.edit(`❌ \`|\` 🔎 **Something went wrong! Please try again later.**\n\`\`\`${e}\`\`\``);
+      client.logger.error(e);
     }
 
   });
@@ -102,7 +103,7 @@ exports.conf = {
 };
 
 exports.help = {
-  name: 'search',
+  name: 'webtoon',
   description: 'Find a webtoon!',
   usage: 'search [original (default) / canvas] <title name>',
   category: 'Comics'
