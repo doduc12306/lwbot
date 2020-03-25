@@ -5,6 +5,11 @@
 // folder. This quick script fixes that error by
 // manually editing the lines of code that
 // have that incorrect require statement.
+// I know this is bad practice to manually edit
+// lines of code at runtime, however as long as
+// the version stays the same there shouldn't be
+// any issues. I even have version checking here
+// to make sure nothing has changed.
 
 const fs = require('fs-extra');
 const package = require('../../package.json');
