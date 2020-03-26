@@ -184,10 +184,11 @@ module.exports.run = (client, message, args) => {
 };
 
 exports.conf = {
-  enabled: true,
+  enabled: false,
   guildOnly: false,
   aliases: ['slotmachine', 'slot'],
-  permLevel: 'User'
+  permLevel: 'User',
+  disabledReason: 'Multiplier is broken. Will fix in the next update'
 };
 
 exports.help = {
