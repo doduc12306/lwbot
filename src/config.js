@@ -55,7 +55,8 @@ const config = {
     'yellow': '0xFFFF00',
     'blurple': '0x7289DA',
     'purple': '0x821ABA',
-    'black': '0x000000'
+    'black': '0x000000',
+    'white': [255, 255, 254] // rgb // embeds don't like 0xFFFFFF for some reason.
   },
 
   // PERMISSION LEVEL DEFINITIONS.

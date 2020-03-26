@@ -20,13 +20,15 @@ module.exports.run = (client, message, args) => {
   }
 
   function displayXKCD(json, number) {
+    if(!number) number = json.num;
+
     const embed = new MessageEmbed()
-      .setColor('#FFFFFF')
+      .setColor(client.config.colors.white)
       .setTitle(json.safe_title)
       .setDescription(json.alt)
       .setImage(json.img)
       .setFooter(`#${json.num} • ${json.month}/${json.day}/${json.year}`)
-      .setAuthor('xkcd', 'https://i.imgur.com/XcDZksp.png', `https://xkcd.com/${number ? json.num : ''}`);
+      .setAuthor('xkcd', 'https://i.imgur.com/XcDZksp.png', `https://xkcd.com/${json.num}`);
 
     message.send(embed).then(async msg => {
       await msg.react('◀');
@@ -43,10 +45,10 @@ module.exports.run = (client, message, args) => {
             number--;
             fetch(`https://xkcd.com/${+number}/info.0.json`)
               .then(async res => {
-                if (!res.ok) return msg.edit(`:x: \`|\` :mag: **XKCD **\`#${number}\` **does not exist.**`);
+                if (!res.ok) return msg.edit(`:x: \`|\` :mag: **XKCD **\`#${number}\` **does not exist.**`, { embed: null });
                 const json = await res.json();
-                msg.edit(new MessageEmbed()
-                  .setColor('#FFFFFF')
+                msg.edit('', new MessageEmbed()
+                  .setColor(client.config.colors.white)
                   .setTitle(json.safe_title)
                   .setDescription(json.alt)
                   .setImage(json.img)
@@ -59,10 +61,10 @@ module.exports.run = (client, message, args) => {
             number++;
             fetch(`https://xkcd.com/${+number}/info.0.json`)
               .then(async res => {
-                if (!res.ok) return msg.edit(`:x: \`|\` :mag: **XKCD **\`#${number}\` **does not exist.**`);
+                if (!res.ok) return msg.edit(`:x: \`|\` :mag: **XKCD **\`#${number}\` **does not exist.**`, { embed: null });
                 const json = await res.json();
-                msg.edit(new MessageEmbed()
-                  .setColor('#FFFFFF')
+                msg.edit('', new MessageEmbed()
+                  .setColor(client.config.colors.white)
                   .setTitle(json.safe_title)
                   .setDescription(json.alt)
                   .setImage(json.img)
