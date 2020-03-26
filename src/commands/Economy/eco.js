@@ -6,7 +6,7 @@ module.exports.run = async (client, message, args) => {
 
   const user = new User(message.mentions.users.first() ? message.mentions.users.first() : message.author);
   let amount = args[1];
-  if(!amount) return message.send(':x: `|` :bank: **Missing amount!**');
+  if(!amount && type !== 'get') return message.send(':x: `|` :bank: **Missing amount!**');
 
   if(type === 'add') {
     if(isNaN(amount)) return message.send(`❌ \`|\` 🏦 \`${amount}\` **is not a number!**`);
@@ -21,7 +21,7 @@ module.exports.run = async (client, message, args) => {
     if(isNaN(amount)) return message.send(`❌ \`|\` 🏦 \`${amount}\` **is not a number!**`);
     amount = +amount;
 
-    const newBalance = await user.changeBalance('add', amount);
+    const newBalance = await user.changeBalance('subtract', amount);
     if (!newBalance) return message.send(`:x: \`|\` :bank: \`${user.user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
     message.send(`✅ \`|\` 🏦 **Successfully subtracted** \`${amount}\` **from** \`${user.user.tag}\`**.** New balance: \`${newBalance}\`.`);
   }
@@ -30,13 +30,13 @@ module.exports.run = async (client, message, args) => {
     if(isNaN(amount)) return message.send(`❌ \`|\` 🏦 \`${amount}\` **is not a number!**`);
     amount = +amount;
 
-    const newBalance = await user.changeBalance('add', amount);
+    const newBalance = await user.changeBalance('set', amount);
     if (!newBalance) return message.send(`:x: \`|\` :bank: \`${user.user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
     message.send(`✅ \`|\` 🏦 **Successfully set** \`${user.user.tag}\`**'s new balance to** \`${newBalance}\`**.**`);
   }
 
   if(type === 'get') {
-    message.send(`:bank: \`${user.user.tag}\`**'s balance is** ${await user.balance}**.**`);
+    message.send(`:bank: \`${user.user.tag}\`**'s balance is** \`${await user.balance}\`**.**`);
   }
 };
 
