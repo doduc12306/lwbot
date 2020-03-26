@@ -1,4 +1,8 @@
+const userFunc = require('../../dbFunctions/client/user');
 module.exports.run = async (client, message) => {
+  const User = new userFunc(message.author.id);
+  User.changeBadges('add', ':sparkles:');
+  
   if (!message.guild.me.permissions.has('MANAGE_NICKNAMES')) return message.send('❌ **I do not have permission to manage nicknames!**');
 
   if (message.mentions.users.first()) {
