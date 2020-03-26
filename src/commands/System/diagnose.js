@@ -1,5 +1,6 @@
 module.exports.run = (client, message, args) => {
   const command = client.commands.get(args[0]) || client.commands.get(client.aliases.get(args[0]));
+  if(!command) return message.send(':x: **This command doesn\'t exist!**');
 
   if(command.conf.enabled) return message.send('✅ **This command is enabled.**');
   
