@@ -5,10 +5,10 @@ require('moment-duration-format');
 module.exports.run = async (client, message, args) => {
   const id = args[0];
 
-  if (!id) return message.send('❌ **You didn\'t give me the case number to look up!**');
+  if (!id) return message.send('❌ `|` 📜 **You didn\'t give me the case number to look up!**');
 
   const log = await message.guild.modbase.findOne({ where: { id: id } });
-  if (!log) return message.send(`❌ **I couldn't find case** \`${id}\`!`);
+  if (!log) return message.send(`❌ \`|\` 📜 **I couldn't find case** \`${id}\`!`);
 
   const victim = client.users.cache.get(log.dataValues.victim);
   const moderator = client.users.cache.get(log.dataValues.moderator);
