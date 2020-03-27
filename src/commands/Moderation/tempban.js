@@ -66,7 +66,6 @@ module.exports.run = async (client, message, args) => {
           .setTitle('Temporary Ban Lifted')
           .setThumbnail(toBan.displayAvatarURL({ format: 'png', dynamic: true }))
           .setColor(client.accentColor)
-          .setAuthor(`Unbanned ${toBan.tag} (${toBan.id})`)
           .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
           .addField('Member', `${toBan.toString()} (${toBan.tag})`)
           .addField('Moderator', client.user.toString());
