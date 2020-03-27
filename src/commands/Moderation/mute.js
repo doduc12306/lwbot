@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports.run = async (client, message, args) => {
   const GuildSettings = require('../../dbFunctions/message/settings');
   const settings = new GuildSettings(message.guild.id);
-  const role = message.guild.roles.find(role => role.name === 'Muted') || message.guild.roles.find(role => role.name === 'muted');
+  const role = message.guild.roles.cache.find(role => role.name === 'Muted') || message.guild.roles.cache.find(role => role.name === 'muted');
   const toMute = message.mentions.members.first();
   const reason = args.slice(1).join(' ');
   const mutedEmote = '<:muted:459458717856038943>';
@@ -12,7 +12,7 @@ module.exports.run = async (client, message, args) => {
   if (!toMute) return message.send(`❌ \`|\` ${mutedEmote} **You didn't mention someone to mute!**`);
   if (toMute.permissions.has('ADMINISTRATOR')) return message.send(`❌ \`|\` ${mutedEmote} **${toMute.toString()} could not be muted because they have Administrator!**`);
   if (message.guild.me.roles.highest.position < toMute.roles.highest.position) return message.send(`❌ \`|\` ${mutedEmote} **You need to move my role (${message.guild.me.roles.highest.name}) above ${toMute.toString()}'s (${toMute.roles.highest.name})!**`);
-  if (toMute.roles.has(role.id)) return message.send(`❌ \`|\` ${mutedEmote} **${toMute.toString()} is already muted!**`);
+  if (toMute.roles.cache.has(role.id)) return message.send(`❌ \`|\` ${mutedEmote} **${toMute.toString()} is already muted!**`);
 
   await message.guild.modbase.create({
     victim: toMute.id,
@@ -25,7 +25,6 @@ module.exports.run = async (client, message, args) => {
       .setTitle('Member Muted')
       .setThumbnail(toMute.user.displayAvatarURL({ format: 'png', dynamic: true }))
       .setColor(client.config.colors.purple)
-      .setAuthor(`Muted ${toMute.user.tag} (${toMute.user.id})`)
       .setFooter(`ID: ${toMute.user.id} | Case: ${info.id}`)
       .addField('Muted Member', `${toMute.user.toString()} (${toMute.user.tag})`)
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`);
