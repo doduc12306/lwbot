@@ -1,42 +1,27 @@
 const Discord = require('discord.js');
+String.prototype.replaceAll = function (search, replacement) {
+  return this.replace(new RegExp(search, 'g'), replacement);
+};
 module.exports.run = async (client, message, args) => {
-  try {
-    const settings = client.settings.get(message.guild.id);
+  const settings = client.settings.get(message.guild.id);
 
-    //if ( message.member.permissions.has(`MANAGE_MESSAGES`) || message.author.id === `107599228900999168`) {
+  const messageContent = args.join(' ');
+  const splitter = messageContent.split(' | ');
 
-    String.prototype.replaceAll = function (search, replacement) {
-      const target = this;
-      return target.replace(new RegExp(search, 'g'), replacement);
-    };
+  const title = splitter[0];
+  const part2 = splitter[1];
 
-    const messageContent = args.join(' ');
-    const splitter = messageContent.split(' | ');
-    const title = splitter[0];
-    const part2 = splitter[1];
-    const cmdargs = splitter[2];
+  if (!title) return message.send('❌ **Missing a title!**');
+  if (!part2) return message.send('❌ **Missing the content!**');
+  const content = part2.replaceAll('/n', '\n').trim();
 
-    if (!title) return message.send('❌ **Missing a title!**');
-    if (!part2) return message.send('❌ **Missing the content!**');
-    const content = part2.replaceAll('/n', '\n').trim();
+  message.guild.channels.cache.find(channel => channel.name === settings.announcementsChannel).send(new Discord.MessageEmbed()
+    .setColor(client.accentColor)
+    .setAuthor(message.author.tag, message.author.displayAvatarURL({ format: 'png', dynamic: true }))
+    .setTimestamp()
+    .addField(title, content)
+  );
 
-    let color = client.accentColor;
-    if (cmdargs) {
-      if (cmdargs.includes('color=')) { color = cmdargs.substring(cmdargs.indexOf('color=') + 6); } else { color = client.accentColor; }
-    } else { color = client.accentColor; announce(); }
-
-    function announce() { // eslint-disable-line no-inner-declarations
-      message.guild.channels.cache.find(channel => channel.name === settings.announcementsChannel).send(new Discord.MessageEmbed()
-        .setColor(color)
-        .setAuthor(message.author.username, message.author.displayAvatarURL({ format: 'png', dynamic: true }))
-        .setTimestamp()
-        .addField(title, content)
-      );
-      if (cmdargs) message.send(`✅ **Announcement sent!** | **Args:** \`${cmdargs}\``);
-      else message.send('✅ **Announcement sent!**');
-    }
-    // } else message.send(`❌ You do not have access to this command!`);
-  } catch (err) { message.send(`❌ ${err}`); }
 };
 
 exports.conf = {
@@ -50,6 +35,6 @@ exports.conf = {
 exports.help = {
   name: 'announce',
   description: 'Announces something',
-  usage: 'announce <title> | <content> [| arguments]\nARGUMENTS: `color=<#hex | base10>` Sets sidebar color, `no-subs` Disables ping of guild\'s announcements subscribers role',
+  usage: 'announce <title> | <content>',
   category: 'Server'
 };
