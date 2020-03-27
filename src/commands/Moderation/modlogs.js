@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-module.exports.run = (client, message) => {
+module.exports.run = (client, message, args) => {
   const user = message.mentions.users.first() ? message.mentions.users.first() : message.author;
 
   message.guild.modbase.findAll({ where: { victim: user.id } }).then(logs => {
@@ -25,13 +25,19 @@ module.exports.run = (client, message) => {
     } else {
       let min = 0;
       let max = 8;
-      let curPage = 1;
+      let curPage = args[1] || 1;
+
+      if(curPage !== 1) {
+        max = curPage * 9 - 1;
+        min = max - 8;
+      }
 
       let embed = new Discord.MessageEmbed()
         .setColor(client.accentColor)
         .setTitle(`Modlogs for ${user.tag} | Page ${curPage}/${Math.ceil(logs.length / 9)}`);
 
       for (const data of logs) {
+        if (logs.indexOf(data) < min) continue;
         const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
         const mod = message.guild.members.cache.get(data.dataValues.moderator).user
           ? message.guild.members.cache.get(data.dataValues.moderator).user
@@ -52,12 +58,12 @@ module.exports.run = (client, message) => {
           .on('collect', async g => {
             if (g._emoji.name === '🛑') return collector.emit('end');
             else if (g._emoji.name === '◀') {
-              if (min === 0 || curPage === 0) return msg.reactions.get('◀').users.remove(message.author);
+              if (min === 0 || curPage === 0) return msg.reactions.cache.get('◀').users.remove(message.author);
               await client.wait(300);
-              msg.reactions.get('◀').users.remove(message.author);
+              msg.reactions.cache.get('◀').users.remove(message.author);
               min = min - 9;
               max = max - 9;
-              curPage = curPage - 1;
+              curPage--;
 
               embed = new Discord.MessageEmbed()
                 .setColor(client.accentColor)
@@ -78,10 +84,10 @@ module.exports.run = (client, message) => {
 
             } else if (g._emoji.name === '▶') {
               await client.wait(300);
-              msg.reactions.get('▶').users.remove(message.author);
+              msg.reactions.cache.get('▶').users.remove(message.author);
               min = min + 9;
               max = max + 9;
-              curPage = curPage + 1;
+              curPage++;
               if (curPage > Math.ceil(logs.length / 9)) {
                 curPage--;
                 min = min - 9;
