@@ -41,7 +41,7 @@ module.exports.run = async (client, message, args) => {
     if (reason) { dmMsg += `\n\n⚙️ **Reason \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: { id: info.id } }); }
 
     toMute.user.send(dmMsg);
-    toMute.roles.add(role);
+    toMute.roles.add(role, reason ? `Tempmute | ${reason}` : null);
     await settings.get('modLogChannel')
       .then(async modLogChannel => {
         modLogChannel = message.guild.channels.cache.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
@@ -71,7 +71,7 @@ module.exports.run = async (client, message, args) => {
         if (!reason) { message.guild.modbase.update({ reason: 'Tempmute auto unmute' }, { where: { id: info.id } }); await modEmbed.addField('Reason', 'Tempmute auto unmute'); }
         else { message.guild.modbase.update({ reason: `${reason} | Tempmute auto unmute` }, { where: { id: info.id } }); await modEmbed.addField('Reason', `${reason} | Tempmute auto unmute`); }
 
-        toMute.roles.remove(role);
+        toMute.roles.remove(role, reason ? `Tempmute unmute | ${reason}`: null);
         await settings.get('modLogChannel')
           .then(async modLogChannel => {
             modLogChannel = message.guild.channels.cache.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());

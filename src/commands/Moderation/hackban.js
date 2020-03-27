@@ -31,7 +31,7 @@ module.exports.run = async (client, message, args) => {
 
       if (reason) modEmbed.addField('Reason', reason);
 
-      await message.guild.members.ban(toBan.id, { days: 2 });
+      await message.guild.members.ban(toBan.id, { days: 2, reason: reason ? reason : null });
       await settings.get('modLogChannel')
         .then(async modLogChannel => {
           modLogChannel = message.guild.channels.cache.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());

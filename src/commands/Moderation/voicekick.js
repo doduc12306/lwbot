@@ -11,16 +11,16 @@ module.exports.run = async (client, message, args) => {
   if (!message.guild.me.permissions.has('MANAGE_CHANNELS')) return message.send('❌ `|` 👢 **I am missing permissions:** `Manage Channels` ');
   if (!message.member.permissions.has('KICK_MEMBERS')) return message.send('❌ `|` 👢 **You are missing permissions:** `Kick Members`');
   if (!toKick) return message.send('❌ `|` 👢 **You didn\'t mention someone to voicekick!**');
-  if (!message.member.voiceChannel) return message.send('❌ `|` 👢 **You are not in the voice channel!**');
-  if (!toKickM.voiceChannel) return message.send(`❌ \`|\` 👢 ${toKick.toString()} **isn't in a voice channel!**`);
-  if (!toKickM.voiceChannel === message.member.voiceChannel) return message.send(`❌ \`|\` 👢 **You must be in the same voice channel as** ${toKick.toString()}`);
+  if (!message.member.voice.channel) return message.send('❌ `|` 👢 **You are not in the voice channel!**');
+  if (!toKickM.voice.channel) return message.send(`❌ \`|\` 👢 ${toKick.toString()} **isn't in a voice channel!**`);
+  if (!toKickM.voice.channel === message.member.voice.channel) return message.send(`❌ \`|\` 👢 **You must be in the same voice channel as** ${toKick.toString()}`);
 
   await message.guild.modbase.create({
     victim: toKick.id,
     moderator: message.author.id,
     type: 'voicekick'
   }).then(async info => {
-    let dmMsg = `👢 **You were voicekicked from** \`${message.member.voiceChannel.name}\`, **in** \`${message.guild.name}\` \`|\` 👢 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `👢 **You were voicekicked from** \`${message.member.voice.channel.name}\`, **in** \`${message.guild.name}\` \`|\` 👢 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     const modEmbed = new Discord.MessageEmbed()
       .setTitle('Member Voicekicked')
@@ -29,13 +29,11 @@ module.exports.run = async (client, message, args) => {
       .setFooter(`ID: ${toKick.id} | Case: ${info.id}`)
       .addField('Voicekicked Member', `${toKick.toString()} (${toKick.tag})`)
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`)
-      .addField('Channel:', message.member.voiceChannel.name);
+      .addField('Channel:', message.member.voice.channel.name);
 
     if (reason) { dmMsg += `\n\n⚙️ **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: { id: info.id } }); }
 
-    const vc = await message.guild.channels.create('Voice Kick', 'voice');
-    await toKickM.voice.setChannel(vc);
-    await vc.delete();
+    toKickM.voice.kick(reason ? reason : null);
     toKick.send(dmMsg);
     await settings.get('modLogChannel')
       .then(async modLogChannel => {

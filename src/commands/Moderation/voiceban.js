@@ -12,16 +12,16 @@ module.exports.run = async (client, message, args) => {
   if (!message.guild.me.permissions.has('MANAGE_CHANNELS')) return message.send(`❌ \`|\` ${vbEmote} **I am missing permissions:** \`Manage Channels\` `);
   if (!message.member.permissions.has('BAN_MEMBERS')) return message.send(`❌ \`|\` ${vbEmote} **You are missing permissions:** \`Ban Members\``);
   if (!toBan) return message.send(`❌ \`|\` ${vbEmote} **You didn't mention someone to voiceban!**`);
-  if (!message.member.voiceChannel) return message.send(`❌ \`|\` ${vbEmote} **You are not in the voice channel!**`);
-  if (!toBanM.voiceChannel) return message.send(`❌ \`|\` ${vbEmote} ${toBan.toString()} **isn't in a voice channel!**`);
-  if (!toBanM.voiceChannel === message.member.voiceChannel) return message.send(`❌ \`|\` ${vbEmote} **You must be in the same voice channel as** ${toBan.toString()}`);
+  if (!message.member.voice.channel) return message.send(`❌ \`|\` ${vbEmote} **You are not in the voice channel!**`);
+  if (!toBanM.voice.channel) return message.send(`❌ \`|\` ${vbEmote} ${toBan.toString()} **isn't in a voice channel!**`);
+  if (!toBanM.voice.channel === message.member.voice.channel) return message.send(`❌ \`|\` ${vbEmote} **You must be in the same voice channel as** ${toBan.toString()}`);
 
   await message.guild.modbase.create({
     victim: toBan.id,
     moderator: message.author.id,
     type: 'voiceban'
   }).then(async info => {
-    let dmMsg = `${vbEmote} **You were voicebanned from** \`${message.member.voiceChannel.name}\`, **in** \`${message.guild.name}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
+    let dmMsg = `${vbEmote} **You were voicebanned from** \`${message.member.voice.channel.name}\`, **in** \`${message.guild.name}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     const modEmbed = new Discord.MessageEmbed()
       .setTitle('Member Voicebanned')
@@ -30,14 +30,12 @@ module.exports.run = async (client, message, args) => {
       .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
       .addField('Voicebanned Member', `${toBan.toString()} (${toBan.tag})`)
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`)
-      .addField('Channel:', message.member.voiceChannel.name);
+      .addField('Channel:', message.member.voice.channel.name);
 
     if (reason) { dmMsg += `\n\n⚙️ **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: { id: info.id } }); }
 
-    const vc = await message.guild.channels.create('Voice Ban', 'voice');
-    await toBanM.voice.setChannel(vc);
-    await message.member.voiceChannel.createOverwrite(toBan, { CONNECT: false });
-    await vc.delete();
+    await message.member.voice.channel.createOverwrite(toBan, { CONNECT: false });
+    await toBanM.voice.kick(reason ? `Voiceban | ${reason}` : null);
     toBan.send(dmMsg);
     await settings.get('modLogChannel')
       .then(async modLogChannel => {

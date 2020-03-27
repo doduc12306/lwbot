@@ -43,7 +43,7 @@ module.exports.run = async (client, message, args) => {
     if (reason) { dmMsg += `\n\n⚙️ **Reason:** \`${reason}\``; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: { id: info.id } }); }
 
     await toBan.send(dmMsg);
-    await message.guild.members.ban(toBan, { days: 1 });
+    await message.guild.members.ban(toBan, { days: 1, reason: reason ? reason : null });
     await settings.get('modLogChannel')
       .then(async modLogChannel => {
         modLogChannel = message.guild.channels.cache.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
@@ -56,6 +56,7 @@ module.exports.run = async (client, message, args) => {
       })
       .catch(async e => message.send(`❌ **There was an error finding the mod log channel:** \`${e.stack}\``));
     setTimeout(async () => {
+      message.guild.members.unban(toBan);
       await message.guild.modbase.create({
         victim: toBan.id,
         moderator: client.user.id,
@@ -83,8 +84,6 @@ module.exports.run = async (client, message, args) => {
             await modLogChannel.send(modEmbed);
           })
           .catch(async e => message.send(`❌ **There was an error finding the mod log channel:** \`${e.stack}\``));
-
-        message.guild.members.unban(toBan);
       });
     }, durationMs);
   });
@@ -100,6 +99,6 @@ exports.conf = {
 exports.help = {
   name: 'tempban',
   description: 'Temporarily ban someone from the server',
-  usage: 'tempban <@user> <duration> [reason]\nDuration example: "1y2w8d4h5m10s" -> 1 year 2 weeks 8 days etc long',
+  usage: 'tempban <@user> <duration> [reason] | Duration example: "1y2w8d4h5m10s" -> 1 year 2 weeks 8 days etc long',
   category: 'Moderation'
 };

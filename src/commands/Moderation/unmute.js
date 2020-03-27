@@ -31,7 +31,7 @@ module.exports.run = async (client, message, args) => {
     if (reason) { dmMsg += `\n\n⚙️ **Reason \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: { id: info.id } }); }
 
     toUnmute.user.send(dmMsg);
-    toUnmute.roles.remove(role);
+    toUnmute.roles.remove(role, reason ? reason : null);
     await settings.get('modLogChannel')
       .then(async modLogChannel => {
         modLogChannel = message.guild.channels.cache.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());

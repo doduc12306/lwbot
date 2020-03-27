@@ -38,6 +38,7 @@ module.exports.run = async (client, message, args) => {
     case 'warn':            { embed.setColor(client.config.colors.yellow);  break; }
     case 'tempban unban':   { embed.setColor(client.accentColor);           break; }
     case 'tempmute unmute': { embed.setColor(client.accentColor);           break; }
+    default:                { embed.setColor(client.accentColor);           break; }
   }
 
   if (log.dataValues.duration !== null) embed.addField('Duration', moment.duration(+log.dataValues.duration).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]'));

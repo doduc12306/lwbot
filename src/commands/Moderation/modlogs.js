@@ -1,4 +1,3 @@
-/* eslint-disable require-atomic-updates */
 const Discord = require('discord.js');
 module.exports.run = (client, message) => {
   const user = message.mentions.users.first() ? message.mentions.users.first() : message.author;
@@ -19,7 +18,7 @@ module.exports.run = (client, message) => {
           : client.users.cache.get(data.dataValues.moderator)
             ? client.users.cache.get(data.dataValues.moderator)
             : '[User not found]';
-        embed.addField(`Case **${data.dataValues.id}** \`|\` **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
+        embed.addField(`Case **${data.dataValues.id}**: **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
 
       }
       message.send(embed);
@@ -39,7 +38,7 @@ module.exports.run = (client, message) => {
           : client.users.cache.get(data.dataValues.moderator)
             ? client.users.cache.get(data.dataValues.moderator)
             : '[User not found]';
-        embed.addField(`Case **${data.dataValues.id}** \`|\` **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
+        embed.addField(`Case **${data.dataValues.id}**: **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
         if (logs.indexOf(data) >= max) break;
       }
 
@@ -72,7 +71,7 @@ module.exports.run = (client, message) => {
                   : client.users.cache.get(data.dataValues.moderator)
                     ? client.users.cache.get(data.dataValues.moderator)
                     : '[User not found]';
-                embed.addField(`Case **${data.dataValues.id}** ||-|| **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
+                embed.addField(`Case **${data.dataValues.id}**: **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
                 if (logs.indexOf(data) >= max) break;
               }
               msg.edit(embed);
@@ -105,7 +104,7 @@ module.exports.run = (client, message) => {
                   : client.users.cache.get(data.dataValues.moderator)
                     ? client.users.cache.get(data.dataValues.moderator)
                     : '[User not found]';
-                embed.addField(`Case **${data.dataValues.id}** ||-|| **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
+                embed.addField(`Case **${data.dataValues.id}**: **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
               }
               msg.edit(embed);
 
