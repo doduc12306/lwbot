@@ -26,7 +26,7 @@ module.exports.run = async (client, message, args) => {
     } else { color = client.accentColor; announce(); }
 
     function announce() { // eslint-disable-line no-inner-declarations
-      message.guild.channels.find(channel => channel.name === settings.announcementsChannel).send(new Discord.MessageEmbed()
+      message.guild.channels.cache.find(channel => channel.name === settings.announcementsChannel).send(new Discord.MessageEmbed()
         .setColor(color)
         .setAuthor(message.author.username, message.author.displayAvatarURL({ format: 'png', dynamic: true }))
         .setTimestamp()

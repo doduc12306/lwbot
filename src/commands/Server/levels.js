@@ -13,18 +13,18 @@ module.exports.run = async (client, message) => {
       .setColor(client.accentColor);
     for (const values of data) {
       if (data.indexOf(values) === 0) {
-        if (message.guild.members.get(values.dataValues.user) === undefined) embed.addField('👑 `[User Left]`', `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
-        else embed.addField(`👑 ${message.guild.members.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
+        if (message.guild.members.cache.get(values.dataValues.user) === undefined) embed.addField('👑 `[User Left]`', `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
+        else embed.addField(`👑 ${message.guild.members.cache.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
       } else if (data.indexOf(values) === 1) {
-        if (message.guild.members.get(values.dataValues.user) === undefined) embed.addField('🥈 `[User Left]`', `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
-        else embed.addField(`🥈 ${message.guild.members.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
+        if (message.guild.members.cache.get(values.dataValues.user) === undefined) embed.addField('🥈 `[User Left]`', `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
+        else embed.addField(`🥈 ${message.guild.members.cache.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
       } else if (data.indexOf(values) === 2) {
-        if (message.guild.members.get(values.dataValues.user) === undefined) embed.addField('🥉 `[User Left]`', `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
-        else embed.addField(`🥉 ${message.guild.members.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
+        if (message.guild.members.cache.get(values.dataValues.user) === undefined) embed.addField('🥉 `[User Left]`', `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
+        else embed.addField(`🥉 ${message.guild.members.cache.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
       }
       if (data.indexOf(values) <= 9 && data.indexOf(values) >= 3) {
-        if (message.guild.members.get(values.dataValues.user) === undefined) embed.addField(`#${data.indexOf(values) + 1} \`[User Left]\``, `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
-        else embed.addField(`#${data.indexOf(values) + 1} ${message.guild.members.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
+        if (message.guild.members.cache.get(values.dataValues.user) === undefined) embed.addField(`#${data.indexOf(values) + 1} \`[User Left]\``, `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
+        else embed.addField(`#${data.indexOf(values) + 1} ${message.guild.members.cache.get(values.dataValues.user).user.tag}`, `XP: ${values.dataValues.xp} \`|\` Level: ${values.dataValues.level}`);
       }
     }
     message.send(embed);

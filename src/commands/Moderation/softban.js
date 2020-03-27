@@ -21,10 +21,11 @@ module.exports.run = async (client, message, args) => {
     let dmMsg = `${bhEmote} **You were softbanned from** \`${message.guild.name}\` \`|\` 👤 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     const modEmbed = new Discord.MessageEmbed()
+      .setTitle('Member Softbanned')
       .setThumbnail(toBan.displayAvatarURL({ format: 'png', dynamic: true }))
       .setColor('0x8C0F52')
       .setFooter(`ID: ${toBan.id} | Case: ${info.id}`)
-      .addField('Softbanned User', `${toBan.toString()} (${toBan.tag})`)
+      .addField('Softbanned Member', `${toBan.toString()} (${toBan.tag})`)
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`);
 
     if (reason) { dmMsg += `\n\n⚙️ **Reason: \`${reason}\`**`; modEmbed.addField('Reason', reason); message.guild.modbase.update({ reason: reason }, { where: { id: info.id } }); }
@@ -34,10 +35,10 @@ module.exports.run = async (client, message, args) => {
     await message.guild.members.unban(toBan);
     await settings.get('modLogChannel')
       .then(async modLogChannel => {
-        modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
+        modLogChannel = message.guild.channels.cache.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
         if (!modLogChannel) return message.send(`⚠️ **Softban completed, but there is no mod log channel set.** Try \`${await settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
-        if (!message.guild.me.permissionsIn(modLogChannel).permissions.serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).permissions.serialize()['EMBED_LINKS']) {
-          modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Softban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
+        if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
+          modLogChannel.createOverwrite(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Softban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);
         await message.send(`✅ \`|\` ${bhEmote} **Softbanned user \`${toBan.tag}\`**`);

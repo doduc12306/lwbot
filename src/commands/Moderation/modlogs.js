@@ -14,8 +14,8 @@ module.exports.run = (client, message) => {
     if (logs.length <= 9) {
       for (const data of logs) {
         const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
-        const mod = message.guild.members.get(data.dataValues.moderator).user
-          ? message.guild.members.get(data.dataValues.moderator).user
+        const mod = message.guild.members.cache.get(data.dataValues.moderator).user
+          ? message.guild.members.cache.get(data.dataValues.moderator).user
           : client.users.cache.get(data.dataValues.moderator)
             ? client.users.cache.get(data.dataValues.moderator)
             : '[User not found]';
@@ -34,8 +34,8 @@ module.exports.run = (client, message) => {
 
       for (const data of logs) {
         const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
-        const mod = message.guild.members.get(data.dataValues.moderator).user
-          ? message.guild.members.get(data.dataValues.moderator).user
+        const mod = message.guild.members.cache.get(data.dataValues.moderator).user
+          ? message.guild.members.cache.get(data.dataValues.moderator).user
           : client.users.cache.get(data.dataValues.moderator)
             ? client.users.cache.get(data.dataValues.moderator)
             : '[User not found]';
@@ -67,12 +67,12 @@ module.exports.run = (client, message) => {
               for (const data of logs) {
                 if (logs.indexOf(data) < min) continue;
                 const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
-                const mod = message.guild.members.get(data.dataValues.moderator).user
-                  ? message.guild.members.get(data.dataValues.moderator).user
+                const mod = message.guild.members.cache.get(data.dataValues.moderator).user
+                  ? message.guild.members.cache.get(data.dataValues.moderator).user
                   : client.users.cache.get(data.dataValues.moderator)
                     ? client.users.cache.get(data.dataValues.moderator)
                     : '[User not found]';
-                embed.addField(`Case **${data.dataValues.id}** \`|\` **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
+                embed.addField(`Case **${data.dataValues.id}** ||-|| **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
                 if (logs.indexOf(data) >= max) break;
               }
               msg.edit(embed);
@@ -100,12 +100,12 @@ module.exports.run = (client, message) => {
                 const index = logs.indexOf(data);
                 if (index < min) continue;
                 const reason = !data.dataValues.reason ? 'No reason given' : data.dataValues.reason;
-                const mod = message.guild.members.get(data.dataValues.moderator).user
-                  ? message.guild.members.get(data.dataValues.moderator).user
+                const mod = message.guild.members.cache.get(data.dataValues.moderator).user
+                  ? message.guild.members.cache.get(data.dataValues.moderator).user
                   : client.users.cache.get(data.dataValues.moderator)
                     ? client.users.cache.get(data.dataValues.moderator)
                     : '[User not found]';
-                embed.addField(`Case **${data.dataValues.id}** \`|\` **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
+                embed.addField(`Case **${data.dataValues.id}** ||-|| **${data.dataValues.type.toProperCase()}**`, `**Reason:** ${reason}\n**Moderator:** ${mod.toString()}`, true);
               }
               msg.edit(embed);
 

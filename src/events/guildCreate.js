@@ -23,16 +23,16 @@ module.exports = async (client, guild) => {
 
   async function owPerms(role) {
     await guild.channels.cache.filter(g => g.type === 'text').forEach(channel => {
-      if (guild.me.permissionsIn(channel).permissions.serialize()['MANAGE_ROLES']) {
-        channel.overwritePermissions(role, { SEND_MESSAGES: false, ADD_REACTIONS: false }, 'Initial Setup Process')
+      if (guild.me.permissionsIn(channel).serialize()['MANAGE_ROLES']) {
+        channel.createOverwrite(role, { SEND_MESSAGES: false, ADD_REACTIONS: false }, 'Initial Setup Process')
           .then(() => client.logger.verbose(`guildCreate | Wrote permissions for text channel #${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`))
           .catch(e => { client.logger.verbose(e); textErrored = true; });
       }
       else client.logger.verbose(`guildCreate | Tried to write permissions to text channel #${channel.name} (${channel.id}) in ${guild.name} (${guild.id}), but I'm missing the MANAGE_ROLES permission.`);
     });
     await guild.channels.cache.filter(g => g.type === 'voice').forEach(channel => {
-      if (guild.me.permissionsIn(channel).permissions.serialize()['MANAGE_ROLES']) {
-        channel.overwritePermissions(role, { CONNECT: false, SPEAK: false }, 'Inital Setup Process')
+      if (guild.me.permissionsIn(channel).serialize()['MANAGE_ROLES']) {
+        channel.createOverwrite(role, { CONNECT: false, SPEAK: false }, 'Inital Setup Process')
           .then(() => client.logger.verbose(`guildCreate | Wrote permissions for voice channel ${channel.name} (${channel.id}) in ${guild.name} (${guild.id})`))
           .catch(e => { client.logger.verbose(e); voiceErrored = true; });
       }

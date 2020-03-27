@@ -41,11 +41,12 @@ module.exports.run = (client, message, args) => {
 };
 
 exports.conf = {
-  enabled: true,
+  enabled: false,
   aliases: ['vk'],
   permLevel: 'User',
   guildOnly: true,
-  //cooldown: 60000 // 1 minute
+  //cooldown: 60000, // 1 minute
+  disabledReason: 'Unfinished command'
 };
 
 exports.help = {

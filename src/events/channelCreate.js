@@ -12,11 +12,11 @@ module.exports = async (client, channel) => {
   const role = await channel.guild.roles.cache.find(g => g.name.toLowerCase() === 'muted');
 
   if (channel.type === 'text') {
-    channel.overwritePermissions(role.id, { SEND_MESSAGES: false, ADD_REACTIONS: false })
+    channel.createOverwrite(role.id, { SEND_MESSAGES: false, ADD_REACTIONS: false })
       .then(() => client.logger.verbose(`channelCreate | Wrote permissions for text channel #${channel.name} (${channel.id}) in ${channel.guild.name} (${channel.guild.id})`))
       .catch(e => client.logger.verbose(e));
   } else if (channel.type === 'voice') {
-    channel.overwritePermissions(role.id, { CONNECT: false, SPEAK: false })
+    channel.createOverwrite(role.id, { CONNECT: false, SPEAK: false })
       .then(() => client.logger.verbose(`channelCreate | Wrote permissions for voice channel ${channel.name} (${channel.id}) in ${channel.guild.name} (${channel.guild.id})`))
       .catch(e => client.logger.verbose(e));
   } else return client.logger.verbose('channelCreate | Category channel detected. Skipping...');

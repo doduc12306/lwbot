@@ -23,10 +23,11 @@ module.exports.run = async (client, message, args) => {
     let dmMsg = `👢 **You were voicekicked from** \`${message.member.voiceChannel.name}\`, **in** \`${message.guild.name}\` \`|\` 👢 **Responsible Moderator:** ${message.author.toString()} (${message.author.tag})`;
 
     const modEmbed = new Discord.MessageEmbed()
+      .setTitle('Member Voicekicked')
       .setThumbnail(toKick.displayAvatarURL({ format: 'png', dynamic: true }))
       .setColor('0xA80000')
       .setFooter(`ID: ${toKick.id} | Case: ${info.id}`)
-      .addField('Voicekicked User', `${toKick.toString()} (${toKick.tag})`)
+      .addField('Voicekicked Member', `${toKick.toString()} (${toKick.tag})`)
       .addField('Moderator', `${message.author.toString()} (${message.author.tag})`)
       .addField('Channel:', message.member.voiceChannel.name);
 
@@ -38,10 +39,10 @@ module.exports.run = async (client, message, args) => {
     toKick.send(dmMsg);
     await settings.get('modLogChannel')
       .then(async modLogChannel => {
-        modLogChannel = message.guild.channels.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
+        modLogChannel = message.guild.channels.cache.find(g => g.name.toLowerCase() === modLogChannel.toLowerCase());
         if (!modLogChannel) return message.send(`⚠️ **Voicekick completed, but there is no mod log channel set.** Try \`${await settings.get('prefix')}set <edit/add> modLogChannel <channel name>\``);
-        if (!message.guild.me.permissionsIn(modLogChannel).permissions.serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).permissions.serialize()['EMBED_LINKS']) {
-          modLogChannel.overwritePermissions(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Ban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
+        if (!message.guild.me.permissionsIn(modLogChannel).serialize()['SEND_MESSAGES'] || !message.guild.me.permissionsIn(modLogChannel).serialize()['EMBED_LINKS']) {
+          modLogChannel.createOverwrite(client.user, { SEND_MESSAGES: true, EMBED_LINKS: true }).catch(() => { return message.send(`⚠️ **Ban completed, but I errored:**\nI tried to give myself permissions to send messages or post embeds in ${modLogChannel}, but I couldn't. Please make sure I have the \`Manage Roles\` permission, as that allows me to.`); });
         }
         await modLogChannel.send(modEmbed);
         await message.send(`✅ \`|\` 👢 **Voicekicked user \`${toKick.tag}\`**`);

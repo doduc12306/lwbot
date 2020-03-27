@@ -11,8 +11,8 @@ module.exports.run = async (client, message, args) => {
 
   const voiceChannel = message.member.voice.channel;
   if (!voiceChannel) return message.send('❌ `|` 🎵 **You aren\'t in a voice channel!**');
-  if (!message.guild.me.permissionsIn(voiceChannel).permissions.serialize()['CONNECT']) return message.send(`❌ \`|\` 🎵 **Missing permissions to connect to** \`${voiceChannel.name}\`**!**`);
-  if (!message.guild.me.permissionsIn(voiceChannel).permissions.serialize()['SPEAK']) return message.send(`❌ \`|\` 🎵 **Missing permissions to speak in** \`${voiceChannel.name}\`**!**`);
+  if (!message.guild.me.permissionsIn(voiceChannel).serialize()['CONNECT']) return message.send(`❌ \`|\` 🎵 **Missing permissions to connect to** \`${voiceChannel.name}\`**!**`);
+  if (!message.guild.me.permissionsIn(voiceChannel).serialize()['SPEAK']) return message.send(`❌ \`|\` 🎵 **Missing permissions to speak in** \`${voiceChannel.name}\`**!**`);
 
   if (client.musicQueue.get(message.guild.id) && client.musicQueue.get(message.guild.id).connection.dispatcher.paused && client.permlevel(message.member) >= 2) {
     client.musicQueue.get(message.guild.id).connection.dispatcher.resume();
