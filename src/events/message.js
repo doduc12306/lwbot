@@ -131,7 +131,7 @@ module.exports = async (client, message) => {
 
   // Command status check
   if (!cmd.conf.enabled || !cmdInDb) return message.send(':x: **This command is disabled globally!**');
-  if (!cmdInDb.enabled && client.permlevel < 8) return message.send(':x: **This command is disabled for this server!**');
+  if (!cmdInDb.enabled && client.permlevel(message.member) < 8) return message.send(':x: **This command is disabled for this server!**');
 
   // Some commands may not be useable in DMs. This check prevents those commands from running
   // and return a friendly error message.
