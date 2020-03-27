@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports.run = async (client, message, args) => {
   const GuildSettings = require('../../dbFunctions/message/settings');
   const settings = new GuildSettings(message.guild.id);
-  const role = message.guild.roles.find(role => role.name === 'Muted') || message.guild.roles.find(role => role.name === 'muted');
+  const role = message.guild.roles.cache.find(role => role.name === 'Muted') || message.guild.roles.find(role => role.name === 'muted');
   const toUnmute = message.mentions.members.first();
   const reason = args.slice(1).join(' ');
   const unmutedEmote = '<:unmuted:459458804376141824>';
@@ -11,7 +11,7 @@ module.exports.run = async (client, message, args) => {
   if (!message.guild.me.permissions.has('MANAGE_ROLES')) return message.send(`❌ \`|\` ${unmutedEmote} **I am missing permissions: \`Manage Roles\`**`);
   if (!toUnmute) return message.send(`❌ \`|\` ${unmutedEmote} **You didn't mention someone to unmute!**`);
   if (message.guild.me.roles.highest.position < toUnmute.roles.highest.position) return message.send(`❌ \`|\` ${unmutedEmote} **You need to move my role (${message.guild.me.roles.highest.name}) above ${toUnmute.toString()}'s (${toUnmute.roles.highest.name})!**`);
-  if (!toUnmute.roles.has(role.id)) return message.send(`❌ \`|\` ${unmutedEmote} **${toUnmute.user.tag} is already unmuted!**`);
+  if (!toUnmute.roles.cache.has(role.id)) return message.send(`❌ \`|\` ${unmutedEmote} **${toUnmute.user.tag} is already unmuted!**`);
 
   await message.guild.modbase.create({
     victim: toUnmute.id,
