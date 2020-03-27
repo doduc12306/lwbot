@@ -7,8 +7,7 @@ module.exports.run = async (client, message, args) => {
 
   const msg = await message.send('<a:loading:536942274643361794> `|` :mag_right: **Loading...**');
 
-  const options = { 'disableConsole': true };
-  google({ options, 'query': query })
+  google({ 'disableConsole': true, 'query': query })
     .then(res => {
       const result = res[0];
       msg.edit(`:mag_right: \`${result.title}\` - ${result.link}`);
