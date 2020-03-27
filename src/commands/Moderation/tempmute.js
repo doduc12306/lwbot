@@ -12,6 +12,7 @@ module.exports.run = async (client, message, args) => {
   const mutedEmote = '<:muted:459458717856038943>';
 
   const duration = args[1];
+  if(!duration) return message.send(`:x: \`|\` ${mutedEmote} **You didn't give a duration to mute!**`);
   const durationMs = parse(duration);
   const durationHR = moment.duration(durationMs).format('M [months] W [weeks] D [days], H [hrs], m [mins], s [secs]'); // HR = "Human Readable"
 
