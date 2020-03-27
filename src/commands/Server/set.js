@@ -44,7 +44,7 @@ exports.run = async (client, message, args) => {
 
     // Edits
     if (setting.key.toLowerCase().includes('channel') && /<#([0-9]+)>/g.test(newValue)) {
-      newValue = message.guild.channels.get(newValue.substring(2, newValue.length - 1)).name;
+      newValue = message.guild.channels.cache.get(newValue.substring(2, newValue.length - 1)).name;
       if (!newValue) return message.send(':x: `|` ⚙ **There was an error finding that channel!** (Did you spell it correctly?)');
     }
     if (setting.key.toLowerCase().includes('role') && /<@&[0-9]+>/g.test(newValue)) {
