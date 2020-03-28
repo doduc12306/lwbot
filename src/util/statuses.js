@@ -59,7 +59,8 @@ module.exports.statuses = client => [
   [`with ${client.guilds.cache.size} servers!`, { type: 'PLAYING' }],
   ['with da bois', { type: 'PLAYING' }],
   ['mit dir', { type: 'PLAYING' }],
-  [`on version v${version} :)`],
+  [`on version v${version} :)`, { type: 'PLAYING' }],
+  ['nichts', { type: 'PLAYING' }],
 
   /* Watching */
   ['Netflix', { type: 'WATCHING' }],
