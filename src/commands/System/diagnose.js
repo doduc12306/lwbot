@@ -1,10 +1,24 @@
-module.exports.run = (client, message, args) => {
-  const command = client.commands.get(args[0]) || client.commands.get(client.aliases.get(args[0]));
-  if(!command) return message.send(':x: **This command doesn\'t exist!**');
+module.exports.run = async (client, message, args) => {
+  const commandsTable = require('../../dbFunctions/message/commands').functions.commandsSchema(message.guild.id); 
 
-  if(command.conf.enabled) return message.send('✅ **This command is enabled.**');
+  if(!args[0]) return message.send('❌ **You didn\'t give me a command to diagnose.**');
+
+  const command = client.commands.get(args[0]) || client.commands.get(client.aliases.get(args[0]));
+  if(!command) return message.send('❌ **This command doesn\'t exist!**');
+
+  let cmdInDb;
+  if (message.guild) {
+    await commandsTable.findOne({ where: { command: command.help.name } }).then(data => {
+      if (!data) cmdInDb === null;
+      else cmdInDb = data.dataValues;
+    });
+  }
+
+  if(command.conf.enabled && cmdInDb.enabled) return message.send('✅ **This command is enabled.**');
+
+  if(command.conf.enabled && !cmdInDb.enabled) return message.send('❌ **This command is enabled globally, but disabled in this server.**');
   
-  let msg = ':x: **This command is disabled.**';
+  let msg = '❌ **This command is disabled globally.**';
 
   if(command.conf.disabledReason) msg += `\n:gear: **Reason:** ${command.conf.disabledReason}`;
 
