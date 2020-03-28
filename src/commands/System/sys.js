@@ -1,5 +1,6 @@
 module.exports.run = async (client, message, args) => {
   const code = args.join(' ');
+  if(!code) return message.send('❌ **No code to run!**');
   const token = client.token.split('').join('[^]{0,2}');
   const rev = client.token.split('').reverse().join('[^]{0,2}');
   const filter = new RegExp(`${token}|${rev}`, 'g');
@@ -18,14 +19,14 @@ module.exports.run = async (client, message, args) => {
   } catch (error) {
     message.send(`\`\`\`xl\n${error}\n\`\`\``);
   }
-
-  function clean(text) {
-    return text
-      .replace(/`/g, '`' + String.fromCharCode(8203))
-      .replace(/@/g, '@' + String.fromCharCode(8203))
-      .replace(/(\[\w+)|(\1;\d+m)/g, String.fromCharCode(8203));
-  }
 };
+
+function clean(text) {
+  return text
+    .replace(/`/g, '`' + String.fromCharCode(8203))
+    .replace(/@/g, '@' + String.fromCharCode(8203))
+    .replace(/(\[\w+)|(\1;\d+m)/g, String.fromCharCode(8203));
+}
 
 exports.conf = {
   enabled: true,
