@@ -22,7 +22,7 @@ exports.run = async (client, message, args) => {
       output += `\`${c.help.name}\` `;
     });
 
-    if(!message.guild) output += '\n\n:information_source: `|` **I noticed you aren\'t in a guild.** Run this command again in a server to see more commands!';
+    if(!message.guild) output += '\n\n:information_source: `|` **You aren\'t in a guild.** Run this command again in a server to see more commands!';
 
     output += `\n\n\`\`\`fix\nRun ${prefix}help <command/category> for more details.\n\`\`\``;
 
@@ -63,7 +63,7 @@ exports.run = async (client, message, args) => {
 
       message.send(msg);
 
-    } else message.send(':x: **I can\'t find that command or category!**');
+    } else message.send('❌ **I can\'t find that command or category!**');
   }
 };
 
