@@ -18,7 +18,7 @@ module.exports.run = async (client, message) => {
     const mods = message.guild.members.cache.filter(g => client.permlevel(g) === 2).map(g => g.toString());
     if (mods.length > 0) embed.addField(`Mod${mods.length === 1 ? '' : 's'}`, mods.join('\n'), true);
 
-    msg.edit(embed);
+    msg.edit('', { embed });
   });
 };
 
