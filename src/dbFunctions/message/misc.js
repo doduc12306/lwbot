@@ -110,7 +110,7 @@ module.exports = async (client, message) => {
       if (message.mentions.roles.size === 0) {
         let role = message.guild.roles.cache.get(data);
         if (role === undefined) {
-          role = message.guild.roles.find(r => r.name.toLowerCase().includes(data.toLowerCase()));
+          role = message.guild.roles.cache.find(r => r.name.toLowerCase().includes(data.toLowerCase()));
           if (!role) throw new Error('I couldn\'t find that role! ');
           else return role;
         } else return role;
