@@ -12,44 +12,44 @@ exports.run = async (client, message, args) => {
 
     if (!isNaN(args[1])) { // If args[1] is a number (not not a number)
       const setting = viewSettings(+args[1], null);
-      if (!setting) return message.send(':x: `|` ⚙ **That setting ID does not exist!**');
+      if (!setting) return message.send('❌ `|` ⚙ **That setting ID does not exist!**');
       message.send(`⚙ **Setting**\n\`\`\`xl\n[${setting.id}] ${setting.key} - ${setting.value}\n\`\`\``);
     } else { // else - string
       const setting = viewSettings(null, args.slice(1).join(' '));
-      if (!setting) return message.send(':x: `|` ⚙ **That setting does not exist!**');
+      if (!setting) return message.send('❌ `|` ⚙ **That setting does not exist!**');
       message.send(`⚙ **Setting**\n\`\`\`xl\n[${setting.id}] ${setting.key} - ${setting.value}\n\`\`\``);
     }
   } else if (action === 'edit') {
     let id = args[1];
     let newValue = args.slice(2).join(' ');
 
-    if (!id) return message.send(':x: `|` ⚙ **Missing a setting to edit!**');
-    if (isNaN(+id)) return message.send(`:x: \`|\` ⚙ \`${id}\` **is not a setting ID!**`);
-    if (!newValue) return message.send(':x: `|` ⚙ **Missing a new value!**');
+    if (!id) return message.send('❌ `|` ⚙ **Missing a setting to edit!**');
+    if (isNaN(+id)) return message.send(`❌ \`|\` ⚙ \`${id}\` **is not a setting ID!**`);
+    if (!newValue) return message.send('❌ `|` ⚙ **Missing a new value!**');
 
     // if "[ID]" convert to "ID"
     if (new RegExp(`^\[${id}\]$`).test(id)) id = id.substring(1, id.length - 1); // eslint-disable-line no-useless-escape
     const setting = viewSettings(id, null);
-    if (!setting) return message.send(`:x: \`|\` ⚙ **Setting ID** \`[${id}]\` **does not exist!**`);
+    if (!setting) return message.send(`❌ \`|\` ⚙ **Setting ID** \`[${id}]\` **does not exist!**`);
 
     // Checks
     if (['Enabled', 'Disabled'].includes(setting.value) && !(/(en|dis)abled?/gi.test(newValue)))
-      return message.send(':x: `|` ⚙ **Invalid new value. Must be one of:** `enable` **or** `disable`**.** ');
+      return message.send('❌ `|` ⚙ **Invalid new value. Must be one of:** `enable` **or** `disable`**.** ');
     if (!isNaN(+setting.value) && isNaN(+newValue))
-      return message.send(':x: `|` ⚙ **Invalid new value. Must be a number.**');
+      return message.send('❌ `|` ⚙ **Invalid new value. Must be a number.**');
     if (/^"#/.test(setting.value) && !(/^#/.test(newValue)))
-      return message.send(':x: `|` ⚙ **Invalid new value. Must be a hex color beginning with** `#`**.**');
+      return message.send('❌ `|` ⚙ **Invalid new value. Must be a hex color beginning with** `#`**.**');
     if (setting.key === 'Caps Threshold' && !(/\d{1,3}%/.test(newValue)))
-      return message.send(':x: `|` ⚙ **Invalid new value. Must be a percentage.**');
+      return message.send('❌ `|` ⚙ **Invalid new value. Must be a percentage.**');
 
     // Edits
     if (setting.key.toLowerCase().includes('channel') && /<#([0-9]+)>/g.test(newValue)) {
       newValue = message.guild.channels.cache.get(newValue.substring(2, newValue.length - 1)).name;
-      if (!newValue) return message.send(':x: `|` ⚙ **There was an error finding that channel!** (Did you spell it correctly?)');
+      if (!newValue) return message.send('❌ `|` ⚙ **There was an error finding that channel!** (Did you spell it correctly?)');
     }
     if (setting.key.toLowerCase().includes('role') && /<@&[0-9]+>/g.test(newValue)) {
       newValue = message.guild.roles.cache.get(newValue.substring(3, newValue.length - 1)).name;
-      if (!newValue) return message.send(':x: `|` ⚙ **There was an error finding that role!** (Did you spell it correctly?)');
+      if (!newValue) return message.send('❌ `|` ⚙ **There was an error finding that role!** (Did you spell it correctly?)');
     }
     if (/enabled?/gi.test(newValue))
       newValue = 'true';
@@ -63,14 +63,14 @@ exports.run = async (client, message, args) => {
         await (client.settings.get(message.guild.id)[setting.originalSetting] = newValue);
         const newSetting = await viewSettings(setting.id, null);
         message.send(`✅ \`|\` ⚙ **Setting edited!**\n\`\`\`xl\n[${newSetting.id}] ${newSetting.key} - ${newSetting.value}\n\`\`\``);
-      }).catch(e => { client.logger.error(e.stack); return message.send(`:x: \`|\` ⚙ **There was an error editing the setting:**\n\`\`\`${e.stack}\`\`\``); });
+      }).catch(e => { client.logger.error(e.stack); return message.send(`❌ \`|\` ⚙ **There was an error editing the setting:**\n\`\`\`${e.stack}\`\`\``); });
 
   } else if (action === 'reset') {
     const settingToReset = args.slice(1).join(' ');
 
     if (!isNaN(settingToReset)) { // If args[1] is a number (not not a number)
       const setting = viewSettings(+settingToReset, null);
-      if (!setting) return message.send(':x: `|` ⚙ **That setting ID does not exist!**');
+      if (!setting) return message.send('❌ `|` ⚙ **That setting ID does not exist!**');
 
       // Ask the user if they are sure they want to reset
       const response = await client.awaitReply(message, `:warning: \`|\` ⚙ **Are you sure you want to reset this setting? This CANNOT be undone!** (yes/no)\n\`\`\`xl\n[${setting.id}] ${setting.key} - ${setting.value}\n\`\`\``);
@@ -82,15 +82,15 @@ exports.run = async (client, message, args) => {
             await (client.settings.get(message.guild.id)[setting.originalSetting] = client.config.defaultSettings[setting.originalSetting]);
             const newSetting = await viewSettings(+settingToReset, null);
             message.send(`✅ \`|\` ⚙ **Setting reset!**\n\`\`\`xl\n[${newSetting.id}] ${newSetting.key} - ${newSetting.value}\n\`\`\``);
-          }).catch(e => { return message.send(`:x: \`|\` ⚙ **There was an error resetting the setting:**\n\`\`\`${e}\`\`\``); });
+          }).catch(e => { return message.send(`❌ \`|\` ⚙ **There was an error resetting the setting:**\n\`\`\`${e}\`\`\``); });
         // If the user said "n" or "no"
       } else if (/no?/i.test(response)) {
         return message.send('⚙ **Action cancelled.**');
         // else
-      } else return message.send(':x: `|` ⚙ **Invalid response.**');
+      } else return message.send('❌ `|` ⚙ **Invalid response.**');
     } else { // else - string
       const setting = viewSettings(null, settingToReset);
-      if (!setting) return message.send(':x: `|` ⚙ **That setting does not exist!**');
+      if (!setting) return message.send('❌ `|` ⚙ **That setting does not exist!**');
 
       // Ask the user if they are sure they want to reset
       const response = await client.awaitReply(message, `:warning: \`|\` ⚙ **Are you sure you want to reset this setting? This CANNOT be undone!** (yes/no)\n\`\`\`xl\n[${setting.id}] ${setting.key} - ${setting.value}\n\`\`\``);
@@ -102,12 +102,12 @@ exports.run = async (client, message, args) => {
             await (client.settings.get(message.guild.id)[setting.originalSetting] = client.config.defaultSettings[setting.originalSetting]);
             const newSetting = await viewSettings(null, settingToReset);
             message.send(`✅ \`|\` ⚙ **Setting reset!**\n\`\`\`xl\n[${newSetting.id}] ${newSetting.key} - ${newSetting.value}\n\`\`\``);
-          }).catch(e => { return message.send(`:x: \`|\` ⚙ **There was an error resetting the setting:**\n\`\`\`${e}\`\`\``); });
+          }).catch(e => { return message.send(`❌ \`|\` ⚙ **There was an error resetting the setting:**\n\`\`\`${e}\`\`\``); });
         // If the user said "n" or "no"
       } else if (/no?/i.test(response)) {
         return message.send('⚙ **Action cancelled.**');
         // else
-      } else return message.send(':x: `|` ⚙ **Invalid response.**');
+      } else return message.send('❌ `|` ⚙ **Invalid response.**');
     }
   } else return viewSettings();
 

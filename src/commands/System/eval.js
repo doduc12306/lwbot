@@ -38,7 +38,7 @@ exports.run = async (client, message, args) => {
     if (output.length < 1950) {
       message.send(output, { code: 'js' })
         .catch(e => {
-          message.send(':x: **Error sending output, check the console.**');
+          message.send('❌ **Error sending output, check the console.**');
           client.logger.error('Eval output error:' + e);
           client.logger.log('Initial eval output:' + output);
         });
@@ -48,13 +48,13 @@ exports.run = async (client, message, args) => {
     }
   } catch (error) {
     try {
-      message.send(`:x: **Error**\n\`\`\`xl\n${error}\n\`\`\` `).catch(errorSendingError => {
-        message.send(':x: **Ironically, there was an error sending the error. Check the console.**');
+      message.send(`❌ **Error**\n\`\`\`xl\n${error}\n\`\`\` `).catch(errorSendingError => {
+        message.send('❌ **Ironically, there was an error sending the error. Check the console.**');
         client.logger.error('Error sending eval error: ' + errorSendingError);
         client.logger.error('Initial eval error output: ' + error);
       });
     } catch (errorSendingError) {
-      message.send(':x: **Ironically, there was an error sending the error. Check the console.**');
+      message.send('❌ **Ironically, there was an error sending the error. Check the console.**');
       client.logger.error('Error sending eval error: ' + errorSendingError);
       client.logger.error('Initial eval error ouput: ' + error);
     }

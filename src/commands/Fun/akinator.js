@@ -40,7 +40,7 @@ module.exports.run = async (client, message, args) => {
 
       // if still no info, then we have no info.
       if (!info) {
-        return await message.send(':x: **Aki servers are down :(**\n**Please check back later.**');
+        return await message.send('❌ **Aki servers are down :(**\n**Please check back later.**');
       }
     }
   }
@@ -145,7 +145,7 @@ module.exports.run = async (client, message, args) => {
         }
         nextInfo = await aki.step(region, info.session, info.signature, answerID, nextInfo.nextStep || 0).catch(error => {
           client.logger.error(error);
-          myMessage.edit(':x: **There was an error processing the next request. Game cancelled.**');
+          myMessage.edit('❌ **There was an error processing the next request. Game cancelled.**');
           collector.emit('end');
         });
       }
@@ -164,7 +164,7 @@ module.exports.run = async (client, message, args) => {
           if (nextInfo.nextStep < maxSteps) {
             nextInfo = await aki.step(region, info.session, info.signature, answerID, nextInfo.nextStep || 0);
           } else {
-            myMessage = await myMessage.edit(':x: `|` **Akinator error has occurred.**', { embed: null });
+            myMessage = await myMessage.edit('❌ `|` **Akinator error has occurred.**', { embed: null });
             collector.emit('end');
           }
         });

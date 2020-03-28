@@ -18,12 +18,12 @@ module.exports.run = (client, message, args) => {
       let res = await fetch(`https://www.webtoons.com/search?keyword=${search}`).then(page => page.text());
       let $ = cheerio.load(res);
       msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(1 / n)\``);
-      if($('div.card_nodata').length === 1) return msg.edit(`:x: \`|\` 🔎 **No results for** \`${search}\``);
+      if($('div.card_nodata').length === 1) return msg.edit(`❌ \`|\` 🔎 **No results for** \`${search}\``);
 
       if (mode === 'featured') {
 
         const searchResult = $('div.card_wrap.search ul.card_lst li a.card_item').attr('href');
-        if(!searchResult) return msg.edit(`:x: \`|\` 🔎 **No featured webtoon results for** \`${search}\``);
+        if(!searchResult) return msg.edit(`❌ \`|\` 🔎 **No featured webtoon results for** \`${search}\``);
         res = await fetch(`https://www.webtoons.com${searchResult}`).then(page => page.text());
         const page = cheerio.load(res);
         msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(2 / n)\``);
@@ -56,7 +56,7 @@ module.exports.run = (client, message, args) => {
       } else if (mode === 'discover') {
 
         const searchResult = $('div.card_wrap.search div.challenge_lst.search ul li a.challenge_item').attr('href');
-        if(!searchResult) return msg.edit(`:x: \`|\` 🔎 **No canvas webtoon results for** \`${search}\``);
+        if(!searchResult) return msg.edit(`❌ \`|\` 🔎 **No canvas webtoon results for** \`${search}\``);
         res = await fetch(`https://www.webtoons.com${searchResult}`).then(page => page.text());
         const page = cheerio.load(res);
         msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(2 / n)\``);

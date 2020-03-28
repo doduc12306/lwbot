@@ -11,7 +11,7 @@ module.exports.run = async (client, message, args) => {
       if (out.length < 1950) {
         message.send(out, {code: 'bash'});
       } else {
-        message.send(':x: **Output too large. Check the console.**');
+        message.send('❌ **Output too large. Check the console.**');
         client.logger.log(out);
       }
     });

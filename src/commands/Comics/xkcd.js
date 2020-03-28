@@ -10,10 +10,10 @@ module.exports.run = (client, message, args) => {
         displayXKCD(json);
       });
   } else {
-    if (isNaN(search)) return message.send(`:x: \`|\` :mag: \`${search}\` **is not a number!**`);
+    if (isNaN(search)) return message.send(`❌ \`|\` :mag: \`${search}\` **is not a number!**`);
     fetch(`https://xkcd.com/${search}/info.0.json`)
       .then(async res => {
-        if (!res.ok) return message.send(`:x: \`|\` :mag: **XKCD **\`#${search}\` **does not exist.**`);
+        if (!res.ok) return message.send(`❌ \`|\` :mag: **XKCD **\`#${search}\` **does not exist.**`);
         const json = await res.json();
         displayXKCD(json, +search);
       });
@@ -45,7 +45,7 @@ module.exports.run = (client, message, args) => {
             number--;
             fetch(`https://xkcd.com/${+number}/info.0.json`)
               .then(async res => {
-                if (!res.ok) return msg.edit(`:x: \`|\` :mag: **XKCD **\`#${number}\` **does not exist.**`, { embed: null });
+                if (!res.ok) return msg.edit(`❌ \`|\` :mag: **XKCD **\`#${number}\` **does not exist.**`, { embed: null });
                 const json = await res.json();
                 msg.edit('', new MessageEmbed()
                   .setColor(client.config.colors.white)
@@ -61,7 +61,7 @@ module.exports.run = (client, message, args) => {
             number++;
             fetch(`https://xkcd.com/${+number}/info.0.json`)
               .then(async res => {
-                if (!res.ok) return msg.edit(`:x: \`|\` :mag: **XKCD **\`#${number}\` **does not exist.**`, { embed: null });
+                if (!res.ok) return msg.edit(`❌ \`|\` :mag: **XKCD **\`#${number}\` **does not exist.**`, { embed: null });
                 const json = await res.json();
                 msg.edit('', new MessageEmbed()
                   .setColor(client.config.colors.white)

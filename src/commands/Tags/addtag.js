@@ -12,7 +12,7 @@ module.exports.run = async (client, message, args) => {
     return message.send(`✅ \`|\` :pencil: **\`${tag.name}\` created.**`);
   } catch (e) {
     if (e.name === 'SequelizeUniqueConstraintError') return message.reply('❌ `|` :pencil: **Tag already exists**');
-    return message.send(`:x: \`|\` :pencil: **Something went wrong with adding a tag.**
+    return message.send(`❌ \`|\` :pencil: **Something went wrong with adding a tag.**
         ${e}`);
   }
 };

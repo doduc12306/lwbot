@@ -120,7 +120,7 @@ module.exports.run = async (client, message, args) => {
     }
 
     const user = new User(song.queuedBy);
-    if(await user.balance - 1000 < 0) return message.send(':x: `|` 🎵 **You do not have the sufficient funds to play a song!**');
+    if(await user.balance - 1000 < 0) return message.send('❌ `|` 🎵 **You do not have the sufficient funds to play a song!**');
 
     const toPlay = await ytdl(song.url, { filter: 'audioonly' });
 

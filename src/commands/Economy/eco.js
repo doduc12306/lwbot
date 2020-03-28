@@ -6,14 +6,14 @@ module.exports.run = async (client, message, args) => {
 
   const user = new User(message.mentions.users.first() ? message.mentions.users.first() : message.author);
   let amount = args[1];
-  if(!amount && type !== 'get') return message.send(':x: `|` :bank: **Missing amount!**');
+  if(!amount && type !== 'get') return message.send('❌ `|` :bank: **Missing amount!**');
 
   if(type === 'add') {
     if(isNaN(amount)) return message.send(`❌ \`|\` 🏦 \`${amount}\` **is not a number!**`);
     amount = +amount;
 
     const newBalance = await user.changeBalance('add', amount);
-    if (!newBalance) return message.send(`:x: \`|\` :bank: \`${user.user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
+    if (!newBalance) return message.send(`❌ \`|\` :bank: \`${user.user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
     message.send(`✅ \`|\` 🏦 **Successfully added** \`${amount}\` **to** \`${user.user.tag}\`**.** New balance: \`${newBalance}\`.`);
   }
 
@@ -22,7 +22,7 @@ module.exports.run = async (client, message, args) => {
     amount = +amount;
 
     const newBalance = await user.changeBalance('subtract', amount);
-    if (!newBalance) return message.send(`:x: \`|\` :bank: \`${user.user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
+    if (!newBalance) return message.send(`❌ \`|\` :bank: \`${user.user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
     message.send(`✅ \`|\` 🏦 **Successfully subtracted** \`${amount}\` **from** \`${user.user.tag}\`**.** New balance: \`${newBalance}\`.`);
   }
 
@@ -31,7 +31,7 @@ module.exports.run = async (client, message, args) => {
     amount = +amount;
 
     const newBalance = await user.changeBalance('set', amount);
-    if (!newBalance) return message.send(`:x: \`|\` :bank: \`${user.user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
+    if (!newBalance) return message.send(`❌ \`|\` :bank: \`${user.user.tag}\`**'s balance is below zero! Actions cannot be performed.**`);
     message.send(`✅ \`|\` 🏦 **Successfully set** \`${user.user.tag}\`**'s new balance to** \`${newBalance}\`**.**`);
   }
 

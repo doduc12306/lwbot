@@ -1,8 +1,8 @@
 /* eslint-disable */
 module.exports.run = (client, message, args) => {
   const bet = args[0];
-  if(!bet) return message.send(':x: `|` :slot_machine: **You\'re missing how much would you like to bet!**');
-  if(typeof bet !== 'string') return message.send(`:x: \`|\` :slot_machine: **"${bet}" is not a number!**`);
+  if(!bet) return message.send('❌ `|` :slot_machine: **You\'re missing how much would you like to bet!**');
+  if(typeof bet !== 'string') return message.send(`❌ \`|\` :slot_machine: **"${bet}" is not a number!**`);
 
   const availableSlots = [':heart:', ':monkey:', ':frog:', ':elephant:', ':snail:', ':bee:', ':star:', ':fox:', ':crown:', ':four_leaf_clover:', ':lemon:', ':cherries:', ':melon:', ':grapes:', ':bomb:', ':unicorn:', ':zap:', ':pear:', ':banana:', ':tangerine:', ':watermelon:', ':gem:', ':seven:', ':100:', ':gun:', ':knife:', ':skull_crossbones:', ':broken_heart:', ':beetle:', ':crab:', ':peach:', ':eggplant:', ':strawberry:'];
 

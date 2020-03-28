@@ -26,7 +26,7 @@ module.exports.run = (client, message, [action]) => {
       settings.edit('owoMode', 'true'); 
       message.send('✅ **Enabled**'); 
     }
-  } else { message.send(':x: `owomode [on/off/toggle]`'); }
+  } else { message.send('❌ `owomode [on/off/toggle]`'); }
 
   User.changeBadges('add', '<:owo:626878656631013396>');
 };

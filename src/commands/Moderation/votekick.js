@@ -27,12 +27,12 @@ module.exports.run = (client, message, args) => {
         if(yesVotes.has(message.author.id)) yesVotesCount--; // subtract 1 from yesVotesCount because the author cast a vote on their own vk
         if(noVotes.has(message.author.id)) noVotesCount--; // subtract 1 from noVotesCount because the author cast a vote on their own vk
 
-        if(yesVotesCount + noVotesCount < 5) return msg.edit(`:x: \`|\` :boot: **Not enough votes were cast to kick \`${toKick.tag}\`.** (Minimum: 5)`);
+        if(yesVotesCount + noVotesCount < 5) return msg.edit(`❌ \`|\` :boot: **Not enough votes were cast to kick \`${toKick.tag}\`.** (Minimum: 5)`);
 
         if(yesVotesCount > noVotesCount) {
           msg.edit(`✅ \`|\` :boot: **Votekicked \`${toKick.tag}\`.** \`${yesVotesCount}\`/\`${noVotesCount}\``);
         } else {
-          msg.edit(`:x: \`|\` :boot: **Did not votekick \`${toKick.tag}\`.** \`${yesVotesCount}\`/\`${noVotesCount}\``);
+          msg.edit(`❌ \`|\` :boot: **Did not votekick \`${toKick.tag}\`.** \`${yesVotesCount}\`/\`${noVotesCount}\``);
         }
 
         msg.reactions.removeAll();

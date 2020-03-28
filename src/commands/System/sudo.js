@@ -14,7 +14,7 @@ module.exports.run = async (client, message, args) => {
 
   if (victimPermLevel >= sudoerPermLevel) return message.send(`❌ \`|\` ⚡ **You cannot sudo this user because their permission level is higher than or equal to yours.**\n\t\tYour level: \`${sudoerPermLevel} - ${client.config.permLevels.find(l => l.level === sudoerPermLevel).name}\`\n\t\t${victim.user.username}'s level: \`${victimPermLevel} - ${client.config.permLevels.find(l => l.level === victimPermLevel).name}\``); // One big error message.
 
-  if (!args[1]) return message.send(':x: `|` ⚡ **Missing command to emulate!**');
+  if (!args[1]) return message.send('❌ `|` ⚡ **Missing command to emulate!**');
 
   message.author = await victim.user;
   message.member = await victim.member;
