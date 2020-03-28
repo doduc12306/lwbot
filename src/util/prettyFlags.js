@@ -1,4 +1,4 @@
-module.exports = {
+module.exports.prettyPerms = {
   ADMINISTRATOR:         'Administrator',
   CREATE_INSTANT_INVITE: 'Create Instant Invite',
   KICK_MEMBERS:          'Kick Members',
@@ -27,4 +27,26 @@ module.exports = {
   MANAGE_WEBHOOKS:       'Manage Webhooks',
   MANAGE_EMOJIS:         'Manage Emojis',
   STREAM:                'Stream'
+};
+
+module.exports.prettyFeatures = {
+  ANIMATED_ICON: 'Animated Icon',
+  BANNER:        'Banner',
+  COMMERCE:      'Commerce',
+  DISCOVERABLE:  'Discoverable',
+  FEATURABLE:    'Featurable',
+  INVITE_SPLASH: 'Invite Splash',
+  PUBLIC:        'Public',
+  NEWS:          'News',
+  PARTNERED:     'Partnered',
+  VANITY_URL:    'Vanity URL',
+  VERIFIED:      'Verified',
+  VIP_REGIONS:   'VIP Regions'
+};
+
+module.exports.prettyPremiumTiers = {
+  0: 'None',
+  1: 'Tier 1',
+  2: 'Tier 2',
+  3: 'Tier 3'
 };
