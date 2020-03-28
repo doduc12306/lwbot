@@ -1,15 +1,23 @@
-module.exports.run = (client, message, args) => {
+module.exports.run = async (client, message, args) => {
   if (!message.guild.me.permissions.has('MANAGE_MESSAGES')) return message.send('❌ `|` 💣 **I am missing permissions to Manage Messages!**');
   if (!message.member.permissions.has('MANAGE_MESSAGES')) return message.send('❌ `|` 💣 **You do not have permissions to Manage Messages!**');
 
-  const toPurge = args[0];
+  let toPurge = args[0];
 
   if (!toPurge) return message.send('❌ `|` 💣 **You didn\'t give an amount to purge!**');
-  if (toPurge > 100) return message.send('❌ `|` 💣 **Due to the limitations of Discord, I can only delete 100 messages at a time!**');
+  if (toPurge > 500) return message.send(':x: `|` 💣 **That amount is too large!** Please choose something up to 500.');
+  
+  while(toPurge >= 100) {
+    await message.channel.bulkDelete(100);
+    toPurge = toPurge - 100;
+    await client.wait(1000);
+  }
 
-  message.channel.bulkDelete(toPurge)
-    .then(messages => message.send(`✅ \`|\` 💣 **Deleted \`${messages.size}\` messages!**`))
-    .catch(e => message.send(`❌ \`|\` 💣 **Error!** ${e}`));
+  const leftover = toPurge % 100;
+  if(leftover > 1) await message.channel.bulkDelete(leftover);
+
+  await message.send(`:white_check_mark: \`|\` 💣 **Purged ${args[0]} messages!**`);
+
 };
 
 exports.conf = {
