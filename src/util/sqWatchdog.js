@@ -194,31 +194,15 @@ module.exports.runner = async function runner(client, guild, reset = false) {
 
 
       /* XP CLEANUP */
-      //const xpTable = require('../dbFunctions/message/xp').functions.xpSchema(serverID);
-      //await xpTable.sync(force);
+      const xpTable = require('../dbFunctions/message/xp').functions.xpSchema(serverID);
+      await xpTable.sync(force);
 
-      /* await xpTable.findAll().then(data => {
+      await xpTable.findAll().then(data => {
         for (const dataPoint of data) {
-  
-          // eslint disabled to prevent it from picking up on this increment function here
-          // eslint-disable-next-line no-inner-declarations
-          async function increment() {
-            await xpTable.findOne({ where: { user: dataPoint.dataValues.user } })
-              .then(async user => {
-                if (xpNeededToLevelUp(user.dataValues.level) < user.dataValues.xp) { await user.increment('level'); await increment(); return true; }
-                else return false;
-  
-                function xpNeededToLevelUp(x) {
-                  return 5 * (10 ** -4) * ((x * 100) ** 2) + (0.5 * (x * 100)) + 100;
-                }
-              });
-          }
-          while (increment()) increment();
-  
+          while (increment(xpTable. dataPoint)) increment(xpTable, dataPoint);
         }
-  
-      }); */ // Disabled because increment function is moving too fast for node to handle. Related issue: https://gitlab.com/akii0008/lwbot-rewrite/issues/3
-      // logger.sqLog(`${serverID}: Finished xp cleanup`);
+      });
+      logger.sqLog(`${serverID}: Finished xp cleanup`);
 
     }));
     logger.sqLog(`Process completed! Took ${new Date() - start}ms`);
@@ -232,3 +216,15 @@ module.exports.timer = (client) => {
   logger.sqLog('Watchdog started');
   return setInterval(() => this.runner(client), config.debugMode ? 30000 : 600000); // If debugMode, run every 30 seconds. If not, run every 10 minutes.
 };
+
+function xpNeededToLevelUp(x) {
+  return 5 * (10 ** -4) * ((x * 100) ** 2) + (0.5 * (x * 100)) + 100;
+}
+
+async function increment(xpTable, dataPoint) {
+  await xpTable.findOne({ where: { user: dataPoint.dataValues.user } })
+    .then(async user => {
+      if (xpNeededToLevelUp(user.dataValues.level) < user.dataValues.xp) { await user.increment('level'); await increment(); return true; }
+      else return false;
+    });
+}
