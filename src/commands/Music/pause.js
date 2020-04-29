@@ -19,7 +19,7 @@ module.exports.run = (client, message) => {
 };
 
 exports.conf = {
-  enabled: true,
+  enabled: false,
   aliases: ['⏸'],
   permLevel: 'DJ',
   guildOnly: true

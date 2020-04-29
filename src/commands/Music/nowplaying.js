@@ -26,7 +26,7 @@ module.exports.run = (client, message) => {
 };
 
 exports.conf = {
-  enabled: true,
+  enabled: false,
   aliases: ['np', 'playing', 'whatisthissong'],
   permLevel: 'User',
   guildOnly: true,

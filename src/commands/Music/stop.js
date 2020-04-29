@@ -13,7 +13,7 @@ module.exports.run = async (client, message) => {
 };
 
 exports.conf = {
-  enabled: true,
+  enabled: false,
   aliases: ['🛑', '⏹', 'stopmusic', 'disconnect', 'dc', 'stfu', 'shutup', 'sotp', 'sopt'],
   permLevel: 'DJ',
   guildOnly: true
