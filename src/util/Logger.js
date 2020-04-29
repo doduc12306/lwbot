@@ -17,9 +17,11 @@ exports.log = (content, type = 'log') => {
       return console.warn(`${timestamp} ${chalk.yellow('warn:')} ${content} `);
     }
     case 'error': {
-      if (content.stack || content.includes('\n')) content = content.stack || content;
-      appendToLog('error', content, true, true);
-      return console.error(`${timestamp} ${chalk.red('error:')} ${content.split('\n').join(`\n${timestamp} ${chalk.red('error: ')}`)} `);
+      if (content.stack || (typeof content === 'string' && content.includes('\n'))) {
+        content = content.stack || content;
+        return console.error(`${timestamp} ${chalk.red('error:')} ${content.split('\n').join(`\n${timestamp} ${chalk.red('error: ')}`)} `);
+      } else console.error(`${timestamp} ${chalk.red('error:')} ${content} `);
+      return appendToLog('error', content, true, true);
     }
     case 'debug': {
       appendToLog('debug', content, false, true);
