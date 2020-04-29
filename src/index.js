@@ -16,7 +16,7 @@ if(process.argv.includes('--help') || process.argv.includes('-h')) {
   console.log('   -d | --debug   : Run bot in debug mode, and log in to Discord with debug token.');
   console.log('   -v | --verbose : Output verbose information. Good for knowing what the bot does at all times.');
   console.log('   -s | --sqLog   : Show the logs coming from the database watchdog');
-  console.log('        --ciMode  : Run the CI gammut. You probably won\'t need this.');
+  console.log('        --ciMode  : Run the CI gamut. You probably won\'t need this.');
   console.log(' ');
 
   console.log('   --token <token>          : Manually use this token instead of the one supplied in .env');
