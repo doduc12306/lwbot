@@ -1,10 +1,12 @@
+const Tags = require('../../dbFunctions/client/tags').tagsTable;
+
 module.exports.run = async (client, message, args) => {
 
   const tagName = args.shift();
   const tagDescription = args.join(' ');
 
   // equivalent to: UPDATE tags (descrption) values (?) WHERE name='?';
-  const affectedRows = await client.tags.update({ description: tagDescription }, { where: { name: tagName } });
+  const affectedRows = await Tags.update({ description: tagDescription }, { where: { name: tagName } });
   if (affectedRows > 0) {
     return message.send(`✅ \`|\` :pencil: **\`${tagName}\` edited.**`);
   }

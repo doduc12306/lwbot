@@ -17,12 +17,11 @@ const GuildEvents = require('../../dbFunctions/message/events');
 const User = require('../../dbFunctions/client/user');
 const sqWatchdog = require('../../util/sqWatchdog');
 const package = require('../../../package.json');
+const Tags = require('../../dbFunctions/client/tags');
 
 exports.run = async (client, message, args) => {
   require('../../dbFunctions/client/misc')(client);
   require('../../dbFunctions/client/protos')(client);
-  require('../../dbFunctions/client/tags')(client);
-  require('../../dbFunctions/message/misc')(client, message);
   require('../../dbFunctions/message/modbase')(client, message);
 
   const code = args.join(' ');

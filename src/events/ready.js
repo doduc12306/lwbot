@@ -16,20 +16,15 @@ module.exports = async client => {
     process.exit(1);
   }
 
-  require('../dbFunctions/client/tags.js')(client);
   require('../dbFunctions/client/protos.js')(client);
 
-  client.tags.sync();
-
   client.logger.verbose(`
-
-      ______ ______  _____  _____  _   _    _____  _____   ______   ___   _   _
-      |  ___|| ___ \\|  _  ||_   _|| | | |  |_   _||_   _|  |  _  \\ / _ \\ | \\ | |
-      | |_   | |_/ /| | | |  | |  | |_| |    | |    | |    | | | |/ /_\\ \\|  \\| |
-      |  _|  |    / | | | |  | |  |  _  |    | |    | |    | | | ||  _  || . ' |
-      | |    | |\\ \\ \\ \\_/ /  | |  | | | |   _| |_   | |    | |/ / | | | || |\\  |
-      \\_|    \\_| \\_| \\___/   \\_/  \\_| |_/   \\___/   \\_/    |___/  \\_| |_/\\_| \\_/
-
+  ______ ______  _____  _____  _   _    _____  _____   ______   ___   _   _
+  |  ___|| ___ \\|  _  ||_   _|| | | |  |_   _||_   _|  |  _  \\ / _ \\ | \\ | |
+  | |_   | |_/ /| | | |  | |  | |_| |    | |    | |    | | | |/ /_\\ \\|  \\| |
+  |  _|  |    / | | | |  | |  |  _  |    | |    | |    | | | ||  _  || . ' |
+  | |    | |\\ \\ \\ \\_/ /  | |  | | | |   _| |_   | |    | |/ / | | | || |\\  |
+  \\_|    \\_| \\_| \\___/   \\_/  \\_| |_/   \\___/   \\_/    |___/  \\_| |_/\\_| \\_/
 
   `);
 
@@ -49,10 +44,7 @@ module.exports = async client => {
       let e = require.resolve('../e');
       e = await fs.readFileSync('e', 'utf8');
       await client.users.cache.get(client.config.ownerID).send(`**I restarted! There was an error before I restarted:**\n\`\`\`${e}\`\`\``);
-      await fs.unlink('e', (err) => {
-        if (err) throw err;
-        client.logger.log('Error log reported, now deleted.');
-      });
+      client.logger.log('Error log reported, now deleted.');
     } catch (e) {
       if (e.code === 'MODULE_NOT_FOUND') client.logger.debug('No error log found.');
       else client.logger.error(e.stack);
@@ -122,12 +114,12 @@ module.exports = async client => {
 
   }
 
-  /*
   // Initialize the brains
+  /*
   const brains = readdirSync('brains/');
   const brainsWithoutJson = brains.map(g => g.split('.json')[0]);
-  client.guilds.forEach(guild => {
-    //guild.brain = new brain.recurrent.LSTM({ hiddenLayers: [20, 20, 20] });
+  client.guilds.cache.forEach(guild => {
+    guild.brain = new brain.recurrent.LSTM({ hiddenLayers: [20, 20, 20] });
 
     if (brainsWithoutJson.includes(guild.id)) return guild.brain.fromJSON(`${join(__dirname, 'brains/')}/${guild.id}.json`);
   }); */

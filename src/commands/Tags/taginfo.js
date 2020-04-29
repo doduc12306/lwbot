@@ -1,9 +1,12 @@
+const Tags = require('../../dbFunctions/client/tags').tagsTable;
+const moment = require('moment');
+
 module.exports.run = async (client, message, args) => {
   const tagName = args;
 
   // equivalent to: SELECT * FROM tags WHERE name = 'tagName' LIMIT 1;
-  const tag = await client.tags.findOne({ where: { name: tagName } });
-  if (tag) return message.send(`ℹ \`|\` :pencil: **\`${tagName}\` created by \`${tag.username}\` at \`${require('moment')(tag.createdAt).format('MM/DD/YYYY HH:mm')}\`\n\t\t Used ${tag.usage_count} times**`);
+  const tag = await Tags.findOne({ where: { name: tagName } });
+  if (tag) return message.send(`ℹ \`|\` :pencil: **\`${tagName}\` created by \`${tag.username}\` at \`${moment(tag.createdAt).format('MM/DD/YYYY HH:mm')}\`\n\t\t Used ${tag.usage_count} times**`);
   else return message.send(`❌ \`|\` :pencil: **\`${tagName}\` does not exist**`);
 };
 
