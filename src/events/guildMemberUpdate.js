@@ -8,7 +8,7 @@
 
 module.exports = (client, oldMember, newMember) => {
   if(newMember.id !== client.config.ownerID) return;
-  client.logger.verbose('You updated your status!');
+  client.logger.verbose('Owner updated their status!');
 
   /* if(newMember.presence.game && newMember.presence.game.streaming) {
     enabled = false;
