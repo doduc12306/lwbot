@@ -39,7 +39,7 @@ module.exports.runner = async function runner(client, guild, reset = false) {
     }
     await settingsTable.sync();
     client.settings.set(guild, settings);
-    if(client.guilds.cache.get(guild)) client.guilds.cache.get(guild).settings = settings;
+    if (client.guilds.cache.get(guild)) client.guilds.cache.get(guild).settings = settings;
     logger.sqLog(`${guild}: Finished settings cleanup`);
 
     /* COMMANDS CLEANUP */
@@ -73,7 +73,7 @@ module.exports.runner = async function runner(client, guild, reset = false) {
       const eventName = event[0];
       const enabled = event[1];
 
-      await eventsTable.findOrCreate({ where: { event: eventName }, defaults: { enabled }})
+      await eventsTable.findOrCreate({ where: { event: eventName }, defaults: { enabled } })
         .then(event => {
           event = event[0];
           events[event.dataValues.event] = event.dataValues.enabled;
@@ -106,23 +106,23 @@ module.exports.runner = async function runner(client, guild, reset = false) {
 
       // Run through all the databases to make sure they have a guild
       const clientGuild = client.guilds.cache.get(serverID);
-      if(!clientGuild) {
+      if (!clientGuild) {
         client.logger.warn(`Found guild database ${server} without guild in client collection. Deleting...`);
         const toDelete = join(__dirname, `../databases/servers/${server}`);
         client.logger.verbose(toDelete);
         return unlink(toDelete, err => {
-          if(err) throw err;
+          if (err) throw err;
           client.logger.sqLog(`Deleted database ${server} because it had no presence in client guild collection.`);
         });
       }
 
       // Run through all the guilds to make sure they have a database
       client.guilds.cache.forEach(guild => {
-      // Separate the .sqlite extention from the server ID
+        // Separate the .sqlite extention from the server ID
         const serversWithout_dotSqlite = servers.map(g => g.split('.sqlite')[0]);
 
         // If a guild exists, but a database for the guild does not, create one.
-        if(!serversWithout_dotSqlite.includes(guild.id)) {
+        if (!serversWithout_dotSqlite.includes(guild.id)) {
           client.logger.warn(`Found guild (${guild.id}) but no corresponding database. Creating one now...`);
           this.runner(client, guild.id);
         }
@@ -181,7 +181,7 @@ module.exports.runner = async function runner(client, guild, reset = false) {
         const eventName = event[0];
         const enabled = event[1];
 
-        await eventsTable.findOrCreate({ where: { event: eventName }, defaults: { enabled }})
+        await eventsTable.findOrCreate({ where: { event: eventName }, defaults: { enabled } })
           .then(event => {
             event = event[0];
             events[event.dataValues.event] = event.dataValues.enabled;
@@ -199,7 +199,7 @@ module.exports.runner = async function runner(client, guild, reset = false) {
 
       await xpTable.findAll().then(data => {
         for (const dataPoint of data) {
-          while (increment(xpTable. dataPoint)) increment(xpTable, dataPoint);
+          increment(xpTable, dataPoint);
         }
       });
       logger.sqLog(`${serverID}: Finished xp cleanup`);
@@ -224,7 +224,8 @@ function xpNeededToLevelUp(x) {
 async function increment(xpTable, dataPoint) {
   await xpTable.findOne({ where: { user: dataPoint.dataValues.user } })
     .then(async user => {
-      if (xpNeededToLevelUp(user.dataValues.level) < user.dataValues.xp) { await user.increment('level'); await increment(); return true; }
-      else return false;
+      let currentLevel = user.get('level');
+      while (xpNeededToLevelUp(user.dataValues.level) < user.dataValues.xp) { currentLevel++; return true; }
+      xpTable.update({ level: currentLevel }, { where: { user: dataPoint.dataValues.user } });
     });
 }
