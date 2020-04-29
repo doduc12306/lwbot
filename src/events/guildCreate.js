@@ -1,7 +1,4 @@
 module.exports = async (client, guild) => {
-  // Thanks for this PSA, York. This guild is full of userbots spamming commands. If this bot enters it, you'll see extreme performance issues.
-  if (guild.id === '439438441764356097') return guild.leave();
-
   client.logger.log(`Joined guild ${guild.name} (${guild.id})`);
 
   require('../util/sqWatchdog').runner(client, guild.id); // Runs sync-up for the guild. Settings, commands, xp
@@ -46,6 +43,8 @@ module.exports = async (client, guild) => {
     if (voiceErrored) msg += '\n`-` I was unable to disallow the Muted role from talking in voice channels.';
     msg += '\n\n**Please re-invite me.** When you invite me, please make sure I have all the permissions indicated on the invite page.';
     guild.owner.send(msg);
+    guild.leave();
+    client.logger.verbose('Encountered some errors while assigning permissions. Sent the owner a message about it; I\'m leaving now.');
   }
 
   if (client.config.ciMode) client.emit('ciStepChannelCreate');
