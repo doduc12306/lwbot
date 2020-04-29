@@ -7,6 +7,7 @@
   "dependencies": {
     "@discordjs/opus": "^0.1.0",
     "aki-api": "^3.1.1",
+    "brain.js": "^2.0.0-alpha.12",
     "bufferutil": "^4.0.1",
     "chalk": "^3.0.0",
     "cheerio": "^1.0.0-rc.3",
@@ -45,7 +46,7 @@
   "scripts": {
     "test": "cd src; node index.js --ciMode",
     "start": "pm2 start index.js",
-    "build": "sudo apt-get update; sudo apt install make g++ autoconf libtool pkg-config libcairo2-dev libjpeg-dev libgif-dev; sudo yarn add @discordjs/opus; echo \" \"; echo \"Build complete\";",
+    "build": "sudo apt-get update; sudo apt install make g++ autoconf libtool pkg-config libcairo2-dev libjpeg-dev libgif-dev build-essential libxi-dev libglu1-mesa-dev libglew-dev libsodium-dev; echo \" \"; echo \"Build complete\";",
     "postinstall": "cd src/util; node findandedit.js"
   },
   "repository": {
