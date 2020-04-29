@@ -41,7 +41,9 @@ module.exports.startup = async () => {
 
     // Options
     { name: 'noFileLog', type: Boolean },
-    { name: 'noFailoverWebsocket', type: Boolean }
+    { name: 'noFailoverWebsocket', type: Boolean },
+    { name: 'forceRoot', type: Boolean },
+    { name: 'help', alias: 'h', type: Boolean }
   ]);
 
   const client = this.client;
