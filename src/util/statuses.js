@@ -48,7 +48,7 @@ module.exports.statuses = client => [
   ['devil\'s advocate', { type: 'PLAYING' }],
   ['Poker', { type: 'PLAYING' }],
   ['MS Paint', { type: 'PLAYING' }],
-  ['with Kowoks', { type: 'PLAYING' }],
+  ['with Cubits', { type: 'PLAYING' }],
   ['with Uru-chan', { type: 'PLAYING' }],
   ['with Quimchee', { type: 'PLAYING' }],
   [' ', { type: 'PLAYING' }],

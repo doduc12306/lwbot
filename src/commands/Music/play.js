@@ -141,8 +141,8 @@ module.exports.run = async (client, message, args) => {
     serverQueue.playing.interval = setInterval(() => serverQueue.playing.duration++, 1000);
     serverQueue.textChannel.send(`🎵 **Started playing** \`${song.title}\``);
     
-    await user.changeBalance('subtract', 1000);
-    await client.users.cache.get(song.queuedBy).send(`🎵 **Started playing** \`${song.title}\` \n\`1000\` Kowoks deducted from your account. **Balance:** \`${await user.balance}\``);
+    await user.changeBalance('subtract', 100);
+    await client.users.cache.get(song.queuedBy).send(`🎵 **Started playing** \`${song.title}\` \n\`100\` Cubits deducted from your account. **Balance:** \`${await user.balance}\``);
 
   }
 };
@@ -156,7 +156,7 @@ exports.conf = {
 
 exports.help = {
   name: 'play',
-  description: 'Play a song | **COSTS 1,000 KOWOKS PER SONG**',
+  description: 'Play a song | **COSTS 100 CUBITS PER SONG**',
   usage: 'play <youtube url>',
   category: 'Music'
 };

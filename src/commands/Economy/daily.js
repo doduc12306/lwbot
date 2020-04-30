@@ -1,7 +1,7 @@
 const User = require('../../dbFunctions/client/user');
 module.exports.run = (client, message) => {
   new User(message.author.id).changeBalance('add', 200);
-  message.send('✅ `|` 🏦 **Added** `200` **Kowoks to your account!**');
+  message.send('✅ `|` 🏦 **Added** `200` **Cubits to your account!**');
 };
 
 exports.conf = {
@@ -14,7 +14,7 @@ exports.conf = {
 
 exports.help = {
   name: 'daily',
-  description: 'Get your daily Kowoks',
+  description: 'Get your daily Cubits',
   usage: 'daily',
   category: 'Economy'
 };

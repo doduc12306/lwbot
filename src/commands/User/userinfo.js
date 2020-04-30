@@ -30,7 +30,7 @@ module.exports.run = async (client, message) => {
 
   // Profile-related embed fields
   if (await profile.badges != false) embed.addField('Badges', await profile.badges, true);
-  embed.addField('Balance', `${await profile.balance} Kowoks`, true);
+  embed.addField('Balance', `${await profile.balance} Cubits`, true);
   embed.addField('Reputation', await profile.reputation, true);
 
   // If the user has activities
