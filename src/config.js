@@ -32,7 +32,7 @@ const config = {
     'botCommanderRole': 'Bot Commander',
     'ownerRole': 'Owners',
     'capsThreshold': '80', // (80%), not 80 or more characters.
-    'capsWarnEnabled': 'true',
+    'capsWarnEnabled': 'false',
     'capsDelete': 'true',
     'staffBypassesLimits': 'true',
     'xpLevelUpEnabled': 'true',
