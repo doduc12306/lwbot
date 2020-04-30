@@ -44,7 +44,7 @@ module.exports = async client => {
       let e = require.resolve('../e');
       e = await fs.readFileSync('e', 'utf8');
       await client.users.cache.get(client.config.ownerID).send(`**I restarted! There was an error before I restarted:**\n\`\`\`${e}\`\`\``);
-      client.logger.log('Error log reported, now deleted.');
+      client.logger.log('Error log reported.');
     } catch (e) {
       if (e.code === 'MODULE_NOT_FOUND') client.logger.debug('No error log found.');
       else client.logger.error(e.stack);
