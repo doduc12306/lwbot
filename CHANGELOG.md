@@ -1,5 +1,108 @@
 # Changelog
 
+## v1.6.0 [4/29/2020]
+Woo first release of the year! Only four months in lol<br>
+In total there were 172 commits, not including this one.
+
+### Commands
+* **A bunch of commands got updates from discord.js v11 to v12. If that's the only change, it's not listed here.**
+* Comics/webtoon: Changed from puppeteer to cheerio/node-fetch. Much better than spinning up a whole new chromium process lol
+* Comics/xkcd: Fixed the NaN bug, fixed json.num bug, etc
+* Economy/eco: Fixed some bugs, made it prettier
+* Economy/getbal: Fixed some bugs, made it prettier
+* Fun/akinator: Completely rewrote the command
+* Fun/ascii: Disabled this command because it unnecessarily requires a c++ package that I cannot build for some reason
+* Fun/cowsay: Added disable reason: This literally made a call to my machine's cowsay command. As there is no safe way to sanitize input like this, the command is disabled until I can find a suitable package replacement
+* Deleted Fun/kiss command
+* Fun/slots: worked on this a bit more. Still not enabled, but closer to being done.
+* Fun/sparkle: Not sure what changed here but apparently something did so I'm including it in this changelog. Let's just say bug fixes.
+* Fun/urban: Moved from snekfetch to node-fetch
+* Added google command
+* Moderation commands: discord.js v12 changes, wording changes (user/member), added reasons for the audit logs
+* Moderation/modlogs: Added the ability to start in the middle and scroll from there
+* Moderation/purge: Can now purge more than 100 messages, but less than 500 for performance.
+* Moderation/voicekick/voiceban: Used Discord's built-in disconnect feature instead of the move-user-to-channel-then-delete method
+* Added Moderation/votekick command, and disabled it due to lack of willing testing participants.
+* ***Disabled Music commands.*** For some odd reason, it now stops playing after a few songs and locks the entire thread. This is something I cannot for the life of me figure out how to fix, and D.js support is not helpful.
+* Server/addemote: Added attachment support
+* Server/announce: Removed no-subs and color arguments
+* Server/guildinfo: Added some new fields: guild description, guild boost count, and features.
+* Created *unfinished* Server/owomode command. 
+* Created Serve/reset command: Will leave the server, and in the process remove the guild's database.. hence a "reset"
+  * Only accessible to Bot Commander and up
+* Created Server/trainnetwork command: This was supposed to be a way for guild owners to detect bad messages on their servers by way of a neural network. Unfortunately, it seems the network doesn't wanna train when I tell it to. Not only that but the package's README file provides an example that doesn't work. I dont know what to do, so I'm disabling it and it's associated backend child_process training file.
+* System/diagnose: Added support for database enable/disable as well as reason as to why it's disabled if it is.
+* System/help: Rewrote this command so it doesn't DM the user a wall of text. It's more now like Tatsumaki's help command.
+* System/stats: Moved to os.uptime() instead of a call to the system's `uptime -p` which doesn't even work if you're not on linux.
+* Created System/support command: Just redirects the user to the [support server](https://discord.gg/225Kyt5)
+* Tags commands: Required tags directly instead of from the client object
+* Created User/mood command: Allows the user to set their mood on their user profile
+* User/userinfo: Added support for custom statuses.
+
+### Backend
+* index: Added help cli flag
+* index: Stops the user if running the script as root. If the user really wants to run the bot as root, there's a new flag: `--forceRoot`. This will bypass the check-exit, and there's now a huge warning text that appears before the bot starts up.
+* Moved settings from one big export to multiple class-related methods
+* Removed Tags database from client object
+* config: String keys to regular keys
+* config: Added DJ perm level, for use with Music commands (which are currently disabled)
+* Every database's transaction type is now immediate to crack down on locked databases
+* Added events database: Adds mod_log support to some d.js events (currently no way to change data outside of eval command)
+* events:
+  * channelCreate: Guild events support
+  * Created channelDelete: Guild events support
+  * Created guildDelete: Will delete guild database and client.settings presence when the bot is removed from a guild
+  * Created guildMemberSpeaking: A test to see if receiving voice data was possible. Now that it is, I'll eventually be adding in voice command support. Hopefully.
+  * message:
+    * Fixed a critical bug where the permlevel method was never actually called when checking to see if a command was disabled for the server
+    * Added some cooldown messages
+    * Checked to see if a command succeeded before adding user to the cooldown set
+    * Fixed a bug where if a database's table hadn't yet been created, it would be created the next time a command was run. The bot also lets the user know of this.
+    * Removed database cleanups from this file because sqWatchdog already handles it
+  * Created messageDelete: Guild events support
+  * messageUpdate: Guild events support
+  * ready: Updated paths for failover websocket, delete some temporary keys from the client object
+* If not running in debug mode, `process.env.NODE_ENV = 'production'`. Apparently this speeds some packages up by a bunch. Every millisecond counts.
+* Event/command loading logging is now hidden in verbose mode.
+* util/cleanperms -> util/prettyFlags: Added guild feature flags, added guild boost tiers
+* sqWatchdog: Added events db cleanup, fixed XP v8 memory allocation bug,
+* Removed GIPHY key from .env
+* Packages:
+  * `*` @discord.js/uws -> @discordjs/opus@0.2.1
+  * `+` brain.js@2.0.0-alpha.12
+  * `+` bufferutil@4.0.1
+  * `+` chalk@4.0.0
+  * `+` cheerio@1.0.0-rc.3
+  * `*` compressing@1.4.0 -> 1.5.0
+  * `*` discord.js@11.5.1 -> **12.1.1**
+  * `*` enmap@5.2.0 -> 5.2.3
+  * `*` ffmpeg-binaries -> ffmpeg-static@4.0.1
+  * `*` fs-extra@8.1.0 -> 9.0.0
+  * `+` google-it@1.4.1
+  * `-` node-opus@0.3.2
+  * `+` node-gyp@6.1.0
+  * `*` parse-duration@0.1.1 -> 0.3.2
+  * `-` puppeteer-core@1.20.0
+  * `*` sequelize@5.19.5 -> 5.21.3
+  * `*` sqlite3@4.0.9 -> 4.1.1
+  * `+` utf-8-validate@5.0.2
+  * `*` ws@7.1.2 -> 7.2.1
+  * `+` zlib-sync@0.1.6
+
+### Misc
+* Updated copyright to include 2020
+* Something about .eslintrc.json? Not sure what changed but it's showing up in the diff so it's here too.
+* Ignored src/te?mp in .gitignore
+* .gitlab-ci.yml: 
+  * Set image to node:12.16.1
+  * License scanning
+  * Run findandedit.js before the ci suite
+  * Moved script to npm test instead of in the ci file itself
+* Added .yarnclean (i forget what this does but im too afraid to remove it)
+* Added some docs so people aren't as confused anymore
+* Removed terminal module
+* Created util/findandedit.js: This manually edits lines of code in the ytdl-core directory to change the dependency path. Added as a postinstall script.
+
 ## v1.5.9 [10/24/2019]
 ### Commands
 * Comics/webtoon: Added backwards compatibility in case users still type "featured" or "discovery"
