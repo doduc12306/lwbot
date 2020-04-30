@@ -4,7 +4,6 @@ const Discord = require('discord.js');
 const Sequelize = require('sequelize');
 const moment = require('moment');
 const parse = require('parse-duration');
-const puppeteer = require('puppeteer-core');
 const YouTube = require('simple-youtube-api');
 const youtube = new YouTube(process.env.GOOGLE_API_KEY);
 const ytdl = require('ytdl-core-discord');

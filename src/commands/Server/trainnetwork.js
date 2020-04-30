@@ -4,9 +4,9 @@ const { readdirSync, writeFile, readFile, access, existsSync, mkdir, constants }
 const { join } = require('path');
 const child_process = require('child_process');
 
-const brains = readdirSync('./brains/');
-const brainsWithoutJSON = brains.map(g => g.split('.json')[0]);
-const brainsDir = join(__dirname, '../../brains');
+//const brains = readdirSync('./brains/');
+//const brainsWithoutJSON = brains.map(g => g.split('.json')[0]);
+//const brainsDir = join(__dirname, '../../brains');
 
 module.exports.run = async (client, message, [...IDs]) => {
 
