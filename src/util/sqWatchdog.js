@@ -84,7 +84,16 @@ module.exports.runner = async function runner(client, guild, reset = false) {
     client.guilds.cache.get(guild).events = events;
     logger.sqLog(`${guild}: Finished events cleanup`);
 
-    // TODO: Add in XP cleanup. See https://gitlab.com/akii0008/lwbot-rewrite/issues/3
+    /* XP CLEANUP */
+    const xpTable = require('../dbFunctions/message/xp').functions.xpSchema(guild);
+    await xpTable.sync(force);
+
+    await xpTable.findAll().then(data => {
+      for (const dataPoint of data) {
+        increment(xpTable, dataPoint);
+      }
+    });
+    logger.sqLog(`${guild}: Finished xp cleanup`);
 
     logger.sqLog(`${guild}: Finished process! ${new Date() - start}`);
     return true;
