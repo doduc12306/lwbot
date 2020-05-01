@@ -6,6 +6,7 @@ const Websocket = require('ws');
 //const brain = require('brain.js');
 //const { readdirSync } = require('fs');
 //const { join } = require('path');
+const { version } = require('../../package.json');
 
 module.exports = async client => {
   if (!client.user.bot) {
@@ -131,9 +132,9 @@ module.exports = async client => {
   if (client.config.verboseMode) client.logger.verbose('Verbose mode enabled');
   if (client.config.sqLogMode) client.logger.sqLog('SQLog mode enabled');
   client.logger.log(`
-${'⎻'.repeat(client.user.tag.length + client.user.id.length + 5)}
- ${client.user.tag} (${client.user.id})
-${'⎼'.repeat(client.user.tag.length + client.user.id.length + 5)}
+${'⎻'.repeat(client.user.tag.length + client.user.id.length + version.length + 7)}
+ ${client.user.tag} (${client.user.id}) v${version}
+${'⎼'.repeat(client.user.tag.length + client.user.id.length + version.length + 7)}
 • Users:     ${client.users.cache.size}
 • Guilds:    ${client.guilds.cache.size}
 • Channels:  ${client.channels.cache.size}
