@@ -104,8 +104,6 @@ module.exports = async (client, message) => {
   const level = message.guild ? client.permlevel(message.member) : 0;
   message.benchmarks['LevelGetterBenchmark'] = new Date() - a;
 
-  // Check whether the command, or alias, exist in the collections defined
-  // in app.js.
   const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
   message.benchmarks['CmdGetterBenchmark'] = new Date() - a;
 
@@ -171,7 +169,7 @@ module.exports = async (client, message) => {
   }
 
   /* -------------------- RUNS THE COMMAND -------------------- */
-  client.logger.cmd(`${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name}${message.edited ? ' (edited) ' : ' '}${message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs'}`);
+  client.logger.cmd(`${message.rerun ? '[RERUN] ' : ''}${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name}${message.edited ? ' (edited) ' : ' '}${message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs'}`);
   try {
     const response = await cmd.run(client, message, args, level);
     
@@ -191,7 +189,9 @@ module.exports = async (client, message) => {
 
   } catch (e) {
     if(e.message.includes('no such table')) {
-      return message.send(':warning: `|` :gear: **Oops!** Some data hasn\'t yet been initialized for this user. **Please run this command again!**');
+      message.send(':gear: `|` <a:loading:536942274643361794> **Loading...***');
+      message.rerun = true;
+      return client.emit('message', message);
     }
     
     client.logger.verbose(`From: ${__filename}`);
