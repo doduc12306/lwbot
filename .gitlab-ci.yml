@@ -1,4 +1,4 @@
-image: node:12.16.3
+image: node:12.16.3-stretch
 
 include:
   - template: License-Scanning.gitlab-ci.yml
@@ -6,7 +6,7 @@ include:
 test:
   before_script:
     - npm run build
-    - npm i --build-from-source
+    - npm i --build-from-source --verbose
     - cd src/util
     - node findandedit.js
     - cd ../

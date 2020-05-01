@@ -45,7 +45,7 @@
   "scripts": {
     "test": "cd src; node index.js --ciMode",
     "start": "pm2 start index.js",
-    "build": "sudo apt-get update; sudo apt install make g++ autoconf libtool pkg-config libcairo2-dev libjpeg-dev libgif-dev build-essential libxi-dev libglu1-mesa-dev libglew-dev libsodium-dev; echo \" \"; echo \"Build complete\";",
+    "build": "sudo apt-get update; sudo apt install -y make g++ autoconf libtool pkg-config libcairo2-dev libjpeg-dev libgif-dev build-essential libxi-dev libglu1-mesa-dev libglew-dev libsodium-dev; echo \" \"; echo \"Build complete\";",
     "postinstall": "cd src/util; node findandedit.js"
   },
   "repository": {
