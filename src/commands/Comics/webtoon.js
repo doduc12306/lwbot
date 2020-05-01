@@ -13,11 +13,11 @@ module.exports.run = (client, message, args) => {
 
   const search = ['featured', 'original', 'originals', 'discover', 'discovery', 'canvas'].includes(args[0]) ? args.slice(1).join(' ') : args.slice(0).join(' ');
 
-  message.send(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(0 / n)\``).then(async msg => {
+  message.send(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(0 / 5)\``).then(async msg => {
     try {
       let res = await fetch(`https://www.webtoons.com/search?keyword=${search}`).then(page => page.text());
       let $ = cheerio.load(res);
-      msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(1 / n)\``);
+      msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(1 / 5)\``);
       if($('div.card_nodata').length === 1) return msg.edit(`❌ \`|\` 🔎 **No results for** \`${search}\``);
 
       if (mode === 'featured') {
@@ -26,10 +26,10 @@ module.exports.run = (client, message, args) => {
         if(!searchResult) return msg.edit(`❌ \`|\` 🔎 **No featured webtoon results for** \`${search}\``);
         res = await fetch(`https://www.webtoons.com${searchResult}`).then(page => page.text());
         const page = cheerio.load(res);
-        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(2 / n)\``);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(2 / 5)\``);
 
         $ = cheerio.load(page('div.cont_box div.detail_body.banner div.detail_lst ul').children().first().html());
-        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(3 / n)\``);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(3 / 5)\``);
 
         const episode = {
           name: $('a span.subj span').text(),
@@ -37,11 +37,11 @@ module.exports.run = (client, message, args) => {
           date: $('a span.date').text(),
           link: $('a').attr('href')
         };
-        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(4 / n)\``);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(4 / 5)\``);
 
         const title = page('div.cont_box div.detail_header div.info h1.subj').text();
         const summary = page('div.cont_box div.detail_body.banner div p.summary').text();
-        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(5 / n)\``);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(5 / 5)\``);
 
         const embed = new MessageEmbed()
           .setColor(client.accentColor)
@@ -59,10 +59,10 @@ module.exports.run = (client, message, args) => {
         if(!searchResult) return msg.edit(`❌ \`|\` 🔎 **No canvas webtoon results for** \`${search}\``);
         res = await fetch(`https://www.webtoons.com${searchResult}`).then(page => page.text());
         const page = cheerio.load(res);
-        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(2 / n)\``);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(2 / 5)\``);
 
         $ = cheerio.load(page('div.cont_box div.detail_body.challenge div.detail_lst ul').children().first().html());
-        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(3 / n)\``);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(3 / 5)\``);
 
         const episode = {
           name: $('a span.subj span').text(),
@@ -70,11 +70,11 @@ module.exports.run = (client, message, args) => {
           date: $('a span.date').text(),
           link: $('a').attr('href')
         };
-        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(4 / n)\``);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(4 / 5)\``);
 
         const title = page('div.cont_box div.detail_header.challenge div.info.challenge h3.subj._challengeTitle').text().split('DASHBOARD')[0].trim();
         const summary = page('div.cont_box div.detail_body.challenge div p.summary').text();
-        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(5 / n)\``);
+        msg.edit(`${client.emojis.cache.get('536942274643361794')} **One moment please...**  \`(5 / 5)\``);
 
         const embed = new MessageEmbed()
           .setColor(client.accentColor)
