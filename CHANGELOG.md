@@ -1,5 +1,29 @@
 # Changelog
 
+## v1.6.1 [5/1/2020]
+Hot fix because perm levels weren't working correctly. Also has a few other bug fixes.
+
+### Commands
+* Music/play: Reduced fee from 1000 Cubits to 100 Cubits
+* Server/trainnetwork: Commented out some stuff till the library devs fix their bug. Command *still* disabled.
+* System/eval: Remove puppeteer-core require
+* System/sudo: Now uses `message.functions.parseUser(args[0])` to get user. This allows for mentions/IDs
+* System/permlvel -> User/permlevel
+
+### Backend
+* config
+  * defaultSettings.capsWarnEnabled: now disabled by default
+  * defaultSettings.xpLevelUpEnabled: now disabled by default
+  * Fixed some permission level parsing. Forgot to add in the .cache when accessing role managers. This affected the ability for the bot to find if a user had a role, and thusly set their permission level
+  * Added level 6 & 7 permission level placeholders
+* dbFunctions/client/misc: client.permlevel: Removed a line that was causing issues
+* dbFunctions/message/misc: Fixed message.functions.parseUser() user finding. Again, forgot cache. Also added in Class instanceof checking
+* Events: message: Re-emits a message instead of telling the user to rerun the command if a table hasn't been created yet.
+
+### Misc
+* Changed some wording in the docs settings
+* Changed name of currency: Kowoks -> Cubits
+
 ## v1.6.0 [4/29/2020]
 Woo first release of the year! Only four months in lol<br>
 In total there were 172 commits, not including this one.
