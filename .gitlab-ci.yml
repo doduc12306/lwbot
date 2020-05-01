@@ -5,6 +5,7 @@ include:
 
 test:
   before_script:
+    - npm run build
     - npm i --build-from-source
     - cd src/util
     - node findandedit.js
