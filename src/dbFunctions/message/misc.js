@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, User, GuildMember } = require('discord.js');
 module.exports = async (client, message) => {
 
   // Message send function, pretty much extends message.channel.send/message.edit in that it allows the user to edit their command message and it runs that instead
@@ -53,7 +53,7 @@ module.exports = async (client, message) => {
         if (message.guild && client.settings.get(message.guild.id)['owoMode'] === 'true') {
           if (content instanceof MessageEmbed) {
             const owoedEmbed = new MessageEmbed();
-            
+
             // Stuff that's changed
             if (content.title) owoedEmbed.setTitle(owoedContent(content.title));
             if (content.description) owoedEmbed.setDescription(owoedContent(content.description));
@@ -126,10 +126,11 @@ module.exports = async (client, message) => {
      */
     parseUser: data => {
       if (!data) throw new Error('You didn\'t give me anything to find a user from!');
+      if (data instanceof User) return data;
       if (message.mentions.users.size === 0) {
         let user = client.users.cache.get(data);
         if (user === undefined) {
-          user = client.users.find(r => (r.username.toLowerCase().includes(data.toLowerCase()) || r.tag.toLowerCase() === data.toLowerCase()));
+          user = client.users.cache.find(r => (r.username.toLowerCase().includes(data.toLowerCase()) || r.tag.toLowerCase() === data.toLowerCase()));
           if (!user) throw new Error('I couldn\'t find that user!');
           else return user;
         } else return user;
@@ -146,6 +147,7 @@ module.exports = async (client, message) => {
     parseMember: data => {
       if (message.channel.type !== 'text') throw new Error('I can\'t find a member if I\'m not in a guild!');
       if (!data) throw new Error('You didn\'t give me anything to find a member from!');
+      if (data instanceof GuildMember) return data;
       if (message.mentions.members.size === 0) {
         let member = message.guild.members.cache.get(data);
         if (member === undefined) {
