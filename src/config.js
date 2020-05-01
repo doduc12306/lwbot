@@ -76,7 +76,7 @@ const config = {
       check: member => {
         try {
           const djRole = member.guild.roles.cache.find(r => r.name.toLowerCase === 'dj');
-          if(djRole && member.roles.has(djRole.id)) return true;
+          if (djRole && member.roles.cache.has(djRole.id)) return true;
         } catch (e) { return false; }
       }
     },
@@ -87,7 +87,7 @@ const config = {
       check: member => {
         try {
           const modRole = member.guild.roles.cache.find(r => r.name.toLowerCase() === client.settings.get(member.guild.id).modRole.toLowerCase());
-          if (modRole && member.roles.has(modRole.id)) return true;
+          if (modRole && member.roles.cache.has(modRole.id)) return true;
         } catch (e) {
           return false;
         }
@@ -100,7 +100,7 @@ const config = {
       check: member => {
         try {
           const adminRole = member.guild.roles.cache.find(r => r.name.toLowerCase() === client.settings.get(member.guild.id).adminRole.toLowerCase());
-          return ((adminRole && member.roles.has(adminRole.id)) || member.permissions.has('ADMINISTRATOR'));
+          return ((adminRole && member.roles.cache.has(adminRole.id)) || member.permissions.has('ADMINISTRATOR'));
         } catch (e) {
           return false;
         }
@@ -113,7 +113,7 @@ const config = {
       check: member => {
         try {
           const bcRole = member.guild.roles.cache.find(r => r.name.toLowerCase() === client.settings.get(member.guild.id).botCommanderRole.toLowerCase());
-          return (bcRole && member.roles.has(bcRole.id));
+          return (bcRole && member.roles.cache.has(bcRole.id));
         } catch (e) { return false; }
       }
     },
@@ -126,10 +126,13 @@ const config = {
         if (!member.guild) return false;
         if (member.guild.owner.user.id !== member.user.id) {
           const ownerRole = member.guild.roles.cache.find(r => r.name.toLowerCase() === client.settings.get(member.guild.id).ownerRole.toLowerCase());
-          return (ownerRole && member.roles.has(ownerRole.id));
+          return ownerRole && member.roles.cache.has(ownerRole.id);
         } else return true;
       }
     },
+
+    { level: 6, name: 'Level 6 Placeholder', check: () => false },
+    { level: 7, name: 'Level 7 Placeholder', check: () => false },
 
     // Bot Support is a special in-between level that has the equivalent of server owner access
     // to any server they joins, in order to help troubleshoot the bot on behalf of owners.
