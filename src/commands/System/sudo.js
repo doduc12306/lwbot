@@ -1,9 +1,11 @@
 module.exports.run = async (client, message, args) => {
   if (!args[0]) return message.send('❌ `|` ⚡ **Missing a user!**');
-  if (!(/<@!?[0-9]+>/.test(args[0]))) return message.send(`❌ \`|\` ⚡ \`${args[0]}\` **is not a user!**`);
 
-  const userID = args[0].startsWith('<@!') ? args[0].substring(3, args[0].length - 1) : args[0].substring(2, args[0].length - 1);
+  try {
+    message.functions.parseUser(args[0]).id;
+  } catch (e) { return message.send('❌ `|` ⚡ **Couldn\'t find that user!**'); }
 
+  const userID = message.functions.parseUser(args[0]).id;
   const victim = {
     user: client.users.cache.get(userID),
     member: message.guild.members.cache.get(userID)
