@@ -26,7 +26,7 @@ class UserProfile {
     return new Sequelize('database', 'user', 'password', {
       host: 'localhost',
       dialect: 'sqlite',
-      logging: false,
+      logging: client.logger.sqlog,
       storage: `databases/users/${this.userID}.sqlite`,
       transactionType: 'IMMEDIATE' // Setting this helps with the "SQLITE_BUSY: Database is locked" errors
     });
