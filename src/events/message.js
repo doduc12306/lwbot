@@ -10,7 +10,7 @@ module.exports = async (client, message) => {
   require('../dbFunctions/message/modbase.js')(client, message);
 
   let commandsTable;
-  if (message.channel.type !== 'dm') commandsTable = require('../dbFunctions/message/commands').functions.commandsSchema(message.guild.id); 
+  if (message.channel.type !== 'dm') commandsTable = require('../dbFunctions/message/commands').functions.commandsSchema(message.guild.id);
 
   const capsWarnEnabled = message.guild
     ? client.settings.get(message.guild.id)['capsWarnEnabled'] === 'true' ? true : false
@@ -72,7 +72,7 @@ module.exports = async (client, message) => {
       .then(user => {
         user = user[0];
         if (xpNeededToLevelUp(user.dataValues.level) < user.dataValues.xp) {
-          if (xpLevelUpEnabled) message.send(xpLevelUpMessage.replaceAll('{{user}}', message.author.toString()).replaceAll('{{level}}', user.dataValues.level + 1)).then(msg => msg.delete({timeout: 10000}));
+          if (xpLevelUpEnabled) message.send(xpLevelUpMessage.replaceAll('{{user}}', message.author.toString()).replaceAll('{{level}}', user.dataValues.level + 1)).then(msg => msg.delete({ timeout: 10000 }));
           user.increment('level');
         }
       });
@@ -163,7 +163,7 @@ module.exports = async (client, message) => {
       timeLeft.setMilliseconds(new Date().getMilliseconds() + timeLeftMs);
       timeLeft = moment(timeLeft).fromNow(); // Time / date / milliseconds shenanegins.
 
-      const cooldownMessages = ['Cooldown!', 'You\'re going too fast!', 'Please slow down!', 'Hold your horses!', 'Stop going that fast!', 'I need some time to rest.', 'You\'re making me tired.. :yawning:', 'Why must you go that fast?', 'I\'m gonna hit you if you keep going.', 'Error 429: Ratelimited `|`'];
+      const cooldownMessages = ['Cooldown!', 'You\'re going too fast!', 'Please slow down!', 'Hold your horses!', 'Stop going that fast!', 'I need some time to rest.', 'You\'re making me tired.. :yawning_face:', 'Why must you go that fast?', 'I\'m gonna hit you if you keep going.', 'Error 429: Ratelimited `|`'];
       return message.send(`❌ \`|\` ⏱ **${cooldownMessages.randomElement()} Try again ${timeLeft}.**`).then(msg => msg.delete({ timeout: 10000 }));
     }
   }
@@ -172,9 +172,9 @@ module.exports = async (client, message) => {
   client.logger.cmd(`${message.rerun ? '[RERUN] ' : ''}${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name}${message.edited ? ' (edited) ' : ' '}${message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs'}`);
   try {
     const response = await cmd.run(client, message, args, level);
-    
+
     // If the command returned successful, create a cooldown on it
-    if(!response || (response instanceof Message && /(:white_check_mark:)|(✅)/gi.test(response.content))) {
+    if (!response || (response instanceof Message && /(:white_check_mark:)|(✅)/gi.test(response.content))) {
       // Cooldown check
       if (cmd.conf.cooldown) {
         if (!message.author.cooldownSet) message.author.cooldownSet = new Set();
@@ -198,12 +198,14 @@ module.exports = async (client, message) => {
       client.emit('message', message);
       return msg.delete();
     }
-    
+
+    // If it wasn't a missing table, it was something else. Log it here.
     client.logger.verbose(`From: ${__filename}`);
     client.logger.error(e);
     let firstErrorStackTrace;
     if (e.stack) firstErrorStackTrace = e.stack.split('\n')[1];
     message.send(`:x: **Something went wrong running the command:**\n\`\`\`\n${e}\n\t${firstErrorStackTrace}\n\`\`\` `);
+
   }
   /* -------------------- RUNS THE COMMAND -------------------- */
 
