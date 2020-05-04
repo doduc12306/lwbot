@@ -46,7 +46,7 @@ module.exports = async (client, message) => {
     } else { capsDelete ? message.delete() : false; message.send(emsg).then(msg => msg.delete({ timeout: 6000 })); }
   }
 
-  if (message.channel.type !== 'dm') {
+  if (message.channel.type !== 'dm' || !message.rerun) {
     const { functions } = require('../dbFunctions/message/xp.js');
 
     const xpLevelUpEnabled = message.guild
@@ -188,10 +188,15 @@ module.exports = async (client, message) => {
     }
 
   } catch (e) {
-    if(e.message.includes('no such table')) {
-      message.send(':gear: `|` <a:loading:536942274643361794> **Loading...***');
+
+    // Some table wasn't initialized before running the command. Emit the message event again to jog the table.
+    if (e.message.includes('no such table')) {
+      if (message.rerun) return message.send(':x: **Some data has not been initialized for this user.** Please try again later.\n(I tried to fix this problem on my own but the databases won\'t cooperate with me 😠) ');
+
+      const msg = await message.send(':gear: `|` <a:loading:536942274643361794> **Loading...**');
       message.rerun = true;
-      return client.emit('message', message);
+      client.emit('message', message);
+      return msg.delete();
     }
     
     client.logger.verbose(`From: ${__filename}`);
