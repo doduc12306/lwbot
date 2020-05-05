@@ -45,8 +45,9 @@ module.exports.run = (client, message, args) => {
 };
 
 function clean(str) {
-  return str.replace(/<\/?i>/gi, '')
-    .replace(/"/gi, '');
+  return str.replace(/<\/?i>/gmi, '')
+    .replace(/"/gmi, '')
+    .replace(/^an? /gmi, '');
 }
 
 exports.conf = {
