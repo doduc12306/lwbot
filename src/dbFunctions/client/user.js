@@ -81,6 +81,17 @@ class UserProfile {
             return this.shortcut.update({ value: (+res[0].get('value') + amount).toString() }, { where: { key: 'balance' } }).then(() => {
               return +res[0].get('value') + amount;
             });
+          }).catch(async e => {
+            if(e.stack && e.stack.includes('no such table: profiles')) {
+              // if the tables dont exist yet, create them.
+              await this.table().sync();
+              await this.userSchema().sync();
+
+              // Then run this function again
+              this.changeBalance(operation, amount);
+            } else {
+              Promise.reject(e);
+            }
           });
       }
       case 'subtract': {
@@ -92,6 +103,17 @@ class UserProfile {
             return this.shortcut.update({ value: (+res[0].get('value') - amount).toString() }, { where: { key: 'balance' } }).then(() => {
               return +res[0].get('value') - amount;
             });
+          }).catch(async e => {
+            if(e.stack && e.stack.includes('no such table: profiles')) {
+              // if the tables dont exist yet, create them.
+              await this.table().sync();
+              await this.userSchema().sync();
+
+              // Then run this function again
+              this.changeBalance(operation, amount);
+            } else {
+              Promise.reject(e);
+            }
           });
       }
       case 'set': {
@@ -100,6 +122,17 @@ class UserProfile {
             return this.shortcut.update({ value: amount.toString() }, { where: { key: 'balance' } }).then(() => {
               return amount;
             });
+          }).catch(async e => {
+            if(e.stack && e.stack.includes('no such table: profiles')) {
+              // if the tables dont exist yet, create them.
+              await this.table().sync();
+              await this.userSchema().sync();
+
+              // Then run this function again
+              this.changeBalance(operation, amount);
+            } else {
+              Promise.reject(e);
+            }
           });
       }
       default: throw new Error('Operation must be one of "add", "subtract", or "set".');
@@ -132,6 +165,17 @@ class UserProfile {
       .then(() => {
         this.shortcut.update({ value: newMood }, { where: { key: 'mood' } });
         return newMood;
+      }).catch(async e => {
+        if(e.stack && e.stack.includes('no such table: profiles')) {
+          // if the tables dont exist yet, create them.
+          await this.table().sync();
+          await this.userSchema().sync();
+
+          // Then run this function again
+          this.changeMood(newMood);
+        } else {
+          Promise.reject(e);
+        }
       });
   }
 
@@ -167,6 +211,17 @@ class UserProfile {
             this.shortcut.update({ value: `${res[0].get('value')} ${badgeName}` }, { where: { key: 'badges' } });
             badgeArray.push(badgeName);
             return badgeArray;
+          }).catch(async e => {
+            if(e.stack && e.stack.includes('no such table: profiles')) {
+              // if the tables dont exist yet, create them.
+              await this.table().sync();
+              await this.userSchema().sync();
+
+              // Then run this function again
+              this.changeBadges(operation, badgeName);
+            } else {
+              Promise.reject(e);
+            }
           });
       }
       case 'remove': {
@@ -178,6 +233,17 @@ class UserProfile {
             const updated = badgeArray.splice(badgeArray.indexOf(badgeName), 1).join(' '); // Find the index of the badge, then remove (splice) it from that index
             this.shortcut.update({ value: updated }, { where: { key: 'badges' } });
             return updated;
+          }).catch(async e => {
+            if(e.stack && e.stack.includes('no such table: profiles')) {
+              // if the tables dont exist yet, create them.
+              await this.table().sync();
+              await this.userSchema().sync();
+
+              // Then run this function again
+              this.changeBadges(operation, badgeName);
+            } else {
+              Promise.reject(e);
+            }
           });
       }
       default: throw new Error('Operation must be one of "add" or "remove"');
@@ -213,6 +279,17 @@ class UserProfile {
           .then(res => {
             return this.shortcut.update({ value: (+res[0].get('value') + amount).toString() }, { where: { key: 'reputation' } })
               .then(() => { return +res[0].get('value') + amount; });
+          }).catch(async e => {
+            if(e.stack && e.stack.includes('no such table: profiles')) {
+              // if the tables dont exist yet, create them.
+              await this.table().sync();
+              await this.userSchema().sync();
+
+              // Then run this function again
+              this.changeReputation(operation, amount);
+            } else {
+              Promise.reject(e);
+            }
           });
       }
       case 'subtract': {
@@ -223,6 +300,17 @@ class UserProfile {
 
             return this.shortcut.update({ value: (+res[0].get('value') - amount).toString() }, { where: { key: 'reputation' } })
               .then(() => { return +res[0].get('value') - amount; });
+          }).catch(async e => {
+            if(e.stack && e.stack.includes('no such table: profiles')) {
+              // if the tables dont exist yet, create them.
+              await this.table().sync();
+              await this.userSchema().sync();
+
+              // Then run this function again
+              this.changeReputation(operation, amount);
+            } else {
+              Promise.reject(e);
+            }
           });
       }
       case 'set': {
@@ -231,6 +319,17 @@ class UserProfile {
             return this.shortcut.update({ value: amount.toString() }, { where: { key: 'reputation' } }).then(() => {
               return amount;
             });
+          }).catch(async e => {
+            if(e.stack && e.stack.includes('no such table: profiles')) {
+              // if the tables dont exist yet, create them.
+              await this.table().sync();
+              await this.userSchema().sync();
+
+              // Then run this function again
+              this.changeReputation(operation, amount);
+            } else {
+              Promise.reject(e);
+            }
           });
       }
       default: throw new Error('Operation must be one of "add", "subtract", or "set".');
