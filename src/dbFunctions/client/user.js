@@ -80,8 +80,8 @@ class UserProfile {
           .then(res => {
             return this.shortcut.update({ value: (+res[0].get('value') + amount).toString() }, { where: { key: 'balance' } }).then(() => {
               return +res[0].get('value') + amount;
-            }).catch(e => { throw new Error(e); });
-          }).catch(e => { throw new Error(e); });
+            });
+          });
       }
       case 'subtract': {
         return this.shortcut.findOrCreate({ where: { key: 'balance' }, defaults: { value: '0' } })
@@ -91,16 +91,16 @@ class UserProfile {
 
             return this.shortcut.update({ value: (+res[0].get('value') - amount).toString() }, { where: { key: 'balance' } }).then(() => {
               return +res[0].get('value') - amount;
-            }).catch(e => { throw new Error(e); });
-          }).catch(e => { throw new Error(e); });
+            });
+          });
       }
       case 'set': {
         return this.shortcut.findOrCreate({ where: { key: 'balance' }, defaults: { value: '0' } })
           .then(() => {
             return this.shortcut.update({ value: amount.toString() }, { where: { key: 'balance' } }).then(() => {
               return amount;
-            }).catch(e => { throw new Error(e); });
-          }).catch(e => { throw new Error(e); });
+            });
+          });
       }
       default: throw new Error('Operation must be one of "add", "subtract", or "set".');
     }
@@ -130,9 +130,9 @@ class UserProfile {
     if (!newMood) throw new Error('Missing mood parameter');
     return this.shortcut.findOrCreate({ where: { key: 'mood' }, defaults: { value: 'Great day to set your mood!' } })
       .then(() => {
-        this.shortcut.update({ value: newMood }, { where: { key: 'mood' } }).catch(e => { throw new Error(e); });
+        this.shortcut.update({ value: newMood }, { where: { key: 'mood' } });
         return newMood;
-      }).catch(e => { throw new Error(e); });
+      });
   }
 
   /**
@@ -144,7 +144,7 @@ class UserProfile {
     return this.shortcut.findOrCreate({ where: { key: 'badges' }, defaults: { value: '' } })
       .then(res => {
         return res[0].get('value').split(' ');
-      }).catch(e => { throw new Error(e); });
+      });
   }
 
   /**
@@ -164,10 +164,10 @@ class UserProfile {
             const badgeArray = res[0].get('value').split(' ');
             if (badgeArray.includes(badgeName)) return false; // If the array has it already, dont go further.
 
-            this.shortcut.update({ value: `${res[0].get('value')} ${badgeName}` }, { where: { key: 'badges' } }).catch(e => { throw new Error(e); });
+            this.shortcut.update({ value: `${res[0].get('value')} ${badgeName}` }, { where: { key: 'badges' } });
             badgeArray.push(badgeName);
             return badgeArray;
-          }).catch(e => { throw new Error(e); });
+          });
       }
       case 'remove': {
         return this.shortcut.findOrCreate({ where: { key: 'badges' }, defaults: { value: '' } })
@@ -176,9 +176,9 @@ class UserProfile {
             if (!badgeArray.includes(badgeName)) return false; // If the array does not have the badge, dont go further.
 
             const updated = badgeArray.splice(badgeArray.indexOf(badgeName), 1).join(' '); // Find the index of the badge, then remove (splice) it from that index
-            this.shortcut.update({ value: updated }, { where: { key: 'badges' } }).catch(e => { throw new Error(e); });
+            this.shortcut.update({ value: updated }, { where: { key: 'badges' } });
             return updated;
-          }).catch(e => { throw new Error(e); });
+          });
       }
       default: throw new Error('Operation must be one of "add" or "remove"');
     }
@@ -212,9 +212,8 @@ class UserProfile {
         return this.shortcut.findOrCreate({ where: { key: 'reputation' }, defaults: { value: '0' } })
           .then(res => {
             return this.shortcut.update({ value: (+res[0].get('value') + amount).toString() }, { where: { key: 'reputation' } })
-              .then(() => { return +res[0].get('value') + amount; })
-              .catch(e => { throw new Error(e); });
-          }).catch(e => { throw new Error(e); });
+              .then(() => { return +res[0].get('value') + amount; });
+          });
       }
       case 'subtract': {
         return this.shortcut.findOrCreate({ where: { key: 'reputation' }, defaults: { value: '0' } })
@@ -223,17 +222,16 @@ class UserProfile {
             if (+res[0].get('value') - amount < 0) return false;
 
             return this.shortcut.update({ value: (+res[0].get('value') - amount).toString() }, { where: { key: 'reputation' } })
-              .then(() => { return +res[0].get('value') - amount; })
-              .catch(e => { throw new Error(e); });
-          }).catch(e => { throw new Error(e); });
+              .then(() => { return +res[0].get('value') - amount; });
+          });
       }
       case 'set': {
         return this.shortcut.findOrCreate({ where: { key: 'reputation' }, defaults: { value: '0' } })
           .then(() => {
             return this.shortcut.update({ value: amount.toString() }, { where: { key: 'reputation' } }).then(() => {
               return amount;
-            }).catch(e => { throw new Error(e); });
-          }).catch(e => { throw new Error(e); });
+            });
+          });
       }
       default: throw new Error('Operation must be one of "add", "subtract", or "set".');
     }
