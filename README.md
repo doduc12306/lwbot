@@ -1,5 +1,5 @@
 # LINE WEBTOON Bot
-Soon to be public Discord bot.
+Almost a general-purpose Discord bot
 
 [![](https://gitlab.com/akii0008/lwbot-rewrite/badges/master/pipeline.svg)](https://gitlab.com/akii0008/lwbot-rewrite/pipelines)<br>
 ^ That pipeline is almost always failing. Don't worry, the bot works. I make sure it works before I push it.
