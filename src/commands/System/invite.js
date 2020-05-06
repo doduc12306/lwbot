@@ -1,9 +1,9 @@
 const { MessageEmbed } = require('discord.js');
 module.exports.run = async (client, message) => {
-  message.author.send(new MessageEmbed()
+  message.send(new MessageEmbed()
     .setColor(client.accentColor)
     .setTitle('Invite me to another server!')
-    .setDescription(`[${await client.generateInvite(['ADMINISTRATOR'])}](Click here!)`)
+    .setDescription(await client.generateInvite(['ADMINISTRATOR']))
   );
 };
 
