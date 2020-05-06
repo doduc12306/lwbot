@@ -46,7 +46,7 @@ module.exports = async (client, message) => {
     } else { capsDelete ? message.delete() : false; message.send(emsg).then(msg => msg.delete({ timeout: 6000 })); }
   }
 
-  if (message.channel.type !== 'dm' || !message.rerun) {
+  if (message.channel.type !== 'dm') {
     const { functions } = require('../dbFunctions/message/xp.js');
 
     const xpLevelUpEnabled = message.guild
@@ -107,7 +107,7 @@ module.exports = async (client, message) => {
   const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
   message.benchmarks['CmdGetterBenchmark'] = new Date() - a;
 
-  if (!cmd) return message.send(`❌ **That isn't one of my commands!** Try \`${prefix}help\``);
+  if (!cmd) return message.send(`❌ \`|\` :gear: **That isn't one of my commands!** Try \`${prefix}help\``);
 
   let cmdInDb;
   if (message.guild) {
@@ -128,16 +128,16 @@ module.exports = async (client, message) => {
   message.benchmarks['SystemNoticeBenchmark'] = new Date() - a;
 
   // Command status check
-  if (!cmd.conf.enabled || !cmdInDb) return message.send(':x: **This command is disabled globally!**');
-  if (!cmdInDb.enabled && client.permlevel(message.member) < 8) return message.send(':x: **This command is disabled for this server!**');
+  if (!cmd.conf.enabled || !cmdInDb) return message.send(':x: `|` :gear: **This command is disabled globally!**');
+  if (!cmdInDb.enabled && client.permlevel(message.member) < 8) return message.send(':x: `|` :gear: **This command is disabled for this server!**');
 
   // Some commands may not be useable in DMs. This check prevents those commands from running
   // and return a friendly error message.
-  if (cmd && !message.guild && cmd.conf.guildOnly) return message.send('❌ **This command cannot be run in DM\'s.**');
+  if (cmd && !message.guild && cmd.conf.guildOnly) return message.send('❌ `|` 📥 **This command cannot be run in DMs.**');
   message.benchmarks['CmdDmsBenchmark'] = new Date() - a;
 
   if (client.levelCache[cmdInDb.permLevel] > level) {
-    if (systemNotice === 'true') message.send('❌ **You do not have permission to use this command!**');
+    if (systemNotice === 'true') message.send('❌ `|` ⚡ **You do not have permission to use this command!**');
     return;
   }
   message.benchmarks['DbPermCheckBenchmark'] = new Date() - a;
