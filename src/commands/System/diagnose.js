@@ -20,7 +20,7 @@ module.exports.run = async (client, message, args) => {
   
   let msg = '❌ **This command is disabled globally.**';
 
-  if(command.conf.disabledReason) msg += `\n:gear: **Reason:** ${command.conf.disabledReason}`;
+  if(command.conf.disabledReason) msg += `\n⚙️ **Reason:** ${command.conf.disabledReason}`;
 
   message.send(msg);
 };

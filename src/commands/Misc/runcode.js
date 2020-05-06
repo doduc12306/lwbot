@@ -14,10 +14,10 @@ module.exports.run = async (client, message, [language, ...code]) => {
     'plain'
   ];
 
-  if (!language) return message.send(':x: `|` 📝 **You didn\'t give me a language to run!**');
-  if (!possibleLanguages.includes(language)) return message.send(`:x: \`|\` 📝 **Invalid language!** Possible languages: ${possibleLanguages.map(lang => `\`${lang}\``).join(', ')}`);
+  if (!language) return message.send('❌ `|` 📝 **You didn\'t give me a language to run!**');
+  if (!possibleLanguages.includes(language)) return message.send(`❌ \`|\` 📝 **Invalid language!** Possible languages: ${possibleLanguages.map(lang => `\`${lang}\``).join(', ')}`);
 
-  if (!code) return message.send(':x: `|` 📝 **You didn\'t give me any code to run!**');
+  if (!code) return message.send('❌ `|` 📝 **You didn\'t give me any code to run!**');
   code = code.join(' '); // the code parameter returns an array. this turns it into a string
 
   const msg = await message.send('<a:loading:536942274643361794> `|` 📝 **Running...** `(0/2)`');
@@ -36,7 +36,7 @@ module.exports.run = async (client, message, [language, ...code]) => {
       return false; // If there was an error, make `runnerID` false, which is checked below
     });
 
-  if (!runnerID) return await msg.edit(':x: `|` 📝 **There wasn an error running the code.** Please try again later.');
+  if (!runnerID) return await msg.edit('❌ `|` 📝 **There wasn an error running the code.** Please try again later.');
 
   await client.wait(1000); // Wait a lil for the code to run...
 
@@ -50,19 +50,19 @@ module.exports.run = async (client, message, [language, ...code]) => {
 
         await msg.edit('<a:loading:536942274643361794> `|` 📝 **Running...** `(2/2)`');
 
-        if (res.result === 'timeout') return await msg.edit(':x: `|` 📝 **Error: Timeout** `|` **Code took too long to run.**');
-        if (res.build_stderr) return await msg.edit(`:x: \`|\` 📝 **Build error:**\n\`\`\`\n${res.build_stderr}\`\`\``);
-        if (res.stderr) return await msg.edit(`:x: \`|\` 📝 **Runtime error:**\n\`\`\`\n${res.stderr}\n\`\`\`Took: \`${res.time}\` seconds.`);
+        if (res.result === 'timeout') return await msg.edit('❌ `|` 📝 **Error: Timeout** `|` **Code took too long to run.**');
+        if (res.build_stderr) return await msg.edit(`❌ \`|\` 📝 **Build error:**\n\`\`\`\n${res.build_stderr}\`\`\``);
+        if (res.stderr) return await msg.edit(`❌ \`|\` 📝 **Runtime error:**\n\`\`\`\n${res.stderr}\n\`\`\`Took: \`${res.time}\` seconds.`);
 
         if(res.result === 'success' && res.stdout.trim() === '') res.stdout = '<No output>';
-        return await msg.edit(`:white_check_mark: \`|\` 📝 **Output:**\n\`\`\`\n${res.stdout}\n\`\`\`Took: \`${res.time}\` seconds.`);
+        return await msg.edit(`✅ \`|\` 📝 **Output:**\n\`\`\`\n${res.stdout}\n\`\`\`Took: \`${res.time}\` seconds.`);
       }).catch(async e => {
         if(e.message.includes('Invalid Form Body')) { // Total message was too long
           return await msg.edit(`:warning: \`|\` 📝 **Output was too long.**\nHere's the link: http://api.paiza.io:80/runners/get_details?id=${runnerID}&api_key=guest`);
         }
 
         client.logger.error(e);
-        return await msg.edit(':x: `|` 📝 **There wasn an error running the code.** Please try again later.');
+        return await msg.edit('❌ `|` 📝 **There wasn an error running the code.** Please try again later.');
       });
   })();
 

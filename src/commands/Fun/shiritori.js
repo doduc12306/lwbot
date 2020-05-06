@@ -7,20 +7,20 @@ module.exports.run = async (client, message, args) => {
   let previousWord = '';
 
   if (args.length === 0)
-    return message.send(':x: `|` 🔠 **You didn\'t say what to do!** Possible options: `start`, `end`, `join`');
+    return message.send('❌ `|` 🔠 **You didn\'t say what to do!** Possible options: `start`, `end`, `join`');
   if (!['start', 'end', 'join'].includes(args[0]))
-    return message.send(':x: `|` 🔠 **Invalid option!** Possible options: `start`, `end`, `join`');
+    return message.send('❌ `|` 🔠 **Invalid option!** Possible options: `start`, `end`, `join`');
 
   if (args[0] === 'start') {
     if (message.guild.shiritori) {
       if (message.guild.shiritori.author !== message.author.id)
-        return message.send(':x: `|` 🔠 **There\'s already a game of Shiritori in progress in this guild!**');
+        return message.send('❌ `|` 🔠 **There\'s already a game of Shiritori in progress in this guild!**');
 
       if (message.guild.shiritori.players.length === 1)
-        return message.send(':x: `|` 🔠 **You can\'t start a game with only yourself!**');
+        return message.send('❌ `|` 🔠 **You can\'t start a game with only yourself!**');
 
       else {
-        message.send(`:white_check_mark: \`|\` 🔠 **Game started with ${message.guild.shiritori.players.length} players!**`);
+        message.send(`✅ \`|\` 🔠 **Game started with ${message.guild.shiritori.players.length} players!**`);
         return showRules();
       }
     }
@@ -33,14 +33,14 @@ module.exports.run = async (client, message, args) => {
       words: 0,
       longestWord: ''
     };
-    return message.send(`:white_check_mark: \`|\` 🔠 **Game initialized!** ${message.author.toString()}, when everyone is ready, type \`${message.guild.settings.prefix}shiritori start\` again to begin!\nEveryone else, type \`${message.guild.settings.prefix}shiritori join\` to join the game!`);
+    return message.send(`✅ \`|\` 🔠 **Game initialized!** ${message.author.toString()}, when everyone is ready, type \`${message.guild.settings.prefix}shiritori start\` again to begin!\nEveryone else, type \`${message.guild.settings.prefix}shiritori join\` to join the game!`);
   }
 
   if (args[0] === 'end') {
     if (!message.guild.shiritori)
-      return message.send(':x: `|` 🔠 **There isn\'t currently a game of Shiritori in progress in this guild!**');
+      return message.send('❌ `|` 🔠 **There isn\'t currently a game of Shiritori in progress in this guild!**');
     if (message.guild.shiritori.author !== message.author.id)
-      return message.send(':x: `|` 🔠 **You cannot end this game because you didn\'t start it!**');
+      return message.send('❌ `|` 🔠 **You cannot end this game because you didn\'t start it!**');
 
     // End game functionality here
     endGame('ended by host');
@@ -48,12 +48,12 @@ module.exports.run = async (client, message, args) => {
 
   if (args[0] === 'join') {
     if (!message.guild.shiritori)
-      return message.send(':x: `|` 🔠 **There isn\'t currently a game of Shiritori in progress in this guild!**');
+      return message.send('❌ `|` 🔠 **There isn\'t currently a game of Shiritori in progress in this guild!**');
     if (message.guild.shiritori.players.includes(message.author.id))
-      return message.send(':x: `|` 🔠 **You\'ve already joined!**');
+      return message.send('❌ `|` 🔠 **You\'ve already joined!**');
 
     message.guild.shiritori.players.push(message.author.id);
-    return message.send(`:white_check_mark: \`|\` 🔠 **You have joined the game!** Players: \`${message.guild.shiritori.players.length}\``);
+    return message.send(`✅ \`|\` 🔠 **You have joined the game!** Players: \`${message.guild.shiritori.players.length}\``);
   }
 
   async function showRules() {
@@ -66,7 +66,7 @@ module.exports.run = async (client, message, args) => {
     '`4)` Your word must be valid. So, no "aaa" or "iunhenliufcu".\n' +
     '`5)` Once it\'s your turn, you have 10 seconds to answer, or else you will be disqualified.\n\n' +
     // Gap in the message...
-    '**All players must accept these rules by reacting with a :white_check_mark:**\n' +
+    '**All players must accept these rules by reacting with a ✅**\n' +
     'Once all players accept these rules, the game will begin.\n' +
     'You have one minute to accept.\n' +
     message.guild.shiritori.players.map(player => message.guild.members.cache.get(player).toString()).join(', ');
@@ -103,16 +103,16 @@ module.exports.run = async (client, message, args) => {
   async function game(response, currentPlayer, dictionary) {
     if (!response) {
       message.guild.shiritori.players.shift();
-      message.send(`:x: \`|\` 🔠 **Time's up, ${currentPlayer.toString()}!** You're disqualified!`);
+      message.send(`❌ \`|\` 🔠 **Time's up, ${currentPlayer.toString()}!** You're disqualified!`);
     } else if (!dictionary.includes(response.toLowerCase())) {
       message.guild.shiritori.players.shift();
-      message.send(`:x: \`|\` 🔠 **Hey! That word doesn't exist in our dictionary, ${currentPlayer.toString()}!** You're disqualified!`);
+      message.send(`❌ \`|\` 🔠 **Hey! That word doesn't exist in our dictionary, ${currentPlayer.toString()}!** You're disqualified!`);
     } else if (!checkEnding(previousWord, response.toLowerCase())) {
       message.guild.shiritori.players.shift();
-      message.send(`:x: \`|\` 🔠 **Hey! That word doesn't begin with the ending of the previous word, ${currentPlayer.toString()}!** You're disqualified!`);
+      message.send(`❌ \`|\` 🔠 **Hey! That word doesn't begin with the ending of the previous word, ${currentPlayer.toString()}!** You're disqualified!`);
     } else if (wordsAlreadyUsed.includes(response.toLowerCase())) {
       message.guild.shiritori.players.shift();
-      message.send(`:x: \`|\` 🔠 **Hey!** That word has already been used, ${currentPlayer.toString()}!** You're disqualified!`);
+      message.send(`❌ \`|\` 🔠 **Hey!** That word has already been used, ${currentPlayer.toString()}!** You're disqualified!`);
     }
 
     if (message.guild.shiritori.players.length <= 1) {
@@ -131,7 +131,7 @@ module.exports.run = async (client, message, args) => {
 
     previousWord = response.toLowerCase();
     currentPlayer = message.guild.members.cache.get(message.guild.shiritori.players[0]);
-    const newWord = await awaitReply(message, `:white_check_mark: \`|\`🔠 **Previous word:** \`${previousWord}\`.\nHey ${currentPlayer.toString()}! **It's your turn!** (You have 10 seconds.)`, 10000, currentPlayer);
+    const newWord = await awaitReply(message, `✅ \`|\`🔠 **Previous word:** \`${previousWord}\`.\nHey ${currentPlayer.toString()}! **It's your turn!** (You have 10 seconds.)`, 10000, currentPlayer);
     game(newWord, currentPlayer, dictionary);
   }
 

@@ -107,7 +107,7 @@ module.exports = async (client, message) => {
   const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
   message.benchmarks['CmdGetterBenchmark'] = new Date() - a;
 
-  if (!cmd) return message.send(`❌ \`|\` :gear: **That isn't one of my commands!** Try \`${prefix}help\``);
+  if (!cmd) return message.send(`❌ \`|\` ⚙️ **That isn't one of my commands!** Try \`${prefix}help\``);
 
   let cmdInDb;
   if (message.guild) {
@@ -128,8 +128,8 @@ module.exports = async (client, message) => {
   message.benchmarks['SystemNoticeBenchmark'] = new Date() - a;
 
   // Command status check
-  if (!cmd.conf.enabled || !cmdInDb) return message.send(':x: `|` :gear: **This command is disabled globally!**');
-  if (!cmdInDb.enabled && client.permlevel(message.member) < 8) return message.send(':x: `|` :gear: **This command is disabled for this server!**');
+  if (!cmd.conf.enabled || !cmdInDb) return message.send('❌ `|` ⚙️ **This command is disabled globally!**');
+  if (!cmdInDb.enabled && client.permlevel(message.member) < 8) return message.send('❌ `|` ⚙️ **This command is disabled for this server!**');
 
   // Some commands may not be useable in DMs. This check prevents those commands from running
   // and return a friendly error message.
@@ -191,9 +191,9 @@ module.exports = async (client, message) => {
 
     // Some table wasn't initialized before running the command. Emit the message event again to jog the table.
     if (e.message.includes('no such table')) {
-      if (message.rerun) return message.send(':x: **Some data has not been initialized for this user.** Please try again later.\n(I tried to fix this problem on my own but the databases won\'t cooperate with me 😠) ');
+      if (message.rerun) return message.send('❌ **Some data has not been initialized for this user.** Please try again later.\n(I tried to fix this problem on my own but the databases won\'t cooperate with me 😠) ');
 
-      const msg = await message.send(':gear: `|` <a:loading:536942274643361794> **Loading...**');
+      const msg = await message.send('⚙️ `|` <a:loading:536942274643361794> **Loading...**');
       message.rerun = true;
       client.emit('message', message);
       return msg.delete();
@@ -204,7 +204,7 @@ module.exports = async (client, message) => {
     client.logger.error(e);
     let firstErrorStackTrace;
     if (e.stack) firstErrorStackTrace = e.stack.split('\n')[1];
-    message.send(`:x: **Something went wrong running the command:**\n\`\`\`\n${e}\n\t${firstErrorStackTrace}\n\`\`\` `);
+    message.send(`❌ **Something went wrong running the command:**\n\`\`\`\n${e}\n\t${firstErrorStackTrace}\n\`\`\` `);
 
   }
   /* -------------------- RUNS THE COMMAND -------------------- */

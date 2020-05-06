@@ -4,7 +4,7 @@ const userFunction = require('../../dbFunctions/client/user');
 module.exports.run = (client, message, args) => {
   let bet = args[0];
   if (!bet) bet = 0;
-  if (bet && isNaN(bet)) return message.send(`:x: \`|\` ❔ \`${bet}\` **isn't a valid amount!**`);
+  if (bet && isNaN(bet)) return message.send(`❌ \`|\` ❔ \`${bet}\` **isn't a valid amount!**`);
 
   return fetch('http://jservice.io/api/random')
     .then(res => res.json())
@@ -27,20 +27,20 @@ module.exports.run = (client, message, args) => {
 
       if (response === false) { // If time runs out
         User.changeBalance('subtract', cubitsValue);
-        return message.send(`:x: \`|\` ❔ **Time's up!** You have lost \`${cubitsValue}\` Cubits.\n🔷 **The correct answer was:** ${answer}`);
+        return message.send(`❌ \`|\` ❔ **Time's up!** You have lost \`${cubitsValue}\` Cubits.\n🔷 **The correct answer was:** ${answer}`);
       }
 
       if (response.toLowerCase() === answer.toLowerCase()) {
         User.changeBalance('add', cubitsValue);
-        return message.send(`:white_check_mark: \`|\` ❔ **You got it right!** You have been awarded \`${cubitsValue}\` Cubits.`);
+        return message.send(`✅ \`|\` ❔ **You got it right!** You have been awarded \`${cubitsValue}\` Cubits.`);
       } else {
         User.changeBalance('subtract', cubitsValue);
-        message.send(`:x: \`|\` ❔ **You got it wrong!** You have lost \`${cubitsValue}\` Cubits.\n🔷 **The correct answer was:** ${answer}`);
+        message.send(`❌ \`|\` ❔ **You got it wrong!** You have lost \`${cubitsValue}\` Cubits.\n🔷 **The correct answer was:** ${answer}`);
       }
     })
     .catch(e => {
       client.logger.error(e);
-      return message.send(':x: `|` ❔ **There was an error getting the trivia information.** Please try again later.');
+      return message.send('❌ `|` ❔ **There was an error getting the trivia information.** Please try again later.');
     });
 };
 

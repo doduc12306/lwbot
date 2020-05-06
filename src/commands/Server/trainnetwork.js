@@ -42,13 +42,13 @@ module.exports.run = async (client, message, [...IDs]) => {
   access('./tmp/', accessErr => {
     if(accessErr && accessErr.code === 'ENOENT') {
       mkdir('./tmp/', mkdirError => {
-        if(mkdirError) return msg.edit(`:x: \`|\` 🧠 **Error creating tmp directory:**\n\`${mkdirError}\``);
+        if(mkdirError) return msg.edit(`❌ \`|\` 🧠 **Error creating tmp directory:**\n\`${mkdirError}\``);
         client.logger.verbose('trainnetwork.js: Created temp directory at src/tmp');
       });
     }
 
     writeFile(`./tmp/brain-${message.guild.id}.json`, ' ', writeFileErr => {
-      if(writeFileErr) return msg.edit(`:x: \`|\` 🧠 **Error writing to tmp file:**\n\`${writeFileErr}\``);
+      if(writeFileErr) return msg.edit(`❌ \`|\` 🧠 **Error writing to tmp file:**\n\`${writeFileErr}\``);
       client.logger.verbose(`trainnetwork.js: Wrote temp file: brain-${message.guild.id}.json`);
     }); 
   });
