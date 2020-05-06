@@ -140,7 +140,7 @@ module.exports.run = async (client, message, args) => {
       const winner = message.guild.members.cache.get(message.guild.shiritori.players[0]);
       message.send(`🏆 \`|\` 🔠 **We have a winner!** Congratulations, ${winner.toString()}\n📋 **Some stats:** Rounds: ${message.guild.shiritori.words} \`|\` Longest word: \`${message.guild.shiritori.longestWord}\` (${message.guild.shiritori.longestWord.length} characters)`);
     } else if(reason === 'ended by host') {
-      message.send('🔠 **Game ended.**');
+      message.send('🔠 **Game ended.**\n📋 **Some stats:** Rounds: ${message.guild.shiritori.words} `|` Longest word: `${message.guild.shiritori.longestWord}` (${message.guild.shiritori.longestWord.length} characters)');
     }
 
     delete message.guild.shiritori;
