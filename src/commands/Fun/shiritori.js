@@ -16,8 +16,8 @@ module.exports.run = async (client, message, args) => {
       if (message.guild.shiritori.author !== message.author.id)
         return message.send(':x: `|` 🔠 **There\'s already a game of Shiritori in progress in this guild!**');
 
-      //if (message.guild.shiritori.players.length === 1)
-      //  return message.send(':x: `|` 🔠 **You can\'t start a game with only yourself!**');
+      if (message.guild.shiritori.players.length === 1)
+        return message.send(':x: `|` 🔠 **You can\'t start a game with only yourself!**');
 
       else {
         message.send(`:white_check_mark: \`|\` 🔠 **Game started with ${message.guild.shiritori.players.length} players!**`);
