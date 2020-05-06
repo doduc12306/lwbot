@@ -193,6 +193,7 @@ exports.run = async (client, message, args) => {
       content += `[${mappedSetting[0]}] ${mappedSetting[1]} - ${prettySettings[mappedSetting[1]]}\n`;
     }
     content += '\n```';
+    content += `\n:gear: **If you want to change one of these settings, type** \`${message.guild.settings.prefix}set edit <ID> <new value>\``;
     if (client.settings.get(message.guild.id)['owoMode'] === 'true') content += '⚠ ***OWO MODE ENABLED! SETTING NAMES/VALUES ARE INCORRECT!*** ⚠\n';
 
     message.send(content);
