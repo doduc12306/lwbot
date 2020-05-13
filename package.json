@@ -43,7 +43,7 @@
     "terminal-kit": "^1.32.2"
   },
   "scripts": {
-    "test": "cd src; node index.js --ciMode",
+    "test": "cd src; node index.js --ciMode --forceRoot",
     "start": "pm2 start index.js",
     "build": "apt-get update; apt install -y make g++ autoconf libtool pkg-config libcairo2-dev libjpeg-dev libgif-dev build-essential libxi-dev libglu1-mesa-dev libglew-dev libsodium-dev; echo \" \"; echo \"Build complete\";",
     "postinstall": "cd src/util; node findandedit.js"
