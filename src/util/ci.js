@@ -133,12 +133,9 @@ module.exports = async client => {
 
       // Complete. Gracefully shut down the client, then exit the process.
       client.logger.log('CI test suite complete! Exiting...');
-      client.destroy()
-        .then(() => {
-          client.logger.log(`Took ${new Date()-start} ms.`);
-          process.exit();
-        })
-        .catch(e => { throw new Error(e); });
+      client.destroy();
+      client.logger.log(`Took ${new Date()-start} ms.`);
+      process.exit();
     });
 
   } catch(e) {
