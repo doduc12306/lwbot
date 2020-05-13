@@ -17,11 +17,12 @@ const ytdlcorediscordVersion = package.dependencies['ytdl-core-discord'];
 
 console.log('ytdl-core-discord version:', ytdlcorediscordVersion);
 
-if(ytdlcorediscordVersion !== '^1.0.3') {
+if(ytdlcorediscordVersion !== '1.0.3') {
   console.error('Version mismatch!');
-  console.error('  Expected ytdl-core-discord version: ^1.0.3');
+  console.error('  Expected ytdl-core-discord version: 1.0.3');
   console.error('  Actual ytdl-core-discord version:  ', ytdlcorediscordVersion);
-  process.exit(1);
+  console.error('Not changing anything!');
+  process.exit();
 }
 
 fs.readFile('../../node_modules/ytdl-core/lib/index.js', (err, data) => {
