@@ -99,7 +99,7 @@ module.exports = async client => {
       client.logger.log('CI CHANNELCREATE STEP');
       client.logger.log('Testing channelCreate event');
 
-      const channelObject = client.guilds.cache.get('332632603737849856').channels.get('583018344370929684');
+      const channelObject = client.guilds.cache.get('332632603737849856').channels.cache.get('583018344370929684');
       client.emit('channelCreate', channelObject);
     });
 
