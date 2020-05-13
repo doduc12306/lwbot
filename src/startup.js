@@ -17,7 +17,7 @@ const remove = promisify(fs.remove);
 
 // Export the client for other files' usage
 module.exports.client = new Discord.Client({
-  ws: { large_threshold: 1000  },
+  ws: { large_threshold: 1000 },
   messageCacheLifetime: 600, // 600 seconds = 10 minutes
   messageSweepInterval: 60, //  60 seconds  = 1 minute
   retryLimit: Infinity
@@ -50,8 +50,8 @@ module.exports.startup = async () => {
   client.config = require('./config.js');
 
   // This is down here because client isn't defined by the time cli args are.
-  if (!options.debug) process.env.NODE_ENV='production'; // Actually might speed up the bot, or so I've heard
-  if (options.debug) client.config.debugMode = true;
+  if (!options.debug) process.env.NODE_ENV = 'production'; // Actually might speed up the bot, or so I've heard
+  if (options.debug) { client.config.debugMode = true; process.title = `${process.title} [DEBUG MODE]`; }
   if (options.verbose) client.config.verboseMode = true;
   if (options.sqLog) client.config.sqLogMode = true;
   if (options.token) process.env.TOKEN = options.token;

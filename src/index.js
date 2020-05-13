@@ -1,6 +1,8 @@
 const logger = require('./util/Logger');
 const { version } = require('../package.json');
 
+process.title = 'LWBot';
+
 // if node.js version is less than 12, exit
 if (process.version.slice(1).split('.')[0] < 12) {
   logger.error('Invalid Node.js version. Please choose a version greater than 11. (Preferrably v12)');
