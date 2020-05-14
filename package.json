@@ -34,6 +34,7 @@
     "utf-8-validate": "5.0.2",
     "walk": "^2.3.14",
     "ws": "^7.2.1",
+    "youtube-dl": "^3.0.2",
     "ytdl-core-discord": "1.2.0",
     "zlib-sync": "0.1.6"
   },
