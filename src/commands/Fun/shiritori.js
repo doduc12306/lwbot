@@ -186,8 +186,7 @@ function checkMode(mode) {
 }
 
 // This is almost exactly the same as client.awaitReply, but with a modified filter.
-// Instead of checking if the author is one person, it checks it from an array of people
-// in case multiple people are playing on one game of shiritori.
+// This filter checks if the author is the player.
 // And the limit is 10 seconds instead of 30.
 async function awaitReply(msg, question, limit = 10000, player) {
   const filter = m => m.author.id === player.id;
