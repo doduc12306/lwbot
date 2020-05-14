@@ -1,8 +1,9 @@
 const YouTube = require('simple-youtube-api');
 const youtube = new YouTube(process.env.GOOGLE_API_KEY);
-const ytdl = require('ytdl-core-discord');
+//const ytdl = require('ytdl-core-discord');
 const { Util } = require('discord.js');
 const parse = require('parse-duration');
+const youtubedl = require('youtube-dl');
 const User = require('../../dbFunctions/client/user');
 
 module.exports.run = async (client, message, args) => {
@@ -11,15 +12,8 @@ module.exports.run = async (client, message, args) => {
 
   const voiceChannel = message.member.voice.channel;
   if (!voiceChannel) return message.send('❌ `|` 🎵 **You aren\'t in a voice channel!**');
-  if (!message.guild.me.permissionsIn(voiceChannel).serialize()['CONNECT']) return message.send(`❌ \`|\` 🎵 **Missing permissions to connect to** \`${voiceChannel.name}\`**!**`);
-  if (!message.guild.me.permissionsIn(voiceChannel).serialize()['SPEAK']) return message.send(`❌ \`|\` 🎵 **Missing permissions to speak in** \`${voiceChannel.name}\`**!**`);
-
-  if (client.musicQueue.get(message.guild.id) && client.musicQueue.get(message.guild.id).connection.dispatcher.paused && client.permlevel(message.member) >= 2) {
-    client.musicQueue.get(message.guild.id).connection.dispatcher.resume();
-    client.musicQueue.get(message.guild.id).playing.interval = setInterval(() => client.musicQueue.get(message.guild.id).playing.duration++, 1000);
-    message.send('▶ `|` 🎵 **Resumed.**');
-    return;
-  }
+  if (!message.guild.me.permissionsIn(voiceChannel).has('CONNECT')) return message.send(`❌ \`|\` 🎵 **Missing permissions to connect to** \`${voiceChannel.name}\`**!**`);
+  if (!message.guild.me.permissionsIn(voiceChannel).has('SPEAK')) return message.send(`❌ \`|\` 🎵 **Missing permissions to speak in** \`${voiceChannel.name}\`**!**`);
 
   const url = args[0] ? args[0].replace(/<(.+)>/g, '$1') : '';
   const searchString = args.slice(0).join(' ');
@@ -44,9 +38,10 @@ module.exports.run = async (client, message, args) => {
       try {
         const videos = await youtube.searchVideos(searchString, 5);
         let index = 0;
-        if(videos.length === 0) return message.send(`❌ \`|\` **Your search** \`${searchString}\` **did not return any results.**`);
+        if (videos.length === 0) return message.send(`❌ \`|\` 🎵 **Your search** \`${searchString}\` **did not return any results.**`);
         try {
           response = await client.awaitReply(message, `🔍 \`|\` 🎵 **Please select a song**\n\n${videos.map(video2 => `**${++index}** \`-\` __${video2.title}__`).join('\n')}`);
+          if (![1, 2, 3, 4, 5].includes(+response)) throw false;
         } catch (err) {
           return message.send('❌ `|` 🎵 **Invalid selection.** Cancelling search.');
         }
@@ -68,7 +63,7 @@ module.exports.run = async (client, message, args) => {
       id: video.id,
       title: Util.escapeMarkdown(video.title),
       url: `https://www.youtube.com/watch?v=${video.id}`,
-      thumbnail: video.thumbnails.standard.url ? video.thumbnails.standard.url : 'http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c545.png',
+      thumbnail: video.thumbnails.default.url ? video.thumbnails.default.url : 'http://www.stickpng.com/assets/images/580b57fcd9996e24bc43c545.png',
       duration: duration,
       videoObject: video,
       queuedBy: message.author.id
@@ -97,18 +92,24 @@ module.exports.run = async (client, message, args) => {
         play(msg.guild, queueConstruct.songs[0]);
       } catch (error) {
         client.musicQueue.delete(msg.guild.id);
-        return msg.send(`❌ \`|\` **Error while joining:** \`${error}\``);
+        return msg.send(`❌ \`|\` 🎵 **Error while joining:** \`${error}\``);
       }
     } else {
       serverQueue.songs.push(song);
       if (playlist) return;
-      else return msg.send(`✅ \`|\` \`${song.title}\` **has been added to the queue.**`);
+      else return msg.send(`✅ \`|\` 🎵 \`${song.title}\` **has been added to the queue.**`);
     }
     return;
   }
 
   async function play(guild, song) {
     const serverQueue = client.musicQueue.get(guild.id);
+
+    if (global.gc) {
+      client.logger.verbose('🎵 Manually running garbage collector...');
+      global.gc();
+      client.logger.verbose(`🎵 Memory usage... ${process.memoryUsage().heapUsed}`);
+    } else client.logger.verbose('🎵 Garbage collector not exposed. Not running.');
 
     if (!song) {
       message.send('🎵 **Queue is empty! Leaving...**');
@@ -120,14 +121,43 @@ module.exports.run = async (client, message, args) => {
     }
 
     const user = new User(song.queuedBy);
-    if(await user.balance - 1000 < 0) return message.send('❌ `|` 🎵 **You do not have the sufficient funds to play a song!**');
+    if (await user.balance - 1000 <= 0) return message.send('❌ `|` 🎵 **You do not have the sufficient funds to play a song!**');
 
-    const toPlay = await ytdl(song.url, { filter: 'audioonly' });
+    let downloaded = 0; // This will be the amount of the song in bytes that has been downloaded in case the connection is reset.
+    let totalSize = 0;
+    const toPlayStream = youtubedl(song.url,
+      // Optional arguments passed to youtube-dl.
+      ['--format=251', '--retries=infinite', '--fragment-retries=infinite', '--limit-rate=10G', '--buffer-size=10G', '--http-chunk-size=10G', '--hls-prefer-native', '--hls-use-mpegts'], // Format 251 is an webm/opus audio-only stream.
+      { cwd: __dirname }
+    );
 
-    serverQueue.connection.play(toPlay, { type: 'opus' })
-      .on('finish', async reason => {
-        if (!['Stream is not generating quickly enough.', 'stream'].includes(reason)) message.send(reason);
-        if(serverQueue.loop) {
+    toPlayStream.on('data', chunk => {
+      client.logger.verbose(chunk);
+      downloaded += chunk.length;
+      client.logger.verbose(`${((downloaded / totalSize) * 100).toFixed(2)}%`);
+    });
+
+    toPlayStream.on('info', info => {
+      console.log('Download started');
+      console.log('filename: ' + info._filename);
+
+      // info.size will be the amount to download, add
+      const total = info.size;
+      totalSize = info.size;
+      console.log('size: ' + total);
+    });
+
+    toPlayStream.on('error', error => {
+      client.logger.verbose(`From ${__filename}`);
+      client.logger.error(error);
+      client.logger.verbose(error);
+      message.send(`:x: \`|\` 🎵 **There was an error downloading your video: ${error}**`);
+    });
+
+    serverQueue.connection.play(toPlayStream, { type: 'webm/opus', bitrate: '96', volume: serverQueue.volume ? serverQueue.volume / 10 : 1 })
+      .on('finish', async reason => { // eslint-disable-line no-unused-vars
+        //if (!['Stream is not generating quickly enough.', 'stream'].includes(reason)) message.send(reason);
+        if (serverQueue.loop) {
           const songAt0 = serverQueue.songs.shift();
           serverQueue.songs.push(songAt0);
         }
@@ -135,20 +165,24 @@ module.exports.run = async (client, message, args) => {
         serverQueue.playing.duration = 0;
         await play(guild, serverQueue.songs[0]);
       })
-      .on('error', error => {client.logger.error(error); return message.send(`❌ \`|\` 🎵 **There was an error:** \`${error}\``);});
+      .on('error', error => { client.logger.error(error); return message.send(`❌ \`|\` 🎵 **There was an error:** \`${error}\``); });
 
-    if(serverQueue.playing.interval) clearInterval(serverQueue.playing.interval);
+    if (serverQueue.playing.interval) clearInterval(serverQueue.playing.interval);
     serverQueue.playing.interval = setInterval(() => serverQueue.playing.duration++, 1000);
     serverQueue.textChannel.send(`🎵 **Started playing** \`${song.title}\``);
-    
+
     await user.changeBalance('subtract', 100);
-    await client.users.cache.get(song.queuedBy).send(`🎵 **Started playing** \`${song.title}\` \n\`100\` Cubits deducted from your account. **Balance:** \`${await user.balance}\``);
+    await client.users.cache.get(song.queuedBy).send(`🎵 **Started playing** \`${song.title}\` \n\`100\` Cubits deducted from your account. **Balance:** \`${await user.balance}\``)
+      .catch(e => {
+        if (e.message === 'Cannot send messages to this user') return client.logger.warn('🎵 Tried to DM user but couldn\'t.');
+        else { client.logger.error(e); Promise.reject(e); }
+      });
 
   }
 };
 
 exports.conf = {
-  enabled: false,
+  enabled: true,
   aliases: ['music'],
   guildOnly: true,
   permLevel: 'User'
