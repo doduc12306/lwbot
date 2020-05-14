@@ -123,16 +123,16 @@ module.exports.run = async (client, message, args) => {
     const user = new User(song.queuedBy);
     if (await user.balance - 1000 <= 0) return message.send('❌ `|` 🎵 **You do not have the sufficient funds to play a song!**');
 
-    let downloaded = 0; // This will be the amount of the song in bytes that has been downloaded in case the connection is reset.
-    let totalSize = 0;
+    
     const toPlayStream = youtubedl(song.url,
       // Optional arguments passed to youtube-dl.
       ['--format=251', '--retries=infinite', '--fragment-retries=infinite', '--limit-rate=10G', '--buffer-size=10G', '--http-chunk-size=10G', '--hls-prefer-native', '--hls-use-mpegts'], // Format 251 is an webm/opus audio-only stream.
       { cwd: __dirname }
     );
 
+    let downloaded = 0; // This will be the amount of the song in bytes that has been downloaded in case the connection is reset.
+    let totalSize = 0;
     toPlayStream.on('data', chunk => {
-      client.logger.verbose(chunk);
       downloaded += chunk.length;
       client.logger.verbose(`${((downloaded / totalSize) * 100).toFixed(2)}%`);
     });
@@ -149,7 +149,6 @@ module.exports.run = async (client, message, args) => {
 
     toPlayStream.on('error', error => {
       client.logger.verbose(`From ${__filename}`);
-      client.logger.error(error);
       client.logger.verbose(error);
       message.send(`:x: \`|\` 🎵 **There was an error downloading your video: ${error}**`);
     });
