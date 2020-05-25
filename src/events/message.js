@@ -187,6 +187,14 @@ module.exports = async (client, message) => {
       }
     }
 
+    // Log command info to database (this only stores command name and increments the usage count by one, AND it is opt-out if the user wants.)
+    const optOutUser = await commandStats.optOutUsers.findOne({where: { userID: message.author.id }});
+    if(!optOutUser) commandStats.statsTable.findCreateFind({ where: { command: cmd.help.name }, defaults: { timesUsed: 0 } }).then(commandStats => {
+      commandStats = commandStats[0];
+      commandStats.increment('timesUsed');
+      client.logger.verbose(`Incremented command stats for ${cmd.help.category}/${cmd.help.name}`);
+    });
+
   } catch (e) {
 
     // Some table wasn't initialized before running the command. Emit the message event again to jog the table.
