@@ -44,7 +44,10 @@ const config = {
   defaultEvents: {
     'messageUpdate': false,
     'messageDelete': false,
-    'channelCreate': false
+    'channelCreate': false,
+    'channelDelete': false,
+    'guildMemberAdd': false,
+    'guildMemberRemove': false
   },
 
   // COLORS
