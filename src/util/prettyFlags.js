@@ -50,3 +50,12 @@ module.exports.prettyPremiumTiers = {
   2: 'Tier 2',
   3: 'Tier 3'
 };
+
+module.exports.prettyEvents = {
+  messageDelete: 'Message Delete',
+  messageUpdate: 'Message Edit',
+  channelCreate: 'Channel Create',
+  channelDelete: 'Channel Delete',
+  guildMemberAdd: 'Member Joined',
+  guildMemberRemove: 'Member Left'
+};
