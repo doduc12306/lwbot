@@ -1,6 +1,9 @@
 const moment = require('moment');
 const { Message } = require('discord.js');
 
+const commandStats = require('../dbFunctions/client/commandstats');
+const xpLockSet = new Set();
+
 module.exports = async (client, message) => {
   const a = new Date();
   if ((message.author.bot && !client.config.ciMode) || client.ws.status !== 0) return;
@@ -60,11 +63,11 @@ module.exports = async (client, message) => {
     message.benchmarks['XpLevelUpMessageBenchmark'] = new Date() - a;
 
     // Adds XP
-    if (!client.xpLockSet.has(message.author.id)) {
-      const randomXP = Math.floor(Math.random() * (Math.floor(2) - Math.ceil(1) + 1)) + Math.ceil(1);
+    if (!xpLockSet.has(message.author.id)) {
+      const randomXP = Math.round(Math.random() * 10) % 2 ? 1 : 2;
       functions.add(message.guild.id, message.author.id, randomXP); // Adds either 1 or 2 xp ...
-      client.xpLockSet.add(message.author.id);
-      setTimeout(() => client.xpLockSet.delete(message.author.id), 60000); // ... per minute.
+      xpLockSet.add(message.author.id);
+      setTimeout(() => xpLockSet.delete(message.author.id), 60000); // ... per minute.
     }
 
     // Checks if level up is possible
@@ -169,7 +172,14 @@ module.exports = async (client, message) => {
   }
 
   /* -------------------- RUNS THE COMMAND -------------------- */
-  client.logger.cmd(`${message.rerun ? '[RERUN] ' : ''}${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) ran ${cmd.help.name}${message.edited ? ' (edited) ' : ' '}${message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs'}`);
+  let logString = '';
+  if(message.rerun) logString += '[RERUN] ';
+  logString += `${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) `;
+  logString += `ran ${cmd.help.name} `;
+  if(message.edited) logString += '(edited) ';
+  logString += message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs';
+
+  client.logger.cmd(logString);
   try {
     const response = await cmd.run(client, message, args, level);
 
@@ -186,7 +196,7 @@ module.exports = async (client, message) => {
         }
       }
     }
-
+    
     // Log command info to database (this only stores command name and increments the usage count by one, AND it is opt-out if the user wants.)
     const optOutUser = await commandStats.optOutUsers.findOne({where: { userID: message.author.id }});
     if(!optOutUser) commandStats.statsTable.findCreateFind({ where: { command: cmd.help.name }, defaults: { timesUsed: 0 } }).then(commandStats => {
