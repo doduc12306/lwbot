@@ -2,7 +2,8 @@
 Almost a general-purpose Discord bot
 
 [![](https://gitlab.com/akii0008/lwbot-rewrite/badges/master/pipeline.svg)](https://gitlab.com/akii0008/lwbot-rewrite/pipelines)<br>
-^ That pipeline is almost always failing. Don't worry, the bot works. I make sure it works before I push it.
+^ That pipeline is almost always failing. Don't worry, the bot works. I make sure it works before I push it.<br>
+If it's not failing, I must have done something right, or I've finally worked out the kinks in the pipeline.
 
 Migrated from [GitHub](http://github.com/jennasisis/lwbot-rewrite) a *long* time ago.<br>
 Was originally [just lwbot on GitHub](http://github.com/jennasisis/lwbot), however both of these repositories have been archived.
