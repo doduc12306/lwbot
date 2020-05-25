@@ -9,7 +9,8 @@ module.exports.run = (client, message) => {
   const vcMembers = voiceChannel.members.filter(g => !g.user.bot);
   if(vcMembers.size === 1 || client.permlevel(message.member) >= 2) {
     music.playing.duration = 0;
-    music.connection.dispatcher.stop('⏭ `|` 🎵 **Skipped**');
+    message.send('⏭ `|` 🎵 **Skipped**');
+    music.connection.dispatcher.destroy();
   } else {
     const skipsNeeded = vcMembers.size.isEven()
       ? () => { return vcMembers.size / 2 + 1; } // If it's even, return the majority of the users. Ex: 10. 10 / 2 + 1 = 6
@@ -24,7 +25,8 @@ module.exports.run = (client, message) => {
         .on('collect', () => {
           skipsGathered++;
           if(skipsGathered >= skipsNeeded) {
-            music.dispatcher.stop('⏭ `|` 🎵 **Skipped**');
+            message.send('⏭ `|` 🎵 **Skipped**');
+            music.connection.dispatcher.destroy();
             collector.emit('end');
           }
         })

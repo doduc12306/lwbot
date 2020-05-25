@@ -5,11 +5,14 @@ module.exports.run = async (client, message) => {
   const music = client.musicQueue.get(message.guild.id);
   if (!music) return message.send('❌ `|` 🎵 **There\'s nothing playing!**');
 
-  music.songs = await [];
+  music.songs = await []; // Reset the queue
   music.playing.duration = await 0;
   await clearInterval(music.playing.interval);
   if(music.pauseTimeout) clearTimeout(music.pauseTimeout);
-  music.connection.dispatcher.stop('⏹ `|` 🎵 **Stopped.**');
+  message.send('⏹ `|` 🎵 **Stopped.**');
+  music.connection.dispatcher.destroy(); // Destroy the dispatcher (stop music)
+  music.connection.channel.leave(); // Leave the voice channel
+  client.musicQueue.delete(message.guild.id); // Remove the server object from the musicQueue collection.
 };
 
 exports.conf = {

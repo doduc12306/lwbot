@@ -14,7 +14,9 @@ module.exports.run = (client, message) => {
     music.songs = await [];
     music.playing.duration = await 0;
     await clearInterval(music.playing.interval);
-    music.connection.dispatcher.stop('⏱ `|` 🎵 **I left because I was paused for more than 5 minutes.**');
+    message.send('⏱ `|` 🎵 **I left because I was paused for more than 5 minutes.**');
+    music.connection.dispatcher.destroy();
+    music.connection.channel.leave();
   }, 300000); // 5 minutes
 };
 
