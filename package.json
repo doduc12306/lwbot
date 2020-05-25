@@ -54,7 +54,7 @@
     "url": "http://gitlab.com/akii0008/lwbot-rewrite.git"
   },
   "author": "Samir Buch <samir.js.zip@gmail.com> (https://akii.dev)",
-  "license": "AGPLv3",
+  "license": "MIT",
   "bugs": {
     "url": "https://gitlab.com/akii0008/lwbot-rewrite/issues"
   },
