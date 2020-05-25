@@ -83,6 +83,7 @@ class UserProfile {
             });
           }).catch(async e => {
             if(e.stack && e.stack.includes('no such table: profiles')) {
+              client.logger.verbose('No such table: profiles. Creating one now...');
               // if the tables dont exist yet, create them.
               await this.table().sync();
               await this.userSchema().sync();
@@ -105,6 +106,7 @@ class UserProfile {
             });
           }).catch(async e => {
             if(e.stack && e.stack.includes('no such table: profiles')) {
+              client.logger.verbose('No such table: profiles. Creating one now...');
               // if the tables dont exist yet, create them.
               await this.table().sync();
               await this.userSchema().sync();
@@ -124,6 +126,7 @@ class UserProfile {
             });
           }).catch(async e => {
             if(e.stack && e.stack.includes('no such table: profiles')) {
+              client.logger.verbose('No such table: profiles. Creating one now...');
               // if the tables dont exist yet, create them.
               await this.table().sync();
               await this.userSchema().sync();
@@ -167,6 +170,7 @@ class UserProfile {
         return newMood;
       }).catch(async e => {
         if(e.stack && e.stack.includes('no such table: profiles')) {
+          client.logger.verbose('No such table: profiles. Creating one now...');
           // if the tables dont exist yet, create them.
           await this.table().sync();
           await this.userSchema().sync();
@@ -213,6 +217,7 @@ class UserProfile {
             return badgeArray;
           }).catch(async e => {
             if(e.stack && e.stack.includes('no such table: profiles')) {
+              client.logger.verbose('No such table: profiles. Creating one now...');
               // if the tables dont exist yet, create them.
               await this.table().sync();
               await this.userSchema().sync();
@@ -235,6 +240,7 @@ class UserProfile {
             return updated;
           }).catch(async e => {
             if(e.stack && e.stack.includes('no such table: profiles')) {
+              client.logger.verbose('No such table: profiles. Creating one now...');
               // if the tables dont exist yet, create them.
               await this.table().sync();
               await this.userSchema().sync();
@@ -281,6 +287,7 @@ class UserProfile {
               .then(() => { return +res[0].get('value') + amount; });
           }).catch(async e => {
             if(e.stack && e.stack.includes('no such table: profiles')) {
+              client.logger.verbose('No such table: profiles. Creating one now...');
               // if the tables dont exist yet, create them.
               await this.table().sync();
               await this.userSchema().sync();
@@ -302,6 +309,7 @@ class UserProfile {
               .then(() => { return +res[0].get('value') - amount; });
           }).catch(async e => {
             if(e.stack && e.stack.includes('no such table: profiles')) {
+              client.logger.verbose('No such table: profiles. Creating one now...');
               // if the tables dont exist yet, create them.
               await this.table().sync();
               await this.userSchema().sync();
@@ -321,6 +329,7 @@ class UserProfile {
             });
           }).catch(async e => {
             if(e.stack && e.stack.includes('no such table: profiles')) {
+              client.logger.verbose('No such table: profiles. Creating one now...');
               // if the tables dont exist yet, create them.
               await this.table().sync();
               await this.userSchema().sync();
