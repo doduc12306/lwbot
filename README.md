@@ -20,7 +20,6 @@ Now, *sure*, it will work if you're not me. I make sure it works on other enviro
 ---
 
 ## [LICENSE.md](LICENSE.md)
-[![GNU AGPLv3](https://i.imgur.com/m7Khb4u.png)](https://choosealicense.com/licenses/agpl-3.0/)<br>
-**TL;DR:** You can use this. Feel free to make changes. **Must be open source, must use AGPLv3, must state changes.**
+[![MIT](https://i.imgur.com/uK1n616.png)](https://choosealicense.com/licenses/mit)
 
 ## [CHANGELOG.md](CHANGELOG.md)
