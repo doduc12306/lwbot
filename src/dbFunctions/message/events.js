@@ -4,6 +4,7 @@ const client = require('../../startup').client;
 
 class GuildEvents {
   constructor(guildID) {
+    if (!guildID) throw new Error('No guild/guild ID provided');
     if (guildID instanceof Guild) guildID = guildID.id;
 
     const guild = client.guilds.cache.get(guildID);
@@ -62,10 +63,10 @@ class GuildEvents {
       if (!eventName) return reject(new Error('Missing event to get'));
       if (typeof eventName !== 'string') return reject(new TypeError(`"${eventName}" is not a string`));
 
-      const event = this.shortcut.findOne({ where: { event: eventName} });
-      if(!event) return reject(new Error(`"${eventName}" does not exist to get`));
+      const event = this.shortcut.findOne({ where: { event: eventName } });
+      if (!event) return reject(new Error(`"${eventName}" does not exist to get`));
 
-      this.shortcut.update({ enabled: true }, { where: { event: eventName }});
+      this.shortcut.update({ enabled: true }, { where: { event: eventName } });
       this.cachedEvents[eventName] = true;
 
       return resolve(this.cachedEvents);
@@ -82,10 +83,10 @@ class GuildEvents {
       if (!eventName) return reject(new Error('Missing event to get'));
       if (typeof eventName !== 'string') return reject(new TypeError(`"${eventName}" is not a string`));
 
-      const event = this.shortcut.findOne({ where: { event: eventName} });
-      if(!event) return reject(new Error(`"${eventName}" does not exist to get`));
+      const event = this.shortcut.findOne({ where: { event: eventName } });
+      if (!event) return reject(new Error(`"${eventName}" does not exist to get`));
 
-      this.shortcut.update({ enabled: false }, { where: { event: eventName }});
+      this.shortcut.update({ enabled: false }, { where: { event: eventName } });
       this.cachedEvents[eventName] = false;
 
       return resolve(this.cachedEvents);
