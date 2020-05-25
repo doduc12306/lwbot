@@ -17,6 +17,7 @@ const User = require('../../dbFunctions/client/user');
 const sqWatchdog = require('../../util/sqWatchdog');
 const package = require('../../../package.json');
 const Tags = require('../../dbFunctions/client/tags');
+const commandStats = require('../../dbFunctions/client/commandstats');
 
 exports.run = async (client, message, args) => {
   require('../../dbFunctions/client/misc')(client);
