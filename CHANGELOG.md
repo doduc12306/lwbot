@@ -1,5 +1,52 @@
 # Changelog
 
+## v1.6.3 [5/25/2020]
+Woooo! Second update in one month!<br>
+I don't know if I mentioned this before but now that the bot ***is public*** (woo!) there will be updates coming out a lot more frequently.
+
+### Commands
+* Comics/webtoon: Changed `n` to the actual total number of steps. Oops.
+* Created Fun/shiritori: A game! This game I've been meaning to implement for quite some time now. Finally got around to doing it, and the part that I thought would be the trickiest wasn't actually that tricky. 214 lines. Not bad.
+* Created Fun/trivia: Another game! This one gives you Cubits if you get the answer right
+* Created Misc/coinflip: Literally flips a coin. that's it.
+* Created Misc/runcode: Runs some code on another server that I don't control, therefore I don't care about the output lmao
+* Music/play: 
+  * Removed psuedo-resume functionality because it just didn't work the way I wanted it to. Eh, not important enough to fix when there's already a command for it.
+  * Also now gets default thumbnail instead of standard thumbnail.. for some reason there's a difference?
+  * Runs v8 garbage collector after every song, just in case
+  * Now uses a different youtube downloader; a python package with a js wrapper. Music commands are *still* disabled, and Hydrabolt hasn't responded to my request for help lol
+* Created Server/events: Frontend for managing what events are logged to the server's modlog channel, more described in the backend section.
+* Server/set: Added some help to the end of the display-all-settings message in case it was confusing to some people how to change a setting, which I plan on fixing by the way.
+* Created System/commandstats: Basic information gathering on what commands are being used how many times. Completely anonymous, but also gives users the option to opt-out of this data collection, or opt back in if they so choose.
+* System/invite: Actual invite link instead of a generated one, *and* it uses actual permissions instead of just Administrator, which really shouldn't be given to bots.
+* User/mood: Bold was fixed
+
+### Backend
+* Package updates!
+  * @discordjs/opus v0.2.1 -> 0.3.2
+  * discord.js v12.1.1 -> v12.2.0
+  * parse-duration v0.3.2 -> v0.4.4
+  * sequelize v5.21.3 -> v5.21.7
+  * ytdl-core-discord v1.0.3 -> v1.2.0
+  * eslint v6.7.2 -> 7.0.0
+* **Event logging!** Servers now have the chance to log certain events on the server. These include, message editing, message deletion, channel creation, channel deletion, when a user joins, and when a user leaves. I plan on adding more when I have the motivation to.
+* **Command stats logging!** The bot now collects <span style="font-size:25px">**ANONYMOUS DATA**</span> about what commands are being used and how often they are. Users have the option to <span style="font-size:25px">**OPT OUT**</span> if they so choose. I swear if Discord comes for my ass..
+* db()/client/user: The bot now recognizes that a user's table may not exist, so it catches it and creates one then runs the function again with the newly-created table. If even that doesn't work, there's a catch block in the `message` event that will handle it and tell the user to wait a bit before doing the command again. This is so the sqWatchdog has a chance to roll through and clean up the databases
+* Events:
+  * `+` guildMemberAdd: For guild event logging
+  * `+` guildMemberRemove: For guild event logging
+  * `*` message: xpLockSet is no longer a part of the client object because it wasn't used anywhere other than the message event. Also cleaned up the bit that logs the command because it was an absolute mess of template literals that would drive any developer insane.
+  * `*` ratelimit -> rateLimit: Just a file rename. that's all
+  * `*` ready: Now shows what version the bot is on when it starts up
+* index: `process.title = 'LWBot'` to make it stand out on `ps ax`. (Debug mode just adds on a `[DEBUG MODE]` to the title.)
+* util/prettyFlags: Added pretty events for use in the events command
+
+### Misc
+* The CI image is now a Debian image because there were some missing packages that the `build` script had.
+* I switched the license to MIT instead of AGPLv3
+* Added a dictionary with 172820 words for the shiritori command. No, I didn't type those all myself, thank god
+* util/findandedit no longer exits with code 1 if it notices the ytdl-core-discord versions aren't in shape, although I haven't noticed any issues on this new version so I might remove this small script.
+
 ## v1.6.1 [5/1/2020]
 Hot fix because perm levels weren't working correctly. Also has a few other bug fixes.
 
