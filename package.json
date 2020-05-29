@@ -1,6 +1,6 @@
 {
   "name": "lwbot-rewrite",
-  "version": "1.6.4",
+  "version": "1.6.5",
   "description": "a bot that does a little less than everything but is getting there",
   "main": "src/index.js",
   "private": true,

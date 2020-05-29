@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.6.5 [5/28/2020]
+Hotfix. Oops
+
+### Backend
+* message: Checks if `deleteCommand === 'true'` instead of a boolean. I hate that it does that lol I should probably change that
+
 ## v1.6.4 [5/28/2020]
 It's only been three days and I'm already putting out another update. This one includes like two new features.
 
