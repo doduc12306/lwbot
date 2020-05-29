@@ -110,6 +110,14 @@ module.exports = async (client, message) => {
   const cmd = client.commands.get(command) || client.commands.get(client.aliases.get(command));
   message.benchmarks['CmdGetterBenchmark'] = new Date() - a;
 
+  const deleteCommand = message.guild
+    ? client.settings.get(message.guild.id)['deleteCommand']
+    : client.config.defaultSettings.deleteCommand;
+  message.benchmarks['DeleteCommandGetter'] = new Date() - a;
+
+  // Delete command after the author sends it
+  if(deleteCommand) message.delete();
+
   if (!cmd) return message.send(`❌ \`|\` ⚙️ **That isn't one of my commands!** Try \`${prefix}help\``);
 
   let cmdInDb;

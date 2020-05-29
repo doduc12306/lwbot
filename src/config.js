@@ -24,19 +24,20 @@ const config = {
     'modLogChannel': 'mod_logs',
     'modRole': 'Mods',
     'adminRole': 'Admins',
+    'botCommanderRole': 'Bot Commander',
+    'ownerRole': 'Owners',
     'systemNotice': 'true', // "You do not have permission to use this command!" or something
     'welcomeEnabled': 'false',
     'welcomeChannel': 'welcome',
     'welcomeMessage': 'Welcome to the server, {{user}}!',
     'announcementsChannel': 'announcements',
-    'botCommanderRole': 'Bot Commander',
-    'ownerRole': 'Owners',
     'capsThreshold': '80', // (80%), not 80 or more characters.
     'capsWarnEnabled': 'false',
     'capsDelete': 'false',
     'staffBypassesLimits': 'true',
     'xpLevelUpEnabled': 'false',
     'xpLevelUpMessage': '⬆ **{{user}} just advanced to level {{level}}!**',
+    'deleteCommand': 'false', // Delete command after it's sent. This can save some memory for command edits
     'accentColor': '0x00d564',
     'owoMode': 'false'
   },
