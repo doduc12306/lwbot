@@ -116,7 +116,7 @@ module.exports = async (client, message) => {
   message.benchmarks['DeleteCommandGetter'] = new Date() - a;
 
   // Delete command after the author sends it
-  if(deleteCommand) message.delete();
+  if(deleteCommand === 'true') message.delete();
 
   if (!cmd) return message.send(`❌ \`|\` ⚙️ **That isn't one of my commands!** Try \`${prefix}help\``);
 
