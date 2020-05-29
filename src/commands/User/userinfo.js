@@ -2,9 +2,13 @@ const Discord = require('discord.js');
 const moment = require('moment');
 const UserProfile = require('../../dbFunctions/client/user');
 
-module.exports.run = async (client, message) => {
-  const member = message.mentions.members.size === 0 ? message.member : message.mentions.members.first();
-  const { user } = member;
+module.exports.run = async (client, message, args) => {
+  let user;
+  if(args[0]) {
+    try { message.functions.parseUser(args[0]); } catch(e) { return message.send(':x: `|` 👤 **Couldn\'t find that user!**'); }
+    user = message.functions.parseUser(args[0]);
+  } else user = message.author;
+  const member = message.guild.members.cache.get(user.id);
   const profile = new UserProfile(user);
 
   const embed = new Discord.MessageEmbed()
