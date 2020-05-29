@@ -54,7 +54,7 @@ class UserProfile {
 
   /**
    * Balance of the user
-   * @return {Number}
+   * @returns {Number}
    * @readonly
    */
   get balance() {
@@ -68,7 +68,7 @@ class UserProfile {
    * Changes the balance of the user
    * @param {'add' | 'subtract' | 'set'} operation Operation to perform on balance of user
    * @param {Number} amount Amount to add/subtract/set
-   * @return {Number}
+   * @returns {Number}
    * @example
    * <User>.changeBalance('add', 10); // 0 => 10
    */
@@ -144,7 +144,7 @@ class UserProfile {
 
   /**
    * Gets the mood of the user
-   * @return {String}
+   * @returns {String}
    * @readonly
    */
   get mood() {
@@ -158,7 +158,7 @@ class UserProfile {
   /**
    * Change the mood of the user
    * @param {String} newMood New mood to set
-   * @return {String<newMood>}
+   * @returns {String<newMood>}
    * @example
    * <User>.changeMood('Hello new mood!'); // => 'Hello new mood!'
    */
@@ -185,7 +185,7 @@ class UserProfile {
 
   /**
    * Get the badges of the user
-   * @return {Array<String>}
+   * @returns {Array<String>}
    * @readonly
    */
   get badges() {
@@ -199,7 +199,7 @@ class UserProfile {
    * Add/remove a badge from the user's profile
    * @param {'add' | 'remove'} operation Operation to perform on badges
    * @param {String} badgeName Add/remove badgeName
-   * @return {Array<String>}
+   * @returns {Array<String>}
    * @example
    * <User>.changeBadges('add', ':wave:');    // => [':wave:', ...badges]
    * <User>.changeBadges('remove', ':wave:'); // => [...badges]
@@ -258,7 +258,7 @@ class UserProfile {
 
   /**
    * Get the amount of reputation points this user has
-   * @return {Number}
+   * @returns {Number}
    */
   get reputation() {
     return this.shortcut.findOrCreate({ where: { key: 'reputation' }, defaults: { value: '0' } })
@@ -271,7 +271,7 @@ class UserProfile {
    * Change the reputation of the user
    * @param {'add' | 'subtract' | 'set'} operation Operation to perform on the user's reputation
    * @param {Number} amount Amount to add/subtract/set
-   * @return {Number} The new reputation of the user
+   * @returns {Number} The new reputation of the user
    * @example
    * <User>.changeReputation('add', 1); // 0 => 1
    * <User>.changeReputation('remove', 10); // 200 => 190

@@ -102,7 +102,7 @@ module.exports = async (client, message) => {
     /**
      * Parses a role from a given role name or role snowflake
      * @param {String} data
-     * @return {Role}
+     * @returns {Role}
      */
     parseRole: data => {
       if (message.channel.type !== 'text') throw new Error('I can\'t find a role if I\'m not in a guild!');
@@ -122,7 +122,7 @@ module.exports = async (client, message) => {
     /**
      * Parses a user from a given user name or user snowflake
      * @param {String} data
-     * @return {User}
+     * @returns {User}
      */
     parseUser: data => {
       if (!data) throw new Error('You didn\'t give me anything to find a user from!');
@@ -142,7 +142,7 @@ module.exports = async (client, message) => {
     /**
      * Parses a member from a given member username or member snowflake
      * @param {String} data
-     * @return {GuildMember}
+     * @returns {GuildMember}
      */
     parseMember: data => {
       if (message.channel.type !== 'text') throw new Error('I can\'t find a member if I\'m not in a guild!');
@@ -164,7 +164,7 @@ module.exports = async (client, message) => {
      * Parses a channel from a given channel name or channel snowflake
      * CANNOT PARSE DMS
      * @param {String} data
-     * @return {GuildChannel}
+     * @returns {GuildChannel}
      */
     parseChannel: data => {
       if (!message.guild) throw new Error('I can\'t find a channel if I\'m not in a guild!');

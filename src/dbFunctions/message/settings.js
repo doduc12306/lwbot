@@ -53,7 +53,7 @@ class GuildSettings {
    * Adds a setting to the database
    * @param {String} key The name of the setting to add
    * @param {String} value The value of the setting
-   * @return {Promise<Object>} GuildSettings
+   * @returns {Promise<Object>} GuildSettings
    */
   add(key, value) {
     return new Promise((resolve, reject) => {
@@ -77,7 +77,7 @@ class GuildSettings {
   /**
    * Deletes a setting from the database
    * @param {String} key The name of the setting to delete
-   * @return {Promise<Object>} GuildSettings
+   * @returns {Promise<Object>} GuildSettings
    */
   delete(key) {
     return new Promise((resolve, reject) => {
@@ -99,7 +99,7 @@ class GuildSettings {
    * Edits a setting in the database
    * @param {String} key The name of the setting to edit
    * @param {String} newValue The value of the setting
-   * @return {Promise<Object>} GuildSettings
+   * @returns {Promise<Object>} GuildSettings
    */
   edit(key, newValue) {
     return new Promise((resolve, reject) => {
@@ -121,7 +121,7 @@ class GuildSettings {
   /**
    * Gets a setting from the database
    * @param {String} [key] The name of the setting to get 
-   * @return {Promise<String>|Promise<Object>} Value of key | GuildSettings
+   * @returns {Promise<String>|Promise<Object>} Value of key | GuildSettings
    */
   get(key) {
     return new Promise((resolve, reject) => {

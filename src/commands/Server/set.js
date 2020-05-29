@@ -115,7 +115,7 @@ exports.run = async (client, message, args) => {
    * Get a setting [by ID or key]
    * @param {Number} [id=undefined] ID of the setting
    * @param {String} [key=undefined] Name of the setting
-   * @return id: Number, key: String, value: String
+   * @returns id: Number, key: String, value: String
    */
   function viewSettings(id, key) {
     /* * * * * * * * * * * * * * LEGEND * * * * * * * * * * * * * * * *

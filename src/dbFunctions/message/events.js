@@ -56,7 +56,7 @@ class GuildEvents {
   /**
    * Enables an event to be logged
    * @param {String} eventName The event to enable
-   * @return {Promise<Object>} GuildEvents
+   * @returns {Promise<Object>} GuildEvents
    */
   enable(eventName) {
     return new Promise((resolve, reject) => {
@@ -76,7 +76,7 @@ class GuildEvents {
   /**
    * Disables an event to be logged
    * @param {String} eventName The event to disable
-   * @return {Promise<Object>} GuildEvents
+   * @returns {Promise<Object>} GuildEvents
    */
   disable(eventName) {
     return new Promise((resolve, reject) => {
@@ -96,7 +96,7 @@ class GuildEvents {
   /**
    * Gets an event from the database
    * @param {String} [eventName] The name of the event to get 
-   * @return {Promise<String>|Promise<Object>} Value of event | GuildEvents
+   * @returns {Promise<String>|Promise<Object>} Value of event | GuildEvents
    */
   get(eventName) {
     return new Promise((resolve, reject) => {
