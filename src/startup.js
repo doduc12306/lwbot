@@ -190,7 +190,7 @@ module.exports.startup = async () => {
     } else {
       client.logger.error(`Uncaught Exception: ${err}`);
       if (client.config.debugMode) return process.exit(1);
-      writeFile('./e', err.stack, e => {
+      writeFile('./e', err, e => {
         if (e) console.error(e);
         else client.logger.debug('Wrote error log');
       });
@@ -214,7 +214,8 @@ module.exports.startup = async () => {
       });
     }
     client.logger.verbose(`From: ${__filename}`);
-    client.logger.error(`Unhandled rejection: ${err.stack}`);
+    client.logger.error('Unhandled rejection:');
+    client.logger.error(err);
   });
 
 };
