@@ -1,5 +1,25 @@
 # Changelog
 
+## v1.6.4 [5/28/2020]
+It's only been three days and I'm already putting out another update. This one includes like two new features.
+
+### Commands
+* Created Server/asar: Adds a self-assignable role to the database
+* Created Server/iam: Assigns a self-assignable role to yourself
+* Created Server/iamnot: Removes a self-assignable role from yourself
+* Created Server/lsar: Lists all self-assignable roles in the server
+* Created Server/rsar: Removes a self-assignable role from the database
+* System/eval: Added self-assignable role (SAR) require
+* User/userinfo: Now uses `parseUser(args[0])` instead of mentions
+
+### Backend
+* config.defaultSettings: Created `deleteCommand` with default value `false`.
+  * This is a setting that will delete the author's command message after they send it.
+* events/message: Added `deleteCommand` handling
+* Added db()/message/sar: The class that handles self-assignable roles
+  * I've done something a little experimental with this: I added a property to the guild object: syncedDBs, an object that (will eventually) contain every synced/non-synced database. When any method is called, I check if that particular database has been synced. If it hasn't, it syncs it, and moves along with the rest of the function. If it already has been synced, it just skips over the syncing part to save on performance and jumps right to the core function. So far it seems to be working fine, although there may be a race condition that I'm not aware of since the method isn't technically async. We'll see... and even if, the message event should catch any not-created tables.
+* startup: On rejection, log the whole error object instead of stack which will sometimes not even exist.
+
 ## v1.6.3 [5/25/2020]
 Woooo! Second update in one month!<br>
 I don't know if I mentioned this before but now that the bot ***is public*** (woo!) there will be updates coming out a lot more frequently.
