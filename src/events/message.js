@@ -9,6 +9,8 @@ module.exports = async (client, message) => {
   if ((message.author.bot && !client.config.ciMode) || !client.ready) return;
   message.benchmarks = {};
 
+  client.logger.debug(`User ID: ${message.author.id} | Guild ID: ${message.guild ? message.guild.id : 'DM'}`);
+
   require('../dbFunctions/message/misc.js')(client, message);
   require('../dbFunctions/message/modbase.js')(client, message);
 
@@ -116,7 +118,7 @@ module.exports = async (client, message) => {
   message.benchmarks['DeleteCommandGetter'] = new Date() - a;
 
   // Delete command after the author sends it
-  if(deleteCommand === 'true') message.delete();
+  if (deleteCommand === 'true') message.delete();
 
   if (!cmd) return message.send(`❌ \`|\` ⚙️ **That isn't one of my commands!** Try \`${prefix}help\``);
 
@@ -181,10 +183,10 @@ module.exports = async (client, message) => {
 
   /* -------------------- RUNS THE COMMAND -------------------- */
   let logString = '';
-  if(message.rerun) logString += '[RERUN] ';
+  if (message.rerun) logString += '[RERUN] ';
   logString += `${client.config.permLevels.find(l => l.level === level).name} ${message.author.tag} (${message.author.id}) `;
   logString += `ran ${cmd.help.name} `;
-  if(message.edited) logString += '(edited) ';
+  if (message.edited) logString += '(edited) ';
   logString += message.guild ? `in ${message.guild.name} (${message.guild.id})` : 'in DMs';
 
   client.logger.cmd(logString);
@@ -204,10 +206,10 @@ module.exports = async (client, message) => {
         }
       }
     }
-    
+
     // Log command info to database (this only stores command name and increments the usage count by one, AND it is opt-out if the user wants.)
-    const optOutUser = await commandStats.optOutUsers.findOne({where: { userID: message.author.id }});
-    if(!optOutUser) commandStats.statsTable.findCreateFind({ where: { command: cmd.help.name }, defaults: { timesUsed: 0 } }).then(commandStats => {
+    const optOutUser = await commandStats.optOutUsers.findOne({ where: { userID: message.author.id } });
+    if (!optOutUser) commandStats.statsTable.findCreateFind({ where: { command: cmd.help.name }, defaults: { timesUsed: 0 } }).then(commandStats => {
       commandStats = commandStats[0];
       commandStats.increment('timesUsed');
       client.logger.verbose(`Incremented command stats for ${cmd.help.category}/${cmd.help.name}`);
