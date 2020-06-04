@@ -12,6 +12,8 @@ module.exports.runner = async function runner(client, guild, reset = false) {
   if (!client) throw new Error('Missing client parameter');
   const start = new Date();
 
+  client.ready = false;
+
   // If there was a specific guild passed, run the process for only that guild.
   if (guild) { // This is pretty much the same process as the run-all version, except with only one guild.
 
@@ -96,6 +98,8 @@ module.exports.runner = async function runner(client, guild, reset = false) {
     logger.sqLog(`${guild}: Finished xp cleanup`);
 
     logger.sqLog(`${guild}: Finished process! ${new Date() - start}`);
+
+    client.ready = true;
     return true;
 
   } else { // If there was no guild passed, run for everything.
@@ -215,10 +219,10 @@ module.exports.runner = async function runner(client, guild, reset = false) {
 
     }));
     logger.sqLog(`Process completed! Took ${new Date() - start}ms`);
+    client.ready = true;
     return true;
 
   }
-
 };
 
 module.exports.timer = (client) => {

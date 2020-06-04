@@ -124,6 +124,8 @@ module.exports = async client => {
     if (brainsWithoutJson.includes(guild.id)) return guild.brain.fromJSON(`${join(__dirname, 'brains/')}/${guild.id}.json`);
   }); */
 
+  client.ready = true;
+
   const after = new Date();
   client.startup = after - client.before;
 

@@ -6,7 +6,7 @@ const xpLockSet = new Set();
 
 module.exports = async (client, message) => {
   const a = new Date();
-  if ((message.author.bot && !client.config.ciMode) || client.ws.status !== 0) return;
+  if ((message.author.bot && !client.config.ciMode) || !client.ready) return;
   message.benchmarks = {};
 
   require('../dbFunctions/message/misc.js')(client, message);
