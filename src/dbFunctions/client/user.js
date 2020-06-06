@@ -235,9 +235,10 @@ class UserProfile {
             const badgeArray = res[0].get('value').split(' ');
             if (!badgeArray.includes(badgeName)) return false; // If the array does not have the badge, dont go further.
 
-            const updated = badgeArray.splice(badgeArray.indexOf(badgeName), 1).join(' '); // Find the index of the badge, then remove (splice) it from that index
-            this.shortcut.update({ value: updated }, { where: { key: 'badges' } });
-            return updated;
+            badgeArray.splice(badgeArray.indexOf(badgeName), 1);
+
+            this.shortcut.update({ value: badgeArray.join(' ') }, { where: { key: 'badges' } });
+            return badgeArray;
           }).catch(async e => {
             if(e.stack && e.stack.includes('no such table: profiles')) {
               client.logger.verbose('No such table: profiles. Creating one now...');
