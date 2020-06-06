@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.6.6 [6/6/2020]
+Hotfix for badges
+
+### Backend
+* db()/client/user: changeBadges: fixed critical bug where the database is updated with the wrong information
+
 ## v1.6.5 [5/28/2020]
 Hotfix. Oops
 
