@@ -26,9 +26,9 @@ module.exports = () => {
 
   // <Number>.isEven()/.isOdd() returns a boolean if it's even or odd, respectively
   Number.prototype.isEven = function(n) {
-    return (this || n) % 2 == 0;
+    return (this || n) % 2 === 0;
   };
   Number.prototype.isOdd = function(n) {
-    return Math.abs((this || n) % 2) == 1;
+    return Math.abs((this || n) % 2) === 1;
   };
 };

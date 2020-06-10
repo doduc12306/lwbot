@@ -199,19 +199,18 @@ exports.run = async (client, message, args) => {
     message.send(content);
 
   }
-
-  function toCamelCase(str) {
-    return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
-      return index == 0 ? word.toLowerCase() : word.toUpperCase();
-    }).replace(/\s+/g, '');
-  }
-
-  // If a setting key is passed in, grab all the data associated with that key.
-  function getKeyByValue(object, value) {
-    return Object.keys(object).find(key => object[key] === value);
-  }
-
 };
+
+function toCamelCase(str) {
+  return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+    return index === 0 ? word.toLowerCase() : word.toUpperCase();
+  }).replace(/\s+/g, '');
+}
+
+// If a setting key is passed in, grab all the data associated with that key.
+function getKeyByValue(object, value) {
+  return Object.keys(object).find(key => object[key] === value);
+}
 
 exports.conf = {
   enabled: true,

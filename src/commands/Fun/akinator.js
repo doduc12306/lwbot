@@ -127,7 +127,7 @@ module.exports.run = async (client, message, args) => {
       else if (answerID === 6) {
         collector.emit('end');
         return;
-      } else if (answerID != null) {
+      } else if (answerID !== null) {
         // found
         if (found) {
           // we had the right answer
@@ -170,7 +170,7 @@ module.exports.run = async (client, message, args) => {
         });
 
         // found some answers
-        if (win.answers != null && win.answers.length > 0) {
+        if (win.answers !== null && win.answers.length > 0) {
           found = true;
           const { name } = win.answers[0];
           const image = win.answers[0].absolute_picture_path;
@@ -184,7 +184,7 @@ module.exports.run = async (client, message, args) => {
 
           // add description and image
           embed.setDescription(`**${name}**\n**${description}**\n${str}`);
-          if (image != null) {
+          if (image !== null) {
             embed.setImage(image);
           }
 
@@ -215,7 +215,7 @@ module.exports.run = async (client, message, args) => {
   collector.on('end', () => {
     // remove the user from the set
     users.delete(message.author.id);
-    if (myMessage != null && !myMessage.deleted) {
+    if (myMessage !== null && !myMessage.deleted) {
       myMessage.reactions.removeAll().catch(e => client.logger.error(e));
     }
   });

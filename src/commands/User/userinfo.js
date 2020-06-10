@@ -33,7 +33,7 @@ module.exports.run = async (client, message, args) => {
   }
 
   // Profile-related embed fields
-  if (await profile.badges != false) embed.addField('Badges', await profile.badges, true);
+  if (await profile.badges !== false) embed.addField('Badges', await profile.badges, true);
   embed.addField('Balance', `${await profile.balance} Cubits`, true);
   embed.addField('Reputation', await profile.reputation, true);
 
