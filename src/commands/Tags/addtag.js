@@ -23,7 +23,7 @@ exports.conf = {
   enabled: true,
   guildOnly: false,
   aliases: ['createtag', 'tagadd'],
-  permLevel: 'Bot Owner'
+  permLevel: 'Bot Support'
 };
 
 exports.help = {
