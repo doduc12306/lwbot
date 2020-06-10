@@ -42,6 +42,8 @@
     "no-unused-vars": "warn",
     "no-var": "warn",
     "require-atomic-updates": "off",
-    "no-empty": "off"
+    "no-empty": "off",
+    "eqeqeq": "error",
+    "no-use-before-define": ["error", { "functions": false, "classes": false }]
   }
 }
