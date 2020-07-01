@@ -12,7 +12,7 @@ module.exports = async (client, guild) => {
 
   let role = await guild.roles.cache.find(g => g.name.toLowerCase() === 'muted');
   if (!role) {
-    role = await guild.roles.create({ name: 'Muted', color: 'DARK_ORANGE', position: guild.me.roles.highest.position - 1 }, 'Guild Create | Guild setup!')
+    role = await guild.roles.create({ data: { name: 'Muted', color: 'DARK_ORANGE', position: guild.me.roles.highest.position - 1 }, reason: 'Guild Create | Guild setup!' })
       .then(role => { client.logger.verbose(`guildCreate | Created muted role in ${guild.name} (${guild.id})`); owPerms(role); })
       .catch(e => { mutedRoleCreateError = true; client.logger.verbose(e); });
   }
