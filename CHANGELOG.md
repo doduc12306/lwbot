@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.6.7 [7/1/2020]
+Hotfix for tempmute and unmute commands
+
 ## v1.6.6 [6/6/2020]
 Hotfix for badges
 
