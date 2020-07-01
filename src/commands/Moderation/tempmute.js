@@ -6,7 +6,7 @@ require('moment-duration-format');
 module.exports.run = async (client, message, args) => {
   const GuildSettings = require('../../dbFunctions/message/settings');
   const settings = new GuildSettings(message.guild.id);
-  const role = message.guild.roles.cache.find(role => role.name === 'Muted') || message.guild.roles.find(role => role.name === 'muted');
+  const role = message.guild.roles.cache.find(role => role.name === 'Muted') || message.guild.roles.cache.find(role => role.name === 'muted');
   const toMute = message.mentions.members.first();
   const reason = args.slice(2).join(' ');
   const mutedEmote = '<:muted:459458717856038943>';

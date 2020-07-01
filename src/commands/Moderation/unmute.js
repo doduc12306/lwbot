@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 module.exports.run = async (client, message, args) => {
   const GuildSettings = require('../../dbFunctions/message/settings');
   const settings = new GuildSettings(message.guild.id);
-  const role = message.guild.roles.cache.find(role => role.name === 'Muted') || message.guild.roles.find(role => role.name === 'muted');
+  const role = message.guild.roles.cache.find(role => role.name === 'Muted') || message.guild.roles.cache.find(role => role.name === 'muted');
   const toUnmute = message.mentions.members.first();
   const reason = args.slice(1).join(' ');
   const unmutedEmote = '<:unmuted:459458804376141824>';
