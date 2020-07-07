@@ -3,7 +3,7 @@ module.exports.run = async (client, message, args) => {
   if (/<#(\d{17,19})>/g.test(args[0])) return message.send(':x: `|` 📨 **Your first argument is a channel!** It must be a message ID, *then* the channel.');
 
   let deleteMode = false;
-  if(message.content.endsWith('--delete')) {
+  if (message.content.endsWith('--delete')) {
     deleteMode = true;
     message.content = message.content.split('--delete')[0].trim(); // Take the delete flag off the end
   }
@@ -19,7 +19,7 @@ module.exports.run = async (client, message, args) => {
     }
     else messageArgs.push(argument);
 
-    // This means we've reached the end of the argument chain and have found no channel mention
+    // This means we've reached the end of the argument chain and have found no channel mention.
     // argument.indexOf(args) could be 5 and the args.length could be 5. 
     // Subtract one because array lengths arent zero based
     if (args.indexOf(argument) === args.length - 1) return message.send(':x: `|` 📨 **You never mentioned a channel!**');
@@ -29,6 +29,7 @@ module.exports.run = async (client, message, args) => {
     channelArg = message.functions.parseChannel(channelArg);
   } catch (e) { return message.send(':x: `|` 📨 **That channel does not exist!**'); }
 
+  // Check to see if the bot has permission to create webhooks in the target channel
   if (!message.guild.me.permissionsIn(channelArg).has('MANAGE_WEBHOOKS')) return message.send(`:x: \`|\` 📨 **I don't have permission to manage webhooks in \`#${channelArg.name}\`!**`);
 
   const fetchedMessages = [];
@@ -36,7 +37,7 @@ module.exports.run = async (client, message, args) => {
     message.channel.messages.fetch(messageArg)
       .then(msg => {
         fetchedMessages.push(msg);
-        if(deleteMode) msg.delete();
+        if (deleteMode) msg.delete();
       })
       .catch(e => {
         message.send(`:x: \`|\` 📨 **Couldn't find a message with ID \`${messageArg}\`!**`);
@@ -50,6 +51,7 @@ module.exports.run = async (client, message, args) => {
 
   const firstMember = fetchedMessages[0];
 
+  // Create a new webhook on the target channel formatted with the message's member's name and avatar
   let webhook = await channelArg.createWebhook(firstMember.member.displayName, {
     avatar: firstMember.author.displayAvatarURL(),
     reason: `Moving messages from #${message.channel.name} to #${channelArg.name}`
@@ -82,7 +84,7 @@ module.exports.run = async (client, message, args) => {
     await webhook.send(msg.content);
     lastMessage = msg;
 
-    if(fetchedMessages[fetchedMessages.length - 1] === lastMessage) {
+    if (fetchedMessages[fetchedMessages.length - 1] === lastMessage) {
       message.send(`:white_check_mark: \`|\` 📨 **Moved \`${fetchedMessages.length}\` messages!**`);
       webhook.delete(`Finished moving messages from #${message.channel.name} to #${channelArg.name}`);
     }
