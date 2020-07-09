@@ -191,7 +191,9 @@ class UserProfile {
   get badges() {
     return this.shortcut.findOrCreate({ where: { key: 'badges' }, defaults: { value: '' } })
       .then(res => {
-        return res[0].get('value').split(' ');
+        const _badges = res[0].get('value').split(' ');
+        if (!(_badges.length === 1 && _badges.includes(''))) return _badges;
+        else return null;
       });
   }
 
