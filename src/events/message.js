@@ -61,7 +61,7 @@ module.exports = async (client, message) => {
 
   // See mdn Array.some() for more info on how this works.
   // message.guild.wordFilter is an array
-  const messageContainsWordInFilter = message.content.split(' ').some(g => message.guild.wordFilter.includes(g));
+  const messageContainsWordInFilter = message.guild.wordFilter.some(word => message.content.includes(word));
 
   if (wordFilterEnabled && messageContainsWordInFilter) {
     if (client.permlevel(message.member) > 1) {
