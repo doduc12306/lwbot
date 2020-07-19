@@ -19,7 +19,7 @@ module.exports = async (client, message) => {
 
   const capsWarnEnabled = message.guild
     ? client.settings.get(message.guild.id)['capsWarnEnabled'] === 'true' ? true : false
-    : client.config.defaultSettings['capsWarnEnabled'];
+    : client.config.defaultSettings['capsWarnEnabled'] === 'true' ? true : false;
   message.benchmarks['CapsWarnEnabledBenchmark'] = new Date() - a;
 
   const capsThreshold = message.guild
@@ -28,8 +28,8 @@ module.exports = async (client, message) => {
   message.benchmarks['CapsThresholdBenchmark'] = new Date() - a;
 
   const capsDelete = message.guild
-    ? client.settings.get(message.guild.id)['capsDelete']
-    : client.config.defaultSettings['capsDelete'];
+    ? client.settings.get(message.guild.id)['capsDelete'] === 'true' ? true : false
+    : client.config.defaultSettings['capsDelete'] === 'true' ? true : false;
   message.benchmarks['CapsDeleteBenchmark'] = new Date() - a;
 
   const staffBypassesLimits = message.guild
@@ -45,10 +45,35 @@ module.exports = async (client, message) => {
 
   const emsg = `⚠️ \`|\` ${message.author}**, your message is more than ${capsThreshold}% caps.** Please do not spam caps.`;
   if (exceedsCapsThreshold) {
-    if (client.permlevel(message.member) !== 0) {
+    if (client.permlevel(message.member) > 1) { // 1 = DJ, 0 = User
       if (staffBypassesLimits);
       else { capsDelete ? message.delete() : false; message.send(emsg).then(msg => msg.delete({ timeout: 6000 })); }
     } else { capsDelete ? message.delete() : false; message.send(emsg).then(msg => msg.delete({ timeout: 6000 })); }
+  }
+
+  const wordFilterEnabled = message.guild
+    ? client.settings.get(message.guild.id)['wordFilter'] === 'true' ? true : false
+    : client.config.defaultSettings['wordFilter'] === 'true' ? true : false;
+
+  const deleteWordOnDetect = message.guild
+    ? client.settings.get(message.guild.id)['filterDelete'] === 'true' ? true : false
+    : client.config.defaultSettings['filterDelete'] === 'true' ? true : false;
+
+  // See mdn Array.some() for more info on how this works.
+  // message.guild.wordFilter is an array
+  const messageContainsWordInFilter = message.content.split(' ').some(g => message.guild.wordFilter.includes(g));
+
+  if (wordFilterEnabled && messageContainsWordInFilter) {
+    if (client.permlevel(message.member) > 1) {
+      if (staffBypassesLimits);
+      else {
+        message.channel.send(`:warning: \`|\` 📃 ${message.author.toString()}, **your message contained a word in the word filter.**`);
+        if (deleteWordOnDetect) message.delete();
+      }
+    } else {
+      message.channel.send(`:warning: \`|\` 📃 ${message.author.toString()}, **your message contained a word in the word filter.**`);
+      if (deleteWordOnDetect) message.delete();
+    }
   }
 
   if (message.channel.type !== 'dm') {

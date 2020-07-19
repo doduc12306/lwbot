@@ -19,6 +19,7 @@ const package = require('../../../package.json');
 const Tags = require('../../dbFunctions/client/tags');
 const commandStats = require('../../dbFunctions/client/commandstats');
 const SAR = require('../../dbFunctions/message/sar');
+const GuildWordFilter = require('../../dbFunctions/message/wordFilter');
 
 exports.run = async (client, message, args) => {
   require('../../dbFunctions/client/misc')(client);

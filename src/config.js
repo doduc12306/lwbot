@@ -34,6 +34,9 @@ const config = {
     'capsThreshold': '80', // (80%), not 80 or more characters.
     'capsWarnEnabled': 'false',
     'capsDelete': 'false',
+    'wordFilter': 'false', // Whether to enable the word filter
+    'filterDelete': 'true', // Whether to delete messages that contain filtered words
+    'filterAggressionLevel': '1',
     'staffBypassesLimits': 'true',
     'xpLevelUpEnabled': 'false',
     'xpLevelUpMessage': '⬆ **{{user}} just advanced to level {{level}}!**',

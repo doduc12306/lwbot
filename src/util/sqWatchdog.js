@@ -95,6 +95,15 @@ module.exports.runner = async function runner(client, guild, reset = false) {
     });
     logger.sqLog(`${guild}: Finished xp cleanup`);
 
+    /* WORD FILTER CLEANUP */
+    const GuildWordFilter = require('../dbFunctions/message/wordFilter');
+    const wordFilter = new GuildWordFilter(guild);
+    await wordFilter.shortcut().sync(force);
+
+    const words = await wordFilter.words;
+    client.guilds.cache.get(guild).wordFilter = words;
+    logger.sqLog(`${guild}: Finished word filter cleanup!`);
+
     logger.sqLog(`${guild}: Finished process! ${new Date() - start}`);
 
     return true;
@@ -213,6 +222,15 @@ module.exports.runner = async function runner(client, guild, reset = false) {
         }
       });
       logger.sqLog(`${serverID}: Finished xp cleanup`);
+
+      /* WORD FILTER CLEANUP */
+      const GuildWordFilter = require('../dbFunctions/message/wordFilter');
+      const wordFilter = new GuildWordFilter(serverID);
+      await wordFilter.shortcut().sync(force);
+
+      const words = await wordFilter.words;
+      client.guilds.cache.get(serverID).wordFilter = words;
+      logger.sqLog(`${serverID}: Finished word filter cleanup!`);
 
     }));
     logger.sqLog(`Process completed! Took ${new Date() - start}ms`);
