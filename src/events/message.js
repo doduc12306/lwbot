@@ -2,6 +2,7 @@ const moment = require('moment');
 const { Message } = require('discord.js');
 
 const commandStats = require('../dbFunctions/client/commandstats');
+const wordFilterCheck = require('../util/wordFilterCheck');
 const xpLockSet = new Set();
 
 module.exports = async (client, message) => {
@@ -51,30 +52,8 @@ module.exports = async (client, message) => {
     } else { capsDelete ? message.delete() : false; message.send(emsg).then(msg => msg.delete({ timeout: 6000 })); }
   }
 
-  const wordFilterEnabled = message.guild
-    ? client.settings.get(message.guild.id)['wordFilter'] === 'true' ? true : false
-    : client.config.defaultSettings['wordFilter'] === 'true' ? true : false;
-
-  const deleteWordOnDetect = message.guild
-    ? client.settings.get(message.guild.id)['filterDelete'] === 'true' ? true : false
-    : client.config.defaultSettings['filterDelete'] === 'true' ? true : false;
-
-  // See mdn Array.some() for more info on how this works.
-  // message.guild.wordFilter is an array
-  const messageContainsWordInFilter = message.guild.wordFilter.some(word => message.content.includes(word));
-
-  if (wordFilterEnabled && messageContainsWordInFilter) {
-    if (client.permlevel(message.member) > 1) {
-      if (staffBypassesLimits);
-      else {
-        message.channel.send(`:warning: \`|\` 📃 ${message.author.toString()}, **your message contained a word in the word filter.**`);
-        if (deleteWordOnDetect) message.delete();
-      }
-    } else {
-      message.channel.send(`:warning: \`|\` 📃 ${message.author.toString()}, **your message contained a word in the word filter.**`);
-      if (deleteWordOnDetect) message.delete();
-    }
-  }
+  // Moved the word filter check into its own file because the logic is quite a few lines of code.
+  wordFilterCheck(client, message, staffBypassesLimits);
 
   if (message.channel.type !== 'dm') {
     const { functions } = require('../dbFunctions/message/xp.js');

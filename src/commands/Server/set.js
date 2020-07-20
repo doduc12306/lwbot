@@ -29,7 +29,7 @@ exports.run = async (client, message, args) => {
 
     // if "[ID]" convert to "ID"
     if (new RegExp(`^\[${id}\]$`).test(id)) id = id.substring(1, id.length - 1); // eslint-disable-line no-useless-escape
-    const setting = viewSettings(id, null);
+    const setting = viewSettings(+id, null);
     if (!setting) return message.send(`❌ \`|\` ⚙ **Setting ID** \`[${id}]\` **does not exist!**`);
 
     // Checks
@@ -41,6 +41,8 @@ exports.run = async (client, message, args) => {
       return message.send('❌ `|` ⚙ **Invalid new value. Must be a hex color beginning with** `#`**.**');
     if (setting.key === 'Caps Threshold' && !(/\d{1,3}%/.test(newValue)))
       return message.send('❌ `|` ⚙ **Invalid new value. Must be a percentage.**');
+    if (setting.key === 'Filter Aggression Level' && (+newValue > 3 || +newValue < 1))
+      return message.send('ℹ️ `|` ⚙ **The** `Filter Aggression Level` **is how aggressively the word filter should check a message for words in the filter.**\n`1`: Basic checking; just looks for the word.\n`2`: Level 1, plus removing spaces from the message (e.g. "w o r d" -> "word") and checking for the word.\n`3`: Levels 1 and 2, and replacing some letters with commonly used l33t sp34k characters (e.g. "$" => "s").');
 
     // Edits
     if (setting.key.toLowerCase().includes('channel') && /<#([0-9]+)>/g.test(newValue)) {
@@ -175,7 +177,8 @@ exports.run = async (client, message, args) => {
       const prettySetting = prettySettings[mappedSetting];
       const originalSetting = IDToOriginalSettings[id];
 
-      if (!mappedSetting || !prettySetting || !originalSetting) return undefined;
+      // These are x === undefined instead of !x because some settings can be 0, which is falsey.
+      if (mappedSetting === undefined || prettySetting === undefined || originalSetting === undefined) return undefined;
       return { id, key: mappedSetting, value: prettySetting, originalSetting };
     }
 
