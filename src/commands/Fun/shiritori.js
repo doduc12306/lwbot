@@ -78,7 +78,7 @@ module.exports.run = async (client, message, args) => {
       'You have one minute to accept.\n' +
       message.guild.shiritori.players.map(player => message.guild.members.cache.get(player).toString()).join(', ');
 
-    let reactions = 1;
+    let reactions = 0;
     // Display the rules of the game in case those playing are unfamiliar
     const rulesMsg = await message.send(rulesMsgRaw);
     const filter = (reaction, user) => reaction.emoji.name === '✅' && message.guild.shiritori.players.includes(user.id) && !user.bot;
