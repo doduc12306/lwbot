@@ -8,8 +8,7 @@ If it's not failing, I must have done something right, or I've finally worked ou
 Migrated from [GitHub](http://github.com/jennasisis/lwbot-rewrite) a *long* time ago.<br>
 Was originally [just lwbot on GitHub](http://github.com/jennasisis/lwbot), however both of these repositories have been archived.
 
-~~Tested in Node: v8.x - v11.x.~~ This was before Discord.js v12. v12 now requires *at least* node 12. <br>
-Tested wherever Node works, including an iPhone (yes, really o.o (it was jailbroken and I wanted to see if it worked (it did)))
+**Requires at least Node 12.**<br>
 
 ### ⚠️ **This bot was not designed to be hosted by someone who isn't me.**
 The only reason it's on this site is because I believe ✨ open source software ✨ is important. ✨ There are so many variables here, such as the CI configuration, that are specific to myself. If you *really* know what you're doing, feel free to fork it and change those variables to suit your own needs. Maybe one day I'll make it more publicly friendly.
