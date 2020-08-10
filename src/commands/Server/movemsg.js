@@ -95,7 +95,8 @@ exports.conf = {
   enabled: true,
   aliases: ['movemessage', 'movemsgs', 'movemessages', 'copymessage', 'copymsg', 'copymessages', 'copymsgs'],
   permLevel: 'Moderator',
-  guildOnly: true
+  guildOnly: true,
+  failoverDisabled: true
 };
 
 exports.help = {

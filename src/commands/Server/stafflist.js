@@ -27,7 +27,8 @@ exports.conf = {
   aliases: ['staff'],
   permLevel: 'User',
   guildOnly: true,
-  requiresEmbed: true
+  requiresEmbed: true,
+  failoverDisabled: true
 };
 
 exports.help = {

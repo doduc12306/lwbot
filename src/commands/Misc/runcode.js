@@ -73,7 +73,8 @@ exports.conf = {
   permLevel: 'User',
   aliases: ['code', 'run'],
   guildOnly: false,
-  cooldown: 20000 // 10 seconds
+  cooldown: 20000, // 10 seconds
+  failoverDisabled: true
 };
 
 exports.help = {

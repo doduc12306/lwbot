@@ -19,7 +19,8 @@ exports.conf = {
   enabled: false,
   aliases: ['🛑', '⏹', 'stopmusic', 'disconnect', 'dc', 'stfu', 'shutup', 'sotp', 'sopt'],
   permLevel: 'DJ',
-  guildOnly: true
+  guildOnly: true,
+  failoverDisabled: true
 };
 
 exports.help = {

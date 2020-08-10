@@ -1,5 +1,8 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = async (client, oldMessage, newMessage) => {
+  // If bot is in failover mode, don't load this module.
+  if (global.failover) return;
+
   if(newMessage.author.bot) return;
   
   let command = false;

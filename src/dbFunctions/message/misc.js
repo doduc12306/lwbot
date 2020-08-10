@@ -3,6 +3,12 @@ module.exports = async (client, message) => {
 
   // Message send function, pretty much extends message.channel.send/message.edit in that it allows the user to edit their command message and it runs that instead
   message.send = (content, options) => {
+    // If in failover mode, effectively disable command editing functionality.
+    if(global.failover) {
+      // Just use the vanilla method instead of the modded one, which could cause issues
+      return message.channel.send(content, options);
+    }
+
     return new Promise((resolve, reject) => {
       if (!content) { // Accidental empty message handling
         content = '[Empty Message]';

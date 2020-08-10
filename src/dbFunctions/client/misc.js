@@ -85,6 +85,12 @@ module.exports = (client) => {
       if(!props.run) return `${folder}/${commandName} does not have a run export`;
 
       if(!props.conf) return `${folder}/${commandName} does not have a conf export`;
+
+      if(props.conf.failoverDisabled && global.failover) {
+        props.conf.enabled = false;
+        client.logger.warn(`Loading command ${folder}/${commandName} but disabling it because failover mode is initiated`);
+      }
+
       if(props.conf.enabled === undefined) return `${folder}/${commandName} does not have conf.enabled`; // undef because boolean (can be false)
       if(!props.conf.aliases) return `${folder}/${commandName} does not have conf.aliases`;
       if(props.conf.permlevel) return `${folder}/${commandName} has the wrong casing for permLevel (was "permlevel")`;

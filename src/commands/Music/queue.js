@@ -117,7 +117,8 @@ exports.conf = {
   aliases: ['q', 'tracks', 'tracklist'],
   permLevel: 'User',
   guildOnly: true,
-  requiresEmbed: true
+  requiresEmbed: true,
+  failoverDisabled: true
 };
 
 exports.help = {

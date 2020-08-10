@@ -41,7 +41,8 @@ exports.conf = {
   enabled: false,
   aliases: ['notthissong', 'thissongsucks', 'idontwannahearthissonganymore'],
   permLevel: 'User',
-  guildOnly: true
+  guildOnly: true,
+  failoverDisabled: true
 };
 
 exports.help = {

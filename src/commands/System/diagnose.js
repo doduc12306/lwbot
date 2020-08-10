@@ -6,6 +6,8 @@ module.exports.run = async (client, message, args) => {
   const command = client.commands.get(args[0]) || client.commands.get(client.aliases.get(args[0]));
   if(!command) return message.send('❌ **This command doesn\'t exist!**');
 
+  if(global.failover && command.conf.failoverDisabled) return message.send(':x: **This command is disabled.** The bot is currently in **failover mode** and this command has been known to cause issues at times.');
+
   let cmdInDb;
   if (message.guild) {
     await commandsTable.findOne({ where: { command: command.help.name } }).then(data => {

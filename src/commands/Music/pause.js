@@ -24,7 +24,8 @@ exports.conf = {
   enabled: false,
   aliases: ['⏸'],
   permLevel: 'DJ',
-  guildOnly: true
+  guildOnly: true,
+  failoverDisabled: true
 };
 
 exports.help = {

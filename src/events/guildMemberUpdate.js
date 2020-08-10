@@ -7,6 +7,9 @@
 //let { enabled } = require('../util/statuses'); // eslint-disable-line no-unused-vars
 
 module.exports = (client, oldMember, newMember) => {
+  // If bot is in failover mode, don't load this module.
+  if (global.failover) return;
+
   if(newMember.id !== client.config.ownerID) return;
   client.logger.verbose('Owner updated their status!');
 

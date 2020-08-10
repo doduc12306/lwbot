@@ -25,7 +25,8 @@ module.exports = {
     enabled: true,
     permLevel: 'User',
     aliases: ['wolframalpha', 'ask'],
-    guildOnly: false
+    guildOnly: false,
+    failoverDisabled: true
   },
 
   help: {

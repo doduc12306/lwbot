@@ -1,5 +1,8 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = (client, member) => {
+  // If bot is in failover mode, don't load this module.
+  if (global.failover) return;
+
   const loggingEnabled = client.events.get(member.guild.id)['guildMemberRemove'];
   if (!loggingEnabled) return;
 

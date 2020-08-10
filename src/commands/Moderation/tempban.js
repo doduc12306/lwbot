@@ -92,7 +92,8 @@ exports.conf = {
   enabled: true,
   guildOnly: true,
   aliases: ['temporaryban'],
-  permLevel: 'Moderator'
+  permLevel: 'Moderator',
+  failoverDisabled: true
 };
 
 exports.help = {

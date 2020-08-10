@@ -30,7 +30,8 @@ exports.conf = {
   aliases: ['np', 'playing', 'whatisthissong'],
   permLevel: 'User',
   guildOnly: true,
-  requiresEmbed: true
+  requiresEmbed: true,
+  failoverDisabled: true
 };
 
 exports.help = {

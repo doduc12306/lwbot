@@ -31,33 +31,36 @@ module.exports = async client => {
 
   `);
 
-  client.logger.verbose('Starting status rotation...');
-  client.statusRotationInterval = setInterval(() => {
-    if (!enabled) return false;
-    const randomPl = statuses(client).randomElement();
-    client.logger.verbose(`Setting status to ${randomPl[1].type} ${randomPl[0]}`);
-    return client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
-  }, 60000);
+  // If the bot isn't in failover mode, start the status rotation and start updating DBots info
+  if (!global.failover) {
+    client.logger.verbose('Starting status rotation...');
+    client.statusRotationInterval = setInterval(() => {
+      if (!enabled) return false;
+      const randomPl = statuses(client).randomElement();
+      client.logger.verbose(`Setting status to ${randomPl[1].type} ${randomPl[0]}`);
+      return client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
+    }, 60000);
 
-  // Update guild count on discord.bots.gg
-  setInterval(() => {
-    if (process.env.DBOTS_KEY === '') return client.logger.verbose('Didn\'t update DBots page');
-    fetch('https://discord.bots.gg/api/v1/bots/377205339323367425/stats', {
-      method: 'POST',
-      body: JSON.stringify({ guildCount: client.guilds.cache.size }),
-      headers: {
-        'Authorization': process.env.DBOTS_KEY,
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => res.json())
-      .then(res => client.logger.verbose(res))
-      .then(() => client.logger.verbose('Updated DBots page with current guild count'))
-      .catch(e => {
-        client.logger.error(`Something went wrong updating the DBots page: ${e}`);
-        client.logger.verbose(e);
-      });
-  }, 60000); // Every minute (ratelimit is 20/second)
+    // Update guild count on discord.bots.gg
+    setInterval(() => {
+      if (process.env.DBOTS_KEY === '') return client.logger.verbose('Didn\'t update DBots page');
+      fetch('https://discord.bots.gg/api/v1/bots/377205339323367425/stats', {
+        method: 'POST',
+        body: JSON.stringify({ guildCount: client.guilds.cache.size }),
+        headers: {
+          'Authorization': process.env.DBOTS_KEY,
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(res => res.json())
+        .then(res => client.logger.verbose(res))
+        .then(() => client.logger.verbose('Updated DBots page with current guild count'))
+        .catch(e => {
+          client.logger.error(`Something went wrong updating the DBots page: ${e}`);
+          client.logger.verbose(e);
+        });
+    }, 60000); // Every minute (ratelimit is 20/second)
+  }
 
   if (!client.config.ciMode) {
     // Finds if there was an error generated on uncaughtException the last time the bot started up.
@@ -163,6 +166,8 @@ ${'⎼'.repeat(client.user.tag.length + client.user.id.length + version.length +
 • Guilds:    ${client.guilds.cache.size}
 • Channels:  ${client.channels.cache.size}
 • Took:      ${moment.duration(client.startup, 'milliseconds').format('[~]s [secs]')} to start up`, 'ready');
+  if (global.failover) { client.logger.warn('RUNNING IN FAILOVER MODE'); client.logger.warn('SOME FUNCTIONALITY HAS BEEN DISABLED'); }
+
 
   delete client.before;
   delete client.after;

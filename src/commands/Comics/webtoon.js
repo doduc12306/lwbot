@@ -99,7 +99,8 @@ exports.conf = {
   enabled: true,
   aliases: ['searchwebtoon', 'webtoon', 'toon', 'webtoons'],
   guildOnly: false,
-  permLevel: 'User'
+  permLevel: 'User',
+  failoverDisabled: true
 };
 
 exports.help = {

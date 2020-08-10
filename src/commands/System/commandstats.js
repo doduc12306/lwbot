@@ -46,7 +46,8 @@ exports.conf = {
   enabled: true,
   permLevel: 'User',
   guildOnly: false,
-  aliases: ['cmdstats']
+  aliases: ['cmdstats'],
+  failoverDisabled: true
 };
 
 exports.help = {

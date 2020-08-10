@@ -37,7 +37,8 @@ exports.conf = {
   guildOnly: false,
   aliases: ['ud', 'urbandictionary', 'urnab'],
   permLevel: 'User',
-  requiresEmbed: true
+  requiresEmbed: true,
+  failoverDisabled: true
 };
 
 exports.help = {

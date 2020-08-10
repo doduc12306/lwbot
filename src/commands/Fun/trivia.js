@@ -55,7 +55,8 @@ exports.conf = {
   aliases: [],
   permLevel: 'User',
   guildOnly: false,
-  cooldown: 30000 // 30 seconds
+  cooldown: 30000, // 30 seconds
+  failoverDisabled: true
 };
 
 exports.help = {

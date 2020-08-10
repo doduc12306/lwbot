@@ -9,7 +9,8 @@ exports.conf = {
   aliases: [],
   guildOnly: false,
   permLevel: 'User',
-  cooldown: 8.64e+7
+  cooldown: 8.64e+7,
+  failoverDisabled: true
 };
 
 exports.help = {

@@ -1,5 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = async (client, channel) => {
+  // If bot is in failover mode, don't load this module.
+  if (global.failover) return;
   if (channel.type === 'dm') return;
 
   // On guildCreate, the bot registers every new channel it sees as a channelCreate event.
@@ -24,7 +26,7 @@ module.exports = async (client, channel) => {
   if (client.config.ciMode) client.emit('ciStepMessage');
 
   const loggingEnabled = client.events.get(channel.guild.id)['channelCreate'];
-  if(!loggingEnabled) return;
+  if (!loggingEnabled) return;
 
   const modLogChannel = channel.guild.channels.find(g => g.name === client.settings.get(channel.guild.id)['modLogChannel']);
   if (!modLogChannel) return;

@@ -225,7 +225,8 @@ exports.conf = {
   enabled: true,
   permLevel: 'User',
   aliases: ['aki'],
-  guildOnly: false
+  guildOnly: false,
+  failoverDisabled: true
 };
 
 exports.help = {

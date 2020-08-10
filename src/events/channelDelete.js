@@ -1,5 +1,7 @@
 const { MessageEmbed } = require('discord.js');
 module.exports = (client, channel) => {
+  // If bot is in failover mode, don't load this module.
+  if (global.failover) return;
 
   if (!channel.guild) return;
   const loggingEnabled = client.events.get(channel.guild.id)['channelDelete'];

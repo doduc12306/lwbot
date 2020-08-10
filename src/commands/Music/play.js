@@ -184,7 +184,8 @@ exports.conf = {
   enabled: true,
   aliases: ['music'],
   guildOnly: true,
-  permLevel: 'User'
+  permLevel: 'User',
+  failoverDisabled: true
 };
 
 exports.help = {

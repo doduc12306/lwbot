@@ -24,7 +24,8 @@ exports.conf = {
   enabled: true,
   guildOnly: true,
   aliases: ['clear', 'prune'],
-  permLevel: 'Moderator'
+  permLevel: 'Moderator',
+  failoverDisabled: true
 };
 
 exports.help = {
