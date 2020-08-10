@@ -41,10 +41,11 @@ module.exports = async client => {
 
   // Update guild count on discord.bots.gg
   setInterval(() => {
+    if (process.env.DBOTS_KEY === '') return client.logger.verbose('Didn\'t update DBots page');
     fetch('https://discord.bots.gg/api/v1/bots/377205339323367425/stats', {
       method: 'POST',
       body: JSON.stringify({ guildCount: client.guilds.cache.size }),
-      headers: { 
+      headers: {
         'Authorization': process.env.DBOTS_KEY,
         'Content-Type': 'application/json'
       }

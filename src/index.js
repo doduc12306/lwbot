@@ -28,6 +28,7 @@ if(process.argv.includes('--help') || process.argv.includes('-h')) {
 
   console.log('   --noFileLog           : Don\'t log everything to the day\'s file.');
   console.log('   --noFailoverWebsocket : Don\'t start the failover websocket.');
+  console.log('   --noDbotsUpdate       : Don\'t post the bot\'s guild count to DBots every minute. Implicit if DBOTS_KEY is not set in .env');
   console.log('   --forceRoot           : **UNSUPPORTED** Force the bot to run as root even when it tells you NOT TO');
   console.log('   -h | --help           : Displays this message and exits');
   console.log(' ');
@@ -54,10 +55,11 @@ if(process.geteuid() === 0 && !process.argv.includes('--forceRoot')) {
   logger.warn('RUNNING AS ROOT!');
   logger.warn('THIS IS UNSUPPORTED!');
   logger.warn('I HOPE YOU KNOW WHAT YOU\'RE DOING!');
+  logger.warn(' ');
+  logger.warn('Starting in 10 seconds...');
 
   setTimeout(() => require('./startup').startup(), 10000); // Wait 10 seconds so the user knows what they're getting themselves into
 } else require('./startup').startup();
 
-// lwbot-rewrite - Discord bot
 // Copyright © Samir Buch 2017-2020
 // License is applicable to all files and folders within directory

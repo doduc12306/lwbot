@@ -42,6 +42,7 @@ module.exports.startup = async () => {
     // Options
     { name: 'noFileLog', type: Boolean },
     { name: 'noFailoverWebsocket', type: Boolean },
+    { name: 'noDbotsUpdate', type: Boolean },
     { name: 'forceRoot', type: Boolean },
     { name: 'help', alias: 'h', type: Boolean }
   ]);
@@ -58,6 +59,7 @@ module.exports.startup = async () => {
   if (options.debugToken) process.env.DEBUG_TOKEN = options.debugToken;
   if (options.googleAPIKey) process.env.GOOGLE_API_KEY = options.googleAPIKey;
   if (options.noFileLog) client.config.noFileLog = true;
+  if (options.noDbotsUpdate) process.env.DBOTS_KEY = '';
   /* END SECTION */
 
   /* SECTION: LOG DIRECTORY CREATION */
