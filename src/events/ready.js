@@ -7,6 +7,7 @@ const fetch = require('node-fetch');
 //const brain = require('brain.js');
 //const { readdirSync } = require('fs');
 //const { join } = require('path');
+const { statuses, enabled } = require('../util/statuses');
 const { version } = require('../../package.json');
 
 module.exports = async client => {
@@ -30,10 +31,11 @@ module.exports = async client => {
 
   `);
 
+  client.logger.verbose('Starting status rotation...');
   client.statusRotationInterval = setInterval(() => {
-    const { statuses, enabled } = require('../util/statuses');
     if (!enabled) return false;
     const randomPl = statuses(client).randomElement();
+    client.logger.verbose(`Setting status to ${randomPl[1].type} ${randomPl[0]}`);
     return client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
   }, 60000);
 
