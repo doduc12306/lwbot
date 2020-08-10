@@ -3,6 +3,7 @@ const moment = require('moment');
 const watchdog = require('../util/sqWatchdog');
 const WSS = require('../util/ws-server');
 const Websocket = require('ws');
+const fetch = require('node-fetch');
 //const brain = require('brain.js');
 //const { readdirSync } = require('fs');
 //const { join } = require('path');
@@ -35,6 +36,25 @@ module.exports = async client => {
     const randomPl = statuses(client).randomElement();
     return client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
   }, 60000);
+
+  // Update guild count on discord.bots.gg
+  setInterval(() => {
+    fetch('https://discord.bots.gg/api/v1/bots/377205339323367425/stats', {
+      method: 'POST',
+      body: JSON.stringify({ guildCount: client.guilds.cache.size }),
+      headers: { 
+        'Authorization': process.env.DBOTS_KEY,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(res => client.logger.verbose(res))
+      .then(() => client.logger.verbose('Updated DBots page with current guild count'))
+      .catch(e => {
+        client.logger.error(`Something went wrong updating the DBots page: ${e}`);
+        client.logger.verbose(e);
+      });
+  }, 60000); // Every minute (ratelimit is 20/second)
 
   if (!client.config.ciMode) {
     // Finds if there was an error generated on uncaughtException the last time the bot started up.
