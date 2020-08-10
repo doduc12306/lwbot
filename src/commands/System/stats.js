@@ -13,8 +13,8 @@ exports.run = (client, message) => {
 
   embed.addField('Memory Usage', `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB / ${(os.totalmem() / 1000 / 1000 / 1000).toFixed(2)} GB (${(((process.memoryUsage().heapUsed / os.totalmem())) * 100).toFixed(3)}%)`, true);
 
-  const botUptime = moment.duration(client.uptime).format('M [months] W [weeks] D [days], H [hours], m [mins], s [seconds]');
-  const osUptime = moment.duration(os.uptime(), 'seconds').format('M [months] W [weeks] D [days], H [hours], m [mins], s [seconds]');
+  const botUptime = moment.duration(client.uptime).format('M [months], W [weeks], D [days], H [hours], m [mins], s [seconds]');
+  const osUptime = moment.duration(os.uptime(), 'seconds').format('M [months], W [weeks], D [days], H [hours], m [mins], s [seconds]');
   embed.addField('Uptime', `:robot: ${botUptime}\n:desktop: ${osUptime}`);
 
   if(message.content.endsWith('--benchmarks')) embed.addField('Verbose benchmarks', `\`\`\`js\n${JSON.stringify(message.benchmarks, null, 2)}\n\`\`\``);
