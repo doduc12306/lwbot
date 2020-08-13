@@ -221,4 +221,15 @@ module.exports.startup = async () => {
     client.logger.error(err);
   });
 
+  process.on('SIGQUIT', () => {
+    console.log('');
+    client.logger.log('SIGQUIT detected! Cleaning up and exiting...');
+    client.ready = false;
+    // Safely disconnect from Discord
+    client.destroy();
+    // and exit the process
+    client.logger.log('Client destroyed. Exiting...');
+    process.exit();
+  });
+
 };
