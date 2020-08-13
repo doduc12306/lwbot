@@ -34,6 +34,7 @@ module.exports.run = async (client, message, [action, ...word]) => {
           if (e instanceof RangeError) return message.send(':x: `|` 📃 **That word didn\'t exist in the filter!**');
           else return message.send(`:x: \`|\` 📃 **Something went wrong:** \`${e}\``);
         });
+      break;
     }
     // eslint-disable-next-line no-fallthrough
     case 'view': // Alias!
