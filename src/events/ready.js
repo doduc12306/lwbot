@@ -33,17 +33,17 @@ module.exports = async client => {
 
   // If the bot isn't in failover mode, start the status rotation and start updating DBots info
   if (!global.failover) {
-    client.logger.verbose('Starting status rotation...');
+    client.logger.debug('Starting status rotation...');
     client.statusRotationInterval = setInterval(() => {
       if (!enabled) return false;
       const randomPl = statuses(client).randomElement();
-      client.logger.verbose(`Setting status to ${randomPl[1].type} ${randomPl[0]}`);
+      client.logger.debug(`Setting status to ${randomPl[1].type} ${randomPl[0]}`);
       return client.user.setActivity(`${randomPl[0]} | !w help`, randomPl[1]);
     }, 60000);
 
     // Update guild count on discord.bots.gg
     setInterval(() => {
-      if (process.env.DBOTS_KEY === '') return client.logger.verbose('Didn\'t update DBots page');
+      if (process.env.DBOTS_KEY === '') return client.logger.debug('Didn\'t update DBots page');
       fetch('https://discord.bots.gg/api/v1/bots/377205339323367425/stats', {
         method: 'POST',
         body: JSON.stringify({ guildCount: client.guilds.cache.size }),
@@ -54,7 +54,7 @@ module.exports = async client => {
       })
         .then(res => res.json())
         .then(res => client.logger.verbose(res))
-        .then(() => client.logger.verbose('Updated DBots page with current guild count'))
+        .then(() => client.logger.debug('Updated DBots page with current guild count'))
         .catch(e => {
           client.logger.error(`Something went wrong updating the DBots page: ${e}`);
           client.logger.verbose(e);
