@@ -172,7 +172,7 @@ module.exports.startup = async () => {
   client.on('shardReconnecting', () => client.logger.log('Reconnecting...', 'reconnecting'));
   client.on('shardResume', replayed => client.logger.log(`Client resumed! Replayed ${replayed} events`, 'resume'));
   client.on('warn', info => client.logger.warn(`Warning: "${info}"`));
-  client.on('debug', client.logger.verbose);
+  client.on('debug', client.logger.debug);
 
   // Error handling
   process.on('uncaughtException', async (err) => {
