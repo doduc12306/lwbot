@@ -1,5 +1,68 @@
 # Changelog
 
+## v1.6.9 [8/14/2020]
+Nice.<br>
+Yes, I jumped one patch version, no I don't care, it's my code base I can do what I want with it.
+
+### Commands
+* Disabled functionality while in failover mode for the following commands:
+  * Comics/webtoon
+  * Economy/daily
+  * Fun/akinator
+  * Fun/trivia
+  * Fun/urban
+  * Misc/google
+  * Misc/runcode
+  * Misc/wolfram
+  * Moderation/purge
+  * Moderation/tempban
+  * Moderation/tempmute
+  * All Music commands
+  * Server/movemsg
+  * Server/stafflist
+  * System/commandstats
+* Created Fun/mewhenbugs: Just sents a video of a funny tiktok I found. The command is hidden
+* Fun/shiritori: Fixed the rule reaction checking
+* Created Misc/say: Echos what you want it to say
+* Server/set: Added some help for users who incorrectly set the filter aggression level
+* Created Server/wordfilter: Manages the server's word filter
+* System/diagnose: Added diagnosis for failover mode-disabled commands
+* System/info: Added privacy policy (with dynamic mod log checking, i.e. messageDelete/messageUpdate) and failover info
+* System/power: Improved this
+* System/stats: Fixed a comma consistency issue
+* User/userinfo: if (await profile.badges !== ~~false~~ null)
+
+### Backend
+* Package updates:
+  * sqlite3 v4.1.1 -> 5.0.0
+* Disabled some commands when the bot is in failover mode
+* Created per-server word filter functionality
+* config: Added three defaultSettings: wordFilter (false), filterDelete (true), and filterAggressionLevel (1).
+* db()/client/misc loadCommand: Load a command if it's been disabled in failover mode, but disable it globally. The reason the command is even still loaded is because the errors that will happen sometimes usually happen during command execution, not during loading.
+* db()/message/misc message.send: if failover mode, just send the message using vanilla `message.channel.send(content, options)` instead of using the modded version
+* Disabled the following events while in failover mode:
+  * channelCreate
+  * channelDelete
+  * guildMemberAdd
+  * guildMemberRemove
+  * guildMemberSpeaking (which i need to remove anyway because it was meant for an experiment)
+  * guildMemberUpdate
+  * messageDelete
+  * messageUpdate
+* events/guildCreate: Fixed new muted role create format
+* events/message: Check if failover mode is disabled before incrementing command usage
+* events/ready: 
+  * Checks for failover mode before enabling the status rotation and...
+  * Added DBots page updating with guild count
+* Added cli flag `--noDbotsUpdate` which disables the DBots page guild updating
+* src/startup: Added SIGQUIT (`^\`) trap to quit cleanly. 
+* util/sqWatchdog: Added word filter cleanup
+
+### Misc
+* Updated README.md to include installation instructions
+* util/dictionary: Removed `A` and `I`
+* util/trainbrain: Progress! The model actually trains now. I just need to implent a better saving system and we should *theoretically* be golden.. but here's the thing: in order to actually see if it works I would probably need to collect thousands of "bad" messages, which is problematic because the bot is so small.
+
 ## v1.6.7 [7/1/2020]
 Hotfix for tempmute and unmute commands
 
